@@ -1,0 +1,26 @@
+language: python
+python:
+  - "3.3"
+
+services:
+ - postgresql
+ - memcached
+
+virtualenv:
+  system_site_packages: true
+
+#env:
+#  - SUITE=api
+#  - SUITE=...
+
+before_install:
+ - psql -c 'create database openreview;' -U postgres
+ - export DJANGO_DB_USER=postgres
+ - export DJANGO_LOG_LEVEL=WARNING
+
+install:
+ - sudo apt-get update
+ - cat apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
+
+script:
+ - python ./manage.py test
