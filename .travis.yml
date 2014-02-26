@@ -20,8 +20,8 @@ before_install:
 
 install:
  - sudo apt-get update
- - cat apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
- - pip install -r ./pip_requirements.txt --use-mirrors
+ - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
+ - pip install -r openreview/pip_requirements.txt --use-mirrors
 
 script:
  - python ./manage.py test
