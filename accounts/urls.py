@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
-from accounts.views import login
+from accounts.views import LoginView, LogoutView
 
 urlpatterns = patterns('',
-    url('^login/$', login, name="accounts-login")
+    url('^login/$', LoginView.as_view(), name="accounts-login"),
+    url('^register/$', LoginView.as_view(), name="accounts-register"),
+    url('^logout/$', LogoutView.as_view(), name="accounts-logout")
 )

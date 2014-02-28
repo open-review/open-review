@@ -1,1 +1,1 @@
-alert "Hello from CoffeScript!"
+$("#coffee").text("This text was added by ~CoffeeScript~")

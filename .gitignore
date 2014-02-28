@@ -35,5 +35,8 @@ nosetests.xml
 .project
 .pydevproject
 
+# PyCharm
+.idea
+
 # Static files
 collected_static
