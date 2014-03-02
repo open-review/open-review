@@ -76,8 +76,8 @@ INSTALLED_APPS = (
     'bootstrapform',
     'pipeline',
     'south',
-    'accounts',
-    'main'
+    'openreview.apps.accounts',
+    'openreview.apps.main'
 )
 
 MIDDLEWARE_CLASSES = (

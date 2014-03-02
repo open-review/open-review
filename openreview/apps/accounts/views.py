@@ -1,12 +1,11 @@
 from django.contrib.auth import login, authenticate, logout
-
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.db import transaction
 from django.views.generic import TemplateView, RedirectView
 
-from accounts.forms import RegisterForm
+from openreview.apps.accounts.forms import RegisterForm
 
 
 class LoginView(TemplateView):

@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, url
-from accounts.views import LoginView, LogoutView
+
+from openreview.apps.accounts.views import LoginView, LogoutView
+
 
 urlpatterns = patterns('',
     url('^login/$', LoginView.as_view(), name="accounts-login"),
