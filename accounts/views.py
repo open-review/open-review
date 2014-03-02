@@ -12,6 +12,11 @@ from accounts.forms import RegisterForm
 class LoginView(TemplateView):
     template_name = "accounts/login.html"
 
+    def __init__(self, *args, **kwargs):
+        self.register_form = None
+        self.login_form = None
+        super().__init__(*args, **kwargs)
+
     def dispatch(self, request, *args, **kwargs):
         self.register_form = RegisterForm(data=self.request.POST if "new" in self.request.POST else None)
         self.login_form = AuthenticationForm(request=self.request, data=self.request.POST if "existing" in self.request.POST else None)
@@ -39,7 +44,8 @@ class LoginView(TemplateView):
         login(self.request, self.login_form.get_user())
         return self.redirect()
 
-    def redirect(self):
+    @staticmethod
+    def redirect():
         return redirect(reverse("frontpage"), permanent=False)
 
 class LogoutView(RedirectView):
