@@ -12,17 +12,51 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# This function is used to convert environment variables to booleans
+def get_bool(var, default=None, err_empty=False):
+    """
+    Gets the value of variable `var` from environment variables and tries to convert
+    it to a boolean. Valid values are: {True, False, 0, 1}.
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+    @param var: environment value to interpret
+    @type var: str
 
+    @param default: if no (valid) value is found, use this one
+    @type default: all
+
+    @param err: raise exception if illegal value is found.
+    @type err: bool
+
+    @rtype: bool
+    """
+    value = os.environ.get(var, "").lower().strip()
+
+    if value in ["true", "1"]:
+        return True
+
+    if value in ["false", "0"]:
+        return False
+
+    if len(value):
+        # You shouldn't use print in 'normal' code, however upon importing
+        # settings cryptic (and generally unhelpful) error messages are displayed
+        # in case of exceptions.
+        errmsg = "Could not interpret environment variable {value!r} as boolean value.".format(**locals())
+        print(errmsg)
+        raise ValueError(errmsg)
+
+    if err_empty:
+        errmsg = "Environment variable {var!r} must be specified.".format(**locals())
+        print(errmsg)
+        raise ValueError(errmsg)
+
+    return default
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", True)
-TEMPLATE_DEBUG = os.environ.get("DJANGO_DEBUG", True)
+TEMPLATE_DEBUG = DEBUG = get_bool("DJANGO_DEBUG", True)
 
 if not DEBUG:
-    SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+    SECRET_KEY = get_bool("DJANGO_SECRET_KEY", err_empty=True)
 else:
     SECRET_KEY = "longhairdontcare"
 
@@ -79,8 +113,8 @@ WSGI_APPLICATION = 'openreview.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'openreview',
+        'ENGINE': os.environ.get("DJANGO_DB_ENGINE", 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.environ.get("DJANGO_DB_NAME", 'openreview'),
     }
 }
 
