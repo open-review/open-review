@@ -1,9 +1,30 @@
 import unittest
 from django.core.urlresolvers import reverse
 from django.test.client import Client
+from openreview.apps.accounts.forms import is_email, RegisterForm
 from openreview.apps.accounts.models import User
 from openreview.tests import disable_pipeline
 
+class TestForms(unittest.TestCase):
+    def test_is_email(self):
+        # It is way too hard to test for all valid emails. Assuming correctness in validate_email().
+        self.assertTrue(is_email("bla@bla.nl"))
+        self.assertFalse(is_email("bla@bla"))
+
+    def test_register_form(self):
+        form = RegisterForm(data={"username": "bla@bla.nl", "password1": "test", "password2": "test"})
+        self.assertFalse(form.is_valid())
+
+        form = RegisterForm(data={"username": "!!!", "password1": "test", "password2": "test"})
+        self.assertFalse(form.is_valid())
+
+        form = RegisterForm(data={"username": "bla@bla", "password1": "test", "password2": "test"})
+        self.assertTrue(form.is_valid())
+
+        form = RegisterForm(data={"username": "bla@bla", "password1": "tes", "password2": "test"})
+        self.assertFalse(form.is_valid())
+
+    # Assuming UserCreationForm is already tested
 
 class TestLoginView(unittest.TestCase):
     @disable_pipeline
