@@ -1,5 +1,34 @@
 import unittest
 import os
+from django.core.urlresolvers import reverse
+from django.test import Client
+
+from django.test.utils import override_settings
+from django.conf import settings
+
+disable_pipeline = override_settings(STATICFILES_STORAGE=settings.TEST_STATICFILES_STORAGE)
+
+class TestDisablePipeline(unittest.TestCase):
+    """
+    Pipeline shows peculiar behaviour when used in test environments. As a result, we disable
+    it when using Client with disable_pipeline(). This test checks whether pipeline indeed
+    crashes when enabled, and if disabling it helps.
+
+    See: http://stackoverflow.com/questions/12816941/unit-testing-with-django-pipeline
+    """
+    def fetch(self):
+        c = Client()
+        c.post(reverse("frontpage"))
+
+    def test_pipeline(self):
+        self.assertRaises(ValueError, self.fetch())
+
+    def test_disable_pipeline(self):
+        @disable_pipeline
+        def pipeline_disabled_fetch():
+            self.fetch()
+
+        self.assertEqual(pipeline_disabled_fetch(), None)
 
 class TestSettings(unittest.TestCase):
     def _test_get_bool(self):
