@@ -73,13 +73,13 @@ class RegisterForm(UserCreationForm):
     """
 
     """
-    email = fields.EmailField(required=False, label="E-mail address (optional)",
-                              help_text="E-mail addresses are use for password recovery only.")
+    email = fields.EmailField(required=False, label=_("E-mail address (optional)"),
+                              help_text=_("E-mail addresses are use for password recovery only."))
 
     def clean_username(self):
         user = super().clean_username()
         if is_email(user):
-            raise ValidationError("Valid e-mail addresses can't be used as username.", code='invalid')
+            raise ValidationError(_("Valid e-mail addresses can't be used as username."), code='invalid')
         return user
 
     def save(self, commit=True):
