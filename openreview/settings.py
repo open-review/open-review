@@ -56,7 +56,11 @@ def get_bool(var, default=None, err_empty=False):
 TEMPLATE_DEBUG = DEBUG = get_bool("DJANGO_DEBUG", True)
 
 if not DEBUG:
-    SECRET_KEY = get_bool("DJANGO_SECRET_KEY", err_empty=True)
+    SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+    if not SECRET_KEY:
+        errmsg = "Environment variable DJANGO_SECRET_KEY must be specified."
+        print(errmsg)
+        raise ValueError(errmsg)
 else:
     SECRET_KEY = "longhairdontcare"
 
@@ -94,6 +98,7 @@ TEMPLATE_DIRS = (
 )
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+TEST_STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'
 
 PIPELINE_COMPILERS = (
     'pipeline.compilers.coffee.CoffeeScriptCompiler',
