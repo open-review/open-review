@@ -29,6 +29,7 @@ class TestForms(unittest.TestCase):
 class TestLoginView(unittest.TestCase):
     @disable_pipeline
     def test_register(self):
+        User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
 
         c = Client()
@@ -47,6 +48,8 @@ class TestLoginView(unittest.TestCase):
 
     @disable_pipeline
     def test_login(self):
+        User.objects.all().delete()
+        self.assertEqual(set(User.objects.all()), set())
         User.objects.create_user("user", password="password")
 
         c = Client()
