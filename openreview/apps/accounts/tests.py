@@ -95,7 +95,6 @@ class TestLoginViewSelenium(SeleniumTestCase):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
 
-        print(reverse("accounts-register"))
         self.open(reverse('accounts-register'))
         self.wd.find_css("#id_register_username").send_keys("abc")
         self.wd.find_css("#id_register_password1").send_keys("abcd")
