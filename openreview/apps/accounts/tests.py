@@ -1,9 +1,11 @@
 import unittest
 from django.core.urlresolvers import reverse
 from django.test.client import Client
+import time
 from openreview.apps.accounts.forms import is_email, RegisterForm
 from openreview.apps.accounts.models import User
-from openreview.tests import disable_pipeline
+from openreview.tests import disable_pipeline, SeleniumTestCase
+
 
 class TestForms(unittest.TestCase):
     def test_is_email(self):
@@ -58,4 +60,51 @@ class TestLoginView(unittest.TestCase):
 
         response = c.post(reverse("accounts-login"), {"username": "user", "password": "password", "existing": ""})
         self.assertTrue("sessionid" in response.cookies)
+
+class TestLoginViewSelenium(SeleniumTestCase):
+    def test_login(self):
+        User.objects.all().delete()
+        self.assertEqual(set(User.objects.all()), set())
+        User.objects.create_user("user", password="password")
+
+        # Test correct login
+        self.open(reverse('accounts-login'))
+        self.assertEqual(self.wd.get_cookie("sessionid"), None)
+        self.assertTrue(self.wd.current_url.endswith(reverse("accounts-login")))
+        self.wd.find_css("#id_login_username").send_keys("user")
+        self.wd.find_css("#id_login_password").send_keys("password")
+        self.wd.find_css('input[value="Login"]').click()
+        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
+        sessionid1 = self.wd.get_cookie("sessionid")["value"]
+
+        ## Test logout
+        self.open(reverse('accounts-logout'))
+        sessionid2 = self.wd.get_cookie("sessionid")["value"]
+        self.assertNotEqual(sessionid1, sessionid2)
+
+        # Test incorrect login
+        self.open(reverse('accounts-login'))
+        self.assertTrue(self.wd.current_url.endswith(reverse("accounts-login")))
+        self.wd.find_css("#id_login_username").send_keys("user")
+        self.wd.find_css("#id_login_password").send_keys("wrong")
+        self.wd.find_css('#login').click()
+        self.assertTrue(self.wd.current_url.endswith(reverse("accounts-login")))
+        self.assertEqual(sessionid2, self.wd.get_cookie("sessionid")["value"])
+
+    def test_register(self):
+        User.objects.all().delete()
+        self.assertEqual(set(User.objects.all()), set())
+
+        print(reverse("accounts-register"))
+        self.open(reverse('accounts-register'))
+        self.wd.find_css("#id_register_username").send_keys("abc")
+        self.wd.find_css("#id_register_password1").send_keys("abcd")
+        self.wd.find_css("#id_register_password2").send_keys("abcd")
+        self.wd.find_css('#register').click()
+        self.wd.wait_for_css("body")
+
+        self.assertEqual(User.objects.all().count(), 1)
+        user = User.objects.all()[0]
+        self.assertTrue(user.check_password("abcd"))
+        self.assertEqual(user.username, "abc")
 

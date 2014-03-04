@@ -17,8 +17,10 @@ class LoginView(TemplateView):
         super().__init__(*args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
-        self.register_form = RegisterForm(data=self.request.POST if "new" in self.request.POST else None)
-        self.login_form = AuthenticationForm(request=self.request, data=self.request.POST if "existing" in self.request.POST else None)
+        register_data = self.request.POST if "new" in self.request.POST else None
+        login_data = self.request.POST if "existing" in self.request.POST else None
+        self.register_form = RegisterForm(data=register_data, auto_id='id_register_%s')
+        self.login_form = AuthenticationForm(request=self.request, data=login_data, auto_id='id_login_%s')
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

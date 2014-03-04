@@ -1,10 +1,53 @@
-import unittest
 import os
-from django.core.urlresolvers import reverse
-from django.test import Client
+import unittest
 
+from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
+from django.test import Client, LiveServerTestCase
 from django.conf import settings
+
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+
+# Determine the WebDriver module. Defaults to Firefox.
+try:
+    web_driver_module = settings.SELENIUM_WEBDRIVER
+except AttributeError:
+    from selenium.webdriver.firefox import webdriver as web_driver_module
+
+class SeleniumWebDriver(web_driver_module.WebDriver):
+    """Default webdriver, extended with convenience methods."""
+
+    def find_css(self, css_selector):
+        """Shortcut to find elements by CSS. Returns either a list or singleton"""
+        elems = self.find_elements_by_css_selector(css_selector)
+        found = len(elems)
+        if found == 1:
+            return elems[0]
+        elif not elems:
+            raise NoSuchElementException(css_selector)
+        return elems
+
+    def wait_for_css(self, css_selector, timeout=7):
+        """Shortcut for WebDriverWait"""
+        try:
+            return WebDriverWait(self, timeout).until(lambda driver: driver.find_css(css_selector))
+        except TimeoutException:
+            self.quit()
+
+class SeleniumTestCase(LiveServerTestCase):
+    """TestCase for in-browser testing. Sets up `wd` property, which is an initialised Selenium
+    webdriver (defaults to Firefox)."""
+    def open(self, url):
+        self.wd.get("%s%s" % (self.live_server_url, url))
+
+    def setUp(self):
+        self.wd = SeleniumWebDriver()
+        super().setUp()
+
+    def tearDown(self):
+        self.wd.quit()
+        super().tearDown()
 
 disable_pipeline = override_settings(STATICFILES_STORAGE=settings.TEST_STATICFILES_STORAGE)
 

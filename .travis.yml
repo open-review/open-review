@@ -18,10 +18,14 @@ before_install:
  - export DJANGO_DB_USER=postgres
  - export DJANGO_LOG_LEVEL=WARNING
 
+ # Setup virtual display for in-browser testing
+ - "export DISPLAY=:99.0"
+ - "sh -e /etc/init.d/xvfb start"
+
 install:
  - sudo apt-get update
  - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
  - pip install -r openreview/pip_requirements.txt --use-mirrors
 
 script:
- - python ./manage.py test
+ - DISPLAY=:99:0 python ./manage.py test

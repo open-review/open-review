@@ -3,3 +3,4 @@ django-pipeline
 django-bootstrap-form
 psycopg2
 south
+selenium
