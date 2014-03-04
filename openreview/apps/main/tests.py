@@ -1,3 +1,8 @@
 from django.test import TestCase
 
-# Create your tests here.
+class TestPaper(TestCase):
+    def test_get_reviews(self):
+        pass
+
+    def test_get_comments(self):
+        pass
