@@ -28,4 +28,4 @@ install:
  - pip install -r openreview/pip_requirements.txt --use-mirrors
 
 script:
- - DISPLAY=:99.0 python ./manage.py test
+ - python ./manage.py test
