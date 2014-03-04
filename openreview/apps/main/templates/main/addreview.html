@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content %}
+<div class="well">
+    <p>Whale whale whale.. what have we got here?</p>
+    <p>OpenReview is lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean facilisis interdum tristique.
+        Morbi id risus massa. Integer rutrum aliquam nibh, eget cursus libero laoreet sed. Praesent nulla justo,
+        vehicula eu mattis sit amet, bibendum et turpis. Nunc neque ante, ornare posuere dapibus at, vulputate id
+        elit. Proin id egestas libero. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+        himenaeos. In facilisis sed ipsum vitae scelerisque. Donec at lorem molestie, aliquam justo sed, egestas enim.
+        Donec ac lectus ut erat tempor vehicula suscipit ut tortor. Nam scelerisque, ligula et hendrerit euismod, elit
+        felis tempor erat, sed viverra lacus purus eget tortor.<p>
+
+    <p>Phasellus suscipit leo turpis. Sed eget cursus erat. Ut a feugiat ante. Sed vitae dapibus lectus. Pellentesque
+    faucibus libero et nunc posuere pellentesque. Donec blandit nisl ac dui scelerisque, nec ultrices odio rhoncus. Sed
+    ullamcorper enim quis erat dapibus pharetra. Fusce convallis ut purus eget scelerisque. Nulla non nisi elementum,
+    tempor purus a, laoreet sem. Fusce et sem sit amet nisl aliquet porta sed at nulla. Quisque a eros ut nulla ornare
+    pharetra a egestas libero. Quisque sed lectus placerat, aliquet elit vitae, laoreet augue. Sed interdum risus mi.</p>
+</div>
+
+<div id="coffee"></div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Select Paper</h2>
+        
+    </div>
+    <div class="col-md-8">
+        <h2>New Review</h2>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {{ addreview_form|bootstrap }}
+                <input id="login" class="btn btn-primary" name="addreview" type="submit" value="Submit">
+            </form>
+    </div>
+</div>
+{% endblock %}
