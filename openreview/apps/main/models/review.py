@@ -10,7 +10,7 @@ class Review(models.Model):
     referred to as a comment in the user interface (parent != None).
     """
     text = models.TextField()
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     poster = models.ForeignKey(get_user_model())
     paper = models.ForeignKey("main.Paper", related_name="reviews")
@@ -18,6 +18,9 @@ class Review(models.Model):
 
     class Meta:
         app_label = "main"
+
+    def __str__(self):
+        return "Review: {self.poster}, {self.paper}, {self.parent}".format(self=self)
 
 
 class Vote(models.Model):
