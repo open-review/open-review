@@ -1,7 +1,6 @@
 import unittest
 from django.core.urlresolvers import reverse
 from django.test.client import Client
-import time
 from openreview.apps.accounts.forms import is_email, RegisterForm
 from openreview.apps.accounts.models import User
 from openreview.tests import disable_pipeline, SeleniumTestCase
@@ -60,6 +59,22 @@ class TestLoginView(unittest.TestCase):
 
         response = c.post(reverse("accounts-login"), {"username": "user", "password": "password", "existing": ""})
         self.assertTrue("sessionid" in response.cookies)
+
+
+    @disable_pipeline
+    def test_redirect(self):
+        User.objects.create_user("test", password="password")
+
+        c = Client()
+        response = c.post(reverse("accounts-login") + "?next=/blaat", {"username": "test", "password": "password", "existing": ""})
+        self.assertTrue(response.url.endswith("/blaat"))
+        self.assertEqual(response.status_code, 302)
+
+        c = Client()
+        response = c.post(reverse("accounts-login"), {"username": "test", "password": "password", "existing": ""})
+        self.assertTrue(response.url.endswith(reverse("frontpage")))
+        self.assertEqual(response.status_code, 302)
+
 
 class TestLoginViewSelenium(SeleniumTestCase):
     def test_login(self):
