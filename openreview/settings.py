@@ -81,7 +81,8 @@ INSTALLED_APPS = (
     'pipeline',
     'south',
     'openreview.apps.accounts',
-    'openreview.apps.main'
+    'openreview.apps.main',
+    'openreview.apps.tools'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,10 +1,9 @@
 import unittest
 from django.core.urlresolvers import reverse
 from django.test.client import Client
-import time
 from openreview.apps.accounts.forms import is_email, RegisterForm
 from openreview.apps.accounts.models import User
-from openreview.tests import disable_pipeline, SeleniumTestCase
+from openreview.apps.tools.testing import SeleniumTestCase, disable_pipeline
 
 
 class TestForms(unittest.TestCase):
