@@ -40,3 +40,6 @@ nosetests.xml
 
 # Static files
 collected_static
+
+# Django Pipeline
+/static/js/*.js
