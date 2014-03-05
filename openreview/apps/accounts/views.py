@@ -45,9 +45,10 @@ class LoginView(TemplateView):
         login(self.request, self.login_form.get_user())
         return self.redirect()
 
-    @staticmethod
-    def redirect():
-        return redirect(reverse("frontpage"), permanent=False)
+    def redirect(self):
+        # Redirect to GET parameter 'next', or frontpage
+        return redirect(self.request.GET.get("next", reverse("frontpage")), permanent=False)
+
 
 class LogoutView(RedirectView):
     permanent = False
