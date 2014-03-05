@@ -24,9 +24,6 @@ def get_bool(var, default=None, err_empty=False):
     @param default: if no (valid) value is found, use this one
     @type default: all
 
-    @param err: raise exception if illegal value is found.
-    @type err: bool
-
     @rtype: bool
     """
     value = os.environ.get(var, "").lower().strip()
@@ -81,7 +78,8 @@ INSTALLED_APPS = (
     'pipeline',
     'south',
     'openreview.apps.accounts',
-    'openreview.apps.main'
+    'openreview.apps.main',
+    'openreview.apps.tools'
 )
 
 MIDDLEWARE_CLASSES = (
