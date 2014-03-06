@@ -4,3 +4,4 @@ django-bootstrap-form
 psycopg2
 south
 selenium
+pyyaml
