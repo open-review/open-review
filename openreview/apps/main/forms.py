@@ -19,29 +19,10 @@ class ReviewForm(forms.ModelForm):
 
     }
 
-    """author_type = forms.ChoiceField(label=_("Author"),
-                                widget=forms.RadioSelect(),
-                                choices = [
-                                    ("self", "Myself"),
-                                    ("other", "Someone else"),
-                                    (None, "Anonimous")
-                                ],
-                                help_text=_("Who is the author of this review? You can also choose not to publish the identity of the author."))
-    poster = forms.CharField(label=_("Name of author"),
-                               help_text=_("What is the name of the author?"),
-                               required= False)
-    """
     text = forms.CharField(label=_("Contents"),
                                 widget=forms.Textarea,
                                 help_text=_("Enter the text of the review."))
 
-    """def clean_poster(self):
-        if Author.objects.filter(name=self.data['poster']):
-            return Author.objects.get(name=self.data['poster'])
-        else:
-            return Author.objects.create(name=self.data['poster'])
-    """
-    
     def save(self, commit=True, **kwargs):
         user = super(ReviewForm,self).save(commit=False, **kwargs)
         user.poster = self.user

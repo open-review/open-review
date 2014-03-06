@@ -14,16 +14,16 @@ def frontpage(request):
     })
 
 @login_required
-def addreview(request):
-	data = request.POST.copy() if "addreview" in request.POST else None
-	f = ReviewForm(data=data, user=request.user)
+def add_review(request):
+    data = request.POST.copy() if "addreview" in request.POST else None
+    f = ReviewForm(data=data, user=request.user)
 
-	if f.is_valid():
-		f.save()
-		return redirect(reverse("frontpage"), parmanent=False)
-	else:
-		return render(request, "main/addreview.html", {
-		"user" : request.user,
-		"addreview_form" : f
-		})
+    if f.is_valid():
+        f.save()
+        return redirect(reverse("frontpage"), parmanent=False)
+    else:
+        return render(request, "main/addreview.html", {
+        "user" : request.user,
+        "addreview_form" : f
+        })
 
