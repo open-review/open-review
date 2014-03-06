@@ -26,21 +26,20 @@
 <div class="row">
     <div class="col-md-4">
         <h2><i class="glyphicon glyphicon-arrow-up"></i> Trending</h2>
-        <table class="table papers">
-            <tr><td>
-                <a href="#">Bitcoin: A Peer-to-Peer Electronic Cash System</a>
-                <span class="nreviews">4</span>
-            </td></tr>
-            <tr><td>
-                <a href="#">Fast Money Grows on Trees, Not Chains</a>
-                <span class="nreviews">1</span>
-            </td></tr>
-            <tr><td>
-                <a href="#">Paper 3</a>
-                <span class="nreviews">0</span>
-            </td></tr>
-        </table>
-        <p><a class="btn btn-default" href="#" role="button">View more &raquo;</a></p>
+        {% if trending_papers_list %}
+            <table class="table papers">
+            {% for paper in trending_papers_list %}
+                <tr><td>
+                    <a href="/papers/{{ paper.id }}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
+                    <!-- TODO: Use { % url ... % } instead of hardcoded url -->
+                    <span class="nreviews" title="{{ paper.num_reviews }} review{% if paper.num_reviews != 1 %}s{% endif %}">{{ paper.num_reviews }}</span>
+                </td></tr>
+            {% endfor %}
+            </table>
+            <p><a class="btn btn-default" href="/papers/" role="button">View more &raquo;</a></p>
+        {% else %}
+            <p>No papers are available yet.</p>
+        {% endif %}
     </div>
     <div class="col-md-4">
         <h2><i class="glyphicon glyphicon-certificate"></i> New</h2>
@@ -61,21 +60,20 @@
     </div>
     <div class="col-md-4">
         <h2>Controversial</h2>
-        <table class="table papers">
-            <tr><td>
-                <a href="#">Climate change debunked</a>
-                <span class="nreviews">12</span>
-            </td></tr>
-            <tr><td>
-                <a href="#">Paper 2</a>
-                <span class="nreviews">0</span>
-            </td></tr>
-            <tr><td>
-                <a href="#">Paper 3</a>
-                <span class="nreviews">0</span>
-            </td></tr>
-        </table>
-        <p><a class="btn btn-default" href="#" role="button">View more &raquo;</a></p>
+        {% if controversial_papers_list %}
+            <table class="table papers">
+            {% for paper in controversial_papers_list %}
+                <tr><td>
+                    <a href="/papers/{{ paper.id }}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
+                    <!-- TODO: Use { % url ... % } instead of hardcoded url -->
+                    <span class="nreviews" title="{{ paper.num_reviews }} review{% if paper.num_reviews != 1 %}s{% endif %}">{{ paper.num_reviews }}</span>
+                </td></tr>
+            {% endfor %}
+            </table>
+            <p><a class="btn btn-default" href="/papers/" role="button">View more &raquo;</a></p>
+        {% else %}
+            <p>No papers are available yet.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
