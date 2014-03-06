@@ -33,4 +33,4 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ['paper','text'] #author_type','poster','paper','text']
+        fields = ['paper','text'] 

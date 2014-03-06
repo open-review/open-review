@@ -19,24 +19,24 @@ class TestReviewForm(SeleniumTestCase):
 
     def test_paper_gets_committed(self):
         self.open(reverse("addreview"))
-        #Check if redirected to login if not logged in
+        # Check if redirected to login if not logged in
         self.assertTrue(self.wd.current_url.endswith("{login}?next={next}".format(login=reverse("accounts-login"), next=reverse("addreview"))))
         self.wd.wait_for_css("body")
         self.wd.find_css("#id_login_username").send_keys(self.u.username)
         self.wd.find_css("#id_login_password").send_keys("test")
         self.wd.find_css('input[value="Login"]').click()
-        #Check if on the right page now
+        # Check if on the right page now
         self.assertFalse(reverse("accounts-login") in self.wd.current_url)
         self.assertTrue(self.wd.current_url.endswith(reverse("addreview")))
         self.wd.wait_for_css("#id_paper")
 
-        #Select the right paper
+        # Select the right paper
         self.wd.find_css("#id_paper option[value=\"{id}\"]".format(id=self.b.id)).click()
         self.wd.find_css("#id_text").send_keys("test\nlol\ndoei")
         self.wd.find_css("input[name=\"addreview\"]").click()
         self.wd.wait_for_css("body")
 
-        #Review is saved well
+        # Review is saved well
         r = Review.objects.get(paper=self.b)
         self.assertEqual(r.poster, self.u)
         self.assertEqual(r.text.replace("\r", ""), "test\nlol\ndoei")
