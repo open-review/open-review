@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 
 
 from openreview.apps.main.forms import ReviewForm
@@ -12,9 +13,10 @@ def frontpage(request):
         "user" : request.user
     })
 
+@login_required
 def addreview(request):
 	data = request.POST.copy() if "addreview" in request.POST else None
-	f = ReviewForm(data=data)
+	f = ReviewForm(data=data, user=request.user)
 
 	if f.is_valid():
 		f.save()
@@ -22,5 +24,6 @@ def addreview(request):
 	else:
 		return render(request, "main/addreview.html", {
 		"user" : request.user,
-		"addreview_form" : ReviewForm(data=data)
+		"addreview_form" : f
 		})
+
