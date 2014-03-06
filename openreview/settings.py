@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     'compressor',
     'south',
     'openreview.apps.accounts',
+    'openreview.apps.papers',
     'openreview.apps.main',
     'openreview.apps.tools'
 )
@@ -141,5 +142,3 @@ COMPRESS_PARSER = 'compressor.parser.LxmlParser'
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --compile --stdio'),
 )
-
-
