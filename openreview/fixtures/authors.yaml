@@ -1,0 +1,35 @@
+- model: main.author
+  pk: 1
+  fields:
+    user: 1
+    name: Thomas Brus
+
+- model: main.author
+  pk: 2
+  fields:
+    user: 2
+    name: Bas van den Brink
+
+- model: main.author
+  pk: 3
+  fields:
+    user: 3
+    name: Wietze Beukema
+
+- model: main.author
+  pk: 4
+  fields:
+    user: 4
+    name: Martijn Bastiaan
+
+- model: main.author
+  pk: 5
+  fields:
+    user: 5
+    name: Simon de Vries
+
+- model: main.author
+  pk: 6
+  fields:
+    user: 6
+    name: Willem Noort
