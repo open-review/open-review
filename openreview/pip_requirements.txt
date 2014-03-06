@@ -5,3 +5,4 @@ south
 selenium
 http://github.com/django-compressor/django-compressor/tarball/develop
 pyyaml
+lxml
