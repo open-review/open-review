@@ -30,9 +30,29 @@ class Paper(models.Model):
 
     def get_reviews(self):
         return self.reviews.filter(parent__isnull=True)
-    
+
     def num_reviews(self):
         return len(self.get_reviews())
+
+    def trending():
+        # Find trending papers
+        # A paper is trending if it has many reviews in the last 7 days
+        return Paper.objects.extra(select = {
+            "num_reviews" : """
+                SELECT COUNT(*) FROM main_review
+                WHERE main_review.paper_id = main_paper.id
+                AND main_review.parent_id IS NULL
+                AND main_review.timestamp >= NOW() - interval '7 days'"""
+        }).order_by('-num_reviews')
+
+    def latest():
+        # Find new papers
+        return Paper.objects.order_by('-publish_date')
+
+    def controversial():
+        # Find controversial papers
+        # TODO: find better metric
+        return Paper.objects.order_by()
 
     def get_comments(self):
         return self.reviews.filter(parent__isnull=False)
