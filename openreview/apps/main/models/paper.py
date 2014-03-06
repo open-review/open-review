@@ -30,6 +30,9 @@ class Paper(models.Model):
 
     def get_reviews(self):
         return self.reviews.filter(parent__isnull=True)
+    
+    def num_reviews(self):
+        return len(self.get_reviews())
 
     def get_comments(self):
         return self.reviews.filter(parent__isnull=False)
