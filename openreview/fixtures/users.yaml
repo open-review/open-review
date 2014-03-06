@@ -4,7 +4,7 @@
     email: thomas.brus@example.com
     first_name: Thomas
     last_name: Brus
-    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: thomas.brus
 
 - model: accounts.user
@@ -13,7 +13,7 @@
     email: bas.van.den.brink@example.com
     first_name: Bas
     last_name: van den Brink
-    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: bas.van.den.brink
 
 - model: accounts.user
@@ -22,7 +22,7 @@
     email: wietze.beukema@example.com
     first_name: Wietze
     last_name: Beukema
-    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: wietze.beukema
 
 - model: accounts.user
@@ -31,7 +31,7 @@
     email: martijn.bastiaan@example.com
     first_name: Martijn
     last_name: Bastiaan
-    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: martijn.bastiaan
 
 - model: accounts.user
@@ -40,7 +40,7 @@
     email: simon.de.vries@example.com
     first_name: Simon
     last_name: de Vries
-    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: simon.de.vries
 
 - model: accounts.user
@@ -49,5 +49,5 @@
     email: willem.noort@example.com
     first_name: Willem
     last_name: Noort
-    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: willem.noort
