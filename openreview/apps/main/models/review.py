@@ -12,7 +12,7 @@ class Review(models.Model):
     text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    poster = models.ForeignKey(get_user_model())
+    poster = models.ForeignKey("main.Author")
     paper = models.ForeignKey("main.Paper", related_name="reviews")
     parent = models.ForeignKey("self", null=True)
 

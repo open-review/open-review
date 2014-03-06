@@ -5,11 +5,10 @@ from django.core.validators import validate_email
 from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
-class ReviewForm(forms.Form):
-    """
-    This is a monkey-patched version of django.contrib.auth.forms.UserCreationForm, which doesn't use
-    get_user_model (as it should) but forces the internal auth User model.
-    """
+from openreview.apps.main.models.review import Review
+from openreview.apps.main.models.author import Author
+
+class ReviewForm(forms.ModelForm):
     error_messages = {
 
     }
@@ -19,14 +18,26 @@ class ReviewForm(forms.Form):
                                 choices = [
                                     ("self", "Myself"),
                                     ("other", "Someone else"),
-                                    ("anonimous", "Anonimous")
+                                    (None, "Anonimous")
                                 ],
                                 help_text=_("Who is the author of this review? You can also choose not to publish the identity of the author."))
-    author_name = forms.CharField(label=_("Name of author"),
-                                help_text=_("What is the name of the author?"))
+    poster = forms.CharField(label=_("Name of author"),
+                               help_text=_("What is the name of the author?"),
+                               required= False)
     
-    content = forms.CharField(label=_("Contents"),
+    text = forms.CharField(label=_("Contents"),
                                 widget=forms.Textarea,
                                 help_text=_("Enter the text of the review."))
 
-    
+    def clean_poster(self):
+        if Author.objects.filter(name=self.data['poster']):
+            return Author.objects.get(name=self.data['poster'])
+        else:
+            return Author.objects.create(name=self.data['poster'])
+
+    def clean_text(self):
+        return self.data['text'].replace("\n","<br/>\n")
+
+    class Meta:
+        model = Review
+        fields = ['author_type','poster','paper','text']
