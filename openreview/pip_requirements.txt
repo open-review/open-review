@@ -1,6 +1,6 @@
 django
-django-pipeline
 django-bootstrap-form
 psycopg2
 south
 selenium
+http://github.com/django-compressor/django-compressor/tarball/develop
