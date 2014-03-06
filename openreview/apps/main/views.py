@@ -23,7 +23,7 @@ def add_review(request):
         return redirect(reverse("frontpage"), parmanent=False)
     else:
         return render(request, "main/addreview.html", {
-        "user" : request.user,
-        "addreview_form" : f
-        })
+            "user" : request.user,
+            "addreview_form" : f
+            })
 
