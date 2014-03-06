@@ -34,7 +34,8 @@ class Paper(models.Model):
     def num_reviews(self):
         return len(self.get_reviews())
 
-    def trending():
+    @classmethod
+    def trending(cls):
         # Find trending papers
         # A paper is trending if it has many reviews in the last 7 days
         return Paper.objects.extra(select = {
@@ -45,11 +46,13 @@ class Paper(models.Model):
                 AND main_review.timestamp >= NOW() - interval '7 days'"""
         }).order_by('-num_reviews')
 
-    def latest():
+    @classmethod
+    def latest(cls):
         # Find new papers
         return Paper.objects.order_by('-publish_date')
 
-    def controversial():
+    @classmethod
+    def controversial(cls):
         # Find controversial papers
         # TODO: find better metric
         return Paper.objects.order_by()
