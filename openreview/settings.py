@@ -75,7 +75,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
-    'pipeline',
+    'compressor',
     'south',
     'openreview.apps.accounts',
     'openreview.apps.main',
@@ -95,19 +95,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
 )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-TEST_STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'
-
-PIPELINE_COMPILERS = (
-    'pipeline.compilers.coffee.CoffeeScriptCompiler',
-)
-
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'
-PIPELINE_YUI_BINARY = '/usr/bin/env yui-compressor'
-
 ROOT_URLCONF = 'openreview.urls'
-
 WSGI_APPLICATION = 'openreview.wsgi.application'
 
 
@@ -135,18 +123,23 @@ USE_L10N = True
 USE_TZ = True
 
 
-PIPELINE_JS = {
-    'global': {
-        'source_filenames': (
-          'js/*.coffee',
-        ),
-        'output_filename': 'compiled_global.js',
-    }
-}
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_ENABLED = get_bool("DJANGO_COMPRESS", not DEBUG)
+COMPRESS_PARSER = 'compressor.parser.LxmlParser'
+
+COMPRESS_PRECOMPILERS = (
+    ('text/coffeescript', 'coffee --compile --stdio'),
+)
+
 
