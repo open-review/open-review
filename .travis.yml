@@ -26,6 +26,11 @@ install:
  - sudo apt-get update
  - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
  - pip install -r openreview/pip_requirements.txt --use-mirrors
+ - pip install coveralls coverage
 
 script:
- - python ./manage.py test
+ - coverage run --source=openreview manage.py test
+
+after_success:
+ - coverage report -m
+ - coveralls
