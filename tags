@@ -1,0 +1,290 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ALLOWED_HOSTS	openreview/settings.py	/^ALLOWED_HOSTS = []$/;"	v
+AUTH_USER_MODEL	openreview/settings.py	/^AUTH_USER_MODEL = 'accounts.User'$/;"	v
+AbstractUser	openreview/apps/accounts/models.py	/^from django.contrib.auth.models import AbstractUser$/;"	i
+AuthenticationForm	openreview/apps/accounts/views.py	/^from django.contrib.auth.forms import AuthenticationForm$/;"	i
+Author	openreview/apps/main/models/author.py	/^class Author(models.Model):$/;"	c
+Author	openreview/apps/main/models/paper.py	/^from openreview.apps.main.models.author import Author$/;"	i
+Author	openreview/apps/tools/testing.py	/^from openreview.apps.main.models import Author, Paper, Keyword, Review$/;"	i
+BASE_DIR	openreview/settings.py	/^BASE_DIR = os.path.dirname(os.path.dirname(__file__))$/;"	v
+COUNTER	openreview/apps/tools/testing.py	/^COUNTER = 0$/;"	v
+Client	openreview/apps/accounts/tests.py	/^from django.test.client import Client$/;"	i
+Client	openreview/apps/tools/tests.py	/^from django.test import Client$/;"	i
+DATABASES	openreview/settings.py	/^DATABASES = {$/;"	v
+INSTALLED_APPS	openreview/settings.py	/^INSTALLED_APPS = ($/;"	v
+Keyword	openreview/apps/main/models/paper.py	/^class Keyword(models.Model):$/;"	c
+Keyword	openreview/apps/tools/testing.py	/^from openreview.apps.main.models import Author, Paper, Keyword, Review$/;"	i
+LANGUAGE_CODE	openreview/settings.py	/^LANGUAGE_CODE = 'en-us'$/;"	v
+LiveServerTestCase	openreview/apps/tools/testing.py	/^from django.test import LiveServerTestCase$/;"	i
+LoginView	openreview/apps/accounts/urls.py	/^from openreview.apps.accounts.views import LoginView, LogoutView$/;"	i
+LoginView	openreview/apps/accounts/views.py	/^class LoginView(TemplateView):$/;"	c
+LogoutView	openreview/apps/accounts/urls.py	/^from openreview.apps.accounts.views import LoginView, LogoutView$/;"	i
+LogoutView	openreview/apps/accounts/views.py	/^class LogoutView(RedirectView):$/;"	c
+MIDDLEWARE_CLASSES	openreview/settings.py	/^MIDDLEWARE_CLASSES = ($/;"	v
+Meta	openreview/apps/accounts/forms.py	/^    class Meta:$/;"	c	class:RegisterForm
+Meta	openreview/apps/accounts/forms.py	/^    class Meta:$/;"	c	class:UserCreationForm
+Meta	openreview/apps/main/models/author.py	/^    class Meta:$/;"	c	class:Author
+Meta	openreview/apps/main/models/paper.py	/^    class Meta:$/;"	c	class:Keyword
+Meta	openreview/apps/main/models/paper.py	/^    class Meta:$/;"	c	class:Paper
+Meta	openreview/apps/main/models/review.py	/^    class Meta:$/;"	c	class:Review
+Meta	openreview/apps/main/models/review.py	/^    class Meta:$/;"	c	class:Vote
+Migration	openreview/apps/accounts/migrations/0001_initial.py	/^class Migration(SchemaMigration):$/;"	c
+Migration	openreview/apps/main/migrations/0001_initial.py	/^class Migration(SchemaMigration):$/;"	c
+Migration	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^class Migration(SchemaMigration):$/;"	c
+Migration	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^class Migration(SchemaMigration):$/;"	c
+Migration	openreview/apps/main/migrations/0004_auto__add_url.py	/^class Migration(SchemaMigration):$/;"	c
+Migration	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^class Migration(SchemaMigration):$/;"	c
+NoSuchElementException	openreview/apps/tools/testing.py	/^from selenium.common.exceptions import NoSuchElementException, TimeoutException$/;"	i
+PIPELINE_COMPILERS	openreview/settings.py	/^PIPELINE_COMPILERS = ($/;"	v
+PIPELINE_CSS_COMPRESSOR	openreview/settings.py	/^PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'$/;"	v
+PIPELINE_JS	openreview/settings.py	/^PIPELINE_JS = {$/;"	v
+PIPELINE_JS_COMPRESSOR	openreview/settings.py	/^PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yui.YUICompressor'$/;"	v
+PIPELINE_YUI_BINARY	openreview/settings.py	/^PIPELINE_YUI_BINARY = '\/usr\/bin\/env yui-compressor'$/;"	v
+Paper	openreview/apps/main/models/paper.py	/^class Paper(models.Model):$/;"	c
+Paper	openreview/apps/tools/testing.py	/^from openreview.apps.main.models import Author, Paper, Keyword, Review$/;"	i
+ROOT_URLCONF	openreview/settings.py	/^ROOT_URLCONF = 'openreview.urls'$/;"	v
+RedirectView	openreview/apps/accounts/views.py	/^from django.views.generic import TemplateView, RedirectView$/;"	i
+RegisterForm	openreview/apps/accounts/forms.py	/^class RegisterForm(UserCreationForm):$/;"	c
+RegisterForm	openreview/apps/accounts/tests.py	/^from openreview.apps.accounts.forms import is_email, RegisterForm$/;"	i
+RegisterForm	openreview/apps/accounts/views.py	/^from openreview.apps.accounts.forms import RegisterForm$/;"	i
+Review	openreview/apps/main/models/review.py	/^class Review(models.Model):$/;"	c
+Review	openreview/apps/tools/testing.py	/^from openreview.apps.main.models import Author, Paper, Keyword, Review$/;"	i
+SECRET_KEY	openreview/settings.py	/^    SECRET_KEY = "longhairdontcare"$/;"	v
+SECRET_KEY	openreview/settings.py	/^    SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")$/;"	v
+STATICFILES_DIRS	openreview/settings.py	/^STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)$/;"	v
+STATICFILES_STORAGE	openreview/settings.py	/^STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'$/;"	v
+STATIC_ROOT	openreview/settings.py	/^STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")$/;"	v
+STATIC_URL	openreview/settings.py	/^STATIC_URL = '\/static\/'$/;"	v
+SchemaMigration	openreview/apps/accounts/migrations/0001_initial.py	/^from south.v2 import SchemaMigration$/;"	i
+SchemaMigration	openreview/apps/main/migrations/0001_initial.py	/^from south.v2 import SchemaMigration$/;"	i
+SchemaMigration	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^from south.v2 import SchemaMigration$/;"	i
+SchemaMigration	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^from south.v2 import SchemaMigration$/;"	i
+SchemaMigration	openreview/apps/main/migrations/0004_auto__add_url.py	/^from south.v2 import SchemaMigration$/;"	i
+SchemaMigration	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^from south.v2 import SchemaMigration$/;"	i
+SeleniumTestCase	openreview/apps/accounts/tests.py	/^from openreview.apps.tools.testing import SeleniumTestCase, disable_pipeline$/;"	i
+SeleniumTestCase	openreview/apps/tools/testing.py	/^class SeleniumTestCase(LiveServerTestCase):$/;"	c
+SeleniumWebDriver	openreview/apps/tools/testing.py	/^class SeleniumWebDriver(web_driver_module.WebDriver):$/;"	c
+TEMPLATE_DIRS	openreview/settings.py	/^TEMPLATE_DIRS = ($/;"	v
+TEST_STATICFILES_STORAGE	openreview/settings.py	/^TEST_STATICFILES_STORAGE = 'pipeline.storage.NonPackagingPipelineStorage'$/;"	v
+TIME_ZONE	openreview/settings.py	/^TIME_ZONE = 'UTC'$/;"	v
+TemplateView	openreview/apps/accounts/views.py	/^from django.views.generic import TemplateView, RedirectView$/;"	i
+TestCase	openreview/apps/main/tests.py	/^from django.test import TestCase$/;"	i
+TestCase	openreview/apps/papers/tests.py	/^from django.test import TestCase$/;"	i
+TestDisablePipeline	openreview/apps/tools/tests.py	/^class TestDisablePipeline(unittest.TestCase):$/;"	c
+TestForms	openreview/apps/accounts/tests.py	/^class TestForms(unittest.TestCase):$/;"	c
+TestLoginView	openreview/apps/accounts/tests.py	/^class TestLoginView(unittest.TestCase):$/;"	c
+TestLoginViewSelenium	openreview/apps/accounts/tests.py	/^class TestLoginViewSelenium(SeleniumTestCase):$/;"	c
+TestPaper	openreview/apps/main/tests.py	/^class TestPaper(TestCase):$/;"	c
+TestSettings	openreview/tests.py	/^class TestSettings(unittest.TestCase):$/;"	c
+TimeoutException	openreview/apps/tools/testing.py	/^from selenium.common.exceptions import NoSuchElementException, TimeoutException$/;"	i
+USE_I18N	openreview/settings.py	/^USE_I18N = True$/;"	v
+USE_L10N	openreview/settings.py	/^USE_L10N = True$/;"	v
+USE_TZ	openreview/settings.py	/^USE_TZ = True$/;"	v
+User	openreview/apps/accounts/models.py	/^class User(AbstractUser):$/;"	c
+User	openreview/apps/accounts/tests.py	/^from openreview.apps.accounts.models import User$/;"	i
+User	openreview/apps/tools/testing.py	/^from openreview.apps.accounts.models import User$/;"	i
+UserCreationForm	openreview/apps/accounts/forms.py	/^class UserCreationForm(forms.ModelForm):$/;"	c
+ValidationError	openreview/apps/accounts/forms.py	/^from django.core.exceptions import ValidationError$/;"	i
+Vote	openreview/apps/main/models/paper.py	/^from openreview.apps.main.models.review import Vote$/;"	i
+Vote	openreview/apps/main/models/review.py	/^class Vote(models.Model):$/;"	c
+WSGI_APPLICATION	openreview/settings.py	/^WSGI_APPLICATION = 'openreview.wsgi.application'$/;"	v
+WebDriverWait	openreview/apps/tools/testing.py	/^from selenium.webdriver.support.wait import WebDriverWait$/;"	i
+_	openreview/apps/accounts/forms.py	/^from django.utils.translation import ugettext_lazy as _$/;"	i
+__all__	openreview/apps/main/models/author.py	/^__all__ = ["Author"]$/;"	v
+__all__	openreview/apps/main/models/paper.py	/^__all__ = ["Keyword", "Paper"]$/;"	v
+__all__	openreview/apps/main/models/review.py	/^__all__ = ["Review", "Vote"]$/;"	v
+__init__	openreview/apps/accounts/views.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:LoginView
+__str__	openreview/apps/main/models/paper.py	/^    def __str__(self):$/;"	m	class:Keyword	file:
+__str__	openreview/apps/main/models/paper.py	/^    def __str__(self):$/;"	m	class:Paper	file:
+__str__	openreview/apps/main/models/review.py	/^    def __str__(self):$/;"	m	class:Review	file:
+_test_get_bool	openreview/tests.py	/^    def _test_get_bool(self):$/;"	m	class:TestSettings
+abstract	openreview/apps/main/models/paper.py	/^    abstract = models.TextField()$/;"	v	class:Paper
+admin	openreview/apps/accounts/admin.py	/^from django.contrib import admin$/;"	i
+admin	openreview/apps/main/admin.py	/^from django.contrib import admin$/;"	i
+admin	openreview/apps/papers/admin.py	/^from django.contrib import admin$/;"	i
+admin	openreview/urls.py	/^from django.contrib import admin$/;"	i
+app_label	openreview/apps/main/models/author.py	/^        app_label = "main"$/;"	v	class:Author.Meta
+app_label	openreview/apps/main/models/paper.py	/^        app_label = "main"$/;"	v	class:Keyword.Meta
+app_label	openreview/apps/main/models/paper.py	/^        app_label = "main"/;"	v	class:Paper.Meta
+app_label	openreview/apps/main/models/review.py	/^        app_label = "main"$/;"	v	class:Review.Meta
+app_label	openreview/apps/main/models/review.py	/^        app_label = "main"$/;"	v	class:Vote.Meta
+application	openreview/wsgi.py	/^application = get_wsgi_application()$/;"	v
+authenticate	openreview/apps/accounts/views.py	/^from django.contrib.auth import login, authenticate, logout$/;"	i
+authors	openreview/apps/main/models/paper.py	/^    authors = models.ManyToManyField(Author)$/;"	v	class:Paper
+backwards	openreview/apps/accounts/migrations/0001_initial.py	/^    def backwards(self, orm):$/;"	m	class:Migration
+backwards	openreview/apps/main/migrations/0001_initial.py	/^    def backwards(self, orm):$/;"	m	class:Migration
+backwards	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^    def backwards(self, orm):$/;"	m	class:Migration
+backwards	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^    def backwards(self, orm):$/;"	m	class:Migration
+backwards	openreview/apps/main/migrations/0004_auto__add_url.py	/^    def backwards(self, orm):$/;"	m	class:Migration
+backwards	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^    def backwards(self, orm):$/;"	m	class:Migration
+clean_password2	openreview/apps/accounts/forms.py	/^    def clean_password2(self):$/;"	m	class:UserCreationForm
+clean_username	openreview/apps/accounts/forms.py	/^    def clean_username(self):$/;"	m	class:RegisterForm
+clean_username	openreview/apps/accounts/forms.py	/^    def clean_username(self):$/;"	m	class:UserCreationForm
+complete_apps	openreview/apps/accounts/migrations/0001_initial.py	/^    complete_apps = ['accounts']/;"	v	class:Migration
+complete_apps	openreview/apps/main/migrations/0001_initial.py	/^    complete_apps = ['main']/;"	v	class:Migration
+complete_apps	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^    complete_apps = ['main']/;"	v	class:Migration
+complete_apps	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^    complete_apps = ['main']/;"	v	class:Migration
+complete_apps	openreview/apps/main/migrations/0004_auto__add_url.py	/^    complete_apps = ['main']/;"	v	class:Migration
+complete_apps	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^    complete_apps = ['main']/;"	v	class:Migration
+create_test_author	openreview/apps/tools/testing.py	/^def create_test_author(**kwargs):$/;"	f
+create_test_keyword	openreview/apps/tools/testing.py	/^def create_test_keyword(label="keyword - %s"):$/;"	f
+create_test_paper	openreview/apps/main/tests.py	/^from openreview.apps.tools.testing import create_test_paper$/;"	i
+create_test_paper	openreview/apps/tools/testing.py	/^def create_test_paper(n_authors=0, n_keywords=0, n_comments=0, n_reviews=0, **kwargs):$/;"	f
+create_test_review	openreview/apps/tools/testing.py	/^def create_test_review(**kwargs):$/;"	f
+create_test_user	openreview/apps/tools/testing.py	/^def create_test_user(**kwargs):$/;"	f
+datetime	openreview/apps/accounts/migrations/0001_initial.py	/^from south.utils import datetime_utils as datetime$/;"	i
+datetime	openreview/apps/main/migrations/0001_initial.py	/^from south.utils import datetime_utils as datetime$/;"	i
+datetime	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^from south.utils import datetime_utils as datetime$/;"	i
+datetime	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^from south.utils import datetime_utils as datetime$/;"	i
+datetime	openreview/apps/main/migrations/0004_auto__add_url.py	/^from south.utils import datetime_utils as datetime$/;"	i
+datetime	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^from south.utils import datetime_utils as datetime$/;"	i
+db	openreview/apps/accounts/migrations/0001_initial.py	/^from south.db import db$/;"	i
+db	openreview/apps/main/migrations/0001_initial.py	/^from south.db import db$/;"	i
+db	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^from south.db import db$/;"	i
+db	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^from south.db import db$/;"	i
+db	openreview/apps/main/migrations/0004_auto__add_url.py	/^from south.db import db$/;"	i
+db	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^from south.db import db$/;"	i
+disable_pipeline	openreview/apps/accounts/tests.py	/^from openreview.apps.tools.testing import SeleniumTestCase, disable_pipeline$/;"	i
+disable_pipeline	openreview/apps/tools/testing.py	/^disable_pipeline = override_settings(STATICFILES_STORAGE=settings.TEST_STATICFILES_STORAGE)$/;"	v
+disable_pipeline	openreview/apps/tools/tests.py	/^from openreview.apps.tools.testing import disable_pipeline$/;"	i
+dispatch	openreview/apps/accounts/views.py	/^    def dispatch(self, request, *args, **kwargs):$/;"	m	class:LoginView
+doc_id	openreview/apps/main/models/paper.py	/^    doc_id = models.TextField(help_text="Identifier: can either be a real DOI or a domain-specific one. "$/;"	v	class:Paper
+email	openreview/apps/accounts/forms.py	/^    email = fields.EmailField(required=False, label=_("E-mail address (optional)"),$/;"	v	class:RegisterForm
+errmsg	openreview/settings.py	/^        errmsg = "Environment variable DJANGO_SECRET_KEY must be specified."$/;"	v
+error_messages	openreview/apps/accounts/forms.py	/^                                error_messages={$/;"	v	class:UserCreationForm
+error_messages	openreview/apps/accounts/forms.py	/^    error_messages = {$/;"	v	class:UserCreationForm
+fetch	openreview/apps/tools/tests.py	/^    def fetch(self):$/;"	m	class:TestDisablePipeline
+fields	openreview/apps/accounts/forms.py	/^        fields = ("username", "password1", "password2", "email")/;"	v	class:RegisterForm.Meta
+fields	openreview/apps/accounts/forms.py	/^        fields = ("username",)$/;"	v	class:UserCreationForm.Meta
+fields	openreview/apps/accounts/forms.py	/^from django.forms import fields$/;"	i
+find_css	openreview/apps/tools/testing.py	/^    def find_css(self, css_selector):$/;"	m	class:SeleniumWebDriver
+forms	openreview/apps/accounts/forms.py	/^from django import forms$/;"	i
+forwards	openreview/apps/accounts/migrations/0001_initial.py	/^    def forwards(self, orm):$/;"	m	class:Migration
+forwards	openreview/apps/main/migrations/0001_initial.py	/^    def forwards(self, orm):$/;"	m	class:Migration
+forwards	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^    def forwards(self, orm):$/;"	m	class:Migration
+forwards	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^    def forwards(self, orm):$/;"	m	class:Migration
+forwards	openreview/apps/main/migrations/0004_auto__add_url.py	/^    def forwards(self, orm):$/;"	m	class:Migration
+forwards	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^    def forwards(self, orm):$/;"	m	class:Migration
+frontpage	openreview/apps/main/urls.py	/^from openreview.apps.main.views import frontpage$/;"	i
+frontpage	openreview/apps/main/views.py	/^def frontpage(request):$/;"	f
+get	openreview/apps/accounts/views.py	/^    def get(self, request, *args, **kwargs):$/;"	m	class:LogoutView
+get_bool	openreview/settings.py	/^def get_bool(var, default=None, err_empty=False):$/;"	f
+get_bool	openreview/tests.py	/^        from openreview.settings import get_bool$/;"	i
+get_comments	openreview/apps/main/models/paper.py	/^    def get_comments(self):$/;"	m	class:Paper
+get_context_data	openreview/apps/accounts/views.py	/^    def get_context_data(self, **kwargs):$/;"	m	class:LoginView
+get_reviews	openreview/apps/main/models/paper.py	/^    def get_reviews(self):$/;"	m	class:Paper
+get_user_model	openreview/apps/accounts/forms.py	/^from django.contrib.auth import get_user_model$/;"	i
+get_user_model	openreview/apps/main/models/author.py	/^from django.contrib.auth import get_user_model$/;"	i
+get_user_model	openreview/apps/main/models/review.py	/^from django.contrib.auth import get_user_model$/;"	i
+get_votes	openreview/apps/main/models/paper.py	/^    def get_votes(self, include_comments):$/;"	m	class:Paper
+get_votes	openreview/apps/main/tests.py	/^    def get_votes(self):$/;"	m	class:TestPaper
+get_wsgi_application	openreview/wsgi.py	/^from django.core.wsgi import get_wsgi_application$/;"	i
+help_text	openreview/apps/accounts/forms.py	/^                                help_text=_("Enter the same password as above, for verification."))$/;"	v	class:UserCreationForm
+help_text	openreview/apps/accounts/forms.py	/^                                help_text=_("Required. 30 characters or fewer. Letters, digits and "$/;"	v	class:UserCreationForm
+help_text	openreview/apps/accounts/forms.py	/^                              help_text=_("E-mail addresses are use for password recovery only."))$/;"	v	class:RegisterForm
+include	openreview/urls.py	/^from django.conf.urls import patterns, include, url$/;"	i
+inner	openreview/apps/tools/testing.py	/^    def inner(*args, **kwargs):$/;"	f	function:up_counter
+is_email	openreview/apps/accounts/forms.py	/^def is_email(string):$/;"	f
+is_email	openreview/apps/accounts/tests.py	/^from openreview.apps.accounts.forms import is_email, RegisterForm$/;"	i
+keywords	openreview/apps/main/models/paper.py	/^    keywords = models.ManyToManyField(Keyword)$/;"	v	class:Paper
+label	openreview/apps/main/models/paper.py	/^    label = models.TextField()$/;"	v	class:Keyword
+login	openreview/apps/accounts/views.py	/^    def login(self):$/;"	m	class:LoginView
+login	openreview/apps/accounts/views.py	/^from django.contrib.auth import login, authenticate, logout$/;"	i
+logout	openreview/apps/accounts/views.py	/^from django.contrib.auth import login, authenticate, logout$/;"	i
+model	openreview/apps/accounts/forms.py	/^        model = get_user_model()$/;"	v	class:RegisterForm.Meta
+model	openreview/apps/accounts/forms.py	/^        model = get_user_model()$/;"	v	class:UserCreationForm.Meta
+models	openreview/apps/accounts/migrations/0001_initial.py	/^    models = {$/;"	v	class:Migration
+models	openreview/apps/accounts/migrations/0001_initial.py	/^from django.db import models$/;"	i
+models	openreview/apps/accounts/models.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/migrations/0001_initial.py	/^    models = {$/;"	v	class:Migration
+models	openreview/apps/main/migrations/0001_initial.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^    models = {$/;"	v	class:Migration
+models	openreview/apps/main/migrations/0002_auto__add_review__add_vote__add_keyword__add_author__add_paper.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^    models = {$/;"	v	class:Migration
+models	openreview/apps/main/migrations/0003_auto__chg_field_paper_publish_date__chg_field_paper_publisher__chg_fie.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/migrations/0004_auto__add_url.py	/^    models = {$/;"	v	class:Migration
+models	openreview/apps/main/migrations/0004_auto__add_url.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^    models = {$/;"	v	class:Migration
+models	openreview/apps/main/migrations/0005_auto__del_url__add_field_paper_urls.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/models/author.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/models/paper.py	/^from django.db import models$/;"	i
+models	openreview/apps/main/models/review.py	/^from django.db import models$/;"	i
+models	openreview/apps/papers/models.py	/^from django.db import models$/;"	i
+name	openreview/apps/main/models/author.py	/^    name = models.TextField(unique=True)$/;"	v	class:Author
+open	openreview/apps/tools/testing.py	/^    def open(self, url):$/;"	m	class:SeleniumTestCase
+os	openreview/settings.py	/^import os$/;"	i
+os	openreview/tests.py	/^import os$/;"	i
+os	openreview/wsgi.py	/^import os$/;"	i
+override_settings	openreview/apps/tools/testing.py	/^from django.test.utils import override_settings$/;"	i
+paper	openreview/apps/main/models/review.py	/^    paper = models.ForeignKey("main.Paper", related_name="reviews")$/;"	v	class:Review
+parent	openreview/apps/main/models/review.py	/^    parent = models.ForeignKey("self", null=True)$/;"	v	class:Review
+password1	openreview/apps/accounts/forms.py	/^    password1 = forms.CharField(label=_("Password"),$/;"	v	class:UserCreationForm
+password2	openreview/apps/accounts/forms.py	/^    password2 = forms.CharField(label=_("Password confirmation"),$/;"	v	class:UserCreationForm
+pattern_name	openreview/apps/accounts/views.py	/^    pattern_name = "frontpage"$/;"	v	class:LogoutView
+patterns	openreview/apps/accounts/urls.py	/^from django.conf.urls import patterns, url$/;"	i
+patterns	openreview/apps/main/urls.py	/^from django.conf.urls import patterns, url$/;"	i
+patterns	openreview/urls.py	/^from django.conf.urls import patterns, include, url$/;"	i
+permanent	openreview/apps/accounts/views.py	/^    permanent = False$/;"	v	class:LogoutView
+pipeline_disabled_fetch	openreview/apps/tools/tests.py	/^        def pipeline_disabled_fetch():$/;"	f	function:TestDisablePipeline.test_disable_pipeline
+post	openreview/apps/accounts/views.py	/^    def post(self, request):$/;"	m	class:LoginView
+poster	openreview/apps/main/models/review.py	/^    poster = models.ForeignKey(get_user_model())$/;"	v	class:Review
+publish_date	openreview/apps/main/models/paper.py	/^    publish_date = models.DateField(null=True)$/;"	v	class:Paper
+publisher	openreview/apps/main/models/paper.py	/^    publisher = models.TextField(null=True, blank=True)$/;"	v	class:Paper
+redirect	openreview/apps/accounts/views.py	/^    def redirect(self):$/;"	m	class:LoginView
+redirect	openreview/apps/accounts/views.py	/^from django.shortcuts import redirect$/;"	i
+regex	openreview/apps/accounts/forms.py	/^                                regex=r'^[\\w.@+-]+$',$/;"	v	class:UserCreationForm
+register	openreview/apps/accounts/views.py	/^    def register(self):$/;"	m	class:LoginView
+render	openreview/apps/main/views.py	/^from django.shortcuts import render$/;"	i
+render	openreview/apps/papers/views.py	/^from django.shortcuts import render$/;"	i
+reverse	openreview/apps/accounts/tests.py	/^from django.core.urlresolvers import reverse$/;"	i
+reverse	openreview/apps/accounts/views.py	/^from django.core.urlresolvers import reverse$/;"	i
+reverse	openreview/apps/tools/tests.py	/^from django.core.urlresolvers import reverse$/;"	i
+review	openreview/apps/main/models/review.py	/^    review = models.ForeignKey(Review)$/;"	v	class:Vote
+save	openreview/apps/accounts/forms.py	/^    def save(self, commit=True):$/;"	m	class:RegisterForm
+save	openreview/apps/accounts/forms.py	/^    def save(self, commit=True):$/;"	m	class:UserCreationForm
+setUp	openreview/apps/tools/testing.py	/^    def setUp(self):$/;"	m	class:SeleniumTestCase
+settings	openreview/apps/tools/testing.py	/^from django.conf import settings$/;"	i
+tearDown	openreview/apps/tools/testing.py	/^    def tearDown(self):$/;"	m	class:SeleniumTestCase
+template_name	openreview/apps/accounts/views.py	/^    template_name = "accounts\/login.html"$/;"	v	class:LoginView
+test_disable_pipeline	openreview/apps/tools/tests.py	/^    def test_disable_pipeline(self):$/;"	m	class:TestDisablePipeline
+test_get_bool	openreview/tests.py	/^    def test_get_bool(self):$/;"	m	class:TestSettings
+test_get_reviews_comments	openreview/apps/main/tests.py	/^    def test_get_reviews_comments(self):$/;"	m	class:TestPaper
+test_is_email	openreview/apps/accounts/tests.py	/^    def test_is_email(self):$/;"	m	class:TestForms
+test_login	openreview/apps/accounts/tests.py	/^    def test_login(self):$/;"	m	class:TestLoginView
+test_login	openreview/apps/accounts/tests.py	/^    def test_login(self):$/;"	m	class:TestLoginViewSelenium
+test_pipeline	openreview/apps/tools/tests.py	/^    def test_pipeline(self):$/;"	m	class:TestDisablePipeline
+test_redirect	openreview/apps/accounts/tests.py	/^    def test_redirect(self):$/;"	m	class:TestLoginView
+test_register	openreview/apps/accounts/tests.py	/^    def test_register(self):$/;"	m	class:TestLoginView
+test_register	openreview/apps/accounts/tests.py	/^    def test_register(self):$/;"	m	class:TestLoginViewSelenium
+test_register_form	openreview/apps/accounts/tests.py	/^    def test_register_form(self):$/;"	m	class:TestForms
+text	openreview/apps/main/models/review.py	/^    text = models.TextField()$/;"	v	class:Review
+timestamp	openreview/apps/main/models/review.py	/^    timestamp = models.DateTimeField(auto_now_add=True)$/;"	v	class:Review
+title	openreview/apps/main/models/paper.py	/^    title = models.TextField()$/;"	v	class:Paper
+transaction	openreview/apps/accounts/views.py	/^from django.db import transaction$/;"	i
+unittest	openreview/apps/accounts/tests.py	/^import unittest$/;"	i
+unittest	openreview/apps/tools/tests.py	/^import unittest$/;"	i
+unittest	openreview/tests.py	/^import unittest$/;"	i
+up_counter	openreview/apps/tools/testing.py	/^def up_counter(func):$/;"	f
+url	openreview/apps/accounts/urls.py	/^from django.conf.urls import patterns, url$/;"	i
+url	openreview/apps/main/urls.py	/^from django.conf.urls import patterns, url$/;"	i
+url	openreview/urls.py	/^from django.conf.urls import patterns, include, url$/;"	i
+urlpatterns	openreview/apps/accounts/urls.py	/^urlpatterns = patterns('',$/;"	v
+urlpatterns	openreview/apps/main/urls.py	/^urlpatterns = patterns('',$/;"	v
+urlpatterns	openreview/urls.py	/^urlpatterns = patterns('',$/;"	v
+urls	openreview/apps/main/models/paper.py	/^    urls = models.TextField(null=True, blank=True)$/;"	v	class:Paper
+user	openreview/apps/main/models/author.py	/^    user = models.ForeignKey(get_user_model(), null=True)$/;"	v	class:Author
+username	openreview/apps/accounts/forms.py	/^    username = forms.RegexField(label=_("Username"), max_length=30,$/;"	v	class:UserCreationForm
+validate_email	openreview/apps/accounts/forms.py	/^from django.core.validators import validate_email$/;"	i
+vote	openreview/apps/main/models/review.py	/^    vote = models.SmallIntegerField()$/;"	v	class:Vote
+voter	openreview/apps/main/models/review.py	/^    voter = models.ForeignKey(get_user_model())$/;"	v	class:Vote
+wait_for_css	openreview/apps/tools/testing.py	/^    def wait_for_css(self, css_selector, timeout=7):$/;"	m	class:SeleniumWebDriver
+web_driver_module	openreview/apps/tools/testing.py	/^    from selenium.webdriver.firefox import webdriver as web_driver_module$/;"	i
+web_driver_module	openreview/apps/tools/testing.py	/^    web_driver_module = settings.SELENIUM_WEBDRIVER$/;"	v
+widget	openreview/apps/accounts/forms.py	/^                                widget=forms.PasswordInput)$/;"	v	class:UserCreationForm
+widget	openreview/apps/accounts/forms.py	/^                                widget=forms.PasswordInput,$/;"	v	class:UserCreationForm
+wraps	openreview/apps/tools/testing.py	/^from functools import wraps$/;"	i

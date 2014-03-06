@@ -1,0 +1,53 @@
+- model: openreview.user
+  pk: 1
+  fields:
+    email: thomas.brus@example.com
+    first_name: Thomas
+    last_name: Brus
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    username: thomas.brus
+
+- model: openreview.user
+  pk: 1
+  fields:
+    email: bas.van.den.brink@example.com
+    first_name: Bas
+    last_name: van den Brink
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    username: bas.van.den.brink
+
+- model: openreview.user
+  pk: 1
+  fields:
+    email: wietze.beukema@example.com
+    first_name: Wietze
+    last_name: Beukema
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    username: wietze.beukema
+
+- model: openreview.user
+  pk: 1
+  fields:
+    email: martijn.bastiaan@example.com
+    first_name: Martijn
+    last_name: Bastiaan
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    username: martijn.bastiaan
+
+- model: openreview.user
+  pk: 1
+  fields:
+    email: simon.de.vries@example.com
+    first_name: Simon
+    last_name: de Vries
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    username: simon.de.vries
+
+- model: openreview.user
+  pk: 1
+  fields:
+    email: willem.noort@example.com
+    first_name: Willem
+    last_name: Noort
+    password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0=
+    username: willem.noort
