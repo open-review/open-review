@@ -18,7 +18,6 @@ class TestReviewForm(SeleniumTestCase):
 
 
     def test_paper_gets_committed(self):
-        print(reverse("addreview"))
         self.open(reverse("addreview"))
         #Check if redirected to login if not logged in
         self.assertTrue(self.wd.current_url.endswith("{login}?next={next}".format(login=reverse("accounts-login"), next=reverse("addreview"))))
