@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 import unittest
 
-from openreview.apps.tools.testing import SeleniumTestCase, disable_pipeline
+from openreview.apps.tools.testing import SeleniumTestCase
 from openreview.apps.tools.testing import create_test_author, create_test_paper, create_test_user
 
 from openreview.apps.main.models import Review
