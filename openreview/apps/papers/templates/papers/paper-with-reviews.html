@@ -1,1 +1,13 @@
-<h1>Hello world!</h1>
+{% extends "base.html" %}
+
+<!-- login -->
+{% block login %}{% endblock %}
+<!-- end login -->
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper-with-reviews.css" />
+{% endblock %}
+
+{% block content %}
+    <h1>Bitcoin: A Peer-to-Peer Electronic Cash System</h1>
+{% endblock %}
