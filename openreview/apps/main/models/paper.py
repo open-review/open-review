@@ -1,6 +1,11 @@
+import datetime
 from django.db import models
-from openreview.apps.main.models.review import Vote
+from django.db.models import Count
+import operator
+
+from openreview.apps.main.models.review import Vote, Review
 from openreview.apps.main.models.author import Author
+
 
 __all__ = ["Keyword", "Paper"]
 
@@ -35,26 +40,36 @@ class Paper(models.Model):
         return len(self.get_reviews())
 
     @classmethod
-    def trending(cls):
-        # Find trending papers
-        # A paper is trending if it has many reviews in the last 7 days
-        return Paper.objects.extra(select = {
-            "num_reviews" : """
-                SELECT COUNT(*) FROM main_review
-                WHERE main_review.paper_id = main_paper.id
-                AND main_review.parent_id IS NULL
-                AND main_review.timestamp >= NOW() - interval '7 days'"""
-        }).order_by('-num_reviews')
+    def trending(cls, top=5):
+        """Returns the trending papers. The paper with the most reviews the last
+        seven days will end on top. Papers without (recent) reviews cannot be trending.
+
+        @param top: return the top N papers
+        @type top: int
+
+        @rtype: list
+        """
+        seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+        reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
+        papers = reviews.values('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
+        papers_ids = tuple(map(operator.itemgetter("paper"), papers))
+
+        # Papers may be returned in any order by de db, but we need it in the order
+        # specified in paper_ids, sorted() solves this. This might be inefficient for
+        # large values of `top`, as index complexity is O(n).
+        papers = Paper.objects.filter(id__in=papers_ids)
+        return sorted(papers, key=lambda p: papers_ids.index(p.id))
 
     @classmethod
     def latest(cls):
-        # Find new papers
         return Paper.objects.order_by('-publish_date')
 
     @classmethod
-    def controversial(cls):
-        # Find controversial papers
-        # TODO: find better metric
+    def controversial(cls, top=5):
+        """Returns list of the most controversial papers.
+
+        TODO: Implement ;-)
+        """
         return Paper.objects.order_by()
 
     def get_comments(self):
