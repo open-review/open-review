@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+class PaperWithReviewsView(TemplateView):
+    template_name = "papers/paper-with-reviews.html"
