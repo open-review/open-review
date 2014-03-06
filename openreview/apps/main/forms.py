@@ -41,9 +41,7 @@ class ReviewForm(forms.ModelForm):
         else:
             return Author.objects.create(name=self.data['poster'])
     """
-    def clean_text(self):
-        return self.data['text'].replace("\n","<br/>\n")
-
+    
     def save(self, commit=True, **kwargs):
         user = super(ReviewForm,self).save(commit=False, **kwargs)
         user.poster = self.user
