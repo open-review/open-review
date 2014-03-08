@@ -33,12 +33,6 @@ class Paper(models.Model):
     authors = models.ManyToManyField(Author)
     keywords = models.ManyToManyField(Keyword)
 
-    def get_reviews(self):
-        return self.reviews.filter(parent__isnull=True)
-
-    def num_reviews(self):
-        return len(self.get_reviews())
-
     @classmethod
     def trending(cls, top=5):
         """Returns the trending papers. The paper with the most reviews the last
@@ -67,8 +61,14 @@ class Paper(models.Model):
         """
         return Paper.objects.order_by()
 
+    def get_reviews(self):
+        return self.reviews.filter(parent__isnull=True)
+
     def get_comments(self):
         return self.reviews.filter(parent__isnull=False)
+
+    def num_reviews(self):
+        return self.get_reviews().count()
 
     def get_votes(self, include_comments):
         """
