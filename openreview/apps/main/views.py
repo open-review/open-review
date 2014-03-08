@@ -1,12 +1,22 @@
 from django.shortcuts import render, redirect
+
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
+from openreview.apps.main.models import Paper
+
 from openreview.apps.main.forms import ReviewForm
 
+
 def frontpage(request):
+    # Display 3 papers in each column
+    paper_count = 3
+
     return render(request, "main/frontpage.html", {
-        "user": request.user
+        "user": request.user,
+        "latest_papers_list": Paper.latest()[:paper_count],
+        "trending_papers_list": Paper.trending(top=paper_count),
+        "controversial_papers_list": Paper.controversial()[:paper_count]
     })
 
 
