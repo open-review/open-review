@@ -31,7 +31,12 @@ class TestReviewForm(SeleniumTestCase):
         self.wd.wait_for_css("#id_paper")
 
         # Select the right paper
-        self.wd.find_css("#id_paper option[value=\"{id}\"]".format(id=self.b.id)).click()
+        self.wd.find_css("#id_title").send_keys("Some fancy paper title")
+        self.wd.find_css("#id_doc_id").send_keys("1403.0438")
+        self.wd.find_css("#id_author").send_keys("Jéan-Pièrre van 't Hoff")
+        self.wd.find_css("#id_abstract").send_keys("This paper is fancy.")
+        self.wd.find_css("#id_publish_date").send_keys("2012-01-01")
+        self.wd.find_css("#id_urls").send_keys("http://example.org/document.pdf")
         self.wd.find_css("#id_text").send_keys("test\nlol\ndoei")
         self.wd.find_css("input[name=\"add_review\"]").click()
         self.wd.wait_for_css("body")
