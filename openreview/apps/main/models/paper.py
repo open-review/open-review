@@ -51,14 +51,9 @@ class Paper(models.Model):
         """
         seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
         reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
-        papers = reviews.values('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
-        papers_ids = tuple(map(operator.itemgetter("paper"), papers))
-
-        # Papers may be returned in any order by de db, but we need it in the order
-        # specified in paper_ids, sorted() solves this. This might be inefficient for
-        # large values of `top`, as index complexity is O(n).
-        papers = Paper.objects.filter(id__in=papers_ids)
-        return sorted(papers, key=lambda p: papers_ids.index(p.id))
+        papers = reviews.values_list('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
+        papers_objects = Paper.objects.in_bulk(pid for pid, pcount in papers)
+        return (papers_objects[pid] for pid, pcount in papers)
 
     @classmethod
     def latest(cls):
