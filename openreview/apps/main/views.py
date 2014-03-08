@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from openreview.apps.main.models import Paper
 
-from openreview.apps.main.forms import ReviewForm
+from openreview.apps.main.forms import ReviewForm, PaperForm
 
 
 def frontpage(request):
@@ -23,13 +23,15 @@ def frontpage(request):
 @login_required
 def add_review(request):
     data = request.POST.copy() if "add_review" in request.POST else None
-    f = ReviewForm(data=data, user=request.user)
-
-    if f.is_valid() and f.save():
-        return redirect(reverse("frontpage"), parmanent=False)
+    p = PaperForm(data=data, user=request.user)    
+    f = ReviewForm(data=data, user=request.user)        
+    
+    if p.is_valid() and f.set_paper(p.save()) and f.is_valid() and f.save():
+      return redirect(reverse("frontpage"), parmanent=False)
+          
 
     return render(request, "main/add_review.html", {
         "user": request.user,
-        "add_review_form": f
+        "add_review_form": f,
+        "add_paper_form": p
     })
-
