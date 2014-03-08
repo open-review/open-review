@@ -2,4 +2,4 @@ python3
 python3-dev
 libpq-dev
 coffeescript
-yui-compressor
+python3-lxml

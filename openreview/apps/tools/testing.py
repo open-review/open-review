@@ -4,7 +4,6 @@ This module contains convenience functions for testing purposes.
 from functools import wraps
 from django.conf import settings
 from django.test import LiveServerTestCase
-from django.test.utils import override_settings
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from datetime import datetime
@@ -17,9 +16,6 @@ try:
     web_driver_module = settings.SELENIUM_WEBDRIVER
 except AttributeError:
     from selenium.webdriver.firefox import webdriver as web_driver_module
-
-disable_pipeline = override_settings(STATICFILES_STORAGE=settings.TEST_STATICFILES_STORAGE)
-
 
 class SeleniumWebDriver(web_driver_module.WebDriver):
     """Default webdriver, extended with convenience methods."""

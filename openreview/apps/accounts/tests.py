@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test.client import Client
 from openreview.apps.accounts.forms import is_email, RegisterForm
 from openreview.apps.accounts.models import User
-from openreview.apps.tools.testing import SeleniumTestCase, disable_pipeline
+from openreview.apps.tools.testing import SeleniumTestCase
 
 
 class TestForms(unittest.TestCase):
@@ -28,7 +28,6 @@ class TestForms(unittest.TestCase):
     # Assuming UserCreationForm is already tested
 
 class TestLoginView(unittest.TestCase):
-    @disable_pipeline
     def test_register(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
@@ -47,7 +46,6 @@ class TestLoginView(unittest.TestCase):
         self.assertTrue(user.check_password("abc2"))
         self.assertTrue("sessionid" in response.cookies)
 
-    @disable_pipeline
     def test_login(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
@@ -61,7 +59,6 @@ class TestLoginView(unittest.TestCase):
         self.assertTrue("sessionid" in response.cookies)
 
 
-    @disable_pipeline
     def test_redirect(self):
         User.objects.create_user("test", password="password")
 

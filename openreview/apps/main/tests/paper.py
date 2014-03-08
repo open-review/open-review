@@ -1,6 +1,8 @@
 from django.test import TestCase
-from openreview.apps.tools.testing import create_test_paper, add_test_vote
 from openreview.apps.main.models import Paper
+from openreview.apps.tools.testing import create_test_paper
+
+__all__ = ["TestPaper"]
 
 class TestPaper(TestCase):
     def test_get_reviews_comments(self):
@@ -34,4 +36,7 @@ class TestPaper(TestCase):
 
     def get_votes(self):
         pass
+
+
+
 
