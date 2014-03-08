@@ -47,7 +47,7 @@ class Paper(models.Model):
         reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
         papers = reviews.values_list('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
         papers_objects = Paper.objects.in_bulk(pid for pid, pcount in papers)
-        return (papers_objects[pid] for pid, pcount in papers)
+        return [papers_objects[pid] for pid, pcount in papers]
 
     @classmethod
     def latest(cls):
