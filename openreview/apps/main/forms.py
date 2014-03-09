@@ -45,7 +45,7 @@ class PaperForm(forms.ModelForm):
     #todo: DocID recognizion, auto-fill form                                                   
     doc_id = forms.RegexField(label=_("Document Identifier"),
                               regex=re.compile(r'^((\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b)|([0-9]{4}\.[0-9]{4})(v[0-9])?)$',re.IGNORECASE),
-                              help_text=_("Identifier: can either be a DOI or a domain-specific one. For example: arXiv:1403.0438."),
+                              help_text=_("Identifier: can either be a DOI or a domain-specific one. For example: 1403.0438 (arXiv)."),
                               required=False,
                               error_messages={
                                     'invalid': _("The format is not recognized. Use a correct DOI or arXiv identifier.")})
@@ -71,12 +71,11 @@ class PaperForm(forms.ModelForm):
                                    widget=forms.DateInput(format='%Y-%m-%d'),
                                    error_messages={
                                     'invalid': _("This date is invalid.")})                                                                                                         
-    urls = forms.URLField(label=_("URL"),                                                    
-                          widget=forms.URLInput,
+    urls = forms.URLField(label=_("URL"),  
                           required=False,
                           error_messages={                                    
-                              'invalid': _("This url seems to be invalid.")})                                            
-                                                 
+                              'invalid': _("This url seems to be invalid.")})   
+                                                
     def clean(self):
         cleaned_data = super(PaperForm, self).clean()
         if not cleaned_data['publish_date']:
