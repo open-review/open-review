@@ -27,11 +27,10 @@ install:
  - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
  - pip install -r openreview/pip_requirements.txt --use-mirrors
  - pip install coverage coveralls
- - echo -e "[report]\nomit = */migrations/*" > ~/.coveragerc
 
 script:
- - coverage run --source=openreview manage.py test
+ - coverage run --source=openreview --omit=*/migrations/*,openreview/wsgi.py manage.py test
 
 after_success:
  - coverage report -m
- - coveralls --rcfile=~/.coveragerc
+ - coveralls
