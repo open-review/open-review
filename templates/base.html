@@ -9,71 +9,70 @@
         <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
         {% block css %}{% endblock %}
     {% endcompress %}
-    <title></title>
+    <title>OpenReview</title>
 </head>
 <body>
-<div class="container">
-    {% block login %}
-    {%  if user.is_anonymous %}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-info">
-                    <p>Hi anonymous user! To participate please <a href="{%  url 'accounts-login' %}">login</a> or
-                        <a href="{% url 'accounts-register' %}">signup</a> (we don't ask for any personal info).</p>
+    <div class="container">
+        {% block login %}
+        {%  if user.is_anonymous %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        <p>Hi anonymous user! To participate please <a href="{%  url 'accounts-login' %}">login</a> or
+                            <a href="{% url 'accounts-register' %}">signup</a> (we don't ask for any personal info).</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
-    {% endblock %}
+        {% endif %}
+        {% endblock %}
 
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
 
-    <hr>
-    <footer>
-        <div class="row">
-            <div class="col-md-2">
-                <p>
-                    <b>Account</b><br/>
-                    {%  if user.is_anonymous %}
-                        <a href="{% url "accounts-login" %}">login</a><br/>
-                        <a href="{% url "accounts-register" %}">register</a>
-                    {% else %}
-                        <a href="{%  url "accounts-logout" %}">logout</a><br/>
-                        settings
-                    {%  endif %}
-                </p>
+        <hr>
+        <footer>
+            <div class="row">
+                <div class="col-md-2">
+                    <p>
+                        <b>Account</b><br/>
+                        {%  if user.is_anonymous %}
+                            <a href="{% url "accounts-login" %}">login</a><br/>
+                            <a href="{% url "accounts-register" %}">register</a>
+                        {% else %}
+                            <a href="{%  url "accounts-logout" %}">logout</a><br/>
+                            settings
+                        {%  endif %}
+                    </p>
+                </div>
+                <div class="col-md-7"></div>
+                <div class="col-md-1">
+                    <p>
+                        <b>Help</b><br/>
+                        #open-review<br/>
+                        groups
+                    </p>
+                </div>
+                <div class="col-md-1">
+                    <p>
+                        <b>Dev</b><br/>
+                        source<br/>
+                        issues<br/>
+                        malinglist
+                    </p>
+                </div>
+                <div class="col-md-1">
+                    <p>
+                        <b>About</b><br/>
+                        team
+                    </p>
+                </div>
             </div>
-            <div class="col-md-7"></div>
-            <div class="col-md-1">
-                <p>
-                    <b>Help</b><br/>
-                    #open-review<br/>
-                    groups
-                </p>
-            </div>
-            <div class="col-md-1">
-                <p>
-                    <b>Dev</b><br/>
-                    source<br/>
-                    issues<br/>
-                    malinglist
-                </p>
-            </div>
-            <div class="col-md-1">
-                <p>
-                    <b>About</b><br/>
-                    team
-                </p>
-            </div>
-        </div>
-    </footer>
-</div>
+        </footer>
+    </div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    {% compress js %}
+        <script src="{{ STATIC_URL }}js/test.coffee" type="text/coffeescript"></script>
+        {% block js %}{% endblock %}
+    {% endcompress %}
 </body>
 </html>
-
-<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-{% compress js %}
-    <script src="{{ STATIC_URL }}js/test.coffee" type="text/coffeescript"></script>
-    {% block js %}{% endblock %}
-{%  endcompress %}
