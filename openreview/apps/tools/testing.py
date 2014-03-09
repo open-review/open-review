@@ -6,10 +6,11 @@ from django.conf import settings
 from django.test import LiveServerTestCase
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
+from datetime import datetime
 
 # Determine the WebDriver module. Defaults to Firefox.
 from openreview.apps.accounts.models import User
-from openreview.apps.main.models import Author, Paper, Keyword, Review
+from openreview.apps.main.models import Author, Paper, Keyword, Review, Vote
 
 try:
     web_driver_module = settings.SELENIUM_WEBDRIVER
@@ -105,10 +106,26 @@ def create_test_paper(n_authors=0, n_keywords=0, n_comments=0, n_reviews=0, **kw
 
 @up_counter
 def create_test_review(**kwargs):
+    paper, poster = None, None
+    if "paper" not in kwargs:
+        paper = create_test_paper()
+    if "poster" not in kwargs:
+        poster = create_test_user()
+    
     return Review.objects.create(**dict({
         "text": "review content",
-        "poster": create_test_user(),
-        "paper": create_test_paper(),
+        "poster": poster,
+        "paper": paper,
+        "timestamp": datetime.now()
     }, **kwargs))
 
-
+def add_test_vote(paper, vote):
+    if paper.num_reviews() == 0:
+        create_test_review(paper=paper)
+    
+    review = paper.get_reviews()[0]
+    vote = Vote.objects.create(**dict({
+    	"vote" : vote,
+    	"review" : review,
+    	"voter" : review.poster
+    }))

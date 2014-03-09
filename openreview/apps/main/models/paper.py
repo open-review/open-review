@@ -1,6 +1,11 @@
+import datetime
 from django.db import models
-from openreview.apps.main.models.review import Vote
+from django.db.models import Count
+import operator
+
+from openreview.apps.main.models.review import Vote, Review
 from openreview.apps.main.models.author import Author
+
 
 __all__ = ["Keyword", "Paper"]
 
@@ -28,11 +33,42 @@ class Paper(models.Model):
     authors = models.ManyToManyField(Author)
     keywords = models.ManyToManyField(Keyword)
 
+    @classmethod
+    def trending(cls, top=5):
+        """Returns the trending papers. The paper with the most reviews the last
+        seven days will end on top. Papers without (recent) reviews cannot be trending.
+
+        @param top: return the top N papers
+        @type top: int
+
+        @rtype: list
+        """
+        seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+        reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
+        papers = reviews.values_list('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
+        papers_objects = Paper.objects.in_bulk(pid for pid, pcount in papers)
+        return [papers_objects[pid] for pid, pcount in papers]
+
+    @classmethod
+    def latest(cls):
+        return Paper.objects.order_by('-publish_date')
+
+    @classmethod
+    def controversial(cls, top=5):
+        """Returns list of the most controversial papers.
+
+        TODO: Implement ;-)
+        """
+        return Paper.objects.order_by()
+
     def get_reviews(self):
         return self.reviews.filter(parent__isnull=True)
 
     def get_comments(self):
         return self.reviews.filter(parent__isnull=False)
+
+    def num_reviews(self):
+        return self.get_reviews().count()
 
     def get_votes(self, include_comments):
         """
