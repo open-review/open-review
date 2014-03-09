@@ -30,8 +30,7 @@
             <table class="table papers">
             {% for paper in trending_papers_list %}
                 <tr><td>
-                    <a href="/papers/{{ paper.id }}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
-                    <!-- TODO: Use { % url ... % } instead of hardcoded url -->
+                    <a href="{% url 'paper' paper.id %}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
                     <span class="nreviews" title="{{ paper.num_reviews }} review{% if paper.num_reviews != 1 %}s{% endif %}">{{ paper.num_reviews }}</span>
                 </td></tr>
             {% endfor %}
@@ -47,8 +46,7 @@
             <table class="table papers">
             {% for paper in latest_papers_list %}
                 <tr><td>
-                    <a href="/papers/{{ paper.id }}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
-                    <!-- TODO: Use { % url ... % } instead of hardcoded url -->
+                    <a href="{% url 'paper' paper.id %}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
                     <span class="nreviews" title="{{ paper.num_reviews }} review{% if paper.num_reviews != 1 %}s{% endif %}">{{ paper.num_reviews }}</span>
                 </td></tr>
             {% endfor %}
@@ -64,8 +62,7 @@
             <table class="table papers">
             {% for paper in controversial_papers_list %}
                 <tr><td>
-                    <a href="/papers/{{ paper.id }}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
-                    <!-- TODO: Use { % url ... % } instead of hardcoded url -->
+                    <a href="{% url 'paper' paper.id %}" title="{{ paper.publish_date }}, {{ paper.publisher }}">{{ paper.title }}</a>
                     <span class="nreviews" title="{{ paper.num_reviews }} review{% if paper.num_reviews != 1 %}s{% endif %}">{{ paper.num_reviews }}</span>
                 </td></tr>
             {% endfor %}
