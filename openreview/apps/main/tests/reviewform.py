@@ -1,4 +1,5 @@
 from datetime import date
+from unittest import TestCase
 
 from django.core.urlresolvers import reverse
 
@@ -10,13 +11,7 @@ from openreview.apps.main.models import Paper, Review
 
 __all__ = ["TestReviewForm"]
 
-
-class TestReviewForm(SeleniumTestCase):
-    def setUp(self):
-        self.a = create_test_author(name="tester")
-        self.u = create_test_user()
-        super().setUp()
-
+class TestReviewForm(TestCase):
     def test_paper_form(self):
         test_data = {
             "authors": "Jean\nPiere",
@@ -74,6 +69,11 @@ class TestReviewForm(SeleniumTestCase):
         self.assertEqual(set([jean, piere]), set(paper.authors.all()))
         self.assertEqual(set([a, b]), set(paper.keywords.all()))
 
+class TestReviewFormLive(SeleniumTestCase):
+    def setUp(self):
+        self.a = create_test_author(name="tester")
+        self.u = create_test_user()
+        super().setUp()
 
     def test_paper_gets_committed(self):
         self.open(reverse("add_review"))

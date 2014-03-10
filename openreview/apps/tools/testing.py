@@ -2,6 +2,8 @@
 This module contains convenience functions for testing purposes.
 """
 from functools import wraps
+import functools
+import unittest
 from django.conf import settings
 from django.test import LiveServerTestCase
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
@@ -11,6 +13,7 @@ from datetime import datetime
 # Determine the WebDriver module. Defaults to Firefox.
 from openreview.apps.accounts.models import User
 from openreview.apps.main.models import Author, Paper, Keyword, Review, Vote
+from openreview.settings import get_bool
 
 try:
     web_driver_module = settings.SELENIUM_WEBDRIVER
@@ -37,21 +40,36 @@ class SeleniumWebDriver(web_driver_module.WebDriver):
         except TimeoutException:
             self.quit()
 
+_skip_msg = "Selenium test cases are disabled due to the presence of environment variable SKIP_SELENIUM_TESTS."
 
 class SeleniumTestCase(LiveServerTestCase):
     """TestCase for in-browser testing. Sets up `wd` property, which is an initialised Selenium
     webdriver (defaults to Firefox)."""
 
+    def __init__(self, *args, **kwargs):
+        self.skip = get_bool("SKIP_SELENIUM_TESTS", False)
+        super().__init__(*args, **kwargs)
+
+    def __getattribute__(self, item):
+        obj = super().__getattribute__(item)
+        skip = super().__getattribute__("skip")
+
+        if item.startswith("test_") and callable(obj) and skip:
+            return functools.partial(unittest.skip, _skip_msg)
+        return obj
+
     def open(self, url):
         self.wd.get("%s%s" % (self.live_server_url, url))
 
     def setUp(self):
-        self.wd = SeleniumWebDriver()
+        self.wd = SeleniumWebDriver() if not self.skip else None
         super().setUp()
 
     def tearDown(self):
-        self.wd.quit()
         super().tearDown()
+
+        if not self.skip:
+            self.wd.quit()
 
 # This is a hack to generate unique names for test models
 COUNTER = 0
