@@ -1,11 +1,10 @@
+from django.db import transaction
 from django.shortcuts import render, redirect
-
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from openreview.apps.main.models import Paper
-
-from openreview.apps.main.forms import ReviewForm
+from openreview.apps.main.forms import ReviewForm, PaperForm
 
 
 def frontpage(request):
@@ -22,14 +21,22 @@ def frontpage(request):
 
 @login_required
 def add_review(request):
-    data = request.POST.copy() if "add_review" in request.POST else None
-    f = ReviewForm(data=data, user=request.user)
+    data = request.POST if "add_review" in request.POST else None
+    paper_form = PaperForm(data=data)
+    review_form = ReviewForm(data=data, user=request.user)
 
-    if f.is_valid() and f.save():
-        return redirect(reverse("frontpage"), parmanent=False)
+    with transaction.atomic():
+        if paper_form.is_valid() and review_form.is_valid():
+            paper = paper_form.save()
+            review = review_form.save(commit=False)
+            review.paper = paper
+            review.save()
+
+            #return redirect(reverse("paper", args=(paper.id,)), parmanent=False)
+            return redirect(reverse("frontpage"), parmanent=False)
 
     return render(request, "main/add_review.html", {
         "user": request.user,
-        "add_review_form": f
+        "add_review_form": review_form,
+        "add_paper_form": paper_form
     })
-

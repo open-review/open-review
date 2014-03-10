@@ -111,7 +111,7 @@ def create_test_review(**kwargs):
         paper = create_test_paper()
     if "poster" not in kwargs:
         poster = create_test_user()
-    
+
     return Review.objects.create(**dict({
         "text": "review content",
         "poster": poster,
@@ -119,13 +119,8 @@ def create_test_review(**kwargs):
         "timestamp": datetime.now()
     }, **kwargs))
 
-def add_test_vote(paper, vote):
-    if paper.num_reviews() == 0:
-        create_test_review(paper=paper)
-    
-    review = paper.get_reviews()[0]
-    vote = Vote.objects.create(**dict({
-    	"vote" : vote,
-    	"review" : review,
-    	"voter" : review.poster
-    }))
+@up_counter
+def create_test_keyword(**kwargs):
+    return Keyword.objects.create(**dict({"label": "keyword-%s" % COUNTER}, **kwargs))
+
+

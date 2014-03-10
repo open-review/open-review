@@ -20,18 +20,18 @@
 
 <div id="coffee"></div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Select Paper</h2>
-        
+<form method="post" class="form">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-4">
+          <h2>Select Paper</h2>
+           {{ add_paper_form|bootstrap }}        
+      </div>
+      <div class="col-md-8">
+          <h2>New Review</h2>
+          {{ add_review_form|bootstrap }}
+          <input id="login" class="btn btn-primary" name="add_review" type="submit" value="Submit">
+      </div>
     </div>
-    <div class="col-md-8">
-        <h2>New Review</h2>
-            <form method="post" class="form">
-                {% csrf_token %}
-                {{ add_review_form|bootstrap }}
-                <input id="login" class="btn btn-primary" name="add_review" type="submit" value="Submit">
-            </form>
-    </div>
-</div>
+</form>
 {% endblock %}
