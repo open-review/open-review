@@ -1,94 +1,89 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.forms import widgets
+from openreview.apps.main.models import Author, Keyword
 
 from openreview.apps.main.models.review import Review
 from openreview.apps.main.models.paper import Paper
-import re
+
 
 class ReviewForm(forms.ModelForm):
-    def __init__(self, user, *args, **kwargs):
-        super(ReviewForm, self).__init__(*args, **kwargs)
+    def __init__(self, user, paper=None, **kwargs):
+        super(ReviewForm, self).__init__(**kwargs)
         self.user = user
+        self.paper = paper
 
-    text = forms.CharField(label=_("Contents"),
-                           widget=forms.Textarea,
-                           help_text=_("Enter the text of the review."))
-
-    def set_paper(self, paper):
-      if(paper != None):
-        self.paper=paper
-        return True
-      return False
-    
     def save(self, commit=True, **kwargs):
-        user = super(ReviewForm, self).save(commit=False, **kwargs)
-        user.poster = self.user
-        user.paper = self.paper
+        review = super(ReviewForm, self).save(commit=False, **kwargs)
+        review.poster = self.user
+
+        if self.paper is not None:
+            review.paper = self.paper
+
         if commit:
-            user.save()
-        return user
+            review.save()
+        return review
 
     class Meta:
         model = Review
         fields = ['text']
 
+
 class PaperForm(forms.ModelForm):
-    def __init__(self, user, *args, **kwargs):
+    authors = forms.CharField(widget=widgets.Textarea(), help_text="Authors of this paper, separated with a newline.")
+    keywords = forms.CharField(widget=widgets.Textarea(), help_text="Keywords, separated with a comma.", required=False)
+
+    def __init__(self, *args, **kwargs):
         super(PaperForm, self).__init__(*args, **kwargs)
-        self.user = user
-        
-    #todo: search in existing paper database, select if already in there
-    title = forms.RegexField(label=_("Title"),
-                             regex=r'^.+$',                                
-                             error_messages={ 'invalid': _("This value may contain only letters, numbers and "
-                                                 "@/./+/-/_ characters.")})
-    #todo: DocID recognizion, auto-fill form                                                   
-    doc_id = forms.RegexField(label=_("Document Identifier"),
-                              regex=re.compile(r'^((\b(10[.][0-9]{4,}(?:[.][0-9]+)*/(?:(?!["&\'<>])\S)+)\b)|([0-9]{4}\.[0-9]{4})(v[0-9])?)$',re.IGNORECASE),
-                              help_text=_("Identifier: can either be a DOI or a domain-specific one. For example: 1403.0438 (arXiv)."),
-                              required=False,
-                              error_messages={
-                                    'invalid': _("The format is not recognized. Use a correct DOI or arXiv identifier.")})
-    #todo: put in database, multiple authors                                        
-    authors = forms.RegexField(label=_("Author"),
-                              regex=r'^([ \u00c0-\u01ffa-zA-Z\'\-\.])+$',
-                              required=False,                                
-                              error_messages={
-                                    'invalid': _("This value may contain only letters, spaces and "
-                                                 "-/'/. characters.")})     
-    abstract = forms.CharField(widget=forms.Textarea, 
-                               required=False)
-    publisher = forms.RegexField(label=_("Publisher name"),
-                                 required=False,
-                                 regex=r'^[\w.@+\'& -]*$',                               
-                                 error_messages={
-                                    'invalid': _("This value may contain only letters, numbers, spaces and "
-                                                 "@/./+/-/_/\'/& characters.")})
-    #todo: change date (YYYY-MM-DD) into year (YYYY)?                                                 
-    publish_date = forms.CharField(label=_("Publish date"),                                
-                                   required=False,             
-                                   help_text=_("Use input format YYYY-MM-DD"),                    
-                                   widget=forms.DateInput(format='%Y-%m-%d'),
-                                   error_messages={
-                                    'invalid': _("This date is invalid.")})                                                                                                         
-    urls = forms.URLField(label=_("URL"),  
-                          required=False,
-                          error_messages={                                    
-                              'invalid': _("This url seems to be invalid.")})   
-                                                
-    def clean(self):
-        cleaned_data = super(PaperForm, self).clean()
-        if not cleaned_data['publish_date']:
-            cleaned_data['publish_date'] = None
-        return cleaned_data
-                                                         
+
+        # Fields are defined as TextFields in Paper model as we don't want to
+        # restrict sizes (they would be completely arbitrary and don't offer
+        # improved performance).
+        self.fields["title"].widget = widgets.TextInput()
+        self.fields["doc_id"].widget = widgets.TextInput()
+        self.fields["publisher"].widget = widgets.TextInput()
+        self.fields["keywords"].widget = widgets.TextInput()
+
+    # TODO: clean_{authors,keywords} use the same algorithm. Generalise?
+    def clean_authors(self):
+        authors = [a.strip() for a in self.cleaned_data["authors"].split("\n") if a.strip()]
+        authors_models = {a.name: a for a in Author.objects.filter(name__in=authors)}
+        authors = [authors_models.get(a, Author(name=a)) for a in authors]
+        self.cleaned_data["authors"] = authors
+        return authors
+
+    def clean_keywords(self):
+        keywords = [k.strip() for k in self.cleaned_data["keywords"].split(",") if k.strip()]
+        keywords_models = {k.label: k for k in Keyword.objects.filter(label__in=keywords)}
+        keywords = [keywords_models.get(k, Keyword(label=k)) for k in keywords]
+        self.cleaned_data["keywords"] = keywords
+        return keywords
+
     def save(self, commit=True, **kwargs):
-        user = super(PaperForm, self).save(commit=False, **kwargs)
-        user.poster = self.user
+        """
+        Beware: saving with commit=False will result in any newly created authors to not
+        be created also.
+        """
+        paper = super(PaperForm, self).save(commit=False, **kwargs)
+
         if commit:
-            user.save()          
-        return user
+            paper.save()
+
+            # TODO: More efficient implementation. This calls the database N times, which is
+            # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
+            # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
+            for author in self.cleaned_data["authors"]:
+                author.save()
+                paper.authors.add(author)
+
+            for keyword in self.cleaned_data["keywords"]:
+                keyword.save()
+                paper.keywords.add(keyword)
+
+        return paper
 
     class Meta:
         model = Paper
-        fields = ['title','doc_id','authors','abstract','publisher','publish_date','urls']
+        fields = [
+            'title', 'doc_id', 'authors', 'abstract', 'keywords',
+            'publisher', 'publish_date', 'urls'
+        ]

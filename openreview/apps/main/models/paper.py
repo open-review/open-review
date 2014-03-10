@@ -11,7 +11,7 @@ __all__ = ["Keyword", "Paper"]
 
 
 class Keyword(models.Model):
-    label = models.TextField()
+    label = models.TextField(db_index=True)
 
     def __str__(self):
         return self.label
@@ -21,12 +21,13 @@ class Keyword(models.Model):
 
 
 class Paper(models.Model):
-    doc_id = models.TextField(help_text="Identifier: can either be a real DOI or a domain-specific one. "
+    doc_id = models.TextField(verbose_name="document identifier",
+                              help_text="Identifier: can either be a real DOI or a domain-specific one. " +
                                         "For example: arXiv:1403.0438.", null=True)
     title = models.TextField()
     abstract = models.TextField()
     publisher = models.TextField(null=True, blank=True)
-    publish_date = models.DateField(null=True)
+    publish_date = models.DateField(null=True, blank=True)
     urls = models.TextField(null=True, blank=True)
 
     # These fields are *probably* a bad idea performance wise.
