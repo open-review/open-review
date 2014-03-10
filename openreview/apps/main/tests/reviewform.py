@@ -9,7 +9,7 @@ from openreview.apps.tools.testing import create_test_author, create_test_user
 from openreview.apps.main.models import Paper, Review
 
 
-__all__ = ["TestReviewForm"]
+__all__ = ["TestReviewForm", "TestReviewFormLive"]
 
 class TestReviewForm(TestCase):
     def test_paper_form(self):
