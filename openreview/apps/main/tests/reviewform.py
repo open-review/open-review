@@ -4,7 +4,7 @@ from unittest import TestCase
 from django.core.urlresolvers import reverse
 
 from openreview.apps.main.forms import PaperForm
-from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword
+from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
 from openreview.apps.tools.testing import create_test_author, create_test_user
 from openreview.apps.main.models import Paper, Review
 
@@ -53,14 +53,24 @@ class TestReviewForm(TestCase):
         self.assertIsNone(b.id)
 
         # save(commit=False) should not save authors/keywords
-        form.save(commit=False)
+        with assert_max_queries(n=0):
+            form.save(commit=False)
         self.assertIsNotNone(jean.id)
         self.assertIsNone(piere.id)
         self.assertIsNotNone(a.id)
         self.assertIsNone(b.id)
 
         # save(commit=True) should
-        paper = form.save(commit=True)
+        with assert_max_queries(n=7):
+            # Django queries database before inserting to make sure it doesn't include duplicates
+            # [1] Saving paper
+            # [2] INSERT piere
+            # [3] SELECT authors
+            # [4] INSERT authors
+            # [5] INSERT b
+            # [6] SELECT keywords
+            # [7] INSERT keywords
+            paper = form.save(commit=True)
         self.assertIsNotNone(jean.id)
         self.assertIsNotNone(piere.id)
         self.assertIsNotNone(a.id)

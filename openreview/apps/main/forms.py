@@ -72,12 +72,14 @@ class PaperForm(forms.ModelForm):
             # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
             # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
             for author in self.cleaned_data["authors"]:
-                author.save()
-                paper.authors.add(author)
+                if author.id is None:
+                    author.save()
+            paper.authors.add(*self.cleaned_data["authors"])
 
             for keyword in self.cleaned_data["keywords"]:
-                keyword.save()
-                paper.keywords.add(keyword)
+                if keyword.id is None:
+                    keyword.save()
+            paper.keywords.add(*self.cleaned_data["keywords"])
 
         return paper
 

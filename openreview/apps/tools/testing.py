@@ -1,20 +1,25 @@
 """
 This module contains convenience functions for testing purposes.
 """
+from contextlib import contextmanager
 from functools import wraps
 import functools
 import unittest
 from django.conf import settings
+from django.db import connection
 from django.test import LiveServerTestCase
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from datetime import datetime
 
-# Determine the WebDriver module. Defaults to Firefox.
 from openreview.apps.accounts.models import User
 from openreview.apps.main.models import Author, Paper, Keyword, Review, Vote
 from openreview.settings import get_bool
 
+from logging import getLogger
+log = getLogger(__name__)
+
+# Determine the WebDriver module. Defaults to Firefox.
 try:
     web_driver_module = settings.SELENIUM_WEBDRIVER
 except AttributeError:
@@ -140,5 +145,62 @@ def create_test_review(**kwargs):
 @up_counter
 def create_test_keyword(**kwargs):
     return Keyword.objects.create(**dict({"label": "keyword-%s" % COUNTER}, **kwargs))
+
+@contextmanager
+def assert_max_queries(n=0):
+    """
+    Raise AssertionError if code in contextmanager exceeds `n` queries. Example usage:
+
+    >>> with assert_max_queries(n=1):
+    >>>     list(Paper.objects.all())
+
+    @param n: code can use at most `n` queries
+    @type n: int
+    """
+    queries = []
+    with list_queries(destination=queries, log_output=False):
+        yield
+
+    nqueries = len(queries)
+    if nqueries > n:
+        msg = "Should take at most {n} queries, but took {nqueries}.".format(**locals())
+        for i, query in enumerate(queries):
+            sql, time = query["sql"], query["time"]
+            msg += "\n[{i}] {sql} ({time})".format(**locals())
+        raise AssertionError(msg)
+
+@contextmanager
+def list_queries(destination=None, log_output=True):
+    """
+    Context manager which makes it easy to retrieve executed queries regardless of the
+    value of settings.DEBUG. Usage example:
+
+    >>> with list_queries() as queries:
+    >>>     Paper.objects.all()
+    >>> print(queries)
+
+    @param destination: append queries to this object
+    @type destination: list
+
+    @param log_output: should we log queries to log.debug?
+    @type log_output: bool
+    """
+    nqueries = len(connection.queries)
+
+    # We need to set debug to let Django record queries
+    debug_prev = settings.DEBUG
+    settings.DEBUG = True
+
+    try:
+        yield destination
+        queries = connection.queries[nqueries:]
+        if destination is not None:
+            destination += queries
+    finally:
+        settings.DEBUG = debug_prev
+
+        if log_output:
+            for query in queries:
+                log.debug(query)
 
 
