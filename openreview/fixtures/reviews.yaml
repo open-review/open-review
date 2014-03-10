@@ -14,3 +14,19 @@
       In facilisis sed ipsum vitae scelerisque. Donec at lorem molestie, aliquam justo sed, egestas
       enim. Donec ac lectus ut erat tempor vehicula suscipit ut tortor. Nam scelerisque, ligula et
       hendrerit euismod, elit felis tempor erat, sed viverra lacus purus eget tortor.
+- model: main.review
+  pk: 2
+  fields:
+    paper: 1
+    parent: ~
+    poster: 4
+    timestamp: 2014-10-06 19:55:25
+    text: >
+      Consectetur adipiscing elit. Aenean
+      facilisis interdum tristique. Morbi id risus massa. Integer rutrum aliquam nibh, eget cursus
+      libero laoreet sed. Praesent nulla justo, vehicula eu mattis sit amet, bibendum et turpis.
+      Nunc neque ante, ornare posuere dapibus at, vulputate id elit. Proin id egestas libero.
+      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+      In facilisis sed ipsum vitae scelerisque. Donec at lorem molestie, aliquam justo sed, egestas
+      enim. Donec ac lectus ut erat tempor vehicula suscipit ut tortor. Nam scelerisque, ligula et
+      hendrerit euismod, elit felis tempor erat, sed viverra lacus purus eget tortor.
