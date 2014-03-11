@@ -191,11 +191,13 @@ def list_queries(destination=None, log_output=True):
     debug_prev = settings.DEBUG
     settings.DEBUG = True
 
+    if destination is None:
+        destination = []
+
     try:
         yield destination
         queries = connection.queries[nqueries:]
-        if destination is not None:
-            destination += queries
+        destination += queries
     finally:
         settings.DEBUG = debug_prev
 

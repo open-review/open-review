@@ -29,6 +29,9 @@ class TestTesting(unittest.TestCase):
         self.assertEqual(queries[0]['sql'].strip(), query)
         self.assertTrue(settings.DEBUG)
 
+        queries = self.do_n_queries(_n=1, contextmanager=list_queries)
+        self.assertIsNotNone(queries)
+
     def test_list_queries(self):
         prev_debug = settings.DEBUG
 
