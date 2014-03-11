@@ -1,6 +1,6 @@
-Master: [![Build Status](https://travis-ci.org/martijnbastiaan/open-review.png?branch=master)](https://travis-ci.org/martijnbastiaan/open-review) 
-[![Coverage Status](https://coveralls.io/repos/martijnbastiaan/open-review/badge.png)](https://coveralls.io/r/martijnbastiaan/open-review)
+Master: [![Build Status](https://travis-ci.org/open-review/open-review.png?branch=master)](https://travis-ci.org/martijnbastiaan/open-review) 
+[![Coverage Status](https://coveralls.io/repos/open-review/open-review/badge.png)](https://coveralls.io/r/martijnbastiaan/open-review)
 
-Issues: [github/issues](https://github.com/martijnbastiaan/open-review/issues)
+Issues: [github/issues](https://github.com/open-review/open-review/issues)
 
-Wiki: [github/wiki](https://github.com/martijnbastiaan/open-review/wiki)
+Wiki: [github/wiki](https://github.com/open-review/open-review/wiki)
