@@ -6,9 +6,9 @@
 
 {% block content %}
     <h1>
-        {{ paper.title }} <br \>
+        {{ paper.title|capfirst }} <br/>
         {% for author in paper.authors.all %}
-          <small>{{ author.name }} (University of Twente)</small>
+          <small>{{ author.name }}{% if not forloop.last %},{% endif %}</small>
         {% endfor %}
     </h1>
 
@@ -16,30 +16,40 @@
 
     <p>
         <strong>Keywords: </strong>
-        <em>biometrics, direct problems, face recognition, inverse problems, signature</em>
+        <em>
+            {% for keyword in paper.keywords.all %}
+                {{ keyword }}{% if not forloop.last %},{% endif %}
+            {% empty %}
+                No keyword available.
+            {% endfor %}
+        </em>
     </p>
 
     <p>
-        <strong>Link:</strong>
-        <a href="http://www.scientificpapers.org/wp-content/files/1406_JAVAD-Knowledge_Issues_in_Malaysian_Organizations.pdf">
-            http://www.scientificpapers.org/wp-content/files/1406_JAVAD-Knowledge_Issues_in_Malaysian_Organizations.pdf
-        </a>
+        <strong>Links:</strong>
+        {% if not paper.urls %}
+            <em>No urls available.</em>
+        {% else %}
+            {{ paper.urls }}
+        {% endif %}
     </p>
 
-    <h2>2 Reviews</h2>
-    {% for review in paper.reviews.all %}
+    <h2>{{ paper.num_reviews }} Reviews</h2>
+    {% for review in paper.get_reviews %}
 
-      <section class="review">
+      <section review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
         <p>{{ review.text }}</p>
 
-        <section class="row rating">
-          <p class="col-md-3"><em>Written by</em>: E. Dijkstra (PhD).</p>
-          <p class="col-md-5" style="float: right; text-align: right"><em>Rating</em>: 29 of 33 people found this useful</p>
-        </section>
+        <div class="row">
+          <span class="col-md-10"><em>Written by</em>: {{ review.poster.username }}</span>
+          <span class="col-md-2">
+              <div style="float:right;" class="btn-group btn-group-xs">
+                <a href="#" title="Helpful, contributing, .." class="btn {% if review.id in upvotes %}btn-success{% else %}btn-default{% endif %}"><i class="glyphicon glyphicon-arrow-up"></i> {{ review.n_upvotes }}</a>
+                <a href="#" title="Offtopic, rude, .." class="btn {% if review.id in downvotes %}btn-danger{% else %}btn-default{% endif %}"><i class="glyphicon glyphicon-arrow-down"></i> {{ review.n_downvotes }}</a>
+              </div>
+            </span>
+        </div>
       </section>
 
-      {% if not forloop.last %}
-        <hr />
-      {% endif %}
     {% endfor %}
 {% endblock %}
