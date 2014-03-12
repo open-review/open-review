@@ -35,6 +35,7 @@ function load_scraper(){
             } else {
                 $("#id-scraper-field").html("<h2>"+data.title+"</h2><br/><b>Authors: </b><i>"+data.authors.join(", ")+"</i><br/><b>Abstract:</b> "+data.abstract);
             }
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         });
     }
 
