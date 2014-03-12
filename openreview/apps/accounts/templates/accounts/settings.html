@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}accounts/settings.css" />
+{% endblock %}
+{% block content %}
+
+{%  if user.is_anonymous %}
+<div class="well">
+    <p>
+        Settings page only available when logged in. Please go to the <a href="{% url "accounts-login" %}">login page.</a>
+    </p>
+</div>
+
+{% else %}
+
+<div class="settings col-md-6">
+    <h1>Settings</h1>
+    <center>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {{ settings_form|bootstrap }}
+            <input id="update" class="btn btn-primary" name="update" type="submit" value="Update">
+        </form>
+    </center>
+ </div>
+
+
+{% endif %}
+
+{% endblock %}

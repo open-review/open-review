@@ -5,12 +5,14 @@ from django.core.validators import validate_email
 from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
 
+
 def is_email(string):
     try:
         validate_email(string)
     except ValidationError:
         return False
     return True
+
 
 class UserCreationForm(forms.ModelForm):
     """
@@ -93,3 +95,35 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ("username", "password1", "password2", "email")
+
+
+class SettingsForm(RegisterForm):
+    """
+
+    """
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.fields["password1"].required = False
+        self.fields["password2"].required = False
+        self.fields.pop("username")
+
+    def clean_username(self):
+        return self.user.get_username()
+
+    def save(self, commit=True):
+        password = self.cleaned_data["password1"]
+        email = self.cleaned_data["email"]
+        if password:
+            self.user.set_password(password)
+        if email:
+            self.user.email = email
+        if commit:
+            self.user.save()
+        return self.user
+
+    class Meta:
+        model = get_user_model()
+        fields = ("password1", "password2", "email")
+        exclude = ["username"]
