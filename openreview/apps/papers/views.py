@@ -1,6 +1,7 @@
 from django.utils.functional import partition
 from django.views.generic import TemplateView
 from django.shortcuts import render, HttpResponse
+from django.views.decorators.cache import cache_page
 import json
 
 from .scrapers import ArXivScraper
@@ -30,11 +31,11 @@ class PaperWithReviewsView(TemplateView):
             "downvotes": {vote.review_id for vote in downvotes}
         })
 
-
+@cache_page(60*10)
 def doi_scraper(request,id):
     return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}), content_type="application/json")
 
-
+@cache_page(60*10)
 def arxiv_scraper(request, id):
     try:
         tempres = ArXivScraper().parse(id)
