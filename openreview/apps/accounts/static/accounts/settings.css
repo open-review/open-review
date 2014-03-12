@@ -1,0 +1,8 @@
+.settings{
+    border-left: solid 1px lightgray;
+    text-align: center;
+}
+
+.settings input{
+    max-width:300px;
+}

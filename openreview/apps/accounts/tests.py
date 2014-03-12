@@ -1,9 +1,10 @@
 import unittest
 from django.core.urlresolvers import reverse
 from django.test.client import Client
-from openreview.apps.accounts.forms import is_email, RegisterForm
+from openreview.apps.accounts.forms import is_email, RegisterForm, SettingsForm
 from openreview.apps.accounts.models import User
 from openreview.apps.tools.testing import SeleniumTestCase
+from openreview.apps.tools.testing import create_test_author, create_test_user
 
 
 class TestForms(unittest.TestCase):
@@ -119,3 +120,64 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertTrue(user.check_password("abcd"))
         self.assertEqual(user.username, "abc")
 
+class TestSettingsForms(unittest.TestCase):
+    def test_is_email(self):
+        # It is way too hard to test for all valid emails. Assuming correctness in validate_email().
+        self.assertTrue(is_email("bla@bla.nl"))
+        self.assertFalse(is_email("bla@bla"))
+
+    def test_settings_form(self):
+        u = User.objects.create_user(username="TestHero", password="test123")
+        form = SettingsForm(user=u, data={"password1": "test", "password2": "differentpassword"})
+        self.assertFalse(form.is_valid())
+
+        form = SettingsForm(user=u, data={"password1": "test123", "password2": "test123"})
+        self.assertTrue(form.is_valid())
+
+        form = SettingsForm(user=u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet.com"})
+        self.assertTrue(form.is_valid())
+
+        form = SettingsForm(user=u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet"})
+        self.assertFalse(form.is_valid())
+
+
+
+class TestSettingsFormLive(SeleniumTestCase):
+    def setUp(self):
+        User.objects.all().delete()
+        self.assertEqual(set(User.objects.all()), set())
+        self.a = create_test_author(name="tester")
+        User.objects.create_user(username="user", password="password")
+        super().setUp()
+
+    def test_settings(self):
+        self.open(reverse("accounts-login"))
+        self.wd.wait_for_css("body")
+        self.wd.find_css("#id_login_username").send_keys("user")
+        self.wd.find_css("#id_login_password").send_keys("password")
+        self.wd.find_css('input[value="Login"]').click()
+        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
+
+        # Test changing password
+        self.open(reverse("accounts-settings"))
+        self.wd.wait_for_css("body")
+        self.wd.find_css("#id_settings_password1").send_keys("test1234")
+        self.wd.find_css("#id_settings_password2").send_keys("test1234")
+        self.wd.find_css('input[value="Update"]').click()
+        self.open(reverse("accounts-logout"))
+
+        self.open(reverse("accounts-login"))
+        self.wd.wait_for_css("body")
+        self.wd.find_css("#id_login_username").send_keys("user")
+        self.wd.find_css("#id_login_password").send_keys("test1234")
+        self.wd.find_css('input[value="Login"]').click()
+
+        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
+
+        # Test changing email
+        self.open(reverse("accounts-settings"))
+        self.wd.wait_for_css("body")
+        self.wd.find_css("#id_settings_email").send_keys("tester@testingheroes.com")
+        self.wd.find_css('input[value="Update"]').click()
+        user = User.objects.all()[0]
+        self.assertEqual(user.email, "tester@testingheroes.com")
