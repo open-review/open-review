@@ -14,6 +14,7 @@ __all__ = ["TestReviewForm", "TestReviewFormLive"]
 class TestReviewForm(TestCase):
     def test_paper_form(self):
         test_data = {
+            "type": "manually",
             "authors": "Jean\nPiere",
             "title": "test-title",
             "abstract": "foo",
@@ -79,6 +80,7 @@ class TestReviewForm(TestCase):
         self.assertEqual(set([jean, piere]), set(paper.authors.all()))
         self.assertEqual(set([a, b]), set(paper.keywords.all()))
 
+
 class TestReviewFormLive(SeleniumTestCase):
     def setUp(self):
         self.a = create_test_author(name="tester")
@@ -100,6 +102,7 @@ class TestReviewFormLive(SeleniumTestCase):
         self.wd.wait_for_css("#id_title")
 
         # Select the right paper
+        self.wd.find_css("#id_type option[value=\"manually\"]").click()
         self.wd.find_css("#id_title").send_keys("Some fancy paper title")
         self.wd.find_css("#id_doc_id").send_keys("1403.0438")
         self.wd.find_css("#id_authors").send_keys("Jéan-Pièrre van 't Hoff")
