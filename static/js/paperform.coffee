@@ -33,7 +33,8 @@ function load_scraper(){
             if (data.error){
                 $("#id-scraper-field").html("<b>Error: </b><i>"+data.error+"</i>");
             } else {
-                $("#id-scraper-field").html("<h2>"+data.title+"</h2><br/><b>Authors: </b><i>"+data.authors.join(", ")+"</i><br/><b>Abstract:</b> "+data.abstract);
+                $("#id-scraper-field").html("<h2>"+data.title+"</h2><br/><b>Author(s): </b><i>"+data.authors.join(", ")+
+                "</i><br/><b>Abstract:</b> "+data.abstract+"<br/><b>URL:</b> <a href='"+data.urls+"'>"+data.urls+"</a>");
             }
             MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         });
