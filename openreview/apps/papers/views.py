@@ -1,7 +1,9 @@
 from django.views.generic import TemplateView
 from openreview.apps.main.models import Paper
 from django.shortcuts import render, HttpResponse
+import json
 
+from .scrapers import ArXivScraper
 
 class PaperWithReviewsView(TemplateView):
     template_name = "papers/paper-with-reviews.html"
@@ -17,5 +19,7 @@ def doi_scraper(request,id):
 
 
 def arxiv_scraper(request, id):
-    return HttpResponse("Scrapen van Arxiv {id} mislukt.".format(id=id))
+    tempres = ArXivScraper().parse(id)
+
+    return HttpResponse(json.JSONEncoder().encode(tempres.get_results()), content_type="application/json")
 
