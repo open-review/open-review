@@ -4,6 +4,10 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper-with-reviews.css" />
 {% endblock %}
 
+{% block js %}
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/voting.coffee"></script>
+{% endblock %}
+
 {% block content %}
     <h1>
         {{ paper.title|capfirst }} <br/>
@@ -37,15 +41,22 @@
     <h2>{{ paper.num_reviews }} Reviews</h2>
     {% for review in reviews %}
 
-      <section review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
+      <section review_id="{{ review.id }}" class="bs-callout bs-callout-info review {% if not user.is_anonymous %}enabled{% endif %}">
         <p>{{ review.text }}</p>
 
         <div class="row">
-          <span class="col-md-10"><em>Written by</em>: {{ review.poster.username }}</span>
-          <span class="col-md-2">
-              <div style="float:right;" class="btn-group btn-group-xs">
-                <a href="#" title="Helpful, contributing, .." class="btn {% if review.id in upvotes %}btn-success{% else %}btn-default{% endif %}"><i class="glyphicon glyphicon-arrow-up"></i> {{ review.n_upvotes }}</a>
-                <a href="#" title="Offtopic, rude, .." class="btn {% if review.id in downvotes %}btn-danger{% else %}btn-default{% endif %}"><i class="glyphicon glyphicon-arrow-down"></i> {{ review.n_downvotes }}</a>
+          <span class="col-md-9"><em>Written by</em>: {{ review.poster.username }}</span>
+          <span class="col-md-3">
+              <span class="login"><small><em>You must be logged in to vote!</em></small></span>
+              <div style="float:right;" class="btn-group btn-group-xs ">
+                <a title="Helpful, contributing, .." class="upvote btn {% if review.id in upvotes %}voted btn-success{% else %}btn-default{% endif %}">
+                    <i class="glyphicon glyphicon-arrow-up"></i>
+                    <span class="count">{{ review.n_upvotes }}</span>
+                </a>
+                <a title="Offtopic, rude, .." class="downvote btn {% if review.id in downvotes %}voted btn-danger{% else %}btn-default{% endif %}">
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                    <span class="count">{{ review.n_downvotes }}</span>
+                </a>
               </div>
             </span>
         </div>

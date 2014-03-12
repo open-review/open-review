@@ -1,9 +1,35 @@
+from django.db import transaction
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
+
 from django.utils.functional import partition
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.shortcuts import render
 
-from openreview.apps.main.models import Paper, set_n_votes_cache
+from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
 
+
+class VoteView(View):
+    def get(self, request, paper_id, review_id):
+        if request.user.is_anonymous():
+            return HttpResponseForbidden("You must be logged in to vote")
+
+        if not Review.objects.filter(id=review_id).exists():
+            return HttpResponseNotFound("Review with id {review_id} does not exist.".format(**locals()))
+
+        try:
+            vote = int(self.request.GET["vote"])
+        except (ValueError, KeyError):
+            return HttpResponseBadRequest("No vote value, or non-int given.")
+
+        if not (-1 <= vote <= 1):
+            return HttpResponseBadRequest("You can only vote -1, 0 or 1.")
+
+        with transaction.atomic():
+            Vote.objects.filter(review__id=review_id, voter=request.user).delete()
+            if vote:
+                Vote.objects.create(review_id=review_id, voter=request.user, vote=vote)
+
+        return HttpResponse("OK", status=201)
 
 class PaperWithReviewsView(TemplateView):
     template_name = "papers/paper-with-reviews.html"
@@ -13,12 +39,12 @@ class PaperWithReviewsView(TemplateView):
 
         if not request.user.is_anonymous():
             votes = request.user.votes.filter(review__paper__id=paper_id, review__parent__isnull=True)
-            votes = votes.only("id", "review__id", "vote")
             upvotes, downvotes = partition(lambda v: v.vote < 0, votes)
 
         paper = Paper.objects.prefetch_related("authors", "keywords").get(pk=paper_id)
-        reviews = paper.get_reviews().select_related("poster")
+        reviews = list(paper.get_reviews().select_related("poster"))
         set_n_votes_cache(reviews)
+        reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
         return render(request, "papers/paper-with-reviews.html", {
             "paper": paper,

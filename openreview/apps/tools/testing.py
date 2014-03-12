@@ -6,6 +6,7 @@ from functools import wraps
 import functools
 import unittest
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import connection
 from django.test import LiveServerTestCase
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
@@ -65,6 +66,13 @@ class SeleniumTestCase(LiveServerTestCase):
 
     def open(self, url):
         self.wd.get("%s%s" % (self.live_server_url, url))
+
+    def login(self, username, password):
+        self.open(reverse("accounts-login"))
+        self.wd.find_css("#id_login_username").send_keys(username)
+        self.wd.find_css("#id_login_password").send_keys(password)
+        self.wd.find_css('input[value="Login"]').click()
+        self.wd.wait_for_css("body")
 
     def setUp(self):
         self.wd = SeleniumWebDriver() if not self.skip else None
