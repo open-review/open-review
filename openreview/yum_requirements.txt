@@ -5,3 +5,4 @@ coffee-script
 libxml2-devel
 libxslt-devel
 libyaml-devel
+memcached
