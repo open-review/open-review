@@ -66,6 +66,8 @@ ALLOWED_HOSTS = []
 # Overriding default User object
 AUTH_USER_MODEL = 'accounts.User'
 
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 # Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -80,7 +82,7 @@ INSTALLED_APPS = (
     'openreview.apps.accounts',
     'openreview.apps.papers',
     'openreview.apps.main',
-    'openreview.apps.tools'
+    'openreview.apps.tools',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,6 +109,13 @@ DATABASES = {
     'default': {
         'ENGINE': os.environ.get("DJANGO_DB_ENGINE", 'django.db.backends.postgresql_psycopg2'),
         'NAME': os.environ.get("DJANGO_DB_NAME", 'openreview'),
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 

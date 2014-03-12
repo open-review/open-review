@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
 from openreview.apps.tools.testing import create_test_author, create_test_user
-from openreview.apps.main.models import Paper, Review
+from openreview.apps.main.models import Paper, Review, Vote
 
 
 __all__ = ["TestReviewForm", "TestReviewFormLive"]
@@ -88,6 +88,9 @@ class TestReviewFormLive(SeleniumTestCase):
         super().setUp()
 
     def test_paper_gets_committed(self):
+        Vote.objects.all().delete()
+        Review.objects.all().delete()
+        self.assertEqual(Review.objects.count(), 0)
         self.open(reverse("add_review"))
         # Check if redirected to login if not logged in
         self.assertTrue(self.wd.current_url.endswith(
@@ -123,7 +126,7 @@ class TestReviewFormLive(SeleniumTestCase):
         self.assertEqual(p.publisher, "Springer")
         self.assertEqual(p.urls, "http://example.org/document.pdf")
 
-        self.assertTrue(Review.objects.count() == 1)
+        self.assertEqual(Review.objects.count(), 1)
         r = Review.objects.get(paper=p.id)
         self.assertEqual(r.poster, self.u)
         self.assertEqual(r.text.replace("\r", ""), "test\nlol\ndoei")

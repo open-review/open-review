@@ -146,6 +146,40 @@ def create_test_review(**kwargs):
 def create_test_keyword(**kwargs):
     return Keyword.objects.create(**dict({"label": "keyword-%s" % COUNTER}, **kwargs))
 
+def create_test_vote(**kwargs):
+    user, review = None, None
+
+    if "review" not in kwargs:
+        review = create_test_review()
+    if "user" not in kwargs:
+        user = create_test_user()
+
+    return Vote.objects.create(**dict({
+        "vote": 1,
+        "voter": user,
+        "review": review
+    }, **kwargs))
+
+def create_test_votes(counts=None, review=None):
+    """
+    Counts is a dictionary with vote : amount. The following dict:
+
+        >>> { -1: 25, 1: 4, 0: 5 }
+
+    would create 25 downvotes, 4 upvotes and 5 neutral votes.
+    """
+    if review is None:
+        review = create_test_review()
+
+    if counts is None:
+        return
+
+    for vote, times in counts.items():
+        for i in range(times):
+            create_test_vote(review=review, vote=vote)
+
+    return review
+
 @contextmanager
 def assert_max_queries(n=0):
     """
@@ -191,11 +225,13 @@ def list_queries(destination=None, log_output=True):
     debug_prev = settings.DEBUG
     settings.DEBUG = True
 
+    if destination is None:
+        destination = []
+
     try:
         yield destination
         queries = connection.queries[nqueries:]
-        if destination is not None:
-            destination += queries
+        destination += queries
     finally:
         settings.DEBUG = debug_prev
 

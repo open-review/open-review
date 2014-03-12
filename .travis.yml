@@ -25,7 +25,8 @@ before_install:
 install:
  - sudo apt-get update
  - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
- - pip install -r openreview/pip_requirements.txt --use-mirrors
+ - sudo apt-get build-dep lxml
+ - pip install -r openreview/pip_requirements.txt --use-mirrors --upgrade
  - pip install coverage coveralls
 
 script:
