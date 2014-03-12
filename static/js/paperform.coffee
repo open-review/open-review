@@ -22,6 +22,7 @@ function renew_form(){
 
 function load_scraper(){
     var current_type = $("#id_type :selected").val();
+    $("#id-scraper-field").html("<i>Retrieving document information</i>");
     if (current_type == 'doi' || current_type == 'arxiv'){
         if (latest_request) latest_request.abort();
         latest_request = $.ajax({
@@ -29,7 +30,11 @@ function load_scraper(){
             url: "/papers/"+current_type+"/"+$("#id_doc_id").val()
         });
         latest_request.done(function(data){
-            $("#id-scraper-field").html("<h2>"+data.title+"</h2><br/><b>Authors: </b><i>"+data.authors.join(", ")+"</i><br/><b>Abstract:</b> "+data.abstract);
+            if (data.error){
+                $("#id-scraper-field").html("<b>Error: </b><i>"+data.error+"</i>");
+            } else {
+                $("#id-scraper-field").html("<h2>"+data.title+"</h2><br/><b>Authors: </b><i>"+data.authors.join(", ")+"</i><br/><b>Abstract:</b> "+data.abstract);
+            }
         });
     }
 

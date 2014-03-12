@@ -15,11 +15,16 @@ class PaperWithReviewsView(TemplateView):
 
 
 def doi_scraper(request,id):
-    return HttpResponse("Scrapen van DOI {id} mislukt.".format(id=id))
+    return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}), content_type="application/json")
 
 
 def arxiv_scraper(request, id):
-    tempres = ArXivScraper().parse(id)
+    try:
+        tempres = ArXivScraper().parse(id)
+        return HttpResponse(json.JSONEncoder().encode(tempres.get_results()), content_type="application/json")
+    except Exception:
+        return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}), content_type="application/json")
 
-    return HttpResponse(json.JSONEncoder().encode(tempres.get_results()), content_type="application/json")
+
+
 
