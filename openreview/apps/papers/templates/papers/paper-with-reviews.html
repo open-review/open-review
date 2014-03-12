@@ -35,7 +35,7 @@
     </p>
 
     <h2>{{ paper.num_reviews }} Reviews</h2>
-    {% for review in paper.get_reviews %}
+    {% for review in reviews %}
 
       <section review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
         <p>{{ review.text }}</p>

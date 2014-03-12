@@ -2,8 +2,22 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Sum
 
-__all__ = ["Review", "Vote"]
+__all__ = ["Review", "Vote", "set_n_votes_cache"]
 
+def set_n_votes_cache(reviews):
+    """
+    Set caches of n_downvotes, n_upvotes on `reviews`.
+
+    @param reviews: reviews which votes to cache
+    @type reviews: iterable of Review objects
+    """
+    votes = Vote.objects.filter(review__in=reviews).values_list("review").annotate(n=Sum("vote"))
+    upvotes = dict(votes.filter(vote__gt=0))
+    downvotes = dict(votes.filter(vote__lt=0))
+
+    for review in reviews:
+        review._n_downvotes = -downvotes.get(review.id, 0)
+        review._n_upvotes = upvotes.get(review.id, 0)
 
 class Review(models.Model):
     """
@@ -18,16 +32,25 @@ class Review(models.Model):
     paper = models.ForeignKey("main.Paper", related_name="reviews")
     parent = models.ForeignKey("self", null=True)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._n_upvotes = None
+        self._n_downvotes = None
+
     @property
     def comments(self):
         return Review.objects.filter(paper__id=self.paper_id, parent__isnull=False)
 
     @property
     def n_upvotes(self):
+        if self._n_upvotes is not None:
+            return self._n_upvotes
         return self.votes.filter(vote__gt=0).aggregate(n=Sum("vote"))["n"] or 0
 
     @property
     def n_downvotes(self):
+        if self._n_downvotes is not None:
+            return self._n_downvotes
         return -(self.votes.filter(vote__lt=0).aggregate(n=Sum("vote"))["n"] or 0)
 
     class Meta:
