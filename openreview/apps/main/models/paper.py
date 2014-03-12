@@ -21,9 +21,7 @@ class Keyword(models.Model):
 
 
 class Paper(models.Model):
-    doc_id = models.TextField(verbose_name="document identifier",
-                              help_text="Identifier: can either be a real DOI or a domain-specific one. " +
-                                        "For example: arXiv:1403.0438.", null=True)
+    doc_id = models.TextField(verbose_name="document identifier", null=True)
     title = models.TextField()
     abstract = models.TextField()
     publisher = models.TextField(null=True, blank=True)
