@@ -31,17 +31,20 @@ class PaperWithReviewsView(TemplateView):
             "downvotes": {vote.review_id for vote in downvotes}
         })
 
-@cache_page(60*10)
-def doi_scraper(request,id):
-    return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}), content_type="application/json")
 
 @cache_page(60*10)
+def doi_scraper(request, id):
+    return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}),
+                        content_type="application/json")
+
+
 def arxiv_scraper(request, id):
     try:
         tempres = ArXivScraper().parse(id)
         return HttpResponse(json.JSONEncoder().encode(tempres.get_results()), content_type="application/json")
     except Exception:
-        return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}), content_type="application/json")
+        return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}),
+                            content_type="application/json")
 
 
 
