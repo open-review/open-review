@@ -1,0 +1,20 @@
+<section review_id="{{ review.id }}" class="bs-callout bs-callout-{{ color|default:"info" }} review {% if not user.is_anonymous %}enabled{% endif %}">
+    <p>{{ review.text }}</p>
+
+    <div class="row">
+      <span class="col-md-9"><em>Written by</em>: {{ review.poster.username }}</span>
+      <span class="col-md-3">
+          <span class="login"><small><em>You must be logged in to vote!</em></small></span>
+          <div style="float:right;" class="btn-group btn-group-xs ">
+              <a title="Helpful, contributing, .." class="upvote btn {% if review.id in upvotes %}voted btn-success{% else %}btn-default{% endif %}">
+                  <i class="glyphicon glyphicon-arrow-up"></i>
+                  <span class="count">{{ review.n_upvotes }}</span>
+              </a>
+              <a title="Offtopic, rude, .." class="downvote btn {% if review.id in downvotes %}voted btn-danger{% else %}btn-default{% endif %}">
+                  <i class="glyphicon glyphicon-arrow-down"></i>
+                  <span class="count">{{ review.n_downvotes }}</span>
+              </a>
+          </div>
+      </span>
+    </div>
+</section>
