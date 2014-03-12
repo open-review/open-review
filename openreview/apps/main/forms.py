@@ -29,6 +29,12 @@ class ReviewForm(forms.ModelForm):
 
 
 class PaperForm(forms.ModelForm):
+    type_choices = [('',"Select an item"),
+                    ('doi',"Digital object identifier"),
+                    ('arxiv',"arXiv identifier"),
+                    ('manually',"Manually")]
+
+    type = forms.ChoiceField(choices=type_choices, help_text="Select an option")
     authors = forms.CharField(widget=widgets.Textarea(), help_text="Authors of this paper, separated with a newline.")
     keywords = forms.CharField(widget=widgets.Textarea(), help_text="Keywords, separated with a comma.", required=False)
 
@@ -38,6 +44,7 @@ class PaperForm(forms.ModelForm):
         # Fields are defined as TextFields in Paper model as we don't want to
         # restrict sizes (they would be completely arbitrary and don't offer
         # improved performance).
+
         self.fields["title"].widget = widgets.TextInput()
         self.fields["doc_id"].widget = widgets.TextInput()
         self.fields["publisher"].widget = widgets.TextInput()
@@ -86,6 +93,6 @@ class PaperForm(forms.ModelForm):
     class Meta:
         model = Paper
         fields = [
-            'title', 'doc_id', 'authors', 'abstract', 'keywords',
+            'type', 'title', 'doc_id', 'authors', 'abstract', 'keywords',
             'publisher', 'publish_date', 'urls'
         ]
