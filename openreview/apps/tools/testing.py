@@ -3,6 +3,7 @@ This module contains convenience functions for testing purposes.
 """
 from contextlib import contextmanager
 from functools import wraps
+import time
 import functools
 import unittest
 from django.conf import settings
@@ -139,7 +140,10 @@ def create_test_paper(n_authors=0, n_keywords=0, n_comments=0, n_reviews=0, **kw
 def create_test_review(**kwargs):
     paper, poster = None, None
     if "paper" not in kwargs:
-        paper = create_test_paper()
+        if "parent" in kwargs:
+            paper = kwargs["parent"].paper
+        else:
+            paper = create_test_paper()
     if "poster" not in kwargs:
         poster = create_test_user()
 
