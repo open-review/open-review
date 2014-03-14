@@ -121,11 +121,6 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertEqual(user.username, "abc")
 
 class TestSettingsForms(unittest.TestCase):
-    def test_is_email(self):
-        # It is way too hard to test for all valid emails. Assuming correctness in validate_email().
-        self.assertTrue(is_email("bla@bla.nl"))
-        self.assertFalse(is_email("bla@bla"))
-
     def test_settings_form(self):
         u = User.objects.create_user(username="TestHero", password="test123")
         form = SettingsForm(user=u, data={"password1": "test", "password2": "differentpassword"})
