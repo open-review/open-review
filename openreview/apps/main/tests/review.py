@@ -59,7 +59,7 @@ class TestReview(unittest.TestCase):
     def test_get_tree(self):
         r1 = create_test_review()
 
-        tree = r1.get_tree()
+        tree = r1.get_tree(lazy=False)
         self.assertEqual(r1, tree.review)
         self.assertEqual(0, tree.level)
         self.assertEqual([], list(tree.children))
@@ -71,17 +71,20 @@ class TestReview(unittest.TestCase):
         r1.save()
 
         # Uses old cache, should not error
-        r1.get_tree()
+        r1.get_tree(lazy=False)
 
         r1 = Review.objects.get(id=r1.id)
 
         try:
-            r1.get_tree()
+            r1.get_tree(lazy=False)
         except ValueError as e:
             error_message = "Detected loop: {r1.id} -> {r3.id} -> {r2.id} -> {r1.id}"
             self.assertEqual(str(e), error_message.format(**locals()))
         else:
             self.fail("get_tree() should have raised an error.")
+
+        # If lazy, no loop is detected
+        r1.get_tree()
 
         # Test queries
         r1 = create_test_review()
@@ -92,14 +95,38 @@ class TestReview(unittest.TestCase):
         r1.cache()
 
         with assert_max_queries(n=0):
-            r1.get_tree()
+            r1.get_tree(lazy=False)
 
-        self.assertEqual(r1.get_tree(), r1.get_tree())
-        self.assertNotEqual(r2.get_tree(), r1.get_tree())
+        self.assertEqual(r1.get_tree(lazy=False), r1.get_tree(lazy=False))
+        self.assertNotEqual(r2.get_tree(lazy=False), r1.get_tree(lazy=False))
 
-        self.assertEqual(r2.get_tree(), ReviewTree(review=r2, level=0, children=[
+        self.assertEqual(r2.get_tree(lazy=False), ReviewTree(review=r2, level=0, children=[
             ReviewTree(review=r3, level=1, children=[])
         ]))
+
+    def test_get_tree_size(self):
+        paper = create_test_paper()
+        top1 = create_test_review(paper=paper)
+        top2 = create_test_review(paper=paper)
+
+        self.assertEqual(top1.get_tree_size(), 1)
+        self.assertEqual(top2.get_tree_size(), 1)
+
+        child1, child2, child3 = [create_test_review(parent=top1) for i in range(3)]
+        create_test_review(paper=paper, parent=child1)
+
+        top1 = Review.objects.select_related("paper").get(id=top1.id)
+        self.assertEqual(top1.get_tree_size(), 5)
+        self.assertEqual(child1.get_tree_size(), 2)
+
+    def test_get_n_comments(self):
+        paper = create_test_paper()
+        top1 = create_test_review(paper=paper)
+        child1, *_ = [create_test_review(parent=top1) for i in range(3)]
+        create_test_review(paper=paper, parent=child1)
+
+        self.assertEqual(top1.n_comments, 4)
+        self.assertEqual(child1.n_comments, 1)
 
     def test_cache(self):
         paper = create_test_paper()

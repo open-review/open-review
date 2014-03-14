@@ -1,20 +1,57 @@
-<section review_id="{{ review.id }}" class="bs-callout bs-callout-{{ color|default:"info" }} review {% if not user.is_anonymous %}enabled{% endif %}">
-    <p>{{ review.text }}</p>
+<section review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
 
-    <div class="row">
-      <span class="col-md-9"><em>Written by</em>: {{ review.poster.username }}</span>
-      <span class="col-md-3">
-          <span class="login"><small><em>You must be logged in to vote!</em></small></span>
-          <div style="float:right;" class="btn-group btn-group-xs ">
-              <a title="Helpful, contributing, .." class="upvote btn {% if review.id in upvotes %}voted btn-success{% else %}btn-default{% endif %}">
-                  <i class="glyphicon glyphicon-arrow-up"></i>
-                  <span class="count">{{ review.n_upvotes }}</span>
-              </a>
-              <a title="Offtopic, rude, .." class="downvote btn {% if review.id in downvotes %}voted btn-danger{% else %}btn-default{% endif %}">
-                  <i class="glyphicon glyphicon-arrow-down"></i>
-                  <span class="count">{{ review.n_downvotes }}</span>
-              </a>
-          </div>
+<p class="poster">
+  <em>
+    <i class="glyphicon glyphicon-user"></i>
+      <span class="author">{{ review.poster.username }}</span>
+      on <span class="timestamp" unix="{{ review.timestamp|date:'U' }}">
+        {{ review.timestamp }}
       </span>
-    </div>
+  </em>
+</p>
+
+<article>
+  <p>{{ review.text }}</p>
+</article>
+
+<p>
+<div class="voting btn-group btn-group-xs ">
+  <a title="Helpful, contributing, .." class="upvote btn btn-default">
+    <i class="glyphicon glyphicon-arrow-up"></i>
+    <span class="count">{{ review.n_upvotes }}</span>
+  </a>
+  <a title="Offtopic, rude, .." class="downvote btn btn-default">
+    <i class="glyphicon glyphicon-arrow-down"></i>
+    <span class="count">{{ review.n_downvotes }}</span>
+  </a>
+</div>
+
+<div class="options btn-group btn-group-xs">
+  {% if not review.parent %}
+  <a href="{% url 'review' paper.id review.id %}" title="Permalink" class="btn btn-default">
+      <i class="glyphicon glyphicon-comment"></i> {{ review.n_comments }} comments
+  </a>
+  {% endif %}
+  <a href="{% url 'review' paper.id review.id %}" title="Permalink" class="btn btn-default">
+    <i class="glyphicon glyphicon-link"></i>
+  </a>
+  <a style="display:none;" title="Edit this comment/review" class="btn btn-default edit">
+    <i class="glyphicon glyphicon-edit"></i>
+  </a>
+  <a title="Report as spam" class="btn btn-default flag">
+    <i class="glyphicon glyphicon-flag"></i>
+  </a>
+  <a style="display:none" title="Delete this comment/review" class="btn btn-default delete">
+    <i class="glyphicon glyphicon-trash"></i>
+  </a>
+</div>
+
+<span class="login">
+  <small>
+    <em>You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote!</em>
+  </small>
+</span>
+</p>
 </section>
+
+

@@ -1,3 +1,5 @@
+anonymous = JSON.parse($("#anonymous").html())
+
 ###
 Given a vote-button, change its value with `delta`.
 ###
@@ -20,15 +22,19 @@ clear_btn = (btn) ->
 Function called when a vote button is clicked
 ###
 vote = (btn, value) ->
-  review = btn.closest ".review"
-  if not review.hasClass("enabled")
+  review = btn.closest(".review")
+  if anonymous
     return review.find(".login").show()
 
   review_id = review.attr("review_id")
   value = 0 if btn.hasClass("voted")
 
   # Send vote; don't do anything if server reports error.
-  $.ajax("review/#{review_id}/vote?vote=#{value}")
+  url = window.location.href
+  url += '/' if url[url.length - 1] != '/'
+  url += "review/" if url.indexOf("review") == -1
+  url += "#{review_id}/vote?vote=#{value}"
+  $.ajax url
 
   # Remove state of *other* button
   clear_btn btn.siblings(".btn")
@@ -42,6 +48,42 @@ vote = (btn, value) ->
     btn.removeClass "btn-default"
     btn.addClass("voted " + (if btn.hasClass "upvote" then "btn-success" else "btn-danger"))
 
-$(".review .upvote").click((e) -> vote($(e.currentTarget), 1))
-$(".review .downvote").click((e) -> vote($(e.currentTarget), -1))
-$(".review .login").hide()
+###
+Initialise vote buttons (make sure they've got the correct classes)
+###
+init_votes = ->
+  votes = JSON.parse($("#my_votes").html())
+
+  $.each(votes, (review_id, vote) ->
+    element = $(".review[review_id='#{review_id}']")
+    element = element.find(if vote > 0 then ".upvote" else ".downvote")
+    element.removeClass("btn-default").addClass("voted")
+    element.addClass(if vote > 0 then "btn-success" else "btn-danger")
+  );
+
+###
+All owned reviews should display a
+###
+init_reviews = ->
+  reviews = JSON.parse($("#my_reviews").html())
+
+  for review_id in reviews
+    review = $(".review[review_id='#{review_id}']")
+    review.find(".btn:hidden").show()
+    review.find(".flag").hide()
+    review.addClass("bs-callout-success")
+
+###
+###
+init = ->
+  $(".review .login").hide()
+
+  if not anonymous
+    init_votes()
+    init_reviews()
+
+  $(".review .upvote").click((e) -> vote($(e.currentTarget), 1))
+  $(".review .downvote").click((e) -> vote($(e.currentTarget), -1))
+
+init()
+

@@ -75,3 +75,71 @@
     background-color: #dff0d8;
     border-color: #d6e9c6;
 }
+
+.poster{
+    font-size:0.9em;
+    color:grey;
+}
+
+.preview{
+}
+
+.new textarea{
+    width:100%;
+    padding:5px;
+    height: 300px;
+}
+
+.comments .review{
+    margin: 0px;
+    border-bottom: solid 1px;
+    border-color:#D0E3F0;
+}
+
+.level-1{
+    margin-left:3%;
+}
+
+.level-2{
+    margin-left:6%;
+}
+
+.level-3{
+    margin-left:9%;
+}
+
+.level-4{
+    margin-left:12%;
+}
+
+.level-5{
+    margin-left:15%;
+}
+
+.level-6{
+    margin-left:18%;
+}
+
+.level-7{
+    margin-left:21%;
+}
+
+.level-8{
+    margin-left:24%;
+}
+
+.level-9{
+    margin-left:27%;
+}
+
+.level-10{
+    margin-left:30%;
+}
+
+.level-11{
+    margin-left:33%;
+}
+
+.level-12{
+    margin-left:36%;
+}

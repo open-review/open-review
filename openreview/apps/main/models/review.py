@@ -1,5 +1,7 @@
 from collections import namedtuple, collections
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 from django.db import models
 from django.db.models import Sum
 
@@ -50,8 +52,8 @@ class Review(models.Model):
         self._reviews = None
 
     @property
-    def comments(self):
-        return Review.objects.filter(paper__id=self.paper_id, parent__isnull=False)
+    def n_comments(self):
+        return self.get_tree_size() - 1
 
     @property
     def n_upvotes(self):
@@ -118,7 +120,7 @@ class Review(models.Model):
             review._paper_cache = paper
             review._parent_cache = _reviews.get(review.parent_id, None)
 
-    def _get_tree(self, level, seen):
+    def _get_tree(self, level, seen, lazy):
         if self.id in seen:
             # We've detected a loop. This should not happen, ever. Determine products
             # of the loop and raise a descriptive ValueError.
@@ -133,13 +135,19 @@ class Review(models.Model):
             raise ValueError("Detected loop: %s" % " -> ".join(map(str, seen)))
 
         seen.add(self.id)
-        children = [r._get_tree(level=level+1, seen=seen) for r in self._reviews_children[self.id]]
-        return ReviewTree(review=self, level=level, children=children)
+        children = (r._get_tree(level=level+1, seen=seen, lazy=lazy) for r in self._reviews_children[self.id])
+        return ReviewTree(review=self, level=level, children=children if lazy else list(children))
 
-    def get_tree(self):
-        """Generates a tree based upon ReviewTree. Calls cache() if needed."""
+    def get_tree(self, lazy=True):
+        """Generates a tree based upon ReviewTree. Calls cache() if needed.
+
+        @param lazy: determines whether children properties are generators or lists.
+        @type lazy: bool"""
         self.cache()
-        return self._get_tree(level=0, seen=set())
+        return self._get_tree(level=0, seen=set(), lazy=lazy)
+
+    def get_tree_size(self):
+        return 1 + sum(r.review.get_tree_size() for r in self.get_tree().children)
 
     class Meta:
         app_label = "main"
@@ -147,10 +155,17 @@ class Review(models.Model):
     def __str__(self):
         return "Review: {self.poster}, {self.paper}, {self.parent}".format(self=self)
 
+    def _invalidate_template_caches(self):
+        cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))
+
     def save(self, *args, **kwargs):
         # Check whether the whole tree has the same paper.
         if self.parent_id is not None and self.parent.paper_id is not self.paper_id:
             raise ValueError("parent.paper ({self.parent.paper_id}) was not {self.paper_id}".format(self=self))
+
+        # We need to clean template caches if this is an existing review
+        if self.id is not None:
+            self._invalidate_template_caches()
 
         # Note: we should probably also check for loops, but this makes saving very
         # inefficient. Instead, when generating trees this issue is detected.
@@ -170,7 +185,12 @@ class Vote(models.Model):
     def __str__(self):
         return "{self.voter} voted {self.vote} on {self.review}".format(self=self)
 
+    def delete(self, using=None):
+        self.review._invalidate_template_caches()
+
     def save(self, *args, **kwargs):
+        self.review._invalidate_template_caches()
+
         if self.vote == 0:
             raise ValueError("You cannot vote neutral.")
         return super().save(*args, **kwargs)

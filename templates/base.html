@@ -68,11 +68,13 @@
             </div>
         </footer>
     </div>
-    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    {% compress js %}
-        <script src="{{ STATIC_URL }}js/test.coffee" type="text/coffeescript"></script>
-        {% block js %}{% endblock %}
-    {% endcompress %}
+    {% block meta %}{% endblock %}
 </body>
 </html>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+{% compress js %}
+    <script src="{{ STATIC_URL }}js/test.coffee" type="text/coffeescript"></script>
+    {% block js %}{% endblock %}
+{% endcompress %}

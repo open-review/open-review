@@ -1,0 +1,15 @@
+{% load cache %}
+
+<div class="level-{{ tree.level }}">
+    {% comment %}{% cache 864000 review paper.id tree.review.id %}{% endcomment %}
+        {% include "papers/review.html" with paper=paper review=tree.review %}
+    {% comment %}{% endcache %}{% endcomment %}
+</div>
+
+{% for child in tree.children %}
+    {% with "papers/tree.html" as template %}
+    {% with child as tree %}
+        {% include template %}
+    {% endwith %}
+    {% endwith %}
+{% endfor %}
