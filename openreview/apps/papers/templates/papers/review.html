@@ -1,3 +1,5 @@
+{% load markdown %}
+
 <section review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
 
 <p class="poster">
@@ -11,10 +13,11 @@
 </p>
 
 <article>
-  <p>{{ review.text }}</p>
+  <p>{{ review.text|markdown }}</p>
 </article>
 
-<p>
+<p></p>
+
 <div class="voting btn-group btn-group-xs ">
   <a title="Helpful, contributing, .." class="upvote btn btn-default">
     <i class="glyphicon glyphicon-arrow-up"></i>
@@ -46,12 +49,12 @@
   </a>
 </div>
 
-<span class="login">
+<span style="display:none;" class="login">
   <small>
     <em>You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote!</em>
   </small>
 </span>
-</p>
+
 </section>
 
 

@@ -90,7 +90,7 @@
     height: 300px;
 }
 
-.comments .review{
+.comments .review, .preview .review{
     margin: 0px;
     border-bottom: solid 1px;
     border-color:#D0E3F0;

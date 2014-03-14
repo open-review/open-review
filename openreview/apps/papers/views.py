@@ -1,7 +1,10 @@
 import json
+import datetime
+from django.core.urlresolvers import reverse
 
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
 
 from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
@@ -34,7 +37,9 @@ class VoteView(View):
 
 class BaseReviewView(TemplateView):
     def get_context_data(self, **kwargs):
-        if self.request.user.is_anonymous():
+        # Do not load context data if user is anonymous (no posts) or
+        # the current method is POST (votes/reviews not needed)
+        if self.request.user.is_anonymous() or self.request.POST:
             return super().get_context_data(**kwargs)
 
         # Passing reviews and votes of user allows efficient caching of templates
@@ -65,6 +70,9 @@ class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
 
     def get_context_data(self, **kwargs):
+        if self.request.POST:
+            return super().get_context_data(**kwargs)
+
         review = Review.objects.get(id=self.kwargs["review_id"])
         paper = Paper.objects.get(id=self.kwargs["paper_id"])
         review.cache(select_related=("poster",))
@@ -72,4 +80,30 @@ class ReviewView(BaseReviewView):
         tree = review.get_tree()
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
+    def post(self, request, paper_id, review_id, **kwargs):
+        commit = request.GET.get("commit", True)
+        commit = False
+
+        review = Review()
+        review.text = request.POST["text"]
+        review.poster = request.user
+        review.paper_id = int(paper_id)
+        review.timestamp = datetime.datetime.now()
+
+        if review_id != "-1":
+            review.parent_id = int(review_id)
+
+        review._n_upvotes = 0
+        review._n_downvotes = 0
+        review._n_comments = 0
+
+        if commit:
+            review.save()
+            return redirect(reverse("review", args=[paper_id, review.id]), permanent=False)
+
+        review.id = -1
+        return render(request, "papers/review.html", {
+            "paper": Paper.objects.get(id=paper_id),
+            "review": review
+        })
 

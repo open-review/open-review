@@ -43,6 +43,7 @@ class Review(models.Model):
         super().__init__(*args, **kwargs)
         self._n_upvotes = None
         self._n_downvotes = None
+        self._n_comments = None
 
         # If cache() is called this is a defaultdict(list) with
         # review_id -> [children_ids].
@@ -53,6 +54,8 @@ class Review(models.Model):
 
     @property
     def n_comments(self):
+        if self._n_comments is not None:
+            return self._n_comments
         return self.get_tree_size() - 1
 
     @property

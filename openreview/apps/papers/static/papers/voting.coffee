@@ -74,8 +74,6 @@ init_reviews = ->
 ###
 ###
 init = ->
-  $(".review .login").hide()
-
   if not anonymous
     init_votes()
     init_reviews()

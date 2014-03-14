@@ -6,6 +6,7 @@
 
 {% block js %}
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/voting.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
 {% endblock %}
 
 {% block meta %}
@@ -54,16 +55,19 @@
     {% url 'paper' paper.id as url %}
     {% for review in reviews %}
         {% include "papers/review.html" with review=review user=user url=url %}
+    {% empty %}
+        <em>No reviews yet!</em>
     {% endfor %}
 
     <hr/>
 
     <div class="new row">
       <div class="col-md-6">
-          <form method="POST" action="">
-
+          <form method="POST" action="{% url 'review' paper.id review.id|default:-1 %}">
+              {% csrf_token %}
+              <textarea name="text" placeholder="Write a new review!"></textarea>
+              <input style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
           </form>
-          <textarea placeholder="Write a new review!"></textarea>
       </div>
       <div class="preview col-md-6"></div>
     </div>
