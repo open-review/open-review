@@ -1,19 +1,14 @@
 from django.core.cache import cache
 
 from openreview.apps.main.models.paper import Paper
-from openreview.apps.main.models.author import  Author
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 
-class ScrapeError(ValueError):
-    pass
-
-
 class PaperMetaScraper:
 
-    def __init__(self):
+    def __init__(self, caching=True):
         self.fields = {
             "doc_id": None,
             "title":  None,
@@ -24,6 +19,7 @@ class PaperMetaScraper:
             "authors": None,
             "keywords": None}
         self.bs = None
+        self.caching = caching
 
     def parse(self, url):
         pass
@@ -38,7 +34,7 @@ class PaperMetaScraper:
 class ArXivScraper(PaperMetaScraper):
 
     def parse(self, doc_id):
-        if cache.get("arxiv-res-{id}".format(id=doc_id)):
+        if self.caching and cache.get("arxiv-res-{id}".format(id=doc_id)):
             self.fields = cache.get("arxiv-res-{id}".format(id=doc_id))
         else:
             self.fields['id'] = doc_id
@@ -48,5 +44,6 @@ class ArXivScraper(PaperMetaScraper):
             #I need a functional language
             self.fields['authors'] = list(map(lambda x: x.text, self.bs.select("div.leftcolumn div.authors a")))
             self.fields['abstract'] = self.bs.select("blockquote.abstract span")[0].nextSibling
-            cache.set("arxiv-res-{id}".format(id=doc_id), self.fields)
+            if self.caching:
+                cache.set("arxiv-res-{id}".format(id=doc_id), self.fields)
         return self
