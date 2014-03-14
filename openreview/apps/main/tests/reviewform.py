@@ -53,8 +53,9 @@ class TestReviewForm(TestCase):
         self.assertIsNotNone(a.id)
         self.assertIsNone(b.id)
 
-        # save(commit=False) should not save authors/keywords
-        with assert_max_queries(n=0):
+        # save(commit=False) should not save authors/keywords,
+        # but should only check for existing entries
+        with assert_max_queries(n=1):
             form.save(commit=False)
         self.assertIsNotNone(jean.id)
         self.assertIsNone(piere.id)
@@ -62,8 +63,9 @@ class TestReviewForm(TestCase):
         self.assertIsNone(b.id)
 
         # save(commit=True) should
-        with assert_max_queries(n=7):
+        with assert_max_queries(n=8):
             # Django queries database before inserting to make sure it doesn't include duplicates
+            # [0] Checkout for duplicate Paper entry
             # [1] Saving paper
             # [2] INSERT piere
             # [3] SELECT authors
