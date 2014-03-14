@@ -20,6 +20,7 @@ review_received = (html) ->
   preview.html(html)
   preview.find(".voting").hide()
   preview.find(".options").hide()
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, preview.get(0)]);
 
 $(".new textarea").keyup((e) ->
   last_keypress = Date.now() if not last_keypress?
