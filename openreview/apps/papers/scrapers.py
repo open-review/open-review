@@ -21,6 +21,9 @@ class PaperMetaScraper:
         self.bs = None
         self.caching = caching
 
+        # Allows overriding the refault urlopen for testing purposes
+        self.urlopen = urlopen
+
     def parse(self, url):
         pass
 
@@ -37,9 +40,9 @@ class ArXivScraper(PaperMetaScraper):
         if self.caching and cache.get("arxiv-res-{id}".format(id=doc_id)):
             self.fields = cache.get("arxiv-res-{id}".format(id=doc_id))
         else:
-            self.fields['id'] = doc_id
+            self.fields['doc_id'] = doc_id
             self.fields['urls'] = "http://arxiv.org/abs/{id}".format(id=doc_id)
-            self.bs = BeautifulSoup(urlopen(self.fields['urls']))
+            self.bs = BeautifulSoup(self.urlopen(self.fields['urls']))
             self.fields['title'] = self.bs.select("div.leftcolumn h1.title")[0].span.nextSibling
             #I need a functional language
             self.fields['authors'] = list(map(lambda x: x.text, self.bs.select("div.leftcolumn div.authors a")))
