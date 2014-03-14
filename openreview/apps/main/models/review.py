@@ -31,11 +31,11 @@ class Review(models.Model):
     A review can either be a 'real' review of a paper (parent == None) or a meta-review, which is
     referred to as a comment in the user interface (parent != None).
     """
-    text = models.TextField(verbose_name="contents")
+    text = models.TextField(verbose_name="contents", null=True)
     rating = models.SmallIntegerField(default=-1)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    poster = models.ForeignKey(get_user_model())
+    poster = models.ForeignKey(get_user_model(), null=True)
     paper = models.ForeignKey("main.Paper", related_name="reviews")
     parent = models.ForeignKey("self", null=True)
 
@@ -73,6 +73,10 @@ class Review(models.Model):
     @property
     def cached(self):
         return self._reviews_children is not None
+
+    @property
+    def deleted(self):
+        return self.text is None
 
     def cache(self, select_related=None, defer=None):
         """
@@ -160,6 +164,12 @@ class Review(models.Model):
 
     def _invalidate_template_caches(self):
         cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))
+
+    def delete(self, using=None):
+        self.text = None
+        self.poster = None
+        self.rating = -1
+        self.save(using=using)
 
     def save(self, *args, **kwargs):
         # Check whether the whole tree has the same paper.

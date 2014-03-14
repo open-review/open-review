@@ -23,8 +23,12 @@ Function called when a vote button is clicked
 ###
 vote = (btn, value) ->
   review = btn.closest(".review")
+  if review.find("article").hasClass("deleted")
+    return review.find(".deleted-message").show()
+
   if anonymous
     return review.find(".login").show()
+
 
   review_id = review.attr("review_id")
   value = 0 if btn.hasClass("voted")

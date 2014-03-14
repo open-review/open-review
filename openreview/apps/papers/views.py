@@ -81,8 +81,7 @@ class ReviewView(BaseReviewView):
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
     def post(self, request, paper_id, review_id, **kwargs):
-        commit = request.GET.get("commit", True)
-        commit = False
+        commit = "submit" in request.POST
 
         review = Review()
         review.text = request.POST["text"]
@@ -106,4 +105,14 @@ class ReviewView(BaseReviewView):
             "paper": Paper.objects.get(id=paper_id),
             "review": review
         })
+
+    def delete(self, request, paper_id, review_id, **kwargs):
+        review = Review.objects.defer("text").get(id=review_id)
+
+        if request.user.is_anonymous() or request.user.id != review.poster_id:
+            return HttpResponseForbidden("You must be owner of this review/comment in order to delete it.")
+
+        review.delete()
+        return HttpResponse("OK", status=200)
+
 

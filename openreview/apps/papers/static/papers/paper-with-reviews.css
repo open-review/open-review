@@ -96,6 +96,11 @@
     border-color:#D0E3F0;
 }
 
+article.deleted:after{
+    content: '[Deleted]';
+    color:grey;
+}
+
 .level-1{
     margin-left:3%;
 }

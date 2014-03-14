@@ -5,16 +5,25 @@
 <p class="poster">
   <em>
     <i class="glyphicon glyphicon-user"></i>
-      <span class="author">{{ review.poster.username }}</span>
+      <span class="author">
+          {% if review.poster == None %}
+              ?
+          {% else %}
+              {{ review.poster.username }}
+          {% endif %}
+      </span>
       on <span class="timestamp" unix="{{ review.timestamp|date:'U' }}">
         {{ review.timestamp }}
       </span>
   </em>
 </p>
 
-<article>
-  <p>{{ review.text|markdown }}</p>
-</article>
+{% if review.text == None %}
+    <article class="deleted"></article>
+{% else %}
+    <article><p>{{ review.text|markdown }}</p></article>
+{% endif %}
+
 
 <p></p>
 
@@ -38,20 +47,31 @@
   <a href="{% url 'review' paper.id review.id %}" title="Permalink" class="btn btn-default permalink">
     <i class="glyphicon glyphicon-link"></i>
   </a>
+
+  {% if not review.deleted %}
   <a style="display:none;" title="Edit this comment/review" class="btn btn-default edit">
     <i class="glyphicon glyphicon-edit"></i>
   </a>
+
   <a title="Report as spam" class="btn btn-default flag">
     <i class="glyphicon glyphicon-flag"></i>
   </a>
+
   <a style="display:none" title="Delete this comment/review" class="btn btn-default delete">
     <i class="glyphicon glyphicon-trash"></i>
   </a>
+  {% endif %}
 </div>
 
 <span style="display:none;" class="login">
   <small>
     <em>You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote!</em>
+  </small>
+</span>
+
+<span style="display:none;" class="deleted-message">
+  <small>
+      <em>You cannot cast votes on deleted reviews/comments.</em>
   </small>
 </span>
 

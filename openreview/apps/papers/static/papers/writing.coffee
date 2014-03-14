@@ -5,7 +5,6 @@ timeout = null
 
 stopped_typing = ->
   form = $(this.currentTarget).closest("form")
-  url = form.attr("action") + "?commit=false"
 
   # Get form data as javascript object
   form_data = {}
@@ -13,7 +12,7 @@ stopped_typing = ->
     form_data[x.name] = x.value
   );
 
-  $.post(url, form_data, review_received.bind(form))
+  $.post(form.attr("action"), form_data, review_received.bind(form))
 
 review_received = (html) ->
   preview = this.closest(".new").find(".preview")

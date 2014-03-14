@@ -11,7 +11,7 @@
     {% endcompress %}
     <title>OpenReview</title>
 </head>
-<body>
+<body csrf="{{ csrf_token }}">
     <div class="container">
         {% block login %}
         {%  if user.is_anonymous %}
