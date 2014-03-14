@@ -70,6 +70,11 @@ class PaperForm(forms.ModelForm):
         Beware: saving with commit=False will result in any newly created authors to not
         be created also.
         """
+        existing_paper = Paper.objects.get(doc_id=self.cleaned_data["doc_id"])
+
+        if existing_paper:
+            return existing_paper
+
         paper = super(PaperForm, self).save(commit=False, **kwargs)
 
         if commit:
