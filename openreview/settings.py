@@ -61,7 +61,7 @@ if not DEBUG:
 else:
     SECRET_KEY = "longhairdontcare"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
 
 # Overriding default User object
 AUTH_USER_MODEL = 'accounts.User'
