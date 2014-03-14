@@ -151,7 +151,7 @@ class TestSettingsFormLive(SeleniumTestCase):
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("password")
         self.wd.find_css('input[value="Login"]').click()
-        self.wd.find_css("body")
+        self.wd.wait_for_css("body")
         self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
 
         # Test changing password
@@ -161,14 +161,14 @@ class TestSettingsFormLive(SeleniumTestCase):
         self.wd.find_css("#id_settings_password2").send_keys("test1234")
         self.wd.find_css('input[value="Update"]').click()
         self.open(reverse("accounts-logout"))
-        self.wd.find_css("body")
+        self.wd.wait_for_css("body")
 
         self.open(reverse("accounts-login"))
         self.wd.wait_for_css("body")
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("test1234")
         self.wd.find_css('input[value="Login"]').click()
-        self.wd.find_css("body")
+        self.wd.wait_for_css("body")
         self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
 
         # Test changing email
