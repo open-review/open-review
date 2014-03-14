@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import widgets
+from django.core.exceptions import ObjectDoesNotExist
 from openreview.apps.main.models import Author, Keyword
 
 from openreview.apps.main.models.review import Review
@@ -70,30 +71,29 @@ class PaperForm(forms.ModelForm):
         Beware: saving with commit=False will result in any newly created authors to not
         be created also.
         """
-        existing_paper = Paper.objects.get(doc_id=self.cleaned_data["doc_id"])
-
-        if existing_paper:
+        try:
+            existing_paper = Paper.objects.get(doc_id=self.cleaned_data.get("doc_id"))
             return existing_paper
+        except ObjectDoesNotExist:
+            paper = super(PaperForm, self).save(commit=False, **kwargs)
 
-        paper = super(PaperForm, self).save(commit=False, **kwargs)
+            if commit:
+                paper.save()
 
-        if commit:
-            paper.save()
+                # TODO: More efficient implementation. This calls the database N times, which is
+                # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
+                # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
+                for author in self.cleaned_data["authors"]:
+                    if author.id is None:
+                        author.save()
+                paper.authors.add(*self.cleaned_data["authors"])
 
-            # TODO: More efficient implementation. This calls the database N times, which is
-            # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
-            # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
-            for author in self.cleaned_data["authors"]:
-                if author.id is None:
-                    author.save()
-            paper.authors.add(*self.cleaned_data["authors"])
+                for keyword in self.cleaned_data["keywords"]:
+                    if keyword.id is None:
+                        keyword.save()
+                paper.keywords.add(*self.cleaned_data["keywords"])
 
-            for keyword in self.cleaned_data["keywords"]:
-                if keyword.id is None:
-                    keyword.save()
-            paper.keywords.add(*self.cleaned_data["keywords"])
-
-        return paper
+            return paper
 
     class Meta:
         model = Paper
