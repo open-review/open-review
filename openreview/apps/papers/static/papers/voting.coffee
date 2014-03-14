@@ -30,10 +30,8 @@ vote = (btn, value) ->
   value = 0 if btn.hasClass("voted")
 
   # Send vote; don't do anything if server reports error.
-  url = window.location.href
-  url += '/' if url[url.length - 1] != '/'
-  url += "review/" if url.indexOf("review") == -1
-  url += "#{review_id}/vote?vote=#{value}"
+  url = review.find(".permalink").attr("href")
+  url += "/vote?vote=#{value}"
   $.ajax url
 
   # Remove state of *other* button

@@ -32,7 +32,7 @@
       <i class="glyphicon glyphicon-comment"></i> {{ review.n_comments }} comments
   </a>
   {% endif %}
-  <a href="{% url 'review' paper.id review.id %}" title="Permalink" class="btn btn-default">
+  <a href="{% url 'review' paper.id review.id %}" title="Permalink" class="btn btn-default permalink">
     <i class="glyphicon glyphicon-link"></i>
   </a>
   <a style="display:none;" title="Edit this comment/review" class="btn btn-default edit">
