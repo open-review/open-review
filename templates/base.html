@@ -70,6 +70,15 @@
     </div>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'],['\\(','\\)']],
+            processEscapes: true
+        }
+      });
+    </script>
     {% compress js %}
         <script src="{{ STATIC_URL }}js/test.coffee" type="text/coffeescript"></script>
         {% block js %}{% endblock %}
