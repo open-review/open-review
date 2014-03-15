@@ -1,7 +1,9 @@
 import unittest
+from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 from openreview.apps.main.models import Review, set_n_votes_cache, ReviewTree
 from openreview.apps.tools.testing import create_test_review, create_test_votes, assert_max_queries, list_queries, \
-    create_test_paper, create_test_user
+    create_test_paper, create_test_user, create_test_vote
 
 __all__ = ["TestReview"]
 
@@ -55,6 +57,31 @@ class TestReview(unittest.TestCase):
         self.assertNotEqual(review1.paper, review2.paper)
         review3 = Review(parent=review1, paper=review2.paper, poster=create_test_user(), text="foo")
         self.assertRaises(ValueError, review3.save)
+
+    def test_delete(self):
+        review = create_test_review(rating=2)
+
+        self.assertIsNotNone(review.text)
+        self.assertIsNotNone(review.poster)
+        self.assertNotEqual(-1, review.rating)
+
+        review.delete()
+
+        self.assertIsNone(review.text)
+        self.assertIsNone(review.poster)
+        self.assertEqual(-1, review.rating)
+
+        # Is save() called?
+        review = Review.objects.get(id=review.id)
+        self.assertIsNone(review.text)
+        self.assertIsNone(review.poster)
+        self.assertEqual(-1, review.rating)
+
+    def test_deleted(self):
+        review = create_test_review()
+        self.assertFalse(review.deleted)
+        review.delete()
+        self.assertTrue(review.deleted)
 
     def test_get_tree(self):
         r1 = create_test_review()
@@ -127,6 +154,47 @@ class TestReview(unittest.TestCase):
 
         self.assertEqual(top1.n_comments, 4)
         self.assertEqual(child1.n_comments, 1)
+
+        # Should listen to internal cache
+        top1._n_comments = 15
+        self.assertEqual(top1.n_comments, 15)
+
+    def test_cache_invalidation(self):
+        review = create_test_review()
+        review_key = make_template_fragment_key("review", [review.paper_id, review.id])
+
+        # Direct call
+        cache.delete(review_key)
+        self.assertEqual(None, cache.get(review_key))
+        cache.set(review_key, "test")
+        self.assertEqual("test", cache.get(review_key))
+        review._invalidate_template_caches()
+        self.assertEqual(None, cache.get(review_key))
+
+        # After calling review.save()
+        cache.set(review_key, "test")
+        self.assertEqual("test", cache.get(review_key))
+        review.save()
+        self.assertEqual(None, cache.get(review_key))
+
+        # After calling review.delete()
+        cache.set(review_key, "test")
+        self.assertEqual("test", cache.get(review_key))
+        review.delete()
+        self.assertEqual(None, cache.get(review_key))
+
+        # After calling Vote.save()
+        vote = create_test_vote(review=review)
+        cache.set(review_key, "test")
+        self.assertEqual("test", cache.get(review_key))
+        vote.save()
+        self.assertEqual(None, cache.get(review_key))
+
+        # After calling Vote.delete()
+        cache.set(review_key, "test")
+        self.assertEqual("test", cache.get(review_key))
+        vote.delete()
+        self.assertEqual(None, cache.get(review_key))
 
     def test_cache(self):
         paper = create_test_paper()

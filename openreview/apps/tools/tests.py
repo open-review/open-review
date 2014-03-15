@@ -47,6 +47,9 @@ class TestModelViewMixin(unittest.TestCase):
             view.objects.review.poster
         self.assertEqual(1, len(l))
 
+        # Consecutive calls should result in same object
+        self.assertTrue(view.objects.review is view.objects.review)
+
 class TestTesting(unittest.TestCase):
     def do_n_queries(self, _n=1, contextmanager=None, *args, **kwargs):
         with contextmanager(*args, **kwargs) as l:

@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
 
 from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
+from openreview.apps.tools.views import ModelViewMixin
 
 
 class VoteView(View):
@@ -56,63 +57,72 @@ class BaseReviewView(TemplateView):
             **kwargs
         )
 
-class PaperWithReviewsView(BaseReviewView):
+class PaperWithReviewsView(ModelViewMixin, BaseReviewView):
     template_name = "papers/paper.html"
 
     def get_context_data(self, **kwargs):
-        paper = Paper.objects.prefetch_related("authors", "keywords").get(pk=self.kwargs["paper_id"])
+        paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords"))
         reviews = list(paper.get_reviews().select_related("poster"))
+
+        # Set cache and sort reviews by up-/downvotes
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
+
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
-class ReviewView(BaseReviewView):
+class ReviewView(ModelViewMixin, BaseReviewView):
     template_name = "papers/comments.html"
 
     def get_context_data(self, **kwargs):
         if self.request.POST:
             return super().get_context_data(**kwargs)
 
-        review = Review.objects.get(id=self.kwargs["review_id"])
-        paper = Paper.objects.get(id=self.kwargs["paper_id"])
+        paper = self.objects.paper
+        review = self.objects.review
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
-        tree = review.get_tree()
-        return super().get_context_data(tree=tree, paper=paper, **kwargs)
+
+        return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
 
     def post(self, request, paper_id, review_id, **kwargs):
         commit = "submit" in request.POST
 
+        if request.user.is_anonymous():
+            return HttpResponseForbidden("You must be logged in to submit a review/comment.")
+
+        if "text" not in request.POST:
+            return HttpResponseBadRequest("You should provide 'text' in request data.")
+
         review = Review()
         review.text = request.POST["text"]
         review.poster = request.user
-        review.paper_id = int(paper_id)
+        review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
         if review_id != "-1":
             review.parent_id = int(review_id)
 
+        # Set cache, so we can use default template to render preview
         review._n_upvotes = 0
         review._n_downvotes = 0
         review._n_comments = 0
 
         if commit:
-            review.save()
+            try:
+                review.save()
+            except ValueError:
+                msg = "Could not save review/comment due to incorrect values. Did you enter paper/review correctly?"
+                return HttpResponseBadRequest(msg)
+
             return redirect(reverse("review", args=[paper_id, review.id]), permanent=False)
 
         review.id = -1
-        return render(request, "papers/review.html", {
-            "paper": Paper.objects.get(id=paper_id),
-            "review": review
-        })
+        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review))
 
-    def delete(self, request, paper_id, review_id, **kwargs):
-        review = Review.objects.defer("text").get(id=review_id)
-
-        if request.user.is_anonymous() or request.user.id != review.poster_id:
+    def delete(self, request, **kwargs):
+        if request.user.is_anonymous() or request.user.id != self.objects.review.poster_id:
             return HttpResponseForbidden("You must be owner of this review/comment in order to delete it.")
-
-        review.delete()
+        self.objects.review.delete()
         return HttpResponse("OK", status=200)
 
 

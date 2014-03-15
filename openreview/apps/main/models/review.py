@@ -1,4 +1,4 @@
-from collections import namedtuple, collections
+from collections import namedtuple, defaultdict
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
@@ -117,7 +117,7 @@ class Review(models.Model):
 
         # We want to create a review_id -> [children] mapping. After caching
         # each Review object in the cache shares the cache.
-        mapping = collections.defaultdict(list)
+        mapping = defaultdict(list)
         paper = self.paper
 
         for review in _reviews.values():
@@ -200,6 +200,7 @@ class Vote(models.Model):
 
     def delete(self, using=None):
         self.review._invalidate_template_caches()
+        super().delete(using=using)
 
     def save(self, *args, **kwargs):
         self.review._invalidate_template_caches()
