@@ -1,7 +1,6 @@
 import datetime
 from django.db import models
 from django.db.models import Count
-import operator
 
 from openreview.apps.main.models.review import Vote, Review
 from openreview.apps.main.models.author import Author

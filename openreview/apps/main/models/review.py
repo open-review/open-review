@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Sum
+from django.conf import settings
 
 __all__ = ["Review", "Vote", "set_n_votes_cache"]
 
@@ -28,7 +29,7 @@ class Review(models.Model):
     rating = models.SmallIntegerField(default=-1)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    poster = models.ForeignKey(get_user_model())
+    poster = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="reviews")
     paper = models.ForeignKey("main.Paper", related_name="reviews")
     parent = models.ForeignKey("self", null=True)
 
@@ -63,7 +64,7 @@ class Review(models.Model):
 class Vote(models.Model):
     vote = models.SmallIntegerField(db_index=True)
     review = models.ForeignKey(Review, related_name="votes")
-    voter = models.ForeignKey(get_user_model(), related_name="votes")
+    voter = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
 
     class Meta:
         app_label = "main"

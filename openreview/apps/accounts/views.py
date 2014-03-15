@@ -59,11 +59,14 @@ class LogoutView(RedirectView):
         logout(request)
         return super().get(request, *args, **kwargs)
 
+
 class SettingsView(TemplateView):
     template_name = "accounts/settings.html"
 
     def __init__(self, *args, **kwargs):
         self.settings_form = None
+        self.reviews = None
+        self.user = None
         super().__init__(*args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
@@ -72,10 +75,15 @@ class SettingsView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        return dict(super().get_context_data(**kwargs), settings_form=self.settings_form)
+        return dict(super().get_context_data(**kwargs), settings_form=self.settings_form, reviews=self.reviews, user=self.user)
 
     def post(self, request):
         return self.update()
+
+    def get(self, request):
+        self.reviews = request.user.reviews.all()
+        self.user = request.user
+        return super().get(request)
 
     def update(self):
         with transaction.atomic():
