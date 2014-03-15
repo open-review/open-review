@@ -69,10 +69,15 @@ class SeleniumTestCase(LiveServerTestCase):
         self.wd.get("%s%s" % (self.live_server_url, url))
 
     def login(self, username, password):
+        self.logout()
         self.open(reverse("accounts-login"))
         self.wd.find_css("#id_login_username").send_keys(username)
         self.wd.find_css("#id_login_password").send_keys(password)
         self.wd.find_css('input[value="Login"]').click()
+        self.wd.wait_for_css("body")
+
+    def logout(self):
+        self.open(reverse("accounts-logout"))
         self.wd.wait_for_css("body")
 
     def setUp(self):
