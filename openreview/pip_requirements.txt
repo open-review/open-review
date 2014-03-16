@@ -8,3 +8,4 @@ pyyaml
 cssselect
 lxml
 python3-memcached
+markdown2

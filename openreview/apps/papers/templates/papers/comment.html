@@ -1,0 +1,10 @@
+<div class="new row">
+  <div class="col-md-6">
+      <form method="POST" action="{% url 'review' paper.id review.id|default:-1 %}">
+          {% csrf_token %}
+          <textarea name="text" placeholder="Write a new review!">{{ text }}</textarea>
+          <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
+      </form>
+  </div>
+  <div class="preview col-md-6"></div>
+</div>
