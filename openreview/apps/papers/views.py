@@ -40,7 +40,7 @@ class VoteView(View):
 
         return HttpResponse("OK", status=201)
 
-class BaseReviewView(TemplateView):
+class BaseReviewView(ModelViewMixin, TemplateView):
     def get_context_data(self, **kwargs):
         # Do not load context data if user is anonymous (no posts) or
         # the current method is POST (votes/reviews not needed)
@@ -49,10 +49,10 @@ class BaseReviewView(TemplateView):
 
         # Passing reviews and votes of user allows efficient caching of templates
         # as we gain the possibility to let javascript do the markup
-        my_reviews = Review.objects.filter(paper__id=self.kwargs["paper_id"], poster=self.request.user)
+        my_reviews = Review.objects.filter(paper=self.objects.paper, poster=self.request.user)
         my_reviews = tuple(my_reviews.values_list("id", flat=True))
 
-        my_votes = Vote.objects.filter(review__paper__id=self.kwargs["paper_id"], voter=self.request.user)
+        my_votes = Vote.objects.filter(review__paper=self.objects.paper, voter=self.request.user)
         my_votes = dict(my_votes.values_list("review__id", "vote"))
 
         return super().get_context_data(
@@ -61,12 +61,19 @@ class BaseReviewView(TemplateView):
             **kwargs
         )
 
-class PaperWithReviewsView(ModelViewMixin, BaseReviewView):
+class PaperWithReviewsView(BaseReviewView):
     template_name = "papers/paper.html"
 
     def get_context_data(self, **kwargs):
         paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords"))
-        reviews = list(paper.get_reviews().select_related("poster"))
+
+        try:
+            review = paper.get_reviews()[0]
+        except IndexError:
+            reviews = []
+        else:
+            review.cache(select_related=["poster"])
+            reviews = [r for r in review._reviews.values() if r.parent_id is None]
 
         # Set cache and sort reviews by up-/downvotes
         set_n_votes_cache(reviews)
@@ -74,7 +81,7 @@ class PaperWithReviewsView(ModelViewMixin, BaseReviewView):
 
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
-class ReviewView(ModelViewMixin, BaseReviewView):
+class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
 
     def get_context_data(self, **kwargs):
