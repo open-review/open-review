@@ -27,7 +27,7 @@ vote = (btn, value) ->
     return review.find(".deleted-message").show()
 
   if anonymous
-    return review.find(".login").show()
+    return review.find(".login-message").show()
 
 
   review_id = review.attr("review_id")

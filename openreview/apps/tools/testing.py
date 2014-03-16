@@ -9,7 +9,8 @@ import unittest
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connection
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, Client
+from django.test.client import MULTIPART_CONTENT
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from datetime import datetime

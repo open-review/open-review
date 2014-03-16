@@ -1,10 +1,9 @@
-from pprint import pprint
 import unittest
-import time
 
 from django.core.urlresolvers import reverse
 from django.test import Client
 from selenium.common.exceptions import NoSuchElementException
+
 from openreview.apps.main.models import Review, Vote
 from openreview.apps.tools.testing import create_test_review, SeleniumTestCase, create_test_paper, create_test_user
 
@@ -51,13 +50,13 @@ class TestVoteViewLive(SeleniumTestCase):
         self.open(reverse("paper", args=[paper.id]))
         self.wd.wait_for_css("body")
 
-        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login :visible")
-        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login:visible")
-        self.assertEqual(2, len(self.wd.find_css(".review .login")))
+        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login-message :visible")
+        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login-message:visible")
+        self.assertEqual(2, len(self.wd.find_css(".review .login-message")))
 
         review_dom = self.wd.find_css(".review[review_id='%s']" % review.id)
         review_dom.find_element_by_class_name("upvote").click()
-        self.assertTrue(review_dom.find_element_by_class_name("login").is_displayed())
+        self.assertTrue(review_dom.find_element_by_class_name("login-message").is_displayed())
 
         # Logged in
         user = create_test_user(username="foo2", password="bar")

@@ -1,10 +1,14 @@
 import json
 import datetime
+from urllib import parse
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
+from django.utils.datastructures import MultiValueDict
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 
 from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
@@ -84,11 +88,36 @@ class ReviewView(ModelViewMixin, BaseReviewView):
 
         return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
 
+    def redirect(self, review):
+        return redirect(reverse("review", args=[review.paper_id, review.id]), permanent=False)
+
+    @method_decorator(login_required)
+    def patch(self, request, *args, **kwargs):
+        review = self.objects.review
+
+        if review.poster_id != self.request.user.id:
+            return HttpResponseForbidden("You must be owner of this post in order to edit it.")
+
+        # PATCH data is not standardised, but most javascript toolkits encode mappings as
+        # normal urlencoded (POST-like) data, which we will try to interpret here.
+        data = request.META['wsgi.input'].read()
+        try:
+            params = parse.parse_qs(data.decode("utf-8"))
+        except UnicodeDecodeError:
+            return HttpResponseBadRequest("Corrupt data. Encode is as UTF-8.")
+
+        params = MultiValueDict(params)
+
+        if "text" not in params:
+            return HttpResponseBadRequest("You should provide 'text' in request data.")
+
+        review.text = params["text"]
+        review.save()
+        return self.redirect(review)
+
+    @method_decorator(login_required)
     def post(self, request, paper_id, review_id, **kwargs):
         commit = "submit" in request.POST
-
-        if request.user.is_anonymous():
-            return HttpResponseForbidden("You must be logged in to submit a review/comment.")
 
         if "text" not in request.POST:
             return HttpResponseBadRequest("You should provide 'text' in request data.")
@@ -114,13 +143,14 @@ class ReviewView(ModelViewMixin, BaseReviewView):
                 msg = "Could not save review/comment due to incorrect values. Did you enter paper/review correctly?"
                 return HttpResponseBadRequest(msg)
 
-            return redirect(reverse("review", args=[paper_id, review.id]), permanent=False)
+            return self.redirect(review)
 
         review.id = -1
         return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review))
 
+    @method_decorator(login_required)
     def delete(self, request, **kwargs):
-        if request.user.is_anonymous() or request.user.id != self.objects.review.poster_id:
+        if request.user.id != self.objects.review.poster_id:
             return HttpResponseForbidden("You must be owner of this review/comment in order to delete it.")
         self.objects.review.delete()
         return HttpResponse("OK", status=200)

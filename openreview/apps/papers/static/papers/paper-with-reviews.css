@@ -76,17 +76,26 @@
     border-color: #d6e9c6;
 }
 
-.poster{
+.review > header{
     font-size:0.9em;
     color:grey;
 }
 
-.preview{
+.review > article{
+    padding-top:5px;
+    padding-bottom:10px;
 }
 
-.new textarea{
+.review > footer{
+    font-size: 0.9em;
+}
+
+.review .login-message, .review .deleted-message{
+    font-style: italic;
+}
+
+.review-container textarea{
     width:100%;
-    padding:5px;
     height: 300px;
 }
 

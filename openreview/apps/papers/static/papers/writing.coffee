@@ -3,8 +3,8 @@ TIMEOUT_AFTER = 750
 last_keypress = null
 timeout = null
 
-stopped_typing = ->
-  form = $(this.currentTarget).closest("form")
+stopped_typing = (form) ->
+  form = $(this.currentTarget).closest("form") if not form?
 
   # Get form data as javascript object
   form_data = {}
@@ -21,7 +21,7 @@ review_received = (html) ->
   preview.find(".options").hide()
   MathJax.Hub.Queue(["Typeset", MathJax.Hub, preview.get(0)]);
 
-$(".new textarea").keyup((e) ->
+keyup = (e) ->
   last_keypress = Date.now() if not last_keypress?
   delta = Date.now() - last_keypress
 
@@ -30,4 +30,22 @@ $(".new textarea").keyup((e) ->
   else
     clearTimeout(timeout);
     timeout = setTimeout(stopped_typing.bind(e), TIMEOUT_AFTER);
-)
+
+init_writing = (container) ->
+  container.find("textarea").keyup(keyup)
+  stopped_typing container.find("form")
+  container.prop("initialised", true);
+
+icon_clicked = (hide, toggle) ->
+  return ->
+    container = $(this).closest(".review-container");
+    container.find("> .#{hide}").hide()
+    container.find("> .#{toggle}").toggle()
+
+    container = container.find("> .#{toggle}")
+    if not container.prop("initialised")
+      init_writing(container)
+
+$(".review .options .edit").click(icon_clicked("new", "edit"))
+$(".review .options .reply").click(icon_clicked("edit", "new"))
+
