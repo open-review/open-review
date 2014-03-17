@@ -4,8 +4,8 @@
 <html>
 <head>
     <!-- Javascript can be found at the bottom of this page. -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     {% compress css %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
         {% block css %}{% endblock %}
     {% endcompress %}
@@ -69,8 +69,15 @@
         </footer>
     </div>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    {% block meta %}{% endblock %}
+    {% compress js %}
+        <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/dist/js/bootstrap.js"></script>
+        {% block js %}{% endblock %}
+    {% endcompress %}
+
+
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {
@@ -79,10 +86,6 @@
         }
       });
     </script>
-    {% block meta %}{% endblock %}
-    {% compress js %}
-        {% block js %}{% endblock %}
-    {% endcompress %}
-</body>
+  </body>
 </html>
 
