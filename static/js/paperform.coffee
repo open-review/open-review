@@ -48,6 +48,6 @@ $("#id_type").change(renew_form);
 
 var latest_request;
 
-$("#id_doc_id").keyup(load_scraper)
+$("#id_doc_id").on('input', null, null, load_scraper)
 
 `
