@@ -104,9 +104,9 @@
 }
 
 .comments .review, .preview .review{
-    margin: 0px;
-    border-bottom: solid 1px;
-    border-color:#D0E3F0;
+    margin: 2px;
+    /*border-bottom-style: solid;
+    border-bottom-width: 1px;*/
 }
 
 article.deleted:after{
