@@ -21,6 +21,8 @@ stopped_typing = (form) ->
     error: error_received.bind(form)
   })
 
+  last_keypress = null
+
 error_received = (jqXHR, textStatus) ->
   preview = this.closest(".new")
   error_class = if jqXHR.status == 403 then "permission-denied" else "uknown"
@@ -47,9 +49,9 @@ keyup = (e) ->
     timeout = setTimeout(stopped_typing.bind(e), TIMEOUT_AFTER);
 
 init_writing = (container) ->
-  container.find("textarea").keyup(keyup)
-  stopped_typing container.find("form")
-  container.prop("initialised", true);
+  $(container).find("textarea").keyup(keyup)
+  stopped_typing $(container).find("form")
+  $(container).prop("initialised", true);
 
 icon_clicked = (hide, toggle) ->
   if anonymous
@@ -67,3 +69,6 @@ icon_clicked = (hide, toggle) ->
 
 $(".review .options .edit").click(icon_clicked("new", "edit"))
 $(".review .options .reply").click(icon_clicked("edit", "new"))
+$(".new:visible textarea").focus(->
+  init_writing($(this).closest(".new"))
+)

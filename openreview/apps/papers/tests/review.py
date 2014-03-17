@@ -130,7 +130,24 @@ class TestReviewViewLive(SeleniumTestCase):
         self.assertTrue(review_dom.find_element_by_class_name("login-message").is_displayed())
 
     def test_writing_new(self):
-        pass
+        create_test_user(username="testdelete2", password="123")
+        paper = create_test_paper()
+
+        self.assertEqual(0, paper.reviews.count())
+
+        self.login("testdelete2", "123")
+        self.open(reverse("paper", args=[paper.id]))
+        self.wd.wait_for_css("body")
+
+        new = self.wd.find_css(".new")
+        textarea = new.find_element_by_css_selector("textarea")
+        textarea.send_keys("# Markdown\n")
+        self.wd.wait_for_css(".preview h1")
+        new.find_element_by_css_selector("[type=submit]").click()
+        self.wd.wait_for_css("body")
+
+        self.assertEqual(1, paper.reviews.count())
+
 
     def test_writing(self):
         user = create_test_user(username="writing", password="test")
