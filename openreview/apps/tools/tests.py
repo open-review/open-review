@@ -1,13 +1,50 @@
 import unittest
 
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
+from django.test import RequestFactory
 from django.views.generic import View
 from openreview.apps.main.models import Paper
+from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.testing import list_queries, assert_max_queries, create_test_user, create_test_review
 from openreview.apps.tools.views import ModelViewMixin
 
-__all__ = ["TestTesting", "TestModelViewMixin"]
+__all__ = ["TestTesting", "TestModelViewMixin", "TestAuth"]
+
+class TestAuth(unittest.TestCase):
+    def test_login_required(self):
+        @login_required
+        def test1(request):
+            return "s"
+
+        @login_required()
+        def test2(request):
+            return "s"
+
+        @login_required(raise_exception=True)
+        def test3(request):
+            return "s"
+
+        @login_required(login_url="/foo2/")
+        def test4(request):
+            return "s"
+
+        request = RequestFactory().get("/redirect/")
+        request.user = AnonymousUser()
+
+        self.assertEqual(test1(request).status_code, 302)
+        self.assertEqual(test2(request).status_code, 302)
+        self.assertRaises(PermissionDenied, test3, request)
+        self.assertEqual(test4(request).url, "/foo2/?next=/redirect/")
+
+        request.user = create_test_user()
+        self.assertEqual(test1(request), "s")
+        self.assertEqual(test2(request), "s")
+        self.assertEqual(test3(request), "s")
+        self.assertEqual(test4(request), "s")
+
 
 class TestView(ModelViewMixin, View):
     def dispatch(self, request, *args, **kwargs):
