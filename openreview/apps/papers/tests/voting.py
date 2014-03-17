@@ -1,32 +1,13 @@
-
 import unittest
+
 from django.core.urlresolvers import reverse
 from django.test import Client
 from selenium.common.exceptions import NoSuchElementException
-import time
-import os
+
 from openreview.apps.main.models import Review, Vote
-from openreview.apps.papers.scrapers import ArXivScraper
-from openreview.apps.tools.testing import assert_max_queries, create_test_paper, create_test_user, create_test_review, \
-    SeleniumTestCase
+from openreview.apps.tools.testing import create_test_review, SeleniumTestCase, create_test_paper, create_test_user
 
-__all__ = ["TestPaperWithReviewsView"]
-
-class TestPaperWithReviewsView(unittest.TestCase):
-    def setUp(self):
-        self.paper = create_test_paper(2, 2, 2, 2)
-        self.client = Client()
-
-    def test_queries_anonymous(self):
-        with assert_max_queries(n=7):
-            self.client.get(reverse("paper", args=[self.paper.id]))
-
-    def test_queries_logged_in(self):
-        create_test_user(username="abc", password="123")
-        self.assertTrue(self.client.login(username="abc", password="123"))
-
-        with assert_max_queries(n=9):
-            self.client.get(reverse("paper", args=[self.paper.id]))
+__all__ = ["TestVoteView", "TestVoteViewLive"]
 
 
 class TestVoteView(unittest.TestCase):
@@ -60,6 +41,7 @@ class TestVoteView(unittest.TestCase):
         self.assertEqual(c.get(url + "?vote=-1").status_code, 201)
         self.assertEqual(Vote.objects.get(voter=user, review=review).vote, -1)
 
+
 class TestVoteViewLive(SeleniumTestCase):
     def test_aesthetics(self):
         # Not logged in
@@ -69,13 +51,13 @@ class TestVoteViewLive(SeleniumTestCase):
         self.open(reverse("paper", args=[paper.id]))
         self.wd.wait_for_css("body")
 
-        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login :visible")
-        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login:visible")
-        self.assertEqual(2, len(self.wd.find_css(".review .login")))
+        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login-message :visible")
+        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review .login-message:visible")
+        self.assertEqual(2, len(self.wd.find_css(".review .login-message")))
 
         review_dom = self.wd.find_css(".review[review_id='%s']" % review.id)
         review_dom.find_element_by_class_name("upvote").click()
-        self.assertTrue(review_dom.find_element_by_class_name("login").is_displayed())
+        self.assertTrue(review_dom.find_element_by_class_name("login-message").is_displayed())
 
         # Logged in
         user = create_test_user(username="foo2", password="bar")
@@ -116,33 +98,29 @@ class TestVoteViewLive(SeleniumTestCase):
         self.assertEqual(upvote_count.text, "1")
         self.assertEqual(downvote_count.text, "0")
 
-        time.sleep(0.3)
-
+        # At least one vote should have gone through :-)
         self.assertTrue(Vote.objects.filter(voter=user, review=review).exists())
 
+        # Can we vote on deleted submissions?
+        r1, r2 = paper.reviews.all()
+        r1.delete()
+        r2.delete()
 
-class TestArXivScraper(unittest.TestCase):
-    def setUp(self):
-        self.arxivscraper = ArXivScraper(caching=False)
-        self.arxivscraper.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
-                                                   "/testfiles/1306.3879.html")
+        self.wd.refresh()
+        self.wd.wait_for_css("body")
 
-    def test_arxiv_scraper(self):
-        results = self.arxivscraper.parse("1306.3879").get_results()
-        self.assertEqual(results['title'], "\nChandra View of the Ultra-Steep Spectrum Radio Source in Abell 2443:"+
-                                           "  Merger Shock-Induced Compression of Fossil Radio Plasma?")
-        self.assertEqual(results['authors'], ["T. E. Clarke", "S. W. Randall", "C. L. Sarazin",
-                                              "E. L. Blanton", "S. Giacintucci"])
-        self.assertEqual(results['abstract'],
-                         """ We present a new Chandra X-ray observation of the intracluster medium in the
-galaxy cluster Abell 2443, hosting an ultra-steep spectrum radio source. The
-data reveal that the intracluster medium is highly disturbed. The thermal gas
-in the core is elongated along a northwest to southeast axis and there is a
-cool tail to the north. We also detect two X-ray surface brightness edges near
-the cluster core. The edges appear to be consistent with an inner cold front to
-the northeast of the core and an outer shock front to the southeast of the
-core. The southeastern edge is coincident with the location of the radio relic
-as expected for shock (re)acceleration or adiabatic compression of fossil
-relativistic electrons.\n""")
-        self.assertEqual(results['doc_id'], "1306.3879")
-        self.assertEqual(results['urls'],"http://arxiv.org/abs/1306.3879")
+        review_dom = self.wd.find_css(".review[review_id='%s']" % review.id)
+        upvote = review_dom.find_element_by_class_name("upvote")
+        downvote = review_dom.find_element_by_class_name("downvote")
+        upvote_count = upvote.find_element_by_class_name("count")
+        downvote_count = downvote.find_element_by_class_name("count")
+        current_upvote_count = upvote_count.text
+        current_downvote_count = downvote_count.text
+
+        self.assertFalse(review_dom.find_element_by_class_name("deleted-message").is_displayed())
+        upvote.click()
+        self.assertTrue(review_dom.find_element_by_class_name("deleted-message").is_displayed())
+        self.assertEqual(current_upvote_count, upvote_count.text)
+        downvote.click()
+        self.assertTrue(review_dom.find_element_by_class_name("deleted-message").is_displayed())
+        self.assertEqual(current_downvote_count, downvote_count.text)

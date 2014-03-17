@@ -12,7 +12,7 @@
 
     <title>OpenReview</title>
 </head>
-<body>
+<body csrf="{{ csrf_token }}">
     <div class="container">
         {% block login %}
         {%  if user.is_anonymous %}
@@ -75,12 +75,16 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+        tex2jax: {
+            inlineMath: [['$','$'],['\\(','\\)']],
+            processEscapes: true
+        }
       });
     </script>
+    {% block meta %}{% endblock %}
     {% compress js %}
-        <script src="{{ STATIC_URL }}js/test.coffee" type="text/coffeescript"></script>
         {% block js %}{% endblock %}
     {% endcompress %}
 </body>
 </html>
+

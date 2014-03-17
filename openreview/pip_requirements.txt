@@ -9,3 +9,4 @@ cssselect
 lxml
 beautifulsoup4
 python3-memcached
+markdown2

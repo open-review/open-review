@@ -50,7 +50,12 @@ def get_bool(var, default=None, err_empty=False):
     return default
 
 # SECURITY WARNING: don't run with debug turned on in production!
-TEMPLATE_DEBUG = DEBUG = get_bool("DJANGO_DEBUG", True)
+DEBUG = get_bool("DJANGO_DEBUG", True)
+
+if not DEBUG:
+    TEMPLATE_DEBUG = False
+else:
+    get_bool("DJANGO_TEMPLATE_DEBUG", DEBUG)
 
 if not DEBUG:
     SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
@@ -61,7 +66,7 @@ if not DEBUG:
 else:
     SECRET_KEY = "longhairdontcare"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
 
 # Overriding default User object
 AUTH_USER_MODEL = 'accounts.User'
@@ -118,6 +123,9 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+if DEBUG:
+    CACHE_MIDDLEWARE_KEY_PREFIX = "DEBUG_"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

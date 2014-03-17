@@ -3,12 +3,14 @@ This module contains convenience functions for testing purposes.
 """
 from contextlib import contextmanager
 from functools import wraps
+import time
 import functools
 import unittest
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import connection
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, Client
+from django.test.client import MULTIPART_CONTENT
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from datetime import datetime
@@ -68,10 +70,15 @@ class SeleniumTestCase(LiveServerTestCase):
         self.wd.get("%s%s" % (self.live_server_url, url))
 
     def login(self, username, password):
+        self.logout()
         self.open(reverse("accounts-login"))
         self.wd.find_css("#id_login_username").send_keys(username)
         self.wd.find_css("#id_login_password").send_keys(password)
         self.wd.find_css('input[value="Login"]').click()
+        self.wd.wait_for_css("body")
+
+    def logout(self):
+        self.open(reverse("accounts-logout"))
         self.wd.wait_for_css("body")
 
     def setUp(self):
@@ -139,7 +146,10 @@ def create_test_paper(n_authors=0, n_keywords=0, n_comments=0, n_reviews=0, **kw
 def create_test_review(**kwargs):
     paper, poster = None, None
     if "paper" not in kwargs:
-        paper = create_test_paper()
+        if "parent" in kwargs:
+            paper = kwargs["parent"].paper
+        else:
+            paper = create_test_paper()
     if "poster" not in kwargs:
         poster = create_test_user()
 

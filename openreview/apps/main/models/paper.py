@@ -1,7 +1,8 @@
 import datetime
+
+from django.utils import timezone
 from django.db import models
 from django.db.models import Count
-import operator
 
 from openreview.apps.main.models.review import Vote, Review
 from openreview.apps.main.models.author import Author
@@ -42,7 +43,7 @@ class Paper(models.Model):
 
         @rtype: list
         """
-        seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+        seven_days_ago = timezone.now() - datetime.timedelta(days=7)
         reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
         papers = reviews.values_list('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
         papers_objects = Paper.objects.in_bulk(pid for pid, pcount in papers)

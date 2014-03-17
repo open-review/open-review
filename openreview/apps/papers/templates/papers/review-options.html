@@ -1,0 +1,41 @@
+{% comment %}Provides option toolbar for review element{% endcomment %}
+
+<div class="voting btn-group btn-group-xs ">
+  <a title="Helpful, contributing, .." class="upvote btn btn-default">
+    <i class="glyphicon glyphicon-arrow-up"></i>
+    <span class="count">{{ review.n_upvotes }}</span>
+  </a>
+  <a title="Offtopic, rude, .." class="downvote btn btn-default">
+    <i class="glyphicon glyphicon-arrow-down"></i>
+    <span class="count">{{ review.n_downvotes }}</span>
+  </a>
+</div>
+
+<div class="btn-group btn-group-xs">
+  {% if not review.parent %}
+    <a href="{% url 'review' paper.id review.id %}" title="{{ review.n_comments }} comments" class="btn btn-default">
+      <i class="glyphicon glyphicon-comment"></i> {{ review.n_comments }} comments
+    </a>
+  {% endif %}
+  <a href="{% url 'review' paper.id review.id %}" title="Permalink" class="btn btn-default permalink">
+    <i class="glyphicon glyphicon-link"></i>
+  </a>
+
+  {% if not review.deleted %}
+    <a style="display:none;" title="Edit this comment/review" class="btn btn-default edit">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+
+    <a title="Report as spam" class="btn btn-default flag">
+      <i class="glyphicon glyphicon-flag"></i>
+    </a>
+
+    <a style="display:none" title="Delete this comment/review" class="btn btn-default delete">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  {% endif %}
+</div>
+
+<a title="Reply" class="btn btn-default btn-xs reply">
+  <i class="glyphicon glyphicon-pencil"></i> reply
+</a>
