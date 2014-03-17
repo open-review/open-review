@@ -1,7 +1,7 @@
 {% load markdown %}
 
 <section class="review-container">
-  <div review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
+  <div id="r{{ review.id }}" review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
     <header>
       <i class="glyphicon glyphicon-user"></i>
       <span class="author">
@@ -29,7 +29,7 @@
         You cannot cast votes on deleted reviews/comments.
       </span>
       <span style="display:none;" class="login-message">
-        You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote!
+        You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote or comment!
       </span>
     </footer>
   </div>

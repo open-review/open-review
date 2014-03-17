@@ -6,5 +6,15 @@
           <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
       </form>
   </div>
-  <div class="preview col-md-6"></div>
+  <div class="col-md-6">
+      <div class="preview"></div>
+      <div style="display:none;" class="alert alert-danger preview-error permission-denied">
+          Server returned 'permission denied'. Are you logged in?
+      </div>
+      <div style="display:none;" class="alert alert-danger preview-error unknown">
+          <p>Server returned an unknown error.</p>
+          <p>Status code: <span class="status-code"></span></p>
+          <p>Status text: <span class="status-text"></span></p>
+      </div>
+  </div>
 </div>

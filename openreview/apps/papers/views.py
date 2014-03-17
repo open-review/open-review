@@ -1,7 +1,6 @@
 import json
 import datetime
 from urllib import parse
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 from django.db import transaction
@@ -12,6 +11,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 
 from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
+from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
 
@@ -96,9 +96,17 @@ class ReviewView(BaseReviewView):
         return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
 
     def redirect(self, review):
-        return redirect(reverse("review", args=[review.paper_id, review.id]), permanent=False)
+        review.cache()
 
-    @method_decorator(login_required)
+        # Determine root of comment thread
+        root = review
+        while root.parent is not None:
+            root = root.parent
+
+        url = reverse("review", args=[review.paper_id, root.id])
+        return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
+
+    @method_decorator(login_required(raise_exception=True))
     def patch(self, request, *args, **kwargs):
         review = self.objects.review
 
@@ -122,7 +130,7 @@ class ReviewView(BaseReviewView):
         review.save()
         return self.redirect(review)
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(raise_exception=True))
     def post(self, request, paper_id, review_id, **kwargs):
         commit = "submit" in request.POST
 
@@ -155,7 +163,7 @@ class ReviewView(BaseReviewView):
         review.id = -1
         return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review))
 
-    @method_decorator(login_required)
+    @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):
         if request.user.id != self.objects.review.poster_id:
             return HttpResponseForbidden("You must be owner of this review/comment in order to delete it.")
