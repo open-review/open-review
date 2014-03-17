@@ -1,4 +1,4 @@
-from collections import namedtuple, defaultdict
+from collections import namedtuple, defaultdict, OrderedDict
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
@@ -52,6 +52,13 @@ class Review(models.Model):
         # If cache() is called, this contains a review_id -> Review mapping
         self._reviews = None
 
+    def get_reputation(self):
+        """
+        Reputation determines the position of a post. This might be implemented in many ways,
+        but for now it is simply upvotes - downvotes.
+        """
+        return self.n_upvotes - self.n_downvotes
+
     @property
     def n_comments(self):
         if self._n_comments is not None:
@@ -78,7 +85,7 @@ class Review(models.Model):
     def deleted(self):
         return self.text is None
 
-    def cache(self, select_related=None, defer=None):
+    def cache(self, select_related=None, defer=None, order=False, order_reverse=False):
         """
         Caches all reviews in the complete review tree of self.paper. After calling the
         following properties are available (discouraged to use outside of this class):
@@ -95,6 +102,12 @@ class Review(models.Model):
 
         @param defer: fields to defer (see Django defer()). Called on Review.
         @type defer: list, tuple
+
+        @param order: order cache and output of various commands according to get_reputation()
+        @type order: bool
+
+        @param order_reverse: reverse ordering (default ordering is descending)
+        @type order_reverse: bool
         """
         if self.cached: return
 
@@ -105,8 +118,16 @@ class Review(models.Model):
         if defer:
             reviews = reviews.defer(*defer)
 
-        self._reviews = _reviews = {r.id: r for r in reviews}
-        _self = _reviews[self.id]
+        if order:
+            # Fallback ordering if reputation is equal
+            reviews = reviews.order_by("id")
+            reviews = sorted(reviews, key=lambda r: r.get_reputation(), reverse=not order_reverse)
+            reviews = OrderedDict((r.id, r) for r in reviews)
+        else:
+            reviews = {r.id: r for r in reviews}
+
+        self._reviews = reviews
+        _self = reviews[self.id]
         self._reviews[self.id] = self
 
         # We need to set al select_related / defer caches on this object
@@ -120,12 +141,12 @@ class Review(models.Model):
         mapping = defaultdict(list)
         paper = self.paper
 
-        for review in _reviews.values():
+        for review in self._reviews.values():
             mapping[review.parent_id].append(review)
-            review._reviews = _reviews
+            review._reviews = reviews
             review._reviews_children = mapping
             review._paper_cache = paper
-            review._parent_cache = _reviews.get(review.parent_id, None)
+            review._parent_cache = reviews.get(review.parent_id, None)
 
     def _get_tree(self, level, seen, lazy):
         if self.id in seen:

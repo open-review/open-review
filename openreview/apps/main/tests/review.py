@@ -1,3 +1,4 @@
+from pprint import pprint
 import unittest
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
@@ -195,6 +196,37 @@ class TestReview(unittest.TestCase):
         self.assertEqual("test", cache.get(review_key))
         vote.delete()
         self.assertEqual(None, cache.get(review_key))
+
+    def test_cache_ordering(self):
+        paper = create_test_paper()
+
+        r1 = create_test_review(paper=paper)
+        r2 = create_test_review(paper=paper)
+        r3 = create_test_review(paper=paper)
+        r4 = create_test_review(parent=r3)
+        r5 = create_test_review(parent=r3)
+
+        create_test_votes({1: 5}, r1)
+        create_test_votes({1: 6}, r2)
+        create_test_votes({-1: 1, 1: 2}, r3)
+        create_test_votes({1: 3}, r4)
+        create_test_votes({1: 2}, r5)
+
+        c = lambda t: [x.review for x in t.children]
+        to_id = lambda t: [x.id for x in t]
+
+        r1.cache(order=True)
+
+        self.assertEqual(list(r1._reviews.values()), [r2, r1, r4, r5, r3])
+        self.assertEqual(set(c(r3.get_tree())), {r4, r5})
+        self.assertEqual(list(c(r3.get_tree())), [r4, r5])
+
+        r1 = Review.objects.get(id=r1.id)
+        r1.cache(order=True, order_reverse=True)
+        self.assertEqual(list(r1._reviews.values()), [r3, r5, r4, r1, r2])
+        r3 = r1._reviews[r3.id]
+        self.assertEqual(set(c(r3.get_tree())), {r4, r5})
+        self.assertEqual(to_id(c(r3.get_tree())), [r5.id, r4.id])
 
     def test_cache(self):
         paper = create_test_paper()
