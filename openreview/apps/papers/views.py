@@ -85,10 +85,8 @@ class PapersView(TemplateView):
     template_name = "papers/overview.html"
 
     def get_context_data(self, **kwargs): 
-        paper_count = 3       
+        paper_count = 25       
         return dict(super().get_context_data(papers=Paper.latest()[:paper_count],**kwargs))
-
-
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"

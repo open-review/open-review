@@ -23,19 +23,17 @@
 <div id="coffee"></div>
 
 <div>
-<h1>Newest papers</h1>
-
-        {% if papers %}
-            <ul class="list-group">
+    <h1>Newest papers</h1>
+    {% if papers %}
+        <ul class="list-group">
             {% for paper in papers %}
                 <li class="list-group-item"><div style="float: right;">{{ paper.num_reviews }} reviews</div><a href="{% url 'paper' paper.id %}" title="{{ paper.publish_date }}, {{ paper.publisher }}" style="font-weight: bold;">{{ paper.title }}</a> - 
                 {{ paper.authors.all|join:", " }}
-                <br /> </li>
+                </li>
             {% endfor %}
-            </ul>
-        {% else %}
-            <p>No papers are available yet.</p>
-        {% endif %}
-
+        </ul>
+    {% else %}
+        <p>No papers are available yet.</p>
+    {% endif %}
 </div>
 {% endblock %}
