@@ -28,4 +28,4 @@ core. The southeastern edge is coincident with the location of the radio relic
 as expected for shock (re)acceleration or adiabatic compression of fossil
 relativistic electrons.\n""")
         self.assertEqual(results['doc_id'], "1306.3879")
-        self.assertEqual(results['urls'],"http://arxiv.org/abs/1306.3879")
+        self.assertEqual(results['urls'], "http://arxiv.org/abs/1306.3879")

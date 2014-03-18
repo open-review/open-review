@@ -1,12 +1,17 @@
 from datetime import date
 from unittest import TestCase
+import os
 
 from django.core.urlresolvers import reverse
+from django.test.client import Client
+from django.core.exceptions import ObjectDoesNotExist
 
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
 from openreview.apps.tools.testing import create_test_author, create_test_user
-from openreview.apps.main.models import Paper, Review, Vote
+from openreview.apps.main.models import Paper, Review, Vote, Author, Keyword
+
+from openreview.apps.papers.scrapers import ArXivScraper
 
 
 __all__ = ["TestReviewForm", "TestReviewFormLive"]
@@ -100,6 +105,33 @@ class TestReviewForm(TestCase):
         with assert_max_queries(n=1):
             # This should only return de existing database entry!
             p.save(commit=True)
+
+    def test_form_filled_in_automatically(self):
+        c = Client()
+        ArXivScraper.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
+                                              "../../papers/testfiles/1306.3879.html")
+        user = create_test_user()
+        c.post(reverse("accounts-login"), {'username': user.username, 'password': "test", 'existing': "Login"})
+        c.post(reverse("add_review"), {'type': "arxiv", 'doc_id': "1306.3879", 'text': "Just nutin",
+                                       'add_review': "Submit"})
+
+        # An item in de db for this paper should now exist
+        p = Paper.objects.get(doc_id="1306.3879")
+        self.assertEqual(p.title, "\nChandra View of the Ultra-Steep Spectrum Radio Source in Abell 2443:" +
+                                  "  Merger Shock-Induced Compression of Fossil Radio Plasma?")
+        self.assertEqual([a.name for a in p.authors.all()], ['T. E. Clarke', 'S. W. Randall', 'C. L. Sarazin',
+                                                             'E. L. Blanton', 'S. Giacintucci'])
+        self.assertEqual(p.urls, "http://arxiv.org/abs/1306.3879")
+        self.assertEqual(p.abstract, """ We present a new Chandra X-ray observation of the intracluster medium in the
+galaxy cluster Abell 2443, hosting an ultra-steep spectrum radio source. The
+data reveal that the intracluster medium is highly disturbed. The thermal gas
+in the core is elongated along a northwest to southeast axis and there is a
+cool tail to the north. We also detect two X-ray surface brightness edges near
+the cluster core. The edges appear to be consistent with an inner cold front to
+the northeast of the core and an outer shock front to the southeast of the
+core. The southeastern edge is coincident with the location of the radio relic
+as expected for shock (re)acceleration or adiabatic compression of fossil
+relativistic electrons.\n""")
 
 
 class TestReviewFormLive(SeleniumTestCase):

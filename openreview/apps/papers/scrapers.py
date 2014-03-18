@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup
 
 
 class PaperMetaScraper:
+    # This allows overriding for testing purposes
+    urlopen = urlopen
 
     def __init__(self, caching=True):
         self.fields = {
@@ -20,9 +22,6 @@ class PaperMetaScraper:
             "keywords": None}
         self.bs = None
         self.caching = caching
-
-        # Allows overriding the refault urlopen for testing purposes
-        self.urlopen = urlopen
 
     def parse(self, url):
         pass
@@ -42,7 +41,7 @@ class ArXivScraper(PaperMetaScraper):
         else:
             self.fields['doc_id'] = doc_id
             self.fields['urls'] = "http://arxiv.org/abs/{id}".format(id=doc_id)
-            self.bs = BeautifulSoup(self.urlopen(self.fields['urls']))
+            self.bs = BeautifulSoup(PaperMetaScraper.urlopen(self.fields['urls']))
             self.fields['title'] = self.bs.select("div.leftcolumn h1.title")[0].span.nextSibling
             #I need a functional language
             self.fields['authors'] = list(map(lambda x: x.text, self.bs.select("div.leftcolumn div.authors a")))
