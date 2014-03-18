@@ -181,7 +181,7 @@ class Review(models.Model):
         app_label = "main"
 
     def __str__(self):
-        return "Review: {self.poster}, {self.paper}, {self.parent}".format(self=self)
+        return "{self.id}, poster={self.poster}, paper={self.paper}, parent={self.parent.id}".format(self=self)
 
     def _invalidate_template_caches(self):
         cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))

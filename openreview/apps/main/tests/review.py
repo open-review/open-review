@@ -217,6 +217,7 @@ class TestReview(unittest.TestCase):
         to_id = lambda t: [x.id for x in t]
 
         r1.cache(order=True)
+        r3 = r1._reviews[r3.id]
 
         self.assertEqual(list(r1._reviews.values()), [r2, r1, r4, r5, r3])
         self.assertEqual(set(c(r3.get_tree())), {r4, r5})

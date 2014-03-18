@@ -5,3 +5,4 @@ coffeescript
 python3-lxml
 libxml2-dev
 libxslt1-dev
+memcached
