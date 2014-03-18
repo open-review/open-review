@@ -29,7 +29,7 @@ def add_review(request):
 
     if data and data.get('type') == 'arxiv':
         #TODO potentially unsave?
-        scraper = (ArXivScraper().parse(data.get('doc_id'))).get_results()
+        scraper = ArXivScraper().parse(data.get('doc_id')).get_results()
         scraper.update({"type": 'arxiv', "doc_id": data.get('doc_id')})
         scraper.update({"authors": "\n".join(scraper['authors'])})
 

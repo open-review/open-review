@@ -72,9 +72,8 @@ class PaperForm(forms.ModelForm):
         be created also.
         """
         try:
-            existing_paper = Paper.objects.get(doc_id=self.cleaned_data.get("doc_id"))
-            return existing_paper
-        except ObjectDoesNotExist:
+            return Paper.objects.get(doc_id=self.cleaned_data.get("doc_id"))
+        except Paper.DoesNotExist:
             paper = super(PaperForm, self).save(commit=False, **kwargs)
 
             if commit:

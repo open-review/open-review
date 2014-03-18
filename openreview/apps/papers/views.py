@@ -16,6 +16,8 @@ from openreview.apps.main.models import set_n_votes_cache, Review, Vote
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
+from django.core import serializers
+
 
 class VoteView(View):
     def get(self, request, paper_id, review_id):
@@ -177,15 +179,15 @@ class ReviewView(BaseReviewView):
 
 @cache_page(60*10)
 def doi_scraper(request, id):
-    return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}),
+    return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                         content_type="application/json")
 
 
 def arxiv_scraper(request, doc_id):
     try:
         tempres = ArXivScraper().parse(doc_id)
-        return HttpResponse(json.JSONEncoder().encode(tempres.get_results()), content_type="application/json")
-    except Exception:
-        return HttpResponse(json.JSONEncoder().encode({"error": "Invalid document identifier"}),
+        return HttpResponse(serializers.serialize("json",tempres.get_results()), content_type="application/json")
+    except ArXivScraper.ScrapingError:
+        return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                             content_type="application/json")
 

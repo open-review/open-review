@@ -158,7 +158,7 @@ class TestReviewFormLive(SeleniumTestCase):
         self.wd.wait_for_css("#id_title")
 
         # Select the right paper
-        self.wd.find_css("#id_type option[value=\"manually\"]").click()
+        self.wd.find_css('#id_type option[value="manually"]').click()
         self.wd.find_css("#id_title").send_keys("Some fancy paper title")
         self.wd.find_css("#id_doc_id").send_keys("1403.04385")
         self.wd.find_css("#id_authors").send_keys("Jéan-Pièrre van 't Hoff")
