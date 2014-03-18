@@ -69,10 +69,10 @@
         </footer>
     </div>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     {% block meta %}{% endblock %}
     {% compress js %}
-        <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/dist/js/bootstrap.js"></script>
         {% block js %}{% endblock %}
     {% endcompress %}
