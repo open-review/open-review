@@ -3,6 +3,8 @@ import os
 
 from openreview.apps.papers.scrapers import ArXivScraper
 
+__all__ = ['TestArXivScraper']
+
 
 class TestArXivScraper(unittest.TestCase):
     def setUp(self):
