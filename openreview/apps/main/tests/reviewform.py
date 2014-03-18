@@ -1,6 +1,6 @@
 from datetime import date
 from unittest import TestCase
-import os
+import os, time
 
 from django.core.urlresolvers import reverse
 from django.test.client import Client
@@ -160,7 +160,7 @@ class TestReviewFormLive(SeleniumTestCase):
         # Select the right paper
         self.wd.find_css("#id_type option[value=\"manually\"]").click()
         self.wd.find_css("#id_title").send_keys("Some fancy paper title")
-        self.wd.find_css("#id_doc_id").send_keys("1403.0438")
+        self.wd.find_css("#id_doc_id").send_keys("1403.04385")
         self.wd.find_css("#id_authors").send_keys("Jéan-Pièrre van 't Hoff")
         self.wd.find_css("#id_abstract").send_keys("This paper is fancy.")
         self.wd.find_css("#id_publish_date").send_keys("2012-01-01")
@@ -172,7 +172,7 @@ class TestReviewFormLive(SeleniumTestCase):
 
         # Review is saved well
         p = Paper.objects.get(title="Some fancy paper title")
-        self.assertEqual(p.doc_id, "1403.0438")
+        self.assertEqual(p.doc_id, "1403.04385")
         #self.assertEqual(p.publish_date, "Jéan-Pièrre van 't Hoff")
         self.assertEqual(p.abstract, "This paper is fancy.")
         self.assertEqual(p.publish_date, date(2012, 1, 1))
