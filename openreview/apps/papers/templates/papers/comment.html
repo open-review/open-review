@@ -4,6 +4,9 @@
           {% csrf_token %}
           <textarea name="text" placeholder="Write a new review!">{{ text }}</textarea>
           <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
+          
+          <input type="hidden" name="rating" value="{{ review.rating }}" />
+          <div class="starfield" data-field="rating"></div>
       </form>
   </div>
   <div class="col-md-6">

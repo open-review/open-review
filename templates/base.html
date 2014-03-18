@@ -92,12 +92,25 @@
         $(document).ready(function(){
             $(".starfield").each(function(){
             	var field = $(this).data("field");
+            	var f = $(this).parents("form").find("input[name=" + field + "]");
+            	var score;
+            	if ($(this).data("score")) {
+            		score = $(this).data("score");
+            	} else {
+            		score = f.val();
+            	}
+            	
+            	var readOnly = false;
+            	if ($(this).data("readonly")) {
+            		readOnly = $(this).data("readonly");
+            	}
             	
                 $(this).raty({
-                    click       : function(score){ $("input[name=" + field + "]").val(score) },
+                    click       : function(score){ f.val(score) },
                     number      : 7,
                     path        : '{{ STATIC_URL }}raty/lib/images/',
-                    score       : $("input[name=" + field + "]").val()
+                    readOnly    : readOnly,
+                    score       : score
                     // It should be possible to use scoreName: field instead of score and click, but for some unknown reason that does not seem to work
                 });
             });

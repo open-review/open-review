@@ -139,6 +139,18 @@ class ReviewView(BaseReviewView):
 
         review = Review()
         review.text = request.POST["text"]
+        
+        try:
+            vote = int(self.request.POST["rating"])
+        except (ValueError, KeyError):
+            vote = 0
+            pass
+            #return HttpResponseBadRequest("No vote value, or non-int given.")
+
+        #if not (1 <= vote <= 7):
+            #return HttpResponseBadRequest("You can only vote between 1 and 7 stars (inclusive)")
+        
+        review.rating = vote
         review.poster = request.user
         review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()

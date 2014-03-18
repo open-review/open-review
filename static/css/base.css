@@ -10,3 +10,7 @@
 body{
     margin-top:20px;
 }
+
+.review .starfield {
+	float: right;
+}
