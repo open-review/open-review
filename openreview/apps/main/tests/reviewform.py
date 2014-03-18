@@ -11,6 +11,7 @@ from openreview.apps.main.models import Paper, Review, Vote
 
 __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
+
 class TestReviewForm(TestCase):
     def test_paper_form(self):
         test_data = {
@@ -81,6 +82,24 @@ class TestReviewForm(TestCase):
 
         self.assertEqual(set([jean, piere]), set(paper.authors.all()))
         self.assertEqual(set([a, b]), set(paper.keywords.all()))
+
+    def test_no_duplicate_papers(self):
+        test_data = {
+            "type": "manually",
+            "authors": "Jantje",
+            "title": "test-title",
+            "abstract": "foo",
+            "doc_id": "1403.0438"
+        }
+
+        p = PaperForm(data=test_data)
+        self.assertTrue(p.is_valid())
+        with assert_max_queries(n=5):
+            p.save(commit=True)
+
+        with assert_max_queries(n=1):
+            # This should only return de existing database entry!
+            p.save(commit=True)
 
 
 class TestReviewFormLive(SeleniumTestCase):
