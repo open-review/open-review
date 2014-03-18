@@ -23,7 +23,7 @@ before_install:
 
  # Mathjax collects A LOT (30.000+) files
  - mkdir -p collected_static/mathjax
- - mount --bind static/mathjax/ collected_static/mathjax
+ - sudo mount --bind static/mathjax/ collected_static/mathjax
 
  # Setup virtual display for in-browser testing
  - "export DISPLAY=:99.0"
@@ -31,9 +31,9 @@ before_install:
 
 
 install:
- - apt-get update
- - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs apt-get install -y
- - apt-get build-dep lxml
+ - sudo apt-get update
+ - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
+ - sudo apt-get build-dep lxml
  - pip install -r openreview/pip_requirements.txt --use-mirrors --upgrade
  - pip install coverage coveralls
  - python manage.py collectstatic --noinput
