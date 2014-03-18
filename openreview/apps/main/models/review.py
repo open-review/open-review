@@ -32,7 +32,7 @@ class Review(models.Model):
     referred to as a comment in the user interface (parent != None).
     """
     text = models.TextField(verbose_name="contents", null=True)
-    rating = models.SmallIntegerField(default=-1)
+    rating = models.SmallIntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     poster = models.ForeignKey(get_user_model(), null=True)

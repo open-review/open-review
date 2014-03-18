@@ -74,6 +74,7 @@
     {% compress js %}
         <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/dist/js/bootstrap.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
         {% block js %}{% endblock %}
     {% endcompress %}
 
@@ -85,6 +86,24 @@
             processEscapes: true
         }
       });
+    </script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".starfield").each(function(){
+            	var field = $(this).data("field");
+            	
+                $(this).raty({
+                    click       : function(score){ $("input[name=" + field + "]").val(score) },
+                    number      : 7,
+                    path        : '{{ STATIC_URL }}raty/lib/images/',
+                    score       : $("input[name=" + field + "]").val()
+                    // It should be possible to use scoreName: field instead of score and click, but for some unknown reason that does not seem to work
+                });
+            });
+        });
+        function addRating(field) {
+        }
     </script>
   </body>
 </html>

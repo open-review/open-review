@@ -1,10 +1,18 @@
 from django import forms
 from django.forms import widgets
+from django.utils.html import mark_safe
 from openreview.apps.main.models import Author, Keyword
 
 from openreview.apps.main.models.review import Review
 from openreview.apps.main.models.paper import Paper
 
+
+class StarInput(forms.TextInput):
+    def render(self, name, value, attrs=None):
+        hidden = forms.HiddenInput().render(name, value, attrs)
+        div    = '<div class="starfield" data-field="' + name + '"></div>'
+        
+        return mark_safe(hidden + div)
 
 class ReviewForm(forms.ModelForm):
     def __init__(self, user, paper=None, **kwargs):
@@ -25,7 +33,10 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ['text']
+        fields = ['rating', 'text']
+        widgets = {
+            'rating': StarInput()
+        }
 
 
 class PaperForm(forms.ModelForm):
