@@ -9,25 +9,34 @@ services:
 virtualenv:
   system_site_packages: true
 
-#env:
-#  - SUITE=api
-#  - SUITE=...
+env:
+  - DJANGO_DEBUG=0
+  - DJANGO_DEBUG=1
 
 before_install:
  - psql -c 'create database openreview;' -U postgres
  - export DJANGO_DB_USER=postgres
  - export DJANGO_LOG_LEVEL=WARNING
+ - export DJANGO_FORCE_STATICFILES=1
+ - export DJANGO_ALLOWED_HOSTS=*
+ - export DJANGO_SECRET_KEY=a
+
+ # Mathjax collects A LOT (30.000+) files
+ - mkdir -p collected_static/mathjax
+ - mount --bind static/mathjax/ collected_static/mathjax
 
  # Setup virtual display for in-browser testing
  - "export DISPLAY=:99.0"
  - "sh -e /etc/init.d/xvfb start"
 
+
 install:
- - sudo apt-get update
- - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
- - sudo apt-get build-dep lxml
+ - apt-get update
+ - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs apt-get install -y
+ - apt-get build-dep lxml
  - pip install -r openreview/pip_requirements.txt --use-mirrors --upgrade
  - pip install coverage coveralls
+ - python manage.py collectstatic --noinput
 
 script:
  - coverage run --source=openreview --omit=*/migrations/*,openreview/wsgi.py manage.py test

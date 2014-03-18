@@ -51,6 +51,7 @@ def get_bool(var, default=None, err_empty=False):
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_bool("DJANGO_DEBUG", True)
+FORCE_STATICFILES = get_bool("DJANGO_FORCE_STATICFILES", False)
 
 if not DEBUG:
     TEMPLATE_DEBUG = False
