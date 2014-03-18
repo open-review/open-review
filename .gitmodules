@@ -5,3 +5,6 @@
 	path = static/bootstrap
 	url = git://github.com/twbs/bootstrap.git
 	
+[submodule "static/raty"]
+	path = static/raty
+	url = git://github.com/wbotelhos/raty.git
