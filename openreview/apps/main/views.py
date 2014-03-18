@@ -31,7 +31,7 @@ def add_review(request):
         #TODO potentially unsave?
         scraper = (ArXivScraper().parse(data.get('doc_id'))).get_results()
         scraper.update({"type": 'arxiv', "doc_id": data.get('doc_id')})
-        scraper.update({"authors": ", ".join(scraper['authors'])})
+        scraper.update({"authors": "\n".join(scraper['authors'])})
 
         paper_form = PaperForm(data=scraper)
     else:
