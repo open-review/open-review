@@ -1,16 +1,20 @@
 import unittest
 import os
 
-from openreview.apps.papers.scrapers import ArXivScraper
+import openreview.apps.papers.scrapers as scrapers
 
 __all__ = ['TestArXivScraper']
 
 
 class TestArXivScraper(unittest.TestCase):
     def setUp(self):
-        self.arxivscraper = ArXivScraper(caching=False)
-        self.arxivscraper.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
-                                                   "/testfiles/1306.3879.html")
+        self.arxivscraper = scrapers.ArXivScraper(caching=False)
+        self.oldurlopen = scrapers.urlopen
+        scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
+                                          "/../testfiles/1306.3879.html")
+
+    def tearDown(self):
+        scrapers.urlopen = self.oldurlopen
 
     def test_arxiv_scraper(self):
         results = self.arxivscraper.parse("1306.3879").get_results()

@@ -1,28 +1,32 @@
 `
 function renew_form(){
-    $("#id-scraper-field").html("");
+    var form_elems = "#id_title, #id_authors, #id_keywords, #id_abstract, #id_publisher, #id_publish_date, #id_urls";
+
+    $("#id-scraper-field").hide();
     switch($("#id_type :selected").val()){
         case "doi":
         case "arxiv":
-            $("#id_title, #id_authors, #id_keywords, #id_abstract, #id_publisher, #id_publish_date, #id_urls").parent().parent().hide();
+            $(form_elems).parents(".form-group").hide();
             $("#id-scraper-field").show();
-            $("#id_doc_id").parent().parent().show();
+            $("#id_doc_id").parents(".form-group").show();
             load_scraper();
             break;
         case "":
-            $("#id_title, #id_authors, #id_keywords, #id_abstract, #id_publisher, #id_publish_date, #id_urls").parent().parent().hide();
+            $(form_elems).parents(".form-group").hide();
             $("#id-scraper-field").hide();
-            $("#id_doc_id").parent().parent().hide();
+            $("#id_doc_id").parents(".form-group").hide();
             break;
         default:
-            $("#id_title, #id_authors, #id_keywords, #id_abstract, #id_publisher, #id_publish_date, #id_urls").parent().parent().show();
-            $("#id_doc_id").parent().parent().show();
+            $(form_elems).parents(".form-group").show();
+            $("#id_doc_id").parents(".form-group").show();
     }
 }
 
 function load_scraper(){
     var current_type = $("#id_type :selected").val();
-    $("#id-scraper-field").html("<i>Retrieving document information</i>");
+    $("#scraper-status").text("Retrieving document information");
+    $("#scraper-status").show();
+    $("#scraper-result").hide();
     if (current_type == 'doi' || current_type == 'arxiv'){
         if (latest_request) latest_request.abort();
         latest_request = $.ajax({
@@ -31,10 +35,16 @@ function load_scraper(){
         });
         latest_request.done(function(data){
             if (data.error){
-                $("#id-scraper-field").html("<b>Error: </b><i>"+data.error+"</i>");
+                $("#scraper-status").text(data.error);
+                $("#scraper-status").show();
+                $("#scraper-result").hide();
             } else {
-                $("#id-scraper-field").html("<h2>"+data.title+"</h2><br/><b>Author(s): </b><i>"+data.authors.join(", ")+
-                "</i><br/><b>Abstract:</b> "+data.abstract+"<br/><b>URL:</b> <a href='"+data.urls+"'>"+data.urls+"</a>");
+                $("#scraper-title").text(data.title);
+                $("#scraper-authors").text(data.authors.join(", "));
+                $("#scraper-abstract").text(data.abstract);
+                $("#scraper-url").text(data.urls);
+                $("#scraper-result").show();
+                $("#scraper-status").hide();
             }
             MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         });

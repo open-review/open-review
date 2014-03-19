@@ -4,22 +4,17 @@ from openreview.apps.main.models.paper import Paper
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+from collections import defaultdict
 
 
 class PaperMetaScraper:
-    # This allows overriding for testing purposes
-    urlopen = urlopen
+
+    class ScrapingError(BaseException):
+        def __str__(self):
+            return "An error has occured during scraping"
 
     def __init__(self, caching=True):
-        self.fields = {
-            "doc_id": None,
-            "title":  None,
-            "abstract": None,
-            "publisher": None,
-            "publish_date": None,
-            "urls": None,
-            "authors": None,
-            "keywords": None}
+        self.fields = defaultdict()
         self.bs = None
         self.caching = caching
 
@@ -39,13 +34,15 @@ class ArXivScraper(PaperMetaScraper):
         if self.caching and cache.get("arxiv-res-{id}".format(id=doc_id)):
             self.fields = cache.get("arxiv-res-{id}".format(id=doc_id))
         else:
-            self.fields['doc_id'] = doc_id
-            self.fields['urls'] = "http://arxiv.org/abs/{id}".format(id=doc_id)
-            self.bs = BeautifulSoup(PaperMetaScraper.urlopen(self.fields['urls']))
-            self.fields['title'] = self.bs.select("div.leftcolumn h1.title")[0].span.nextSibling
-            #I need a functional language
-            self.fields['authors'] = list(map(lambda x: x.text, self.bs.select("div.leftcolumn div.authors a")))
-            self.fields['abstract'] = self.bs.select("blockquote.abstract span")[0].nextSibling
-            if self.caching:
-                cache.set("arxiv-res-{id}".format(id=doc_id), self.fields)
+            try:
+                self.fields['doc_id'] = doc_id
+                self.fields['urls'] = "http://arxiv.org/abs/{id}".format(id=doc_id)
+                self.bs = BeautifulSoup(urlopen(self.fields['urls']))
+                self.fields['title'] = self.bs.select("div.leftcolumn h1.title")[0].span.nextSibling
+                self.fields['authors'] = [x.text for x in self.bs.select("div.leftcolumn div.authors a")]
+                self.fields['abstract'] = self.bs.select("blockquote.abstract span")[0].nextSibling
+                if self.caching:
+                    cache.set("arxiv-res-{id}".format(id=doc_id), self.fields)
+            except Exception:
+                raise PaperMetaScraper.ScrapingError()
         return self
