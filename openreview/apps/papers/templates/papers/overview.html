@@ -23,17 +23,42 @@
 <div id="coffee"></div>
 
 <div>
-    <h1>Newest papers</h1>
+    <h1>{{ title }} papers</h1>
     {% if papers %}
         <ul class="list-group">
             {% for paper in papers %}
-                <li class="list-group-item"><div style="float: right;">{{ paper.num_reviews }} reviews</div><a href="{% url 'paper' paper.id %}" title="{{ paper.publish_date }}, {{ paper.publisher }}" style="font-weight: bold;">{{ paper.title }}</a> - 
-                {{ paper.authors.all|join:", " }}
+                <li class="list-group-item"><div style="float: right;">{{ paper.num_reviews }} reviews</div><div style="display: table-cell;"><a href="{% url 'paper' paper.id %}" title="{{ paper.publish_date }}, {{ paper.publisher }}" style="font-weight: bold;">{{ paper.title }}</a> - 
+                {{ paper.authors.all|join:", " }}</div>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>No papers are available yet.</p>
     {% endif %}
+
+<div class="pagination">
+    <span class="pages-left">
+        {% if q != 0 and 0 not in pages_l %}
+        ...
+        {% endif %}
+        {% for i in pages_l %}        
+          <a href="?q={{ i }}">{{ i | add:'1' }}</a>       
+        {% endfor %}
+    </span>
+    
+    <span class="current">
+          {{ q|add:1 }}
+    </span>
+    
+    <span class="pages-right">
+        {% for i in pages_r %}        
+          <a href="?q={{ i }}">{{ i | add:'1' }}</a>       
+        {% endfor %}
+        {% if q != max_page and max_page not in pages_r %}
+        ...
+        {% endif %}
+    </span>
+</div>
+    
 </div>
 {% endblock %}

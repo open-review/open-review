@@ -1,5 +1,6 @@
 import json
 import datetime
+import math
 from urllib import parse
 from django.core.urlresolvers import reverse
 
@@ -80,13 +81,38 @@ class PaperWithReviewsView(BaseReviewView):
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
+           
 
 class PapersView(TemplateView):
     template_name = "papers/overview.html"
+    name = ''
 
-    def get_context_data(self, **kwargs): 
-        paper_count = 25       
-        return dict(super().get_context_data(papers=Paper.latest()[:paper_count],**kwargs))
+    def get_context_data(self, **kwargs):   
+        page_count = 25
+        pagination_count = 4
+
+        page = int(self.request.GET.get('q', '0'))
+        entity_from = page * page_count
+        entity_to = entity_from + page_count 
+
+        if(self.name == 'new'):
+            source = Paper.latest()
+            title = "New"
+        if(self.name == 'trending'):
+            source = Paper.trending(100)
+            title = "Trending"
+        if(self.name == 'controversial'):            
+            source = Paper.controversial(100)
+            title = "Controversial"      
+
+        pages = math.ceil(len(source) / page_count) 
+        pages_left = range(max(page - pagination_count, 0), page)
+        pages_right = range(page + 1, min(page + 1 + pagination_count, pages)) 
+
+        return dict(super().get_context_data(title = title, papers=source[entity_from:entity_to], q=page, pages_l = pages_left, pages_r = pages_right, max_page = pages-1, **kwargs))                           
+
+    def get_object(self, queryset=None):
+        return queryset.get(name=self.name)
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
