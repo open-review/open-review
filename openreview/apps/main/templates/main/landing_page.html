@@ -1,0 +1,63 @@
+{% extends "splash.html" %}
+
+{% block header %}
+  <h1>Discover &amp; discuss research papers.</h1>
+  <p>Suspendisse nunc nisl, molestie eget tortor sed, pellentesque tempus ipsum. <a href="#">Read more.</a></p>
+{% endblock %}
+
+{% block content %}
+    <section class="search">
+      <form method="GET" action="#">
+          <div class="query">
+              <input placeholder="Find interesting papers..." name="query" tabindex="1" autofocus />
+              <p>
+                  <strong>Popular search terms: </strong>
+                  <a href="#">bitcoin</a>,
+                  <a href="#">riemann sum</a>,
+                  <a href="#">complex numbers</a>
+              </p>
+          </div>
+          <div class="action">
+              <input type="submit" value="Search" tabindex="2" />
+          </div>
+      </form>
+
+    </section>
+
+    <section class="trending-papers box">
+        <h2><a href="/papers/trending">Trending papers</a></h2>
+        <ol>
+            <li>
+                <a href="#">Bitcoin: A Peer-to_Peer Electronic Cash System</a> <span class="number-of-reviews">3</span>
+            </li>
+            <li>
+                <a href="#">The prime divisors of the period and index of a Brauer class</a> <span class="number-of-reviews">1</span>
+            </li>
+            <li>
+                <a href="#">Some Positivstellensätze for polynomial matrices</a> <span class="number-of-reviews">8</span>
+            </li>
+            <li>
+                <a href="#">Free resolutions of orbit closures for the representations and…</a> <span class="number-of-reviews">6</span>
+            </li>
+            <li>
+                <a href="#">Galois closure of henselization</a> <span class="number-of-reviews">5</span>
+            </li>
+        </ol>
+    </section>
+    <section class="top-reviews box">
+        <h2><a href="/reviews/top">Top reviews</a></h2>
+        <ol>
+            <li>
+                Anonymous — <a href="#">Nullam laoreet mollis velit, vitae luctus justo facilisis id.
+                Donec id ipsum eu urna lobortis semper. Duis et libero nisl. Sed quis…</a>
+            </li>
+            <li>
+                e.dijkstra — <a href="#">It is practically impossible to teach good programming to
+                students that have had a prior exposure to BASIC: as potential…</a>
+            </li>
+            <li>
+                applepie55 — <a href="#">Design is a funny word. Some people think design means how it looks. But of course, if you dig deeper, it's really how it works.</a>
+            </li>
+      </ol>
+    </section>
+{% endblock %}

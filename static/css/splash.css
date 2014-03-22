@@ -1,0 +1,202 @@
+body > header {
+    border-bottom: 1px #D3D3D3 solid;
+    background: #FEFEFE;
+    background: -moz-linear-gradient(top, #F7FAFA 0%, #FEFEFE 100%);
+    background: -webkit-linear-gradient(top, #F7FAFA 0%, #FEFEFE 100%);
+    background: linear-gradient(to bottom, #F7FAFA 0%, #FEFEFE 100%);
+}
+
+body > header h1,
+body > header p {
+    text-align: center;
+    margin: 0;
+}
+
+body > header h1 {
+    font-size: 24px;
+    color: #000;
+    font-weight: 700;
+    padding: 70px 0 0;
+}
+
+body > header p {
+    font-size: 13px;
+    color: #333;
+    padding: 20px 0 70px;
+}
+
+body > main,
+body > hr,
+body > footer {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+body > main {
+    padding-top: 90px;
+    overflow: hidden;
+}
+
+body > main section.search {
+    width: 680px;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-bottom: 90px;
+}
+
+body > main section.search .query,
+body > main section.search .action {
+  float: left;
+}
+
+body > main section.search .query {
+  width: 500px;
+}
+
+body > main section.search .action {
+  width: 160px;
+  margin-left: 20px;
+}
+
+body > main section.search .query input,
+body > main section.search .query p,
+body > main section.search .action input {
+    width: 100%;
+}
+
+body > main section.search .query input {
+    font-size: 18px;
+    font-family: 'Open Sans', Arial, sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+    border-radius: 2px;
+    background: #fff url('http://f.cl.ly/items/3a2e0X0D1r1O1b1o0Z3Q/magnifier.png') no-repeat right 10px center;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    padding: 7px 10px;
+}
+
+body > main section.search .query input:focus {
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+body > main section.search .query p {
+    text-align: center;
+    margin: 15px 0 0;
+}
+
+body > main section.search .query p strong {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 700;
+}
+
+body > main section.search .action input {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 15px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    background: #FAFCFC;
+    background: -moz-linear-gradient(top, #FAFCFC 0%, #F3F7F7 100%);
+    background: -webkit-linear-gradient(top, #FAFCFC 0%, #F3F7F7 100%);
+    background: linear-gradient(to bottom, #FAFCFC 0%, #F3F7F7 100%);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
+    -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
+    box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
+    text-shadow: 0 1px 0 #fff;
+    font-weight: bold;
+    padding: 9px 10px;
+}
+
+body > main section.search .action input:hover,
+body > main section.search .action input:focus {
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    outline: none;
+}
+
+body > main section.search .action input:active {
+  padding: 10px 10px 8px;
+  background: -moz-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
+  background: -webkit-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
+  background: linear-gradient(to top, #FAFCFC 0%, #F3F7F7 100%);
+}
+
+body > main .box {
+    float: left;
+    width: 490px;
+    border-radius: 2px;
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2)
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+}
+
+body > main .box + .box {
+  margin-left: 20px;
+}
+
+body > main .box h2 {
+  font-size: 16px;
+  margin: 0;
+  padding: 17px 20px 15px 20px;
+  border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main .box h2 a {
+  color: #5D5D5D;
+}
+
+body > main .box ol {
+    list-style: none;
+    padding: 10px 20px;
+    margin: 0;
+}
+
+body > main .box ol li {
+    display: block;
+    padding: 6px 0;
+    overflow: hidden;
+}
+
+body > main .box.trending-papers ol li a,
+body > main .box.trending-papers ol li span {
+    display: block;
+}
+
+body > main .box.trending-papers ol li a {
+    float: left;
+}
+
+body > main .box.trending-papers ol li a:hover + span {
+    background: #187676;
+    color: #fff;
+    width: auto;
+    padding: 0 5px;
+}
+
+body > main .box.trending-papers ol li a:hover + span:after {
+    content: " reviews";
+}
+
+body > main .box.trending-papers ol li span {
+    float: right;
+    width: 16px;
+    height: 16px;
+    line-height: 14px;
+    border: 1px #187676 solid;
+    border-radius: 2px;
+    text-align: center;
+    color: #187676;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+body > main .box.top-reviews ol li + li {
+  margin-top: 3px;
+}

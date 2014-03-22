@@ -72,7 +72,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
 # Overriding default User object
 AUTH_USER_MODEL = 'accounts.User'
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Application definition
 INSTALLED_APPS = (
@@ -118,15 +118,15 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
 
-if DEBUG:
-    CACHE_MIDDLEWARE_KEY_PREFIX = "DEBUG_"
+# if DEBUG:
+#     CACHE_MIDDLEWARE_KEY_PREFIX = "DEBUG_"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

@@ -70,7 +70,7 @@ class TestLoginView(unittest.TestCase):
 
         c = Client()
         response = c.post(reverse("accounts-login"), {"username": "test", "password": "password", "existing": ""})
-        self.assertTrue(response.url.endswith(reverse("frontpage")))
+        self.assertTrue(response.url.endswith(reverse("dashboard")))
         self.assertEqual(response.status_code, 302)
 
 
