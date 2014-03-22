@@ -25,7 +25,16 @@
     <div class="row">
       <div class="col-md-4">
           <h2>Select Paper</h2>
-           {{ add_paper_form|bootstrap }}        
+           {{ add_paper_form|bootstrap }}
+          <div id="id-scraper-field">
+              <div id="scraper-result" style="display: none;">
+                  <h2 id="scraper-title"></h2><br/>
+                  <b>Authors: </b><i id="scraper-authors"></i><br/>
+                  <b>Abstract: </b><span id="scraper-abstract"></span><br/>
+                  <b>Url: </b><span id="scraper-url"></span>
+              </div>
+              <div id="scraper-status"></div>
+          </div>
       </div>
       <div class="col-md-8">
           <h2>New Review</h2>
@@ -34,4 +43,8 @@
       </div>
     </div>
 </form>
+{% endblock %}
+
+{% block js%}
+        <script src="{{ STATIC_URL }}js/paperform.coffee" type="text/coffeescript"></script>
 {% endblock %}

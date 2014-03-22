@@ -1,16 +1,18 @@
+from django.db import transaction
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
+
+from django.shortcuts import render, HttpResponse, redirect
+from django.core.urlresolvers import reverse
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.utils.datastructures import MultiValueDict
+from django.views.generic import TemplateView, View
 import json
 import datetime
 from urllib import parse
-from django.core.urlresolvers import reverse
 
-from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect
-from django.utils.datastructures import MultiValueDict
-from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, View
-
-from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
+from .scrapers import ArXivScraper
+from openreview.apps.main.models import set_n_votes_cache, Review, Vote
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
@@ -61,6 +63,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
             **kwargs
         )
 
+
 class PaperWithReviewsView(BaseReviewView):
     template_name = "papers/paper.html"
 
@@ -80,6 +83,7 @@ class PaperWithReviewsView(BaseReviewView):
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
+
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
@@ -170,4 +174,18 @@ class ReviewView(BaseReviewView):
         self.objects.review.delete()
         return HttpResponse("OK", status=200)
 
+
+@cache_page(60*10)
+def doi_scraper(request, id):
+    return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
+                        content_type="application/json")
+
+
+def arxiv_scraper(request, doc_id):
+    try:
+        tempres = ArXivScraper().parse(doc_id)
+        return HttpResponse(json.dumps(tempres.get_results()), content_type="application/json")
+    except ArXivScraper.ScrapingError:
+        return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
+                            content_type="application/json")
 

@@ -9,6 +9,7 @@ from openreview.apps.tools.testing import create_test_review, SeleniumTestCase, 
 
 __all__ = ["TestVoteView", "TestVoteViewLive"]
 
+
 class TestVoteView(unittest.TestCase):
     def test_get(self):
         review = create_test_review()
@@ -123,5 +124,3 @@ class TestVoteViewLive(SeleniumTestCase):
         downvote.click()
         self.assertTrue(review_dom.find_element_by_class_name("deleted-message").is_displayed())
         self.assertEqual(current_downvote_count, downvote_count.text)
-
-
