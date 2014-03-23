@@ -38,25 +38,31 @@
 
 <div class="pagination">
     <span class="pages-left">
-        {% if q != 0 and 0 not in pages_l %}
-        ...
-        {% endif %}
-        {% for i in pages_l %}        
-          <a href="?q={{ i }}">{{ i | add:'1' }}</a>       
-        {% endfor %}
+        {% with p=pag_max|stringformat:"s" %}
+            {% with slicer="-"|add:p|add:":" %}
+                {% for i in pages_l|slice:slicer %}
+                  {% if forloop.revcounter == pag_max %}
+                    ...
+                  {% else %}
+                    <a href="?p={{ i }}">{{ i }}</a>       
+                  {% endif %}
+                {% endfor %}
+            {% endwith %}
+        {% endwith %}
     </span>
-    
     <span class="current">
-          {{ q|add:1 }}
+          {{ cur_page }}
     </span>
-    
     <span class="pages-right">
-        {% for i in pages_r %}        
-          <a href="?q={{ i }}">{{ i | add:'1' }}</a>       
+    {% with p=pag_max|stringformat:"s" %}
+        {% for i in pages_r|slice:p %}
+          {% if forloop.counter == pag_max %}
+            ...
+          {% else %}
+            <a href="?p={{ i }}">{{ i }}</a>       
+          {% endif %}
         {% endfor %}
-        {% if q != max_page and max_page not in pages_r %}
-        ...
-        {% endif %}
+    {% endwith %}
     </span>
 </div>
     

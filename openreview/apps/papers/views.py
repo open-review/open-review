@@ -10,11 +10,14 @@ from django.shortcuts import render, redirect
 from django.utils.datastructures import MultiValueDict
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
+PAGE_COUNT = 25
+PAGINATION_COUNT = 6
 
 class VoteView(View):
     def get(self, request, paper_id, review_id):
@@ -85,34 +88,36 @@ class PaperWithReviewsView(BaseReviewView):
 
 class PapersView(TemplateView):
     template_name = "papers/overview.html"
-    name = ''
+    order = ''
 
-    def get_context_data(self, **kwargs):   
-        page_count = 25
-        pagination_count = 4
+    def get_context_data(self, **kwargs):           
+        page = int(self.request.GET.get('p', '1'))
 
-        page = int(self.request.GET.get('q', '0'))
-        entity_from = page * page_count
-        entity_to = entity_from + page_count 
-
-        if(self.name == 'new'):
+        if self.order == 'new':
             source = Paper.latest()
             title = "New"
-        if(self.name == 'trending'):
+        if self.order == 'trending':
             source = Paper.trending(100)
             title = "Trending"
-        if(self.name == 'controversial'):            
+        if self.order == 'controversial':            
             source = Paper.controversial(100)
             title = "Controversial"      
 
-        pages = math.ceil(len(source) / page_count) 
-        pages_left = range(max(page - pagination_count, 0), page)
-        pages_right = range(page + 1, min(page + 1 + pagination_count, pages)) 
+        paginator = Paginator(source,PAGE_COUNT)
+        try:
+            papers = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            papers = paginator.page(page)
 
-        return dict(super().get_context_data(title = title, papers=source[entity_from:entity_to], q=page, pages_l = pages_left, pages_r = pages_right, max_page = pages-1, **kwargs))                           
+        pages_right = paginator.page_range[page:]
+        pages_left = paginator.page_range[0:page-1]
+
+        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))                           
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
+        
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
