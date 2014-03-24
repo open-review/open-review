@@ -75,7 +75,8 @@ class SeleniumTestCase(LiveServerTestCase):
         return WEBDRIVER if same_browser() else self._wd
 
     def tearDown(self):
-        self.wd.delete_all_cookies()
+        if not skip():
+            self.wd.delete_all_cookies()
         super().tearDown()
 
     @classmethod
