@@ -1,3 +1,8 @@
+import json
+import datetime
+from urllib import parse
+from django.core.paginator import Paginator, EmptyPage
+
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
 
@@ -7,15 +12,14 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
-import json
-import datetime
-from urllib import parse
 
 from .scrapers import ArXivScraper
-from openreview.apps.main.models import set_n_votes_cache, Review, Vote
+from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
+PAGE_COUNT = 25
+PAGINATION_COUNT = 6
 
 class VoteView(View):
     def get(self, request, paper_id, review_id):
@@ -83,6 +87,40 @@ class PaperWithReviewsView(BaseReviewView):
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
+           
+
+class PapersView(TemplateView):
+    template_name = "papers/overview.html"
+    order = ''
+
+    def get_context_data(self, **kwargs):           
+        page = int(self.request.GET.get('p', '1'))
+
+        if self.order == 'new':
+            source = Paper.latest()
+            title = "New"
+        if self.order == 'trending':
+            source = Paper.trending(100)
+            title = "Trending"
+        if self.order == 'controversial':            
+            source = Paper.controversial(100)
+            title = "Controversial"      
+
+        paginator = Paginator(source, PAGE_COUNT)
+        try:
+            papers = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            papers = paginator.page(page)
+
+        pages_right = paginator.page_range[page:]
+        pages_left = paginator.page_range[0:page-1]
+
+        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))                           
+
+    def get_object(self, queryset=None):
+        return queryset.get(name=self.name)
+        
 
 
 class ReviewView(BaseReviewView):
