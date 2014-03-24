@@ -222,7 +222,7 @@ def assert_max_queries(n=0):
         raise AssertionError(msg)
 
 @contextmanager
-def list_queries(destination=None, log_output=True):
+def list_queries(destination=None, log_output=True, ignore=("QUERY = 'BEGIN' - PARAMS = ()",)):
     """
     Context manager which makes it easy to retrieve executed queries regardless of the
     value of settings.DEBUG. Usage example:
@@ -233,6 +233,9 @@ def list_queries(destination=None, log_output=True):
 
     @param destination: append queries to this object
     @type destination: list
+
+    @param ignore: sql queries to ignore (default: sqlite BEGIN)
+    @type ignore: list / tuple
 
     @param log_output: should we log queries to log.debug?
     @type log_output: bool
@@ -249,6 +252,7 @@ def list_queries(destination=None, log_output=True):
     try:
         yield destination
         queries = connection.queries[nqueries:]
+        queries = [q for q in queries if q["sql"] not in ignore]
         destination += queries
     finally:
         settings.DEBUG = debug_prev
