@@ -1,19 +1,26 @@
 from datetime import date
 from unittest import TestCase
+import os, time
 
 from django.core.urlresolvers import reverse
+from django.test.client import Client
+from django.core.exceptions import ObjectDoesNotExist
 
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
 from openreview.apps.tools.testing import create_test_author, create_test_user
-from openreview.apps.main.models import Paper, Review, Vote
+from openreview.apps.main.models import Paper, Review, Vote, Author, Keyword
+
+from openreview.apps.papers.scrapers import ArXivScraper
 
 
 __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
+
 class TestReviewForm(TestCase):
     def test_paper_form(self):
         test_data = {
+            "type": "manually",
             "authors": "Jean\nPiere",
             "title": "test-title",
             "abstract": "foo",
@@ -52,8 +59,9 @@ class TestReviewForm(TestCase):
         self.assertIsNotNone(a.id)
         self.assertIsNone(b.id)
 
-        # save(commit=False) should not save authors/keywords
-        with assert_max_queries(n=0):
+        # save(commit=False) should not save authors/keywords,
+        # but should only check for existing entries
+        with assert_max_queries(n=1):
             form.save(commit=False)
         self.assertIsNotNone(jean.id)
         self.assertIsNone(piere.id)
@@ -61,8 +69,9 @@ class TestReviewForm(TestCase):
         self.assertIsNone(b.id)
 
         # save(commit=True) should
-        with assert_max_queries(n=7):
+        with assert_max_queries(n=8):
             # Django queries database before inserting to make sure it doesn't include duplicates
+            # [0] Checkout for duplicate Paper entry
             # [1] Saving paper
             # [2] INSERT piere
             # [3] SELECT authors
@@ -78,6 +87,52 @@ class TestReviewForm(TestCase):
 
         self.assertEqual(set([jean, piere]), set(paper.authors.all()))
         self.assertEqual(set([a, b]), set(paper.keywords.all()))
+
+    def test_no_duplicate_papers(self):
+        test_data = {
+            "type": "manually",
+            "authors": "Jantje",
+            "title": "test-title",
+            "abstract": "foo",
+            "doc_id": "1403.0438"
+        }
+
+        p = PaperForm(data=test_data)
+        self.assertTrue(p.is_valid())
+        with assert_max_queries(n=5):
+            p.save(commit=True)
+
+        with assert_max_queries(n=1):
+            # This should only return de existing database entry!
+            p.save(commit=True)
+
+    def test_form_filled_in_automatically(self):
+        c = Client()
+        ArXivScraper.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
+                                              "../../papers/testfiles/1306.3879.html")
+        user = create_test_user()
+        c.post(reverse("accounts-login"), {'username': user.username, 'password': "test", 'existing': "Login"})
+        c.post(reverse("add_review"), {'type': "arxiv", 'doc_id': "1306.3879", 'text': "Just nutin",
+                                       'add_review': "Submit"})
+
+        # An item in de db for this paper should now exist
+        p = Paper.objects.get(doc_id="1306.3879")
+        self.assertEqual(p.title, "\nChandra View of the Ultra-Steep Spectrum Radio Source in Abell 2443:" +
+                                  "  Merger Shock-Induced Compression of Fossil Radio Plasma?")
+        self.assertEqual([a.name for a in p.authors.all()], ['T. E. Clarke', 'S. W. Randall', 'C. L. Sarazin',
+                                                             'E. L. Blanton', 'S. Giacintucci'])
+        self.assertEqual(p.urls, "http://arxiv.org/abs/1306.3879")
+        self.assertEqual(p.abstract, """ We present a new Chandra X-ray observation of the intracluster medium in the
+galaxy cluster Abell 2443, hosting an ultra-steep spectrum radio source. The
+data reveal that the intracluster medium is highly disturbed. The thermal gas
+in the core is elongated along a northwest to southeast axis and there is a
+cool tail to the north. We also detect two X-ray surface brightness edges near
+the cluster core. The edges appear to be consistent with an inner cold front to
+the northeast of the core and an outer shock front to the southeast of the
+core. The southeastern edge is coincident with the location of the radio relic
+as expected for shock (re)acceleration or adiabatic compression of fossil
+relativistic electrons.\n""")
+
 
 class TestReviewFormLive(SeleniumTestCase):
     def setUp(self):
@@ -103,8 +158,9 @@ class TestReviewFormLive(SeleniumTestCase):
         self.wd.wait_for_css("#id_title")
 
         # Select the right paper
+        self.wd.find_css('#id_type option[value="manually"]').click()
         self.wd.find_css("#id_title").send_keys("Some fancy paper title")
-        self.wd.find_css("#id_doc_id").send_keys("1403.0438")
+        self.wd.find_css("#id_doc_id").send_keys("1403.04385")
         self.wd.find_css("#id_authors").send_keys("Jéan-Pièrre van 't Hoff")
         self.wd.find_css("#id_abstract").send_keys("This paper is fancy.")
         self.wd.find_css("#id_publish_date").send_keys("2012-01-01")
@@ -116,7 +172,7 @@ class TestReviewFormLive(SeleniumTestCase):
 
         # Review is saved well
         p = Paper.objects.get(title="Some fancy paper title")
-        self.assertEqual(p.doc_id, "1403.0438")
+        self.assertEqual(p.doc_id, "1403.04385")
         #self.assertEqual(p.publish_date, "Jéan-Pièrre van 't Hoff")
         self.assertEqual(p.abstract, "This paper is fancy.")
         self.assertEqual(p.publish_date, date(2012, 1, 1))

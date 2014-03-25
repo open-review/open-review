@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import widgets
 from django.utils.html import mark_safe
+from django.core.exceptions import ObjectDoesNotExist
 from openreview.apps.main.models import Author, Keyword
 
 from openreview.apps.main.models.review import Review
@@ -40,6 +41,12 @@ class ReviewForm(forms.ModelForm):
 
 
 class PaperForm(forms.ModelForm):
+    type_choices = [('',"Select an item"),
+                    ('doi',"Digital object identifier"),
+                    ('arxiv',"arXiv identifier"),
+                    ('manually',"Manually")]
+
+    type = forms.ChoiceField(choices=type_choices, help_text="Select an option")
     authors = forms.CharField(widget=widgets.Textarea(), help_text="Authors of this paper, separated with a newline.")
     keywords = forms.CharField(widget=widgets.Textarea(), help_text="Keywords, separated with a comma.", required=False)
 
@@ -49,6 +56,7 @@ class PaperForm(forms.ModelForm):
         # Fields are defined as TextFields in Paper model as we don't want to
         # restrict sizes (they would be completely arbitrary and don't offer
         # improved performance).
+
         self.fields["title"].widget = widgets.TextInput()
         self.fields["doc_id"].widget = widgets.TextInput()
         self.fields["publisher"].widget = widgets.TextInput()
@@ -74,29 +82,32 @@ class PaperForm(forms.ModelForm):
         Beware: saving with commit=False will result in any newly created authors to not
         be created also.
         """
-        paper = super(PaperForm, self).save(commit=False, **kwargs)
+        try:
+            return Paper.objects.get(doc_id=self.cleaned_data.get("doc_id"))
+        except Paper.DoesNotExist:
+            paper = super(PaperForm, self).save(commit=False, **kwargs)
 
-        if commit:
-            paper.save()
+            if commit:
+                paper.save()
 
-            # TODO: More efficient implementation. This calls the database N times, which is
-            # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
-            # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
-            for author in self.cleaned_data["authors"]:
-                if author.id is None:
-                    author.save()
-            paper.authors.add(*self.cleaned_data["authors"])
+                # TODO: More efficient implementation. This calls the database N times, which is
+                # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
+                # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
+                for author in self.cleaned_data["authors"]:
+                    if author.id is None:
+                        author.save()
+                paper.authors.add(*self.cleaned_data["authors"])
 
-            for keyword in self.cleaned_data["keywords"]:
-                if keyword.id is None:
-                    keyword.save()
-            paper.keywords.add(*self.cleaned_data["keywords"])
+                for keyword in self.cleaned_data["keywords"]:
+                    if keyword.id is None:
+                        keyword.save()
+                paper.keywords.add(*self.cleaned_data["keywords"])
 
-        return paper
+            return paper
 
     class Meta:
         model = Paper
         fields = [
-            'title', 'doc_id', 'authors', 'abstract', 'keywords',
+            'type', 'title', 'doc_id', 'authors', 'abstract', 'keywords',
             'publisher', 'publish_date', 'urls'
         ]

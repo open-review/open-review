@@ -95,18 +95,21 @@ class TestTesting(unittest.TestCase):
         return l
 
     def _test_list_queries(self):
-        query = 'SELECT "main_paper"."id" FROM "main_paper" WHERE "main_paper"."id" = 0'
+        query = [
+            'SELECT "main_paper"."id" FROM "main_paper" WHERE "main_paper"."id" = 0',
+            'QUERY = \'SELECT "main_paper"."id" FROM "main_paper" WHERE "main_paper"."id" = %s \' - PARAMS = (0,)'
+        ]
 
         settings.DEBUG = False
         queries = self.do_n_queries(_n=1, contextmanager=list_queries, destination=[])
         self.assertEqual(1, len(queries))
-        self.assertEqual(queries[0]['sql'].strip(), query)
+        self.assertTrue(queries[0]['sql'].strip() in query)
         self.assertFalse(settings.DEBUG)
 
         settings.DEBUG = True
         queries = self.do_n_queries(_n=1, contextmanager=list_queries, destination=[])
         self.assertEqual(1, len(queries))
-        self.assertEqual(queries[0]['sql'].strip(), query)
+        self.assertTrue(queries[0]['sql'].strip() in query)
         self.assertTrue(settings.DEBUG)
 
         queries = self.do_n_queries(_n=1, contextmanager=list_queries)
