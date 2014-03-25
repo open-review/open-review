@@ -43,6 +43,8 @@ function load_scraper(){
                 $("#scraper-authors").text(data.authors.join(", "));
                 $("#scraper-abstract").text(data.abstract);
                 $("#scraper-url").text(data.urls);
+                $("#scraper-publisher").text(data.publisher);
+                $("#scraper-publish-date").text(data.publish_date);
                 $("#scraper-result").show();
                 $("#scraper-status").hide();
             }
