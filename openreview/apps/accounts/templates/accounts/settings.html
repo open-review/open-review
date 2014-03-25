@@ -25,7 +25,7 @@
             {% for review in reviews %}
                 <tr>
                     <td>
-                        <a href="{% url 'paper' review.paper.id %}#r{{review.id}}" title="{{ review.timestamp }}, {{ review.poster }}">{{ review.paper.title }}</a>
+                        <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">{{ review.paper.title }}</a>
                     </td>
                     <td>
                         {{review.n_upvotes}} <i class="glyphicon glyphicon-arrow-up"></i>
