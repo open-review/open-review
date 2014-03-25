@@ -1,4 +1,6 @@
 import os
+import io
+import sys
 import unittest
 
 
@@ -29,6 +31,7 @@ class TestSettings(unittest.TestCase):
 
         self.assertEqual(get_bool("non-existent"), None)
         self.assertEqual(get_bool("non-existent", default=False), False)
+
         self.assertRaises(ValueError, get_bool, "non-existent", err_empty=True)
 
     def test_get_bool(self):
@@ -36,7 +39,11 @@ class TestSettings(unittest.TestCase):
         environ = os.environ.copy()
         os.environ.clear()
 
+        # Supress stupid printing of error messages
+        actualstdout = sys.stdout
+        sys.stdout = io.StringIO()
         try:
             self._test_get_bool()
         finally:
             os.environ.update(environ)
+            sys.stdout = actualstdout

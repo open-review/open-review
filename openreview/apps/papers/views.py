@@ -221,8 +221,9 @@ def doi_scraper(request, id):
 
 def arxiv_scraper(request, doc_id):
     try:
-        tempres = ArXivScraper().parse(doc_id)
-        return HttpResponse(json.dumps(tempres.get_results()), content_type="application/json")
+        scraper_info = ArXivScraper().parse(doc_id).get_results()
+        scraper_info.update({'publish_date': scraper_info['publish_date'].strftime("%A, %d. %B %Y %I:%M%p")})
+        return HttpResponse(json.dumps(scraper_info), content_type="application/json")
     except ArXivScraper.ScrapingError:
         return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                             content_type="application/json")
