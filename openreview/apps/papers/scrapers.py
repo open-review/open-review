@@ -43,7 +43,9 @@ class ArXivScraper(PaperMetaScraper):
                 self.fields['title'] = self.parser.cssselect("entry title")[0].text
                 self.fields['abstract'] = self.parser.cssselect("entry summary")[0].text
                 self.fields['authors'] = [x.text for x in self.parser.cssselect("entry author name")]
-                # self.fields['published'] = datetime.strptime(self.parser.cssselect("entry published")[0].text,"%Y-%m-%dT%H:%M:%SZ")
+                self.fields['publisher'] = "ArXiv"
+                self.fields['publish_date'] = datetime.strptime(self.parser.cssselect("entry published")[0].text,
+                                                                "%Y-%m-%dT%H:%M:%SZ")
 
                 if self.caching:
                     cache.set("arxiv-res-{id}".format(id=doc_id), self.fields)
