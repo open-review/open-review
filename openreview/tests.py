@@ -1,4 +1,6 @@
-import os, io, sys
+import os
+import io
+import sys
 import unittest
 
 
@@ -25,26 +27,23 @@ class TestSettings(unittest.TestCase):
         self.assertTrue(get_bool("positive1"))
         self.assertTrue(get_bool("positive2"))
 
-        # Supress stupid printing of error messages
-        actualstdout = sys.stdout
-        sys.stdout = io.StringIO()
         self.assertRaises(ValueError, get_bool, "illegal")
-        sys.stdout = actualstdout
 
         self.assertEqual(get_bool("non-existent"), None)
         self.assertEqual(get_bool("non-existent", default=False), False)
 
-        # Supress stupid printing of error messages
-        sys.stdout = io.StringIO()
         self.assertRaises(ValueError, get_bool, "non-existent", err_empty=True)
-        sys.stdout = actualstdout
 
     def test_get_bool(self):
         # Save and restore environment variables
         environ = os.environ.copy()
         os.environ.clear()
 
+        # Supress stupid printing of error messages
+        actualstdout = sys.stdout
+        sys.stdout = io.StringIO()
         try:
             self._test_get_bool()
         finally:
             os.environ.update(environ)
+            sys.stdout = actualstdout
