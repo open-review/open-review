@@ -156,10 +156,14 @@ body > main .box h2 a {
   color: #5D5D5D;
 }
 
-body > main .box ol {
-    list-style: none;
+body > main .box ol,
+body > main .box p {
     padding: 10px 20px;
     margin: 0;
+}
+
+body > main .box ol {
+    list-style: none;
 }
 
 body > main .box ol li {

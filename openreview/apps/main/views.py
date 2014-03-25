@@ -4,12 +4,18 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from openreview.apps.main.models import Paper
+from openreview.apps.main.models import Review
 from openreview.apps.main.forms import ReviewForm, PaperForm
 from openreview.apps.papers.scrapers import ArXivScraper
 
 def landing_page(request):
-    return render(request, "main/landing_page.html")
+    paper_count = 5
+    review_count = 3
 
+    return render(request, "main/landing_page.html", {
+      "trending_papers": Paper.trending(top=paper_count),
+      "top_reviews": Review.latest()[:review_count]
+    })
 
 @login_required
 def dashboard(request):
