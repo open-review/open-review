@@ -197,6 +197,12 @@ class Review(models.Model):
         if self.parent_id is not None and self.parent.paper_id is not self.paper_id:
             raise ValueError("parent.paper ({self.parent.paper_id}) was not {self.paper_id}".format(self=self))
 
+        # Check if the star rating is correct
+        if self.parent_id is not None:
+            self.vote = -1
+        elif not (1 <= self.rating <= 7):
+            raise ValueError("rating ({self.rating}) was not between 1 and 7 (inclusive)".format(self=self))
+
         # We need to clean template caches if this is an existing review
         if self.id is not None:
             self._invalidate_template_caches()

@@ -16,7 +16,9 @@
         {{ review.timestamp }}
       </span>
       
+      {% if not review.parent %}
       <span class="starfield" data-readonly="true" data-score="{{ review.rating }}"></span>
+      {% endif %}
     </header>
 
     <article {% if review.deleted %}class="deleted"{% endif %}>

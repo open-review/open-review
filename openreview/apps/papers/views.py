@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage
 
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
+from django.core.exceptions import ValidationError
 
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.urlresolvers import reverse
@@ -186,11 +187,9 @@ class ReviewView(BaseReviewView):
             vote = int(self.request.POST["rating"])
         except (ValueError, KeyError):
             vote = 0
-            pass
-            #return HttpResponseBadRequest("No vote value, or non-int given.")
 
-        #if not (1 <= vote <= 7):
-            #return HttpResponseBadRequest("You can only vote between 1 and 7 stars (inclusive)")
+        if not (1 <= vote <= 7):
+            vote = 0
         
         review.rating = vote
         review.poster = request.user
