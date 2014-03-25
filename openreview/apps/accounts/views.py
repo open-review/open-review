@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.db import transaction
 from django.views.generic import TemplateView, RedirectView
 from django.utils.decorators import method_decorator
+from openreview.apps.main.models.review import set_n_votes_cache
 
 from openreview.apps.accounts.forms import RegisterForm, SettingsForm
 
@@ -79,6 +80,7 @@ class SettingsView(TemplateView):
 
     def get(self, request):
         reviews = request.user.reviews.all()
+        set_n_votes_cache(reviews)
         return super().get(request, reviews=reviews, settings_form=self.settings_form)
 
     def update(self):

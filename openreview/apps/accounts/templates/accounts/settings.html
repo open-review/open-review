@@ -28,10 +28,10 @@
                         <a href="{% url 'paper' review.paper.id %}#r{{review.id}}" title="{{ review.timestamp }}, {{ review.poster }}">{{ review.paper.title }}</a>
                     </td>
                     <td>
-                        Up: {{review.n_upvotes}}
+                        {{review.n_upvotes}} <i class="glyphicon glyphicon-arrow-up"></i>
                     </td>
                     <td>
-                        Down: {{review.n_downvotes}}
+                        {{review.n_downvotes}} <i class="glyphicon glyphicon-arrow-down"></i>
                     </td>
                 </tr>
                 <tr>
