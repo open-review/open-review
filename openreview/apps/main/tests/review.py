@@ -8,6 +8,7 @@ from openreview.apps.tools.testing import create_test_review, create_test_votes,
 
 __all__ = ["TestReview"]
 
+
 class TestReview(unittest.TestCase):
     def setUp(self):
         self.review = create_test_review()

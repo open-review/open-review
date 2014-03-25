@@ -1,19 +1,25 @@
 import json
 import datetime
 from urllib import parse
-from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage
 
 from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect
-from django.utils.datastructures import MultiValueDict
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
+
+from django.shortcuts import render, HttpResponse, redirect
+from django.core.urlresolvers import reverse
+from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
 
-from openreview.apps.main.models import Paper, set_n_votes_cache, Review, Vote
+from .scrapers import ArXivScraper
+from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
+PAGE_COUNT = 25
+PAGINATION_COUNT = 6
 
 class VoteView(View):
     def get(self, request, paper_id, review_id):
@@ -61,6 +67,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
             **kwargs
         )
 
+
 class PaperWithReviewsView(BaseReviewView):
     template_name = "papers/paper.html"
 
@@ -80,6 +87,41 @@ class PaperWithReviewsView(BaseReviewView):
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
+           
+
+class PapersView(TemplateView):
+    template_name = "papers/overview.html"
+    order = ''
+
+    def get_context_data(self, **kwargs):           
+        page = int(self.request.GET.get('p', '1'))
+
+        if self.order == 'new':
+            source = Paper.latest()
+            title = "New"
+        if self.order == 'trending':
+            source = Paper.trending(100)
+            title = "Trending"
+        if self.order == 'controversial':            
+            source = Paper.controversial(100)
+            title = "Controversial"      
+
+        paginator = Paginator(source, PAGE_COUNT)
+        try:
+            papers = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            papers = paginator.page(page)
+
+        pages_right = paginator.page_range[page:]
+        pages_left = paginator.page_range[0:page-1]
+
+        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))                           
+
+    def get_object(self, queryset=None):
+        return queryset.get(name=self.name)
+        
+
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
@@ -170,4 +212,18 @@ class ReviewView(BaseReviewView):
         self.objects.review.delete()
         return HttpResponse("OK", status=200)
 
+
+@cache_page(60*10)
+def doi_scraper(request, id):
+    return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
+                        content_type="application/json")
+
+
+def arxiv_scraper(request, doc_id):
+    try:
+        tempres = ArXivScraper().parse(doc_id)
+        return HttpResponse(json.dumps(tempres.get_results()), content_type="application/json")
+    except ArXivScraper.ScrapingError:
+        return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
+                            content_type="application/json")
 

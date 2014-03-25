@@ -4,7 +4,7 @@ from django.test.client import Client
 from openreview.apps.accounts.forms import is_email, RegisterForm, SettingsForm
 from openreview.apps.accounts.models import User
 from openreview.apps.tools.testing import SeleniumTestCase
-from openreview.apps.tools.testing import create_test_author, create_test_user
+from openreview.apps.tools.testing import create_test_author
 
 
 class TestForms(unittest.TestCase):
@@ -28,6 +28,7 @@ class TestForms(unittest.TestCase):
 
     # Assuming UserCreationForm is already tested
 
+
 class TestLoginView(unittest.TestCase):
     def test_register(self):
         User.objects.all().delete()
@@ -39,7 +40,8 @@ class TestLoginView(unittest.TestCase):
         self.assertEqual(set(User.objects.all()), set())
         self.assertFalse("sessionid" in response.cookies)
 
-        response = c.post(reverse("accounts-register"), {"username": "abc", "password1": "abc2", "password2": "abc2", "new": ""})
+        response = c.post(reverse("accounts-register"), {"username": "abc", "password1": "abc2",
+                                                         "password2": "abc2", "new": ""})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(User.objects.all().count(), 1)
         user = User.objects.all()[0]
@@ -59,12 +61,12 @@ class TestLoginView(unittest.TestCase):
         response = c.post(reverse("accounts-login"), {"username": "user", "password": "password", "existing": ""})
         self.assertTrue("sessionid" in response.cookies)
 
-
     def test_redirect(self):
         User.objects.create_user("test", password="password")
 
         c = Client()
-        response = c.post(reverse("accounts-login") + "?next=/blaat", {"username": "test", "password": "password", "existing": ""})
+        response = c.post(reverse("accounts-login") + "?next=/blaat", {"username": "test", "password": "password",
+                                                                       "existing": ""})
         self.assertTrue(response.url.endswith("/blaat"))
         self.assertEqual(response.status_code, 302)
 
@@ -120,6 +122,7 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertTrue(user.check_password("abcd"))
         self.assertEqual(user.username, "abc")
 
+
 class TestSettingsForms(unittest.TestCase):
     def test_settings_form(self):
         u = User.objects.create_user(username="TestHero", password="test123")
@@ -134,7 +137,6 @@ class TestSettingsForms(unittest.TestCase):
 
         form = SettingsForm(user=u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet"})
         self.assertFalse(form.is_valid())
-
 
 
 class TestSettingsFormLive(SeleniumTestCase):

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from openreview.apps.main.models import Paper
 from openreview.apps.main.forms import ReviewForm, PaperForm
+from openreview.apps.papers.scrapers import ArXivScraper
 
 def landing_page(request):
     return render(request, "main/landing_page.html")
@@ -26,8 +27,18 @@ def dashboard(request):
 @login_required
 def add_review(request):
     data = request.POST if "add_review" in request.POST else None
-    paper_form = PaperForm(data=data)
+
     review_form = ReviewForm(data=data, user=request.user)
+
+    if data and data.get('type') == 'arxiv':
+        #TODO potentially unsave?
+        scraper = ArXivScraper().parse(data.get('doc_id')).get_results()
+        scraper.update({"type": 'arxiv', "doc_id": data.get('doc_id')})
+        scraper.update({"authors": "\n".join(scraper['authors'])})
+
+        paper_form = PaperForm(data=scraper)
+    else:
+        paper_form = PaperForm(data=data)
 
     with transaction.atomic():
         if paper_form.is_valid() and review_form.is_valid():
