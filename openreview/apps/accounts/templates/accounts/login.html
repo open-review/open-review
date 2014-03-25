@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap %}
 {% block login %}{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}accounts/login.css" />
@@ -11,7 +10,7 @@
             <center>
                 <form method="post" class="form">
                     {% csrf_token %}
-                    {{ login_form|bootstrap }}
+                    {{ login_form }}
                     <input id="login" class="btn btn-primary" name="existing" type="submit" value="Login">
                 </form>
             </center>
@@ -21,7 +20,7 @@
             <center>
                 <form method="post" class="form">
                     {% csrf_token %}
-                    {{ register_form|bootstrap }}
+                    {{ register_form }}
                     <input id="register" class="btn btn-primary" name="new" type="submit" value="Register">
                 </form>
             </center>

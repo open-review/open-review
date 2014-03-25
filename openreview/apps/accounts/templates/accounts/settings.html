@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap %}
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}accounts/settings.css" />
 {% endblock %}
@@ -19,7 +18,7 @@
     <center>
         <form method="post" class="form">
             {% csrf_token %}
-            {{ settings_form|bootstrap }}
+            {{ settings_form }}
             <input id="update" class="btn btn-primary" name="update" type="submit" value="Update">
         </form>
     </center>

@@ -1,7 +1,4 @@
 [submodule "static/mathjax"]
 	path = static/mathjax
 	url = git://github.com/mathjax/MathJax.git
-[submodule "static/bootstrap"]
-	path = static/bootstrap
-	url = git://github.com/twbs/bootstrap.git
 	
