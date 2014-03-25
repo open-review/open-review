@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.db import transaction
 from django.views.generic import TemplateView, RedirectView
+from django.utils.decorators import method_decorator
 
 from openreview.apps.accounts.forms import RegisterForm, SettingsForm
 
@@ -65,32 +66,22 @@ class SettingsView(TemplateView):
 
     def __init__(self, *args, **kwargs):
         self.settings_form = None
-        self.reviews = None
-        self.user = None
         super().__init__(*args, **kwargs)
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        settings_data = self.request.POST
-        self.settings_form = SettingsForm(data=settings_data, user=request.user, auto_id='id_settings_%s')
+        settings_data = request.POST or None
+        self.settings_form = SettingsForm(data=settings_data, user=request.user)
         return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        return dict(super().get_context_data(**kwargs), settings_form=self.settings_form, reviews=self.reviews, user=self.user)
 
     def post(self, request):
         return self.update()
 
     def get(self, request):
-        self.reviews = request.user.reviews.all()
-        self.user = request.user
-        return super().get(request)
+        reviews = request.user.reviews.all()
+        return super().get(request, reviews=reviews, settings_form=self.settings_form)
 
     def update(self):
-        with transaction.atomic():
-            if self.settings_form.is_valid():
-                self.settings_form.save()
-                return self.redirect()
+        if self.settings_form.is_valid():
+            self.settings_form.save()
         return self.get(self.request)
-
-    def redirect(self):
-       return redirect(self.request.GET.get("next", reverse("frontpage")), permanent=False)
