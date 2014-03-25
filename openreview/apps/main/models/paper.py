@@ -1,4 +1,6 @@
 import datetime
+
+from django.utils import timezone
 from django.db import models
 from django.db.models import Count
 
@@ -20,9 +22,7 @@ class Keyword(models.Model):
 
 
 class Paper(models.Model):
-    doc_id = models.TextField(verbose_name="document identifier",
-                              help_text="Identifier: can either be a real DOI or a domain-specific one. " +
-                                        "For example: arXiv:1403.0438.", null=True)
+    doc_id = models.TextField(verbose_name="document identifier", null=True)
     title = models.TextField()
     abstract = models.TextField()
     publisher = models.TextField(null=True, blank=True)
@@ -43,7 +43,7 @@ class Paper(models.Model):
 
         @rtype: list
         """
-        seven_days_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+        seven_days_ago = timezone.now() - datetime.timedelta(days=7)
         reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
         papers = reviews.values_list('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
         papers_objects = Paper.objects.in_bulk(pid for pid, pcount in papers)

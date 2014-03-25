@@ -41,7 +41,8 @@ class TestLoginView(unittest.TestCase):
         self.assertEqual(set(User.objects.all()), set())
         self.assertFalse("sessionid" in response.cookies)
 
-        response = c.post(reverse("accounts-register"), {"username": "abc", "password1": "abc2", "password2": "abc2", "new": ""})
+        response = c.post(reverse("accounts-register"), {"username": "abc", "password1": "abc2",
+                                                         "password2": "abc2", "new": ""})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(User.objects.all().count(), 1)
         user = User.objects.all()[0]
@@ -65,7 +66,8 @@ class TestLoginView(unittest.TestCase):
         User.objects.create_user("test", password="password")
 
         c = Client()
-        response = c.post(reverse("accounts-login") + "?next=/blaat", {"username": "test", "password": "password", "existing": ""})
+        response = c.post(reverse("accounts-login") + "?next=/blaat", {"username": "test", "password": "password",
+                                                                       "existing": ""})
         self.assertTrue(response.url.endswith("/blaat"))
         self.assertEqual(response.status_code, 302)
 
@@ -164,7 +166,6 @@ class TestSettingsForms(unittest.TestCase):
             create_test_review(poster=self.u)
 
         self.assertEqual(len(self.u.reviews.all()), 5)
-
 
 class TestSettingsFormLive(SeleniumTestCase):
     def setUp(self):

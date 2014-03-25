@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper-with-reviews.css" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/voting.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/deleting.coffee"></script>
+{% endblock %}
+
+{% block meta %}
+    <div class="hide">
+        <div id="anonymous">{{ user.is_anonymous|lower }}</div>
+        <div id="my_votes">{{ my_votes|safe }}</div>
+        <div id="my_reviews">{{ my_reviews|safe }}</div>
+    </div>
+{% endblock %}
+
+{% block content %}
+   <h1>
+        {{ paper.title|capfirst }} <br/>
+        {% for author in paper.authors.all %}
+          <small>{{ author.name }}{% if not forloop.last %},{% endif %}</small>
+        {% endfor %}
+    </h1>
+
+    <p>{{ paper.abstract }}</p>
+
+    <p>
+        <strong>Keywords: </strong>
+        <em>
+            {% for keyword in paper.keywords.all %}
+                {{ keyword }}{% if not forloop.last %},{% endif %}
+            {% empty %}
+                No keyword available.
+            {% endfor %}
+        </em>
+    </p>
+
+    <p>
+        <strong>Links:</strong>
+        {% if not paper.urls %}
+            <em>No urls available.</em>
+        {% else %}
+            {{ paper.urls }}
+        {% endif %}
+    </p>
+
+    <p>
+        <strong>ID:</strong> {{ paper.id }}
+    </p>
+
+    <hr/>
+    {% url 'paper' paper.id as url %}
+    {% for review in reviews %}
+        {% include "papers/review.html" with review=review user=user url=url %}
+    {% empty %}
+        <em>No reviews yet!</em>
+    {% endfor %}
+
+    <hr/>
+
+    {% include "papers/comment.html" %}
+
+
+{% endblock %}
+
+

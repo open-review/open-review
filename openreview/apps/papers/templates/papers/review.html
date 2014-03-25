@@ -1,0 +1,46 @@
+{% load markdown %}
+
+<section class="review-container">
+  <div id="r{{ review.id }}" review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
+    <header>
+      <i class="glyphicon glyphicon-user"></i>
+      <span class="author">
+          {% if review.poster == None %}
+            ?
+          {% else %}
+            {{ review.poster.username }}
+          {% endif %}
+      </span>
+      on
+      <span class="timestamp" unix="{{ review.timestamp|date:'U' }}">
+        {{ review.timestamp }}
+      </span>
+    </header>
+
+    <article {% if review.deleted %}class="deleted"{% endif %}>
+      {{ review.text|default_if_none:""|markdown }}
+    </article>
+
+    <footer>
+      <span class="options">
+        {% include "papers/review-options.html" %}
+      </span>
+      <span style="display:none;" class="deleted-message">
+        You cannot cast votes on deleted reviews/comments.
+      </span>
+      <span style="display:none;" class="login-message">
+        You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote or comment!
+      </span>
+    </footer>
+  </div>
+
+  <div style="display:none;" class="new">
+    {% include "papers/comment.html" %}
+  </div>
+
+  <div style="display:none;" class="edit">
+    {% include "papers/comment.html" with text=review.text %}
+  </div>
+</section>
+
+
