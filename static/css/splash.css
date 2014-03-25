@@ -123,6 +123,10 @@ body > main section.search .action input:active {
   background: -moz-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
   background: -webkit-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
   background: linear-gradient(to top, #FAFCFC 0%, #F3F7F7 100%);
+
+  -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
+  -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
+  box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
 }
 
 body > main .box {
