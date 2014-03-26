@@ -1,17 +1,16 @@
 from datetime import date
 from unittest import TestCase
-import os, time
+import os
 
 from django.core.urlresolvers import reverse
 from django.test.client import Client
-from django.core.exceptions import ObjectDoesNotExist
 
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
 from openreview.apps.tools.testing import create_test_author, create_test_user
-from openreview.apps.main.models import Paper, Review, Vote, Author, Keyword
+from openreview.apps.main.models import Paper, Review, Vote
 
-from openreview.apps.papers.scrapers import ArXivScraper
+from openreview.apps.papers import scrapers
 
 
 __all__ = ["TestReviewForm", "TestReviewFormLive"]
@@ -108,8 +107,8 @@ class TestReviewForm(TestCase):
 
     def test_form_filled_in_automatically(self):
         c = Client()
-        ArXivScraper.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
-                                              "../../papers/testfiles/1306.3879.xml")
+        scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
+                                          "/../../papers/testfiles/1306.3879.xml")
         user = create_test_user()
         c.post(reverse("accounts-login"), {'username': user.username, 'password': "test", 'existing': "Login"})
         c.post(reverse("add_review"), {'type': "arxiv", 'doc_id': "1306.3879", 'text': "Just nutin",
@@ -121,7 +120,7 @@ class TestReviewForm(TestCase):
   Merger Shock-Induced Compression of Fossil Radio Plasma?""")
         self.assertEqual([a.name for a in p.authors.all()], ['T. E. Clarke', 'S. W. Randall', 'C. L. Sarazin',
                                                              'E. L. Blanton', 'S. Giacintucci'])
-        self.assertEqual(p.urls, "http://arxiv.org/abs/1306.3879")
+        self.assertEqual(p.urls, "http://arxiv.org/abs/1306.3879v1")
         self.assertEqual(p.abstract, """  We present a new Chandra X-ray observation of the intracluster medium in the
 galaxy cluster Abell 2443, hosting an ultra-steep spectrum radio source. The
 data reveal that the intracluster medium is highly disturbed. The thermal gas
