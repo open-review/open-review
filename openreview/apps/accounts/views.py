@@ -49,13 +49,13 @@ class LoginView(TemplateView):
         return self.redirect()
 
     def redirect(self):
-        # Redirect to GET parameter 'next', or frontpage
-        return redirect(self.request.GET.get("next", reverse("frontpage")), permanent=False)
+        # Redirect to GET parameter 'next', or dashboard
+        return redirect(self.request.GET.get("next", reverse("dashboard")), permanent=False)
 
 
 class LogoutView(RedirectView):
     permanent = False
-    pattern_name = "frontpage"
+    pattern_name = "dashboard"
 
     def get(self, request, *args, **kwargs):
         logout(request)
@@ -87,3 +87,4 @@ class SettingsView(TemplateView):
         if self.settings_form.is_valid():
             self.settings_form.save()
         return self.get(self.request)
+

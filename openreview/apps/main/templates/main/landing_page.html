@@ -1,0 +1,66 @@
+{% extends "splash.html" %}
+
+{% block header %}
+  <h1>Discover &amp; discuss research papers.</h1>
+  <p>Suspendisse nunc nisl, molestie eget tortor sed, pellentesque tempus ipsum. <a href="#">Read more.</a></p>
+{% endblock %}
+
+{% block content %}
+    <section class="search">
+      <form method="GET" action="#">
+          <div class="query">
+              <input placeholder="Find interesting papers..." name="query" tabindex="1" autofocus />
+              <p>
+                  <strong>Popular search terms: </strong>
+                  <a href="#">bitcoin</a>,
+                  <a href="#">riemann sum</a>,
+                  <a href="#">complex numbers</a>
+              </p>
+          </div>
+          <div class="action">
+              <input type="submit" value="Search" tabindex="2" />
+          </div>
+      </form>
+
+    </section>
+
+    <section class="trending-papers box">
+        <h2><a href="/papers/trending">Trending papers</a></h2>
+        {% if trending_papers %}
+            <ol>
+            {% for paper in trending_papers %}
+                <li>
+                    <a href="{% url 'paper' paper.id %}">{{ paper.title|truncatechars:60 }}</a> <span class="number-of-reviews">{{ paper.num_reviews }}</span>
+                </li>
+            {% endfor %}
+            </ol>
+        {% else %}
+          <p><em>No papers are available yet.</em></p>
+        {% endif %}
+    </section>
+    <section class="top-reviews box">
+        <h2><a href="/reviews/top">Top reviews</a></h2>
+        {% if top_reviews %}
+            <ol>
+            {% for review in top_reviews %}
+                <li>
+                    {% if review.poster == None %}
+                        Anonymous'
+                    {% else %}
+                        {{ review.poster.username }}
+                    {% endif %}
+
+                    —
+
+                    <a href="{% url 'paper' review.paper.id %}#r{{ review.id }}">
+                      {{ review.text|truncatechars:130 }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ol>
+        {% else %}
+            <p><em>No reviews written yet.</em></p>
+        {% endif %}
+
+    </section>
+{% endblock %}

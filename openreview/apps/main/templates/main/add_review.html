@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap %}
 {% block content %}
 <div class="well">
     <p>Whale whale whale.. what have we got here?</p>
@@ -25,20 +24,22 @@
     <div class="row">
       <div class="col-md-4">
           <h2>Select Paper</h2>
-           {{ add_paper_form|bootstrap }}
+           {{ add_paper_form }}
           <div id="id-scraper-field">
               <div id="scraper-result" style="display: none;">
                   <h2 id="scraper-title"></h2><br/>
                   <b>Authors: </b><i id="scraper-authors"></i><br/>
                   <b>Abstract: </b><span id="scraper-abstract"></span><br/>
-                  <b>Url: </b><span id="scraper-url"></span>
+                  <b>URL: </b><span id="scraper-url"></span><br/>
+                  <b>Publisher: </b><span id="scraper-publisher"></span><br/>
+                  <b>Publish date: </b><span id="scraper-publish-date"></span>
               </div>
               <div id="scraper-status"></div>
           </div>
       </div>
       <div class="col-md-8">
           <h2>New Review</h2>
-          {{ add_review_form|bootstrap }}
+          {{ add_review_form }}
           <input id="login" class="btn btn-primary" name="add_review" type="submit" value="Submit">
       </div>
     </div>

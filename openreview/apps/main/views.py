@@ -4,16 +4,25 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from openreview.apps.main.models import Paper
+from openreview.apps.main.models import Review
 from openreview.apps.main.forms import ReviewForm, PaperForm
-
 from openreview.apps.papers.scrapers import ArXivScraper
 
+def landing_page(request):
+    paper_count = 5
+    review_count = 3
 
-def frontpage(request):
+    return render(request, "main/landing_page.html", {
+      "trending_papers": Paper.trending(top=paper_count),
+      "top_reviews": Review.latest()[:review_count]
+    })
+
+@login_required
+def dashboard(request):
     # Display 3 papers in each column
     paper_count = 3
 
-    return render(request, "main/frontpage.html", {
+    return render(request, "main/dashboard.html", {
         "user": request.user,
         "latest_papers_list": Paper.latest()[:paper_count],
         "trending_papers_list": Paper.trending(top=paper_count),
@@ -45,7 +54,7 @@ def add_review(request):
             review.save()
 
             #return redirect(reverse("paper", args=(paper.id,)), parmanent=False)
-            return redirect(reverse("frontpage"), parmanent=False)
+            return redirect(reverse("dashboard"), parmanent=False)
 
     return render(request, "main/add_review.html", {
         "user": request.user,

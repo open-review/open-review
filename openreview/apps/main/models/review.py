@@ -53,6 +53,10 @@ class Review(models.Model):
         # If cache() is called, this contains a review_id -> Review mapping
         self._reviews = None
 
+    @classmethod
+    def latest(cls):
+        return Review.objects.order_by('-timestamp')
+
     def get_reputation(self):
         """
         Reputation determines the position of a post. This might be implemented in many ways,

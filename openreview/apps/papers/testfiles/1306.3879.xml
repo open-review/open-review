@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <link href="http://arxiv.org/api/query?search_query%3Did%3A1306.3879%26id_list%3D%26start%3D0%26max_results%3D1" rel="self" type="application/atom+xml"/>
+  <title type="html">ArXiv Query: search_query=id:1306.3879&amp;id_list=&amp;start=0&amp;max_results=1</title>
+  <id>http://arxiv.org/api/FmKtz/Y4q6eWMo5oPS8ArAEcEZM</id>
+  <updated>2014-03-25T00:00:00-04:00</updated>
+  <opensearch:totalResults xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">1</opensearch:totalResults>
+  <opensearch:startIndex xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">0</opensearch:startIndex>
+  <opensearch:itemsPerPage xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">1</opensearch:itemsPerPage>
+  <entry>
+    <id>http://arxiv.org/abs/1306.3879v1</id>
+    <updated>2013-06-17T14:43:59Z</updated>
+    <published>2013-06-17T14:43:59Z</published>
+    <title>Chandra View of the Ultra-Steep Spectrum Radio Source in Abell 2443:
+  Merger Shock-Induced Compression of Fossil Radio Plasma?</title>
+    <summary>  We present a new Chandra X-ray observation of the intracluster medium in the
+galaxy cluster Abell 2443, hosting an ultra-steep spectrum radio source. The
+data reveal that the intracluster medium is highly disturbed. The thermal gas
+in the core is elongated along a northwest to southeast axis and there is a
+cool tail to the north. We also detect two X-ray surface brightness edges near
+the cluster core. The edges appear to be consistent with an inner cold front to
+the northeast of the core and an outer shock front to the southeast of the
+core. The southeastern edge is coincident with the location of the radio relic
+as expected for shock (re)acceleration or adiabatic compression of fossil
+relativistic electrons.
+</summary>
+    <author>
+      <name>T. E. Clarke</name>
+    </author>
+    <author>
+      <name>S. W. Randall</name>
+    </author>
+    <author>
+      <name>C. L. Sarazin</name>
+    </author>
+    <author>
+      <name>E. L. Blanton</name>
+    </author>
+    <author>
+      <name>S. Giacintucci</name>
+    </author>
+    <arxiv:comment xmlns:arxiv="http://arxiv.org/schemas/atom">12 pages, 9 figures; Accepted for publication in The Astrophysical
+  Journal</arxiv:comment>
+    <link href="http://arxiv.org/abs/1306.3879v1" rel="alternate" type="text/html"/>
+    <link title="pdf" href="http://arxiv.org/pdf/1306.3879v1" rel="related" type="application/pdf"/>
+    <arxiv:primary_category xmlns:arxiv="http://arxiv.org/schemas/atom" term="astro-ph.CO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="astro-ph.CO" scheme="http://arxiv.org/schemas/atom"/>
+  </entry>
+</feed>
