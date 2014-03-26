@@ -1,54 +1,59 @@
-from django.core.cache import cache
-
-from openreview.apps.main.models.paper import Paper
-
-from urllib.request import urlopen
-import lxml.html
-from collections import defaultdict
+from urllib.request import urlopen, HTTPError
 from datetime import datetime
 
+import lxml.html
+import lxml.etree
 
-class PaperMetaScraper:
 
-    class ScrapingError(BaseException):
-        def __str__(self):
-            return "An error has occured during scraping"
-
-    def __init__(self, caching=True):
-        self.fields = defaultdict()
-        self.parser = None
-        self.caching = caching
-
-    def parse(self, url):
+class ScraperError(BaseException):
         pass
 
-    def get_results(self):
-        return self.fields
 
-    def results_as_model_object(self):
-        return Paper(self.fields)
+class Controller:
+    def __init__(self, scraper):
+        self.scraper = scraper
+
+    def run(self, doc_id):
+        url = self.scraper.get_url(doc_id)
+
+        try:
+            doc = self.scraper.get_doc(url)
+        except HTTPError:
+            raise ScraperError("An exception occurred while fetching {doc_id}".format(**locals()))
+
+        try:
+            result = dict(self.scraper.parse(doc))
+            result.update({"doc_id": doc_id})
+            return result
+        except (lxml.etree.LxmlError, IndexError):
+            raise ScraperError("An exception occurred while parsing {doc_id}".format(**locals()))
 
 
-class ArXivScraper(PaperMetaScraper):
+class Scraper:
+    scarper_url = None
+    parser = lxml.html.parse
 
-    def parse(self, doc_id):
-        if self.caching and cache.get("arxiv-res-{id}".format(id=doc_id)):
-            self.fields = cache.get("arxiv-res-{id}".format(id=doc_id))
-        else:
-            try:
-                self.fields['doc_id'] = doc_id
-                self.fields['urls'] = "http://arxiv.org/abs/{id}".format(id=doc_id)
-                self.parser = lxml.html.parse(urlopen(("http://export.arxiv.org/api/query?search_query=id:{id}" +
-                                                      "&start=0&max_results=1").format(id=doc_id))).getroot()
-                self.fields['title'] = self.parser.cssselect("entry title")[0].text
-                self.fields['abstract'] = self.parser.cssselect("entry summary")[0].text
-                self.fields['authors'] = [x.text for x in self.parser.cssselect("entry author name")]
-                self.fields['publisher'] = "ArXiv"
-                self.fields['publish_date'] = datetime.strptime(self.parser.cssselect("entry published")[0].text,
-                                                                "%Y-%m-%dT%H:%M:%SZ")
+    @classmethod
+    def get_url(cls, doc_id):
+        return cls.scraper_url.format(doc_id=doc_id)
 
-                if self.caching:
-                    cache.set("arxiv-res-{id}".format(id=doc_id), self.fields)
-            except Exception:
-                raise PaperMetaScraper.ScrapingError()
-        return self
+    @classmethod
+    def get_doc(cls, url):
+        return cls.parser(urlopen(url)).getroot()
+
+    @classmethod
+    def parse(cls, doc):
+        raise NotImplemented
+
+
+class ArXivScraper(Scraper):
+    scraper_url = "http://export.arxiv.org/api/query?search_query=id:{doc_id}&start=0&max_results=1"
+
+    @classmethod
+    def parse(cls, doc):
+        yield "urls", doc.cssselect("entry id")[0].text
+        yield "title", doc.cssselect("entry title")[0].text
+        yield "abstract", doc.cssselect("entry summary")[0].text
+        yield "authors", [x.text for x in doc.cssselect("entry author name")]
+        yield "publisher", "ArXiv"
+        yield "publish_date", datetime.strptime(doc.cssselect("entry published")[0].text, "%Y-%m-%dT%H:%M:%SZ")
