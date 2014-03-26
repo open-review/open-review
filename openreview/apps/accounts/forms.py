@@ -109,9 +109,6 @@ class SettingsForm(RegisterForm):
         self.fields["password2"].required = False
         self.fields.pop("username")
 
-    def clean_username(self):
-        return self.user.get_username()
-
     def save(self, commit=True):
         password = self.cleaned_data["password1"]
         email = self.cleaned_data["email"]

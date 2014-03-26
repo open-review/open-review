@@ -5,6 +5,7 @@ from openreview.apps.accounts.forms import is_email, RegisterForm, SettingsForm
 from openreview.apps.accounts.models import User
 from openreview.apps.tools.testing import SeleniumTestCase
 from openreview.apps.tools.testing import create_test_author
+from openreview.apps.tools.testing import create_test_review
 
 
 class TestForms(unittest.TestCase):
@@ -124,20 +125,47 @@ class TestLoginViewSelenium(SeleniumTestCase):
 
 
 class TestSettingsForms(unittest.TestCase):
+    u = None
+
+    def setUp(self):
+        User.objects.all().delete()
+        self.assertEqual(set(User.objects.all()), set())
+        self.u = User.objects.create_user(username="TestHero", password="test123")
+        super().setUp()
+
     def test_settings_form(self):
-        u = User.objects.create_user(username="TestHero", password="test123")
-        form = SettingsForm(user=u, data={"password1": "test", "password2": "differentpassword"})
+        form = SettingsForm(user=self.u, data={"password1": "test", "password2": "differentpassword"})
         self.assertFalse(form.is_valid())
 
-        form = SettingsForm(user=u, data={"password1": "test123", "password2": "test123"})
+        form = SettingsForm(user=self.u, data={"password1": "test123", "password2": "test123"})
         self.assertTrue(form.is_valid())
 
-        form = SettingsForm(user=u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet.com"})
+        form = SettingsForm(user=self.u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet.com"})
         self.assertTrue(form.is_valid())
 
-        form = SettingsForm(user=u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet"})
+        form = SettingsForm(user=self.u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet"})
         self.assertFalse(form.is_valid())
 
+    def test_username(self):
+        # Username may not be changed when sending it with post.
+        c = Client()
+        c.post(reverse("accounts-login"), {"username": "TestHero", "password": "test123", "existing": ""})
+        c.post(reverse("accounts-settings"), {"username": "hacker", "password1": "abc2", "password2": "abc2"})
+        self.assertEqual(self.u.username, "TestHero")
+
+    def test_change_change_password(self):
+        c = Client()
+        c.post(reverse("accounts-login"), {"username": "TestHero", "password": "test123", "existing": ""})
+        c.post(reverse("accounts-settings"), {"password1": "test12345", "password2": "test12345"})
+        c.post(reverse("accounts-logout"))
+        response = c.post(reverse("accounts-login"), {"username": "TestHero", "password": "test12345", "existing": ""})
+        self.assertTrue("sessionid" in response.cookies)
+
+    def test_reviews(self):
+        for n in range(5):
+            create_test_review(poster=self.u)
+
+        self.assertEqual(len(self.u.reviews.all()), 5)
 
 class TestSettingsFormLive(SeleniumTestCase):
     def setUp(self):
@@ -154,29 +182,30 @@ class TestSettingsFormLive(SeleniumTestCase):
         self.wd.find_css("#id_login_password").send_keys("password")
         self.wd.find_css('input[value="Login"]').click()
         self.wd.wait_for_css("body")
-        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
 
         # Test changing password
         self.open(reverse("accounts-settings"))
         self.wd.wait_for_css("body")
-        self.wd.find_css("#id_settings_password1").send_keys("test1234")
-        self.wd.find_css("#id_settings_password2").send_keys("test1234")
+        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
+        self.wd.find_css("#id_password1").send_keys("test1234")
+        self.wd.find_css("#id_password2").send_keys("test1234")
         self.wd.find_css('input[value="Update"]').click()
+        self.wd.wait_for_css("body")
         self.open(reverse("accounts-logout"))
         self.wd.wait_for_css("body")
 
-        self.open(reverse("accounts-login"))
+        self.open(reverse("accounts-settings"))
         self.wd.wait_for_css("body")
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("test1234")
         self.wd.find_css('input[value="Login"]').click()
         self.wd.wait_for_css("body")
-        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
+        self.assertTrue(self.wd.current_url.endswith(reverse("accounts-settings")))
 
         # Test changing email
         self.open(reverse("accounts-settings"))
         self.wd.wait_for_css("body")
-        self.wd.find_css("#id_settings_email").send_keys("tester@testingheroes.com")
+        self.wd.find_css("#id_email").send_keys("tester@testingheroes.com")
         self.wd.find_css('input[value="Update"]').click()
         self.wd.wait_for_css("body")
         user = User.objects.all()[0]

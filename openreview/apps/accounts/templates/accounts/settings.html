@@ -4,27 +4,42 @@
 {% endblock %}
 {% block content %}
 
-{%  if user.is_anonymous %}
-<div class="well">
-    <p>
-        Settings page only available when logged in. Please go to the <a href="{% url "accounts-login" %}">login page.</a>
-    </p>
+<div class="row">
+    <div class="settings col-md-6">
+        <h1>Settings of {{ user.username }}</h1>
+        <center>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {{ settings_form }}
+                <input id="update" class="btn btn-primary" name="update" type="submit" value="Update">
+            </form>
+        </center>
+    </div>
+
+    <div class="contributions col-md-6">
+        <h1>Contributions</h1>
+        <h2>My reviews</h2>
+        <table class="table reviews">
+            {% for review in reviews %}
+                <tr>
+                    <td>
+                        <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">{{ review.paper.title }}</a>
+                    </td>
+                    <td>
+                        {{review.n_upvotes}} <i class="glyphicon glyphicon-arrow-up"></i>
+                    </td>
+                    <td>
+                        {{review.n_downvotes}} <i class="glyphicon glyphicon-arrow-down"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{review.text|slice:":50"}}...
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
-
-{% else %}
-
-<div class="settings col-md-6">
-    <h1>Settings</h1>
-    <center>
-        <form method="post" class="form">
-            {% csrf_token %}
-            {{ settings_form }}
-            <input id="update" class="btn btn-primary" name="update" type="submit" value="Update">
-        </form>
-    </center>
- </div>
-
-
-{% endif %}
 
 {% endblock %}
