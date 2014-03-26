@@ -86,5 +86,5 @@ class SettingsView(TemplateView):
     def update(self):
         if self.settings_form.is_valid():
             self.settings_form.save()
-        return self.get(self.request)
+        return redirect(reverse("accounts-settings"))
 
