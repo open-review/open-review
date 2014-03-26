@@ -3,6 +3,7 @@ from unittest import TestCase
 import os
 
 from django.core.urlresolvers import reverse
+from django.core.cache import cache
 from django.test.client import Client
 
 from openreview.apps.main.forms import PaperForm
@@ -106,6 +107,7 @@ class TestReviewForm(TestCase):
             p.save(commit=True)
 
     def test_form_filled_in_automatically(self):
+        cache.clear()
         c = Client()
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
                                           "/../../papers/testfiles/1306.3879.xml")

@@ -1,3 +1,5 @@
+from django.core.cache import cache
+
 from urllib.request import urlopen, HTTPError
 from datetime import datetime
 
@@ -10,23 +12,30 @@ class ScraperError(BaseException):
 
 
 class Controller:
-    def __init__(self, scraper):
+    def __init__(self, scraper, caching=True):
         self.scraper = scraper
+        self.scraper_name = scraper.__class__.__name__
+        self.caching = caching
 
     def run(self, doc_id):
         url = self.scraper.get_url(doc_id)
 
-        try:
-            doc = self.scraper.get_doc(url)
-        except self.scraper.fetching_errors:
-            raise ScraperError("An exception occurred while fetching {doc_id}".format(**locals()))
+        if self.caching and cache.get("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id)):
+            return cache.get("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id))
+        else:
+            try:
+                doc = self.scraper.get_doc(url)
+            except self.scraper.fetching_errors:
+                raise ScraperError("An exception occurred while fetching {doc_id}".format(**locals()))
 
-        try:
-            result = dict(self.scraper.parse(doc))
-            result.update({"doc_id": doc_id})
-            return result
-        except self.scraper.parsing_errors:
-            raise ScraperError("An exception occurred while parsing {doc_id}".format(**locals()))
+            try:
+                result = dict(self.scraper.parse(doc))
+                result.update({"doc_id": doc_id})
+                if self.caching:
+                    cache.set("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id), result)
+                return result
+            except self.scraper.parsing_errors:
+                raise ScraperError("An exception occurred while parsing {doc_id}".format(**locals()))
 
 
 class Scraper:
