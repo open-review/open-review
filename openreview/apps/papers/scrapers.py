@@ -18,20 +18,23 @@ class Controller:
 
         try:
             doc = self.scraper.get_doc(url)
-        except HTTPError:
+        except self.scraper.fetching_errors:
             raise ScraperError("An exception occurred while fetching {doc_id}".format(**locals()))
 
         try:
             result = dict(self.scraper.parse(doc))
             result.update({"doc_id": doc_id})
             return result
-        except (lxml.etree.LxmlError, IndexError):
+        except self.scraper.parsing_errors:
             raise ScraperError("An exception occurred while parsing {doc_id}".format(**locals()))
 
 
 class Scraper:
     scarper_url = None
     parser = lxml.html.parse
+
+    fetching_errors = HTTPError
+    parsing_errors = (lxml.etree.LxmlError, IndexError)
 
     @classmethod
     def get_url(cls, doc_id):
