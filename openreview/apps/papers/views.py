@@ -111,8 +111,6 @@ class PapersView(TemplateView):
         elif self.order == 'controversial':            
             source = Paper.controversial(100)
             title = "Controversial"      
-        else:
-            raise Http404
 
         paginator = Paginator(source, PAGE_COUNT)
         try:
