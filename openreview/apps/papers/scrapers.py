@@ -30,12 +30,14 @@ class Controller:
 
             try:
                 result = dict(self.scraper.parse(doc))
-                result.update({"doc_id": doc_id})
-                if self.caching:
-                    cache.set("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id), result)
-                return result
             except self.scraper.parsing_errors:
                 raise ScraperError("An exception occurred while parsing {doc_id}".format(**locals()))
+
+            result.update({"doc_id": doc_id})
+
+            if self.caching:
+                cache.set("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id), result)
+            return result
 
 
 class Scraper:
