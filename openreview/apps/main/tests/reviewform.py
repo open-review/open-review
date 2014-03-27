@@ -134,6 +134,7 @@ the northeast of the core and an outer shock front to the southeast of the
 core. The southeastern edge is coincident with the location of the radio relic
 as expected for shock (re)acceleration or adiabatic compression of fossil
 relativistic electrons.\n""")
+        self.assertEqual([c.arxiv_code for c in p.categories.all()], ["astro-ph.CO"])
 
 
 class TestReviewFormLive(SeleniumTestCase):
@@ -164,18 +165,26 @@ class TestReviewFormLive(SeleniumTestCase):
         self.wd.find_css("#id_title").send_keys("Some fancy paper title")
         self.wd.find_css("#id_doc_id").send_keys("1403.04385")
         self.wd.find_css("#id_authors").send_keys("Jéan-Pièrre van 't Hoff")
+        self.wd.find_css("#id_keywords").send_keys("Aa,Bb,Cc")
         self.wd.find_css("#id_abstract").send_keys("This paper is fancy.")
         self.wd.find_css("#id_publish_date").send_keys("2012-01-01")
         self.wd.find_css("#id_publisher").send_keys("Springer")
         self.wd.find_css("#id_urls").send_keys("http://example.org/document.pdf")
         self.wd.find_css("#id_text").send_keys("test\nlol\ndoei")
-        self.wd.find_css("input[name=\"add_review\"]").click()
+        catlist = self.wd.find_css("#id_categories");
+        for option in catlist.find_elements_by_tag_name('option'):
+            if option.text == 'Artificial Intelligence':
+                option.click()
+
+        self.wd.find_css("input[name=\"add_review\"]").click()        
         self.wd.wait_for_css("body")
 
         # Review is saved well
         p = Paper.objects.get(title="Some fancy paper title")
         self.assertEqual(p.doc_id, "1403.04385")
-        #self.assertEqual(p.publish_date, "Jéan-Pièrre van 't Hoff")
+        self.assertEqual([a.name for a in p.authors.all()], ["Jéan-Pièrre van 't Hoff"])
+        self.assertEqual([c.name for c in p.categories.all()], ["Artificial Intelligence"])
+        self.assertEqual([k.label for k in p.keywords.all()], ["Aa","Bb","Cc"])
         self.assertEqual(p.abstract, "This paper is fancy.")
         self.assertEqual(p.publish_date, date(2012, 1, 1))
         self.assertEqual(p.publisher, "Springer")
