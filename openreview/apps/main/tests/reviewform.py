@@ -4,6 +4,7 @@ import os
 
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
+from django.core import management
 from django.test.client import Client
 
 from openreview.apps.main.forms import PaperForm
@@ -18,6 +19,10 @@ __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
 
 class TestReviewForm(TestCase):
+    def setUp(self):
+        management.call_command('loaddata', 'openreview/fixtures/categories.yaml', verbosity=0)
+        super().setUp()
+
     def test_paper_form(self):
         test_data = {
             "type": "manually",
@@ -141,6 +146,7 @@ class TestReviewFormLive(SeleniumTestCase):
     def setUp(self):
         self.a = create_test_author(name="tester")
         self.u = create_test_user()
+        management.call_command('loaddata', 'openreview/fixtures/categories.yaml', verbosity=0)
         super().setUp()
 
     def test_paper_gets_committed(self):
