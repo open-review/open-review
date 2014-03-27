@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from openreview.apps.main.models import Paper
 from openreview.apps.main.models import Review
 from openreview.apps.main.forms import ReviewForm, PaperForm
-from openreview.apps.papers.scrapers import ArXivScraper
+from openreview.apps.papers import scrapers
 
 def landing_page(request):
     paper_count = 5
@@ -38,7 +38,7 @@ def add_review(request):
 
     if data and data.get('type') == 'arxiv':
         #TODO potentially unsave?
-        scraper = ArXivScraper().parse(data.get('doc_id')).get_results()
+        scraper = scrapers.Controller(scrapers.ArXivScraper).run(data.get('doc_id'))
         scraper.update({"type": 'arxiv', "doc_id": data.get('doc_id')})
         scraper.update({"authors": "\n".join(scraper['authors'])})
 

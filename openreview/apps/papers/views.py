@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
 
-from .scrapers import ArXivScraper
+from openreview.apps.papers import scrapers
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
@@ -230,10 +230,10 @@ def doi_scraper(request, id):
 
 def arxiv_scraper(request, doc_id):
     try:
-        scraper_info = ArXivScraper().parse(doc_id).get_results()
+        scraper_info = scrapers.Controller(scrapers.ArXivScraper).run(doc_id)
         scraper_info.update({'publish_date': scraper_info['publish_date'].strftime("%A, %d. %B %Y %I:%M%p")})
         return HttpResponse(json.dumps(scraper_info), content_type="application/json")
-    except ArXivScraper.ScrapingError:
+    except scrapers.ScraperError:
         return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                             content_type="application/json")
 
