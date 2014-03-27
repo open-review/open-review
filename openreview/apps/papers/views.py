@@ -4,7 +4,7 @@ from urllib import parse
 from django.core.paginator import Paginator, EmptyPage
 
 from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
 
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.urlresolvers import reverse
@@ -93,16 +93,22 @@ class PapersView(TemplateView):
     template_name = "papers/overview.html"
     order = ''
 
-    def get_context_data(self, **kwargs):           
-        page = int(self.request.GET.get('p', '1'))
+    def get_context_data(self, **kwargs):     
+        try:      
+            page = int(self.request.GET.get('p', '1'))
+        except ValueError:
+            raise Http404
+
+        if not page >= 0:
+            raise Http404
 
         if self.order == 'new':
             source = Paper.latest()
             title = "New"
-        if self.order == 'trending':
+        elif self.order == 'trending':
             source = Paper.trending(100)
             title = "Trending"
-        if self.order == 'controversial':            
+        elif self.order == 'controversial':            
             source = Paper.controversial(100)
             title = "Controversial"      
 
