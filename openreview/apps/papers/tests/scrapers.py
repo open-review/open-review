@@ -1,14 +1,14 @@
 import unittest
 import os
 
-import openreview.apps.papers.scrapers as scrapers
+from openreview.apps.papers import scrapers
 
 __all__ = ['TestArXivScraper']
 
 
 class TestArXivScraper(unittest.TestCase):
     def setUp(self):
-        self.arxivscraper = scrapers.ArXivScraper(caching=False)
+        self.arxivscraper = scrapers.Controller(scrapers.ArXivScraper, caching=False)
         self.oldurlopen = scrapers.urlopen
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
                                           "/../testfiles/1306.3879.xml")
@@ -17,7 +17,7 @@ class TestArXivScraper(unittest.TestCase):
         scrapers.urlopen = self.oldurlopen
 
     def test_arxiv_scraper(self):
-        results = self.arxivscraper.parse("1306.3879").get_results()
+        results = self.arxivscraper.run("1306.3879")
         self.assertEqual(results['title'], """Chandra View of the Ultra-Steep Spectrum Radio Source in Abell 2443:
   Merger Shock-Induced Compression of Fossil Radio Plasma?""")
         self.assertEqual(results['authors'], ["T. E. Clarke", "S. W. Randall", "C. L. Sarazin",
@@ -34,4 +34,4 @@ core. The southeastern edge is coincident with the location of the radio relic
 as expected for shock (re)acceleration or adiabatic compression of fossil
 relativistic electrons.\n""")
         self.assertEqual(results['doc_id'], "1306.3879")
-        self.assertEqual(results['urls'], "http://arxiv.org/abs/1306.3879")
+        self.assertEqual(results['urls'], "http://arxiv.org/abs/1306.3879v1")
