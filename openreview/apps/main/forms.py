@@ -91,9 +91,8 @@ class PaperForm(forms.ModelForm):
                         keyword.save()
                 paper.keywords.add(*self.cleaned_data["keywords"])
                 
-                paper.categories.add(*self.cleaned_data["categories"])                
 
-                print(paper.categories.all())
+                paper.categories.add(*self.cleaned_data["categories"])                
             return paper
 
     class Meta:

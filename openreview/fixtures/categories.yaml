@@ -273,4 +273,24 @@
     name: Systems and Control
     arxiv_code: cs.SY    
     parent: 3
-    
+
+- model: main.category
+  pk: 41
+  fields:
+    name: Physics
+    arxiv_code:
+    parent:
+
+- model: main.category
+  pk: 42
+  fields:
+    name: Astrophysics
+    arxiv_code: astro-ph
+    parent:  
+      
+- model: main.category
+  pk: 43
+  fields:
+    name: Cosmology and Nongalactic Astrophysics
+    arxiv_code: astro-ph.CO
+    parent:    

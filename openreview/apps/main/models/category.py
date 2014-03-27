@@ -6,7 +6,7 @@ __all__ = ["Category"]
 
 class Category(models.Model):
     name = models.TextField()
-    arxiv_code = models.TextField(null=True)
+    arxiv_code = models.TextField(null=True, unique=True)
     parent = models.ForeignKey("main.Category", null=True)
 
     def __str__(self):

@@ -2,6 +2,7 @@ from django.core.cache import cache
 
 from urllib.request import urlopen, HTTPError
 from datetime import datetime
+from openreview.apps.main.models import Category
 
 import lxml.html
 import lxml.etree
@@ -71,3 +72,9 @@ class ArXivScraper(Scraper):
         yield "authors", [x.text for x in doc.cssselect("entry author name")]
         yield "publisher", "ArXiv"
         yield "publish_date", datetime.strptime(doc.cssselect("entry published")[0].text, "%Y-%m-%dT%H:%M:%SZ")
+        try:
+            categories = [Category.objects.get(arxiv_code=x.get('term')).pk for x in doc.cssselect("entry category")]
+            yield "categories", categories
+        except Category.DoesNotExist:
+            yield "categories", None
+

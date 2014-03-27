@@ -33,7 +33,7 @@ class Paper(models.Model):
     # These fields are *probably* a bad idea performance wise.
     authors = models.ManyToManyField(Author)
     keywords = models.ManyToManyField(Keyword)
-    categories = models.ManyToManyField(Category)    
+    categories = models.ManyToManyField(Category, blank=True)    
 
     @classmethod
     def trending(cls, top=5):
