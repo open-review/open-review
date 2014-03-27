@@ -69,7 +69,7 @@ class TestReviewForm(TestCase):
         self.assertIsNone(b.id)
 
         # save(commit=True) should
-        with assert_max_queries(n=8):
+        with assert_max_queries(n=9):
             # Django queries database before inserting to make sure it doesn't include duplicates
             # [0] Checkout for duplicate Paper entry
             # [1] Saving paper
@@ -79,6 +79,7 @@ class TestReviewForm(TestCase):
             # [5] INSERT b
             # [6] SELECT keywords
             # [7] INSERT keywords
+            # [8] SELECT categories         
             paper = form.save(commit=True)
         self.assertIsNotNone(jean.id)
         self.assertIsNotNone(piere.id)
@@ -99,7 +100,7 @@ class TestReviewForm(TestCase):
 
         p = PaperForm(data=test_data)
         self.assertTrue(p.is_valid())
-        with assert_max_queries(n=5):
+        with assert_max_queries(n=6):
             p.save(commit=True)
 
         with assert_max_queries(n=1):

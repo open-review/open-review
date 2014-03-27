@@ -13,7 +13,7 @@ class TestPaperWithReviewsView(unittest.TestCase):
         self.client = Client()
 
     def test_queries_anonymous(self):
-        with assert_max_queries(n=7):
+        with assert_max_queries(n=8):
             self.client.get(reverse("paper", args=[self.paper.id]))
 
     def test_queries_logged_in(self):
