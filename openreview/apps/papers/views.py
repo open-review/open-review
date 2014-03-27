@@ -72,7 +72,10 @@ class PaperWithReviewsView(BaseReviewView):
     template_name = "papers/paper.html"
 
     def get_context_data(self, **kwargs):
-        paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords"))
+        paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords", "categories"))
+
+
+
 
         try:
             review = paper.get_reviews()[0]

@@ -1,0 +1,276 @@
+- model: main.category
+  pk: 1
+  fields:
+    name: Physics
+    parent: null
+
+- model: main.category
+  pk: 2
+  fields:
+    name: Mathematics
+    arxiv_code: MATH    
+    parent: null
+        
+- model: main.category
+  pk: 3
+  fields:
+    name: Computer Science
+    arxiv_code: CS
+    parent: null
+
+- model: main.category
+  pk: 4
+  fields:
+    name: Quantitative Biology
+    parent: null
+
+- model: main.category
+  pk: 5
+  fields:
+    name: Statistics
+    parent: null
+    
+- model: main.category
+  pk: 6
+  fields:
+    name: Astrophysics
+    parent: 1
+
+- model: main.category
+  pk: 7
+  fields:
+    name: Artificial Intelligence
+    arxiv_code: cs.AI    
+    parent: 3
+    
+- model: main.category
+  pk: 8
+  fields:
+    name: Computational Complexity
+    arxiv_code: cs.CC    
+    parent: 3
+    
+- model: main.category
+  pk: 9
+  fields:
+    name: Computational Geometry
+    arxiv_code: cs.CG    
+    parent: 3
+    
+- model: main.category
+  pk: 10
+  fields:
+    name: Computational Engineering, Finance, and Science
+    arxiv_code: cs.CE    
+    parent: 3
+    
+- model: main.category
+  pk: 11
+  fields:
+    name: Computation and Language (Computational Linguistics and Natural Language and Speech Processing)
+    arxiv_code: cs.CL    
+    parent: 3
+    
+- model: main.category
+  pk: 12
+  fields:
+    name: Computers and Society
+    arxiv_code: cs.CY    
+    parent: 3
+    
+- model: main.category
+  pk: 13
+  fields:
+    name: Cryptography and Security
+    arxiv_code: cs.CR    
+    parent: 3
+    
+- model: main.category
+  pk: 14
+  fields:
+    name: Databases
+    arxiv_code: cs.DB    
+    parent: 3
+    
+- model: main.category
+  pk: 15
+  fields:
+    name: Data Structures and Algorithms
+    arxiv_code: cs.DS    
+    parent: 3
+    
+- model: main.category
+  pk: 16
+  fields:
+    name: Digital Libraries
+    arxiv_code: cs.DL    
+    parent: 3
+    
+- model: main.category
+  pk: 17
+  fields:
+    name: Discrete Mathematics
+    arxiv_code: cs.DM    
+    parent: 3
+    
+- model: main.category
+  pk: 18
+  fields:
+    name: Emerging Technologies
+    arxiv_code: cs.ET    
+    parent: 3
+    
+- model: main.category
+  pk: 19
+  fields:
+    name: Formal Languages and Automata Theory
+    arxiv_code: cs.FL    
+    parent: 3
+    
+- model: main.category
+  pk: 20
+  fields:
+    name: General Literature
+    arxiv_code: cs.GL    
+    parent: 3
+    
+- model: main.category
+  pk: 21
+  fields:
+    name: Graphics
+    arxiv_code: cs.GR    
+    parent: 3
+    
+- model: main.category
+  pk: 22
+  fields:
+    name: Hardware Architecture
+    arxiv_code: cs.AR    
+    parent: 3
+    
+- model: main.category
+  pk: 23
+  fields:
+    name: Information Retrieval
+    arxiv_code: cs.IR    
+    parent: 3
+    
+- model: main.category
+  pk: 24
+  fields:
+    name: Information Theory
+    arxiv_code: cs.IT    
+    parent: 3
+    
+- model: main.category
+  pk: 25
+  fields:
+    name: Machine Learning
+    arxiv_code: cs.LG    
+    parent: 3
+    
+- model: main.category
+  pk: 26
+  fields:
+    name: Logic in Computer Science
+    arxiv_code: cs.LO    
+    parent: 3
+    
+- model: main.category
+  pk: 27
+  fields:
+    name: Mathematical Software
+    arxiv_code: cs.MS    
+    parent: 3
+    
+- model: main.category
+  pk: 28
+  fields:
+    name: Multiagent Systems
+    arxiv_code: cs.MA    
+    parent: 3
+    
+- model: main.category
+  pk: 29
+  fields:
+    name: Multimedia
+    arxiv_code: cs.MM    
+    parent: 3
+    
+- model: main.category
+  pk: 30
+  fields:
+    name: Numerical Analysis
+    arxiv_code: cs.NA    
+    parent: 3
+    
+- model: main.category
+  pk: 31
+  fields:
+    name: Operating Systems
+    arxiv_code: cs.OS    
+    parent: 3
+    
+- model: main.category
+  pk: 32
+  fields:
+    name: Other
+    arxiv_code: cs.OH    
+    parent: 3
+    
+- model: main.category
+  pk: 33
+  fields:
+    name: Performance
+    arxiv_code: cs.PF    
+    parent: 3
+    
+- model: main.category
+  pk: 34
+  fields:
+    name: Programming Languages
+    arxiv_code: cs.PL    
+    parent: 3
+    
+- model: main.category
+  pk: 35
+  fields:
+    name: Robotics
+    arxiv_code: cs.RO    
+    parent: 3
+    
+- model: main.category
+  pk: 36
+  fields:
+    name: Social and Information Networks
+    arxiv_code: cs.SI    
+    parent: 3
+    
+- model: main.category
+  pk: 37
+  fields:
+    name: Software Engineering
+    arxiv_code: cs.SE    
+    parent: 3
+    
+- model: main.category
+  pk: 38
+  fields:
+    name: Sound
+    arxiv_code: cs.SD    
+    parent: 3
+    
+- model: main.category
+  pk: 39
+  fields:
+    name: Symbolic Computation
+    arxiv_code: cs.SC    
+    parent: 3
+    
+- model: main.category
+  pk: 40
+  fields:
+    name: Systems and Control
+    arxiv_code: cs.SY    
+    parent: 3
+    

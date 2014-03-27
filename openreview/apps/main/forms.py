@@ -64,7 +64,7 @@ class PaperForm(forms.ModelForm):
         keywords_models = {k.label: k for k in Keyword.objects.filter(label__in=keywords)}
         keywords = [keywords_models.get(k, Keyword(label=k)) for k in keywords]
         self.cleaned_data["keywords"] = keywords
-        return keywords
+        return keywords       
 
     def save(self, commit=True, **kwargs):
         """
@@ -78,7 +78,6 @@ class PaperForm(forms.ModelForm):
 
             if commit:
                 paper.save()
-
                 # TODO: More efficient implementation. This calls the database N times, which is
                 # TODO: stupid. We can use use Postgres RETURNING ID as used in the following manner:
                 # TODO: https://github.com/amcat/amcat/blob/master/amcat/models/coding/codedarticle.py#L130
@@ -91,12 +90,15 @@ class PaperForm(forms.ModelForm):
                     if keyword.id is None:
                         keyword.save()
                 paper.keywords.add(*self.cleaned_data["keywords"])
+                
+                paper.categories.add(*self.cleaned_data["categories"])                
 
+                print(paper.categories.all())
             return paper
 
     class Meta:
         model = Paper
         fields = [
             'type', 'title', 'doc_id', 'authors', 'abstract', 'keywords',
-            'publisher', 'publish_date', 'urls'
+            'publisher', 'publish_date', 'urls', 'categories'
         ]
