@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="http://necolas.github.io/normalize.css/3.0.0/normalize.css" />
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Merriweather:400,700' rel='stylesheet' type='text/css'>
         {% compress css %}
+            <link rel="stylesheet" href="{{ STATIC_URL }}normalize/normalize.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/general.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />

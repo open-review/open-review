@@ -2,3 +2,6 @@
 	path = static/mathjax
 	url = git://github.com/mathjax/MathJax.git
 	
+[submodule "static/normalize"]
+	path = static/normalize
+	url = https://github.com/necolas/normalize.css.git
