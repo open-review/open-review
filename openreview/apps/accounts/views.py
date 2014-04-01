@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.utils.decorators import method_decorator
 from openreview.apps.main.models.review import set_n_votes_cache
 
-from openreview.apps.accounts.forms import RegisterForm, SettingsForm
+from openreview.apps.accounts.forms import RegisterForm, SettingsForm, AccountDeleteForm
 
 
 class LoginView(TemplateView):
@@ -88,3 +88,29 @@ class SettingsView(TemplateView):
             self.settings_form.save()
         return redirect(reverse("accounts-settings"))
 
+
+class AccountDeleteView(TemplateView):
+    template_name = "accounts/delete.html"
+
+    def __init__(self, *args, **kwargs):
+        self.delete_form = None
+        super().__init__(*args, **kwargs)
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        delete_data = request.POST or None
+        self.delete_form = AccountDeleteForm(request.user, data=delete_data)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        return super().get(request, delete_form=self.delete_form)
+
+    def post(self, request):
+        self.delete_form.is_valid()
+        return self.update()
+
+    def update(self):
+        if self.delete_form.is_valid():
+            self.delete_form.save()
+            return redirect(reverse("landing_page"))
+        return redirect(reverse("accounts-delete"))

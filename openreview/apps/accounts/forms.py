@@ -124,3 +124,37 @@ class SettingsForm(RegisterForm):
         model = get_user_model()
         fields = ("password1", "password2", "email")
         exclude = ["username"]
+
+
+class AccountDeleteForm(forms.ModelForm):
+    error_messages = {
+        'wrong_password': _("The entered password is wrong."),
+    }
+
+    DELETE_CHOICES = (('keep_reviews', 'Delete my account, but preserve reviews (making them anonymous).'),
+                      ('delete_all', 'Delete my account, including reviews.'))
+
+    password = forms.CharField(label=_("password"), widget=forms.PasswordInput)
+    option = forms.ChoiceField(choices=DELETE_CHOICES, widget=forms.RadioSelect(), initial="keep_reviews")
+    user = None
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if not self.user.check_password(password):
+            raise forms.ValidationError(
+                self.error_messages['wrong_password'],
+                code='wrong_password',
+            )
+        return password
+
+    def save(self, commit=True):
+        choice = self.cleaned_data['option']
+        self.user.delete(delete_reviews=choice == "delete_all")
+
+    class Meta:
+        model = get_user_model()
+        fields = ("password", "option")

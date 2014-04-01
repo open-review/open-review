@@ -1,11 +1,11 @@
 import unittest
 from django.core.urlresolvers import reverse
 from django.test.client import Client
-from openreview.apps.accounts.forms import is_email, RegisterForm, SettingsForm
+from openreview.apps.accounts.forms import is_email, RegisterForm, SettingsForm, AccountDeleteForm
 from openreview.apps.accounts.models import User
-from openreview.apps.tools.testing import SeleniumTestCase
-from openreview.apps.tools.testing import create_test_author
-from openreview.apps.tools.testing import create_test_review
+from openreview.apps.main.models.review import Review
+from openreview.apps.tools.testing import SeleniumTestCase, create_test_user, create_test_author, \
+    create_test_review, create_test_paper
 
 
 class TestForms(unittest.TestCase):
@@ -167,6 +167,7 @@ class TestSettingsForms(unittest.TestCase):
 
         self.assertEqual(len(self.u.reviews.all()), 5)
 
+
 class TestSettingsFormLive(SeleniumTestCase):
     def setUp(self):
         User.objects.all().delete()
@@ -210,3 +211,97 @@ class TestSettingsFormLive(SeleniumTestCase):
         self.wd.wait_for_css("body")
         user = User.objects.all()[0]
         self.assertEqual(user.email, "tester@testingheroes.com")
+
+
+class TestDeleteAccount(unittest.TestCase):
+    u1 = None
+    u2 = None
+    paper = None
+    review_u1 = None
+    review_u2 = None
+    comment_u2 = None
+    comment_u2_u1 = None
+
+    def setUp(self):
+        User.objects.all().delete()
+        self.assertEqual(set(User.objects.all()), set())
+        self.u1 = create_test_user()
+        self.u2 = create_test_user()
+        self.paper = create_test_paper()
+        self.review_u1 = create_test_review(paper=self.paper, poster=self.u1)
+        self.review_u2 = create_test_review(paper=self.paper, poster=self.u2)
+        self.comment_u2 = create_test_review(parent=self.review_u1, poster=self.u2)
+        self.comment_u2_u1 = create_test_review(parent=self.comment_u2, poster=self.u1)
+        super().setUp()
+
+    def test_delete_form(self):
+        form = AccountDeleteForm(user=self.u1, data={"password": "asdqd12", "option": "delete_all"})
+        self.assertFalse(form.is_valid())
+
+        form = AccountDeleteForm(user=self.u1, data={"password": "test", "option": "delete_all"})
+        self.assertTrue(form.is_valid())
+
+        form = AccountDeleteForm(user=self.u1, data={"password": "test", "option": "keep_reviews"})
+        self.assertTrue(form.is_valid())
+
+        form = AccountDeleteForm(user=self.u1, data={"password": "test"})
+        self.assertFalse(form.is_valid())
+
+    def test_delete_all(self):
+        self.u2.delete(delete_reviews=True)
+        self.assertFalse(User.objects.filter(id=self.u2.id).exists())
+
+        self.review_u2 = Review.objects.get(id=self.review_u2.id)
+        self.review_u1 = Review.objects.get(id=self.review_u1.id)
+        self.comment_u2 = Review.objects.get(id=self.comment_u2.id)
+        self.comment_u2_u1 = Review.objects.get(id=self.comment_u2_u1.id)
+
+        self.assertTrue(self.review_u2.is_deleted)
+        self.assertTrue(self.comment_u2.is_deleted)
+
+        self.assertFalse(self.review_u1.is_deleted)
+        self.assertFalse(self.comment_u2_u1.is_deleted)
+
+    def test_keep_reviews(self):
+        self.u2.delete()
+
+        self.assertFalse(User.objects.filter(id=self.u2.id).exists())
+
+        self.review_u2 = Review.objects.get(id=self.review_u2.id)
+        self.review_u1 = Review.objects.get(id=self.review_u1.id)
+        self.comment_u2 = Review.objects.get(id=self.comment_u2.id)
+        self.comment_u2_u1 = Review.objects.get(id=self.comment_u2_u1.id)
+
+        self.assertFalse(self.review_u2.is_deleted)
+        self.assertFalse(self.comment_u2.is_deleted)
+
+        self.assertFalse(self.review_u1.is_deleted)
+        self.assertFalse(self.comment_u2_u1.is_deleted)
+
+
+class TestDeleteAccountFormLive(SeleniumTestCase):
+    def test_form(self):
+        u = create_test_user(username="testHero", password="test")
+        review = create_test_review(poster=u)
+
+        self.login(username="testHero", password="test")
+
+        self.open(reverse("accounts-delete"))
+        self.wd.wait_for_css("body")
+        self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
+
+        self.wd.find_css("#id_password").send_keys("lkjqdwdwqij")
+        self.wd.find_css("#delete").click()
+        self.wd.wait_for_css("body")
+        # Wrong password entered, so should do nothing.
+        self.assertTrue(self.wd.current_url.endswith(reverse("accounts-delete")))
+        self.assertTrue(User.objects.filter(id=u.id).exists())
+
+        # Now enter the correct password.
+        self.wd.find_css("input[value='delete_all']").click()
+        self.wd.find_css("#id_password").send_keys("test")
+        self.wd.find_css("#delete").click()
+        self.wd.wait_for_css("body")
+        self.assertFalse(User.objects.filter(id=u.id).exists())
+        review = Review.objects.get(id=review.id)
+        self.assertTrue(review.is_deleted)
