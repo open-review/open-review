@@ -6,3 +6,4 @@ python3-lxml
 libxml2-dev
 libxslt1-dev
 memcached
+https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.0.deb

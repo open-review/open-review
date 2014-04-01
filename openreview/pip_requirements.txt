@@ -8,3 +8,6 @@ cssselect
 lxml
 python3-memcached
 markdown2
+https://github.com/toastdriven/django-haystack/archive/master.zip
+requests
+pyelasticsearch
