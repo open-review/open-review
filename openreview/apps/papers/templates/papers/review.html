@@ -39,11 +39,11 @@
   </div>
 
   <div style="display:none;" class="new">
-    {% include "papers/comment.html" %}
+    {% include "papers/comment.html" with review=new_review %}
   </div>
 
   <div style="display:none;" class="edit">
-    {% include "papers/comment.html" with text=review.text %}
+    {% include "papers/comment.html" with review=review %}
   </div>
 </section>
 

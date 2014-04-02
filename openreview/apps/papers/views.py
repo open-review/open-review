@@ -1,5 +1,6 @@
 import json
 import datetime
+
 from urllib import parse
 from django.core.paginator import Paginator, EmptyPage
 
@@ -16,6 +17,7 @@ from django.views.generic import TemplateView, View
 
 from .scrapers import ArXivScraper
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
+from openreview.apps.main.forms import ReviewForm
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
@@ -48,10 +50,27 @@ class VoteView(View):
         return HttpResponse("OK", status=201)
 
 class BaseReviewView(ModelViewMixin, TemplateView):
+    def post(self, request, *args, **kwargs):
+        with transaction.atomic():
+            review_form = self.get_review_form();
+            if review_form.is_valid():
+                review = review_form.save()
+
+                return redirect(reverse("frontpage"), parmanent=False)
+            else:
+                return self.get(kwargs)
+
+    def creating_review(self):
+        return "add_review" in self.request.POST
+
+    def get_review_form(self):
+        data = self.request.POST if self.creating_review() else None
+        return ReviewForm(data=data, user=self.request.user, paper=self.objects.paper)
+
     def get_context_data(self, **kwargs):
         # Do not load context data if user is anonymous (no posts) or
         # the current method is POST (votes/reviews not needed)
-        if self.request.user.is_anonymous() or self.request.POST:
+        if self.request.user.is_anonymous() or (self.request.POST and not self.creating_review()):
             return super().get_context_data(**kwargs)
 
         # Passing reviews and votes of user allows efficient caching of templates
@@ -65,6 +84,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return super().get_context_data(
             my_reviews=json.dumps(my_reviews),
             my_votes=json.dumps(my_votes),
+            add_review_form=self.get_review_form(),
             **kwargs
         )
 
@@ -214,7 +234,7 @@ class ReviewView(BaseReviewView):
             return self.redirect(review)
 
         review.id = -1
-        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review))
+        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review, add_review_form=review_form))
 
     @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):

@@ -62,7 +62,11 @@
 
     <hr/>
 
-    {% include "papers/comment.html" %}
+    <form method="post">
+        {% csrf_token %}
+        {{ add_review_form }}
+        <br /><input name="add_review" type="submit" value="Submit review">
+    </form>
 
 
 {% endblock %}

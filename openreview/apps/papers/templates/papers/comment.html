@@ -2,14 +2,10 @@
   <div class="col-md-6">
       <form method="POST" action="{% url 'review' paper.id review.id|default:-1 %}">
           {% csrf_token %}
-          <textarea name="text" placeholder="Write a new review!">{{ text }}</textarea>
+          <textarea name="text" placeholder="Write a new review!">{{ review.text }}</textarea>
           <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
           
           <input type="hidden" name="rating" value="{{ review.rating }}" />
-          {% if not review.id %}
-              <!-- Star ratings are only possible on reviews, not on comments -->
-              <div class="starfield" data-field="rating"></div>
-          {% endif %}
       </form>
   </div>
   <div class="col-md-6">

@@ -85,6 +85,10 @@ class Review(models.Model):
     def deleted(self):
         return self.text is None
 
+    @property
+    def is_review(self):
+        return self.parent is None
+
     def cache(self, select_related=None, defer=None, order=False, order_reverse=False):
         """
         Caches all reviews in the complete review tree of self.paper. After calling the
