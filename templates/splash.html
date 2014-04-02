@@ -7,7 +7,7 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Merriweather:400,700' rel='stylesheet' type='text/css'>
         {% compress css %}
             <link rel="stylesheet" href="{{ STATIC_URL }}css/general.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/splash.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
             {% block css %}{% endblock %}
         {% endcompress %}
@@ -15,13 +15,14 @@
     </head>
     <body csrf="{{ csrf_token }}">
         <header>
-          <h1>OpenReview.org</h1>
+            {% block header %}{% endblock %}
         </header>
+
         <main>
             {% block content %}{% endblock %}
         </main>
 
-        {% include 'footer.html' %}
+        {% include 'includes/footer.html' %}
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -32,7 +33,6 @@
             {% block js %}{% endblock %}
         {% endcompress %}
 
-        <script type="text/javascript">window.staticUrl = "{{ STATIC_URL }}";</script>
         <script type="text/x-mathjax-config">
           MathJax.Hub.Config({
             tex2jax: {

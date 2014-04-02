@@ -1,14 +1,11 @@
-.nreviews{
-    float:right;
-    color: grey;
+body > header {
+
 }
 
-.papers tr:first-child td:first-child{
-    border-top:none;
-}
-
-body{
-    margin-top:20px;
+body > header h1 {
+    text-align: left;
+    padding: 20px;
+    margin: 0;
 }
 
 .review .starfield {

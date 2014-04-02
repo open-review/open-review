@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.db import transaction
 from django.views.generic import TemplateView, RedirectView
+from django.utils.decorators import method_decorator
+from openreview.apps.main.models.review import set_n_votes_cache
 
 from openreview.apps.accounts.forms import RegisterForm, SettingsForm
 
@@ -47,17 +49,18 @@ class LoginView(TemplateView):
         return self.redirect()
 
     def redirect(self):
-        # Redirect to GET parameter 'next', or frontpage
-        return redirect(self.request.GET.get("next", reverse("frontpage")), permanent=False)
+        # Redirect to GET parameter 'next', or dashboard
+        return redirect(self.request.GET.get("next", reverse("dashboard")), permanent=False)
 
 
 class LogoutView(RedirectView):
     permanent = False
-    pattern_name = "frontpage"
+    pattern_name = "dashboard"
 
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
+
 
 class SettingsView(TemplateView):
     template_name = "accounts/settings.html"
@@ -66,23 +69,22 @@ class SettingsView(TemplateView):
         self.settings_form = None
         super().__init__(*args, **kwargs)
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        settings_data = self.request.POST
-        self.settings_form = SettingsForm(data=settings_data, user=request.user, auto_id='id_settings_%s')
+        settings_data = request.POST or None
+        self.settings_form = SettingsForm(data=settings_data, user=request.user)
         return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        return dict(super().get_context_data(**kwargs), settings_form=self.settings_form)
 
     def post(self, request):
         return self.update()
 
-    def update(self):
-        with transaction.atomic():
-            if self.settings_form.is_valid():
-                self.settings_form.save()
-                return self.redirect()
-        return self.get(self.request)
+    def get(self, request):
+        reviews = request.user.reviews.all()
+        set_n_votes_cache(reviews)
+        return super().get(request, reviews=reviews, settings_form=self.settings_form)
 
-    def redirect(self):
-       return redirect(self.request.GET.get("next", reverse("frontpage")), permanent=False)
+    def update(self):
+        if self.settings_form.is_valid():
+            self.settings_form.save()
+        return redirect(reverse("accounts-settings"))
+

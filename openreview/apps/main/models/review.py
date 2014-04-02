@@ -4,6 +4,7 @@ from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
 from django.db import models
 from django.db.models import Sum
+from django.conf import settings
 
 __all__ = ["Review", "Vote", "ReviewTree", "set_n_votes_cache"]
 
@@ -35,7 +36,7 @@ class Review(models.Model):
     rating = models.SmallIntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    poster = models.ForeignKey(get_user_model(), null=True)
+    poster = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="reviews", null=True)
     paper = models.ForeignKey("main.Paper", related_name="reviews")
     parent = models.ForeignKey("self", null=True)
 
@@ -51,6 +52,10 @@ class Review(models.Model):
 
         # If cache() is called, this contains a review_id -> Review mapping
         self._reviews = None
+
+    @classmethod
+    def latest(cls):
+        return Review.objects.order_by('-timestamp')
 
     def get_reputation(self):
         """
@@ -222,7 +227,7 @@ class Review(models.Model):
 class Vote(models.Model):
     vote = models.SmallIntegerField(db_index=True)
     review = models.ForeignKey(Review, related_name="votes")
-    voter = models.ForeignKey(get_user_model(), related_name="votes")
+    voter = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
 
     class Meta:
         app_label = "main"

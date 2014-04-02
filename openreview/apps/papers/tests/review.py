@@ -230,5 +230,3 @@ class TestReviewViewLive(SeleniumTestCase):
         time.sleep(0.5)
 
         review_dom.parent.find_element_by_css_selector(".preview-error").is_displayed()
-
-

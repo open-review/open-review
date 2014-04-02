@@ -1,0 +1,40 @@
+<hr>
+
+<footer>
+    <div class="column-left">
+        <h3>Account</h3>
+        <ul>
+          {%  if user.is_anonymous %}
+              <li><a href="{% url 'accounts-login' %}">Login</a></li>
+              <li><a href="{% url 'accounts-register' %}">Register</a></li>
+          {% else %}
+              <li><a href="{% url 'accounts-logout' %}">Logout</a></li>
+              <li><a href="{% url 'accounts-settings' %}">Settings </a></li>
+          {%  endif %}
+        </ul>
+    </div>
+
+    <div class="column-right">
+        <h3>Help</h3>
+        <ul>
+          <li><a href="#">Mailinglist</a></li>
+          <li><a href="#">IRC</a></li>
+        </ul>
+    </div>
+
+    <div class="column-right">
+        <h3>Dev</h3>
+        <ul>
+          <li><a href="https://github.com/open-review">Github</a></li>
+          <li><a href="https://github.com/open-review/open-review/issues">Issues</a></li>
+        </ul>
+    </div>
+
+    <div class="column-right">
+        <h3>About</h3>
+        <ul>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Mission</a></li>
+        </ul>
+    </div>
+</footer>

@@ -5,8 +5,9 @@ from urllib import parse
 from django.core.paginator import Paginator, EmptyPage
 
 from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
 from django.core.exceptions import ValidationError
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
 
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.urlresolvers import reverse
@@ -167,16 +168,22 @@ class PapersView(TemplateView):
     template_name = "papers/overview.html"
     order = ''
 
-    def get_context_data(self, **kwargs):           
-        page = int(self.request.GET.get('p', '1'))
+    def get_context_data(self, **kwargs):     
+        try:      
+            page = int(self.request.GET.get('p', '1'))
+        except ValueError:
+            raise Http404
+
+        if not page >= 0:
+            raise Http404
 
         if self.order == 'new':
             source = Paper.latest()
             title = "New"
-        if self.order == 'trending':
+        elif self.order == 'trending':
             source = Paper.trending(100)
             title = "Trending"
-        if self.order == 'controversial':            
+        elif self.order == 'controversial':            
             source = Paper.controversial(100)
             title = "Controversial"      
 
@@ -329,9 +336,10 @@ def doi_scraper(request, id):
 
 def arxiv_scraper(request, doc_id):
     try:
-        tempres = ArXivScraper().parse(doc_id)
-        return HttpResponse(json.dumps(tempres.get_results()), content_type="application/json")
-    except ArXivScraper.ScrapingError:
+        scraper_info = scrapers.Controller(scrapers.ArXivScraper).run(doc_id)
+        scraper_info.update({'publish_date': scraper_info['publish_date'].strftime("%A, %d. %B %Y %I:%M%p")})
+        return HttpResponse(json.dumps(scraper_info), content_type="application/json")
+    except scrapers.ScraperError:
         return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                             content_type="application/json")
 

@@ -1,8 +1,15 @@
-.settings{
-    border-left: solid 1px lightgray;
+.contributions, .settings{
     text-align: center;
+}
+
+.contributions {
+    border-left: solid 1px lightgray;
 }
 
 .settings input{
     max-width:300px;
+}
+
+.reviews td{
+    border-top:none !important;
 }
