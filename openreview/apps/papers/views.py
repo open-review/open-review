@@ -194,7 +194,28 @@ class PapersView(TemplateView):
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
-        
+
+
+class PreviewView(BaseReviewView):
+    @method_decorator(login_required(raise_exception=True))
+    def post(self, request, paper_id, **kwargs):
+        review = Review()
+        review.poster = request.user
+        review.paper = self.objects.paper
+        review.timestamp = datetime.datetime.now()
+
+        text = ""
+        for key, value in request.POST.items():
+            if key.endswith("text"):
+                text = value
+
+        review.text = text
+
+        return render(request, "papers/review.html", {
+        	'paper': Paper.objects.get(id=paper_id),
+        	'review': review,
+        	'preview': True
+        })
 
 
 class ReviewView(BaseReviewView):
@@ -290,7 +311,7 @@ class ReviewView(BaseReviewView):
             return self.redirect(review)
 
         review.id = -1
-        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review, add_review_form=review_form))
+        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review, add_review_form=self.get_review_form()))
 
     @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):

@@ -25,6 +25,7 @@
       {{ review.text|default_if_none:""|markdown }}
     </article>
 
+{% if not preview %}
     <footer>
       <span class="options">
         {% include "papers/review-options.html" with review=review paper=paper %}
@@ -36,23 +37,27 @@
         You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote or comment!
       </span>
     </footer>
+{% endif %}
   </div>
 
+{% if not preview %}
   <div style="display:none;" class="new">
     {% include "papers/comment.html" with review=new_review parent=review %}
   </div>
 
   <div style="display:none;" class="edit">
     {% if review.is_review %}
-        <form method="post" action="{% url 'paper' paper.id %}">
+        <form method="post" action="{% url 'paper' paper.id %}" data-preview="{% url 'preview' paper.id %}" class="new">
             {% csrf_token %}
             <table>{{ edit_review_form }}</table>
             <br /><input name="{{ edit_review_name }}" type="submit" value="Edit review">
+            {% include "papers/preview.html" %}
         </form>
     {% else %}
         {% include "papers/comment.html" with review=review parent=review.parent %}
     {% endif %}
   </div>
+{% endif %}
 </section>
 
 

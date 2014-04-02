@@ -13,9 +13,14 @@ stopped_typing = (form) ->
     form_data[x.name] = x.value
   );
 
+  if form.data("preview")
+    url = form.data("preview")
+  else
+    url = form.attr("action")
+
   $.ajax({
     type: "POST",
-    url: form.attr("action"),
+    url: url,
     data: form_data,
     success: review_received.bind(form),
     error: error_received.bind(form)

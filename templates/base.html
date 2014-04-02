@@ -74,12 +74,13 @@
     <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     {% block meta %}{% endblock %}
+
+    <script type="text/javascript">window.staticUrl = "{{ STATIC_URL }}";</script>
     {% compress js %}
         <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
         {% block js %}{% endblock %}
     {% endcompress %}
-
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -88,38 +89,6 @@
             processEscapes: true
         }
       });
-    </script>
-    
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $(".starfield").each(function(){
-            	var field = $(this).data("field");
-            	var f = $(this).parents("form").find("input[name=" + field + "]");
-            	var score;
-            	if ($(this).data("score")) {
-            		score = $(this).data("score");
-            	} else {
-            		score = f.val();
-            	}
-            	
-            	var readOnly = false;
-            	if ($(this).data("readonly")) {
-            		readOnly = $(this).data("readonly");
-            	}
-            	
-                $(this).raty({
-                    click       : function(score){ f.val(score) },
-                    hints       : ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars'],
-                    number      : 7,
-                    path        : '{{ STATIC_URL }}raty/lib/images/',
-                    readOnly    : readOnly,
-                    score       : score
-                    // It should be possible to use scoreName: field instead of score and click, but for some unknown reason that does not seem to work
-                });
-            });
-        });
-        function addRating(field) {
-        }
     </script>
   </body>
 </html>
