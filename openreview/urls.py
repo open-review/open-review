@@ -8,7 +8,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include("openreview.apps.accounts.urls")),
     url(r'^papers/', include("openreview.apps.papers.urls")),
-    url(r'^', include("openreview.apps.main.urls")),
-    url(r'^search/', include("haystack.urls"))
+    url(r'^', include("openreview.apps.main.urls"))
 )
 

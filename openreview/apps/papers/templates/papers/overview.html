@@ -23,7 +23,7 @@
 <div id="coffee"></div>
 
 <div>
-    <h1>{{ title }} papers</h1>
+    <h1>{% block doctitle %}{{ title }} papers{% endblock %}</h1>
     {% if papers %}
         <ul class="list-group">
             {% for paper in papers %}

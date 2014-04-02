@@ -12,6 +12,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
+from haystack.query import SearchQuerySet
 
 from openreview.apps.papers import scrapers
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
@@ -122,7 +123,7 @@ class PapersView(TemplateView):
         pages_right = paginator.page_range[page:]
         pages_left = paginator.page_range[0:page-1]
 
-        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))                           
+        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
@@ -217,6 +218,16 @@ class ReviewView(BaseReviewView):
             return HttpResponseForbidden("You must be owner of this review/comment in order to delete it.")
         self.objects.review.delete()
         return HttpResponse("OK", status=200)
+
+
+class SearchView(TemplateView):
+    template_name = "papers/search.html"
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('q', '')
+        search_result = [x.object for x in SearchQuerySet().models(Paper).filter(content=query)]
+
+        return dict(super().get_context_data(papers=search_result))
 
 
 @cache_page(60*10)

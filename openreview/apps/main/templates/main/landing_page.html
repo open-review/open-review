@@ -7,9 +7,9 @@
 
 {% block content %}
     <section class="search">
-      <form method="GET" action="#">
+      <form method="GET" action="{% url 'search-paper' %}">
           <div class="query">
-              <input placeholder="Find interesting papers..." name="query" tabindex="1" autofocus />
+              <input placeholder="Find interesting papers..." name="q" tabindex="1" autofocus />
               <p>
                   <strong>Popular search terms: </strong>
                   <a href="#">bitcoin</a>,
