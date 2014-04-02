@@ -133,6 +133,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
 if DEBUG:
     CACHE_MIDDLEWARE_KEY_PREFIX = "DEBUG_"
 
