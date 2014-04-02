@@ -51,14 +51,28 @@ class VoteView(View):
 
 class BaseReviewView(ModelViewMixin, TemplateView):
     def post(self, request, *args, **kwargs):
-        with transaction.atomic():
-            review_form = self.get_review_form();
+    	# Is the user saving a new review?
+        if self.creating_review():
+            review_form = self.get_review_form()
             if review_form.is_valid():
                 review = review_form.save()
 
                 return redirect(reverse("frontpage"), parmanent=False)
             else:
                 return self.get(kwargs)
+
+        # Is the user editing an existing review?
+        reviews = self.objects.get_paper().get_reviews()
+        for review in reviews:
+            if not self.editing_review(review):
+                continue
+
+            review_form = self.get_review_edit_form(review)
+            if review_form.is_valid():
+                review = review_form.save()
+                return redirect(reverse("frontpage"), parmanent=False)
+
+        return self.get(kwargs)
 
     def creating_review(self):
         return "add_review" in self.request.POST
@@ -67,10 +81,29 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         data = self.request.POST if self.creating_review() else None
         return ReviewForm(data=data, user=self.request.user, paper=self.objects.paper)
 
+    def editing_review_name(self, review):
+        return "add_review{}".format(review.id)
+
+    def editing_review(self, review):
+        return (self.editing_review_name(review)) in self.request.POST
+
+    def get_review_edit_form(self, review):
+        args = {
+            'user': self.request.user,
+            'paper': self.objects.paper,
+            'prefix': review.id,
+            'instance': review
+        }
+
+        if self.editing_review(review):
+            args['data'] = self.request.POST
+
+        return ReviewForm(**args)
+
     def get_context_data(self, **kwargs):
         # Do not load context data if user is anonymous (no posts) or
         # the current method is POST (votes/reviews not needed)
-        if self.request.user.is_anonymous() or (self.request.POST and not self.creating_review()):
+        if self.request.user.is_anonymous():
             return super().get_context_data(**kwargs)
 
         # Passing reviews and votes of user allows efficient caching of templates
@@ -107,8 +140,14 @@ class PaperWithReviewsView(BaseReviewView):
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
+        reviews = [{
+            'review': review,
+            'form': self.get_review_edit_form(review),
+            'submit_name': self.editing_review_name(review)
+        } for review in reviews]
+
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
-           
+
 
 class PapersView(TemplateView):
     template_name = "papers/overview.html"

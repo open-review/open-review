@@ -43,7 +43,11 @@
   </div>
 
   <div style="display:none;" class="edit">
-    {% include "papers/comment.html" with review=review %}
+    <form method="post">
+        {% csrf_token %}
+        <table>{{ edit_review_form }}</table>
+        <br /><input name="{{ edit_review_name }}" type="submit" value="Edit review">
+    </form>
   </div>
 </section>
 

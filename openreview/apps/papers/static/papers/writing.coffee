@@ -72,3 +72,5 @@ $(".review .options .reply").click(icon_clicked("edit", "new"))
 $(".new:visible textarea").focus(->
   init_writing($(this).closest(".new"))
 )
+
+$(".edit .errorlist").parents(".edit").show() # Show the edit form of reviews that were being edited but contain errors

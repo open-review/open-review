@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import widgets
+from django.forms import widgets, ValidationError
 from django.utils.html import mark_safe
 from django.core.exceptions import ObjectDoesNotExist
 from openreview.apps.main.models import Author, Keyword
@@ -20,6 +20,13 @@ class ReviewForm(forms.ModelForm):
         super(ReviewForm, self).__init__(**kwargs)
         self.user = user
         self.paper = paper
+
+    def clean_rating(self):
+        rating = self.cleaned_data['rating']
+        if rating < 1 or rating > 7:
+            raise ValidationError('Rating ({}) was not between 1 and 7 (inclusive)'.format(rating))
+
+        return rating
 
     def save(self, commit=True, **kwargs):
         review = super(ReviewForm, self).save(commit=False, **kwargs)

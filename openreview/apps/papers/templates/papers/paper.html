@@ -55,7 +55,7 @@
     <hr/>
     {% url 'paper' paper.id as url %}
     {% for review in reviews %}
-        {% include "papers/review.html" with review=review user=user url=url %}
+        {% include "papers/review.html" with review=review.review user=user url=url edit_review_form=review.form edit_review_name=review.submit_name %}
     {% empty %}
         <em>No reviews yet!</em>
     {% endfor %}
@@ -64,7 +64,7 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ add_review_form }}
+        <table>{{ add_review_form }}</table>
         <br /><input name="add_review" type="submit" value="Submit review">
     </form>
 
