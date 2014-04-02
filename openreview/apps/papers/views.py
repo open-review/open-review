@@ -50,6 +50,17 @@ class VoteView(View):
         return HttpResponse("OK", status=201)
 
 class BaseReviewView(ModelViewMixin, TemplateView):
+    def redirect(self, review):
+        review.cache()
+
+        # Determine root of comment thread
+        root = review
+        while root.parent is not None:
+            root = root.parent
+
+        url = reverse("review", args=[review.paper_id, root.id])
+        return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
+
     def post(self, request, *args, **kwargs):
     	# Is the user saving a new review?
         if self.creating_review():
@@ -57,7 +68,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
             if review_form.is_valid():
                 review = review_form.save()
 
-                return redirect(reverse("frontpage"), parmanent=False)
+                return self.redirect(review)
             else:
                 return self.get(kwargs)
 
@@ -70,7 +81,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
             review_form = self.get_review_edit_form(review)
             if review_form.is_valid():
                 review = review_form.save()
-                return redirect(reverse("frontpage"), parmanent=False)
+                return self.redirect(review)
 
         return self.get(kwargs)
 
@@ -196,17 +207,6 @@ class ReviewView(BaseReviewView):
         set_n_votes_cache(review._reviews.values())
 
         return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
-
-    def redirect(self, review):
-        review.cache()
-
-        # Determine root of comment thread
-        root = review
-        while root.parent is not None:
-            root = root.parent
-
-        url = reverse("review", args=[review.paper_id, root.id])
-        return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
 
     @method_decorator(login_required(raise_exception=True))
     def patch(self, request, *args, **kwargs):
