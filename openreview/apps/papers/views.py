@@ -252,9 +252,13 @@ class ReviewView(BaseReviewView):
         if "text" not in request.POST:
             return HttpResponseBadRequest("You should provide 'text' in request data.")
 
-        review = Review()
+        if "edit" in self.request.POST:
+            review = Review.objects.get(id=self.request.POST["edit"])
+        else:
+            review = Review()
+
         review.text = request.POST["text"]
-        
+
         try:
             vote = int(self.request.POST["rating"])
         except (ValueError, KeyError):
@@ -262,7 +266,7 @@ class ReviewView(BaseReviewView):
 
         if not (1 <= vote <= 7):
             vote = 0
-        
+
         review.rating = vote
         review.poster = request.user
         review.paper = self.objects.paper
