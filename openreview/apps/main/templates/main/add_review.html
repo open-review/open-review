@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block meta %}
+    <div class="hide">
+        <div id="anonymous">{{ user.is_anonymous|lower }}</div>
+        <div id="my_votes">{{ my_votes|safe }}</div>
+        <div id="my_reviews">{{ my_reviews|safe }}</div>
+    </div>
+{% endblock %}
 {% block content %}
 <div class="well">
     <p>Whale whale whale.. what have we got here?</p>
@@ -50,4 +57,5 @@
         <script src="{{ STATIC_URL }}js/paperform.coffee" type="text/coffeescript"></script>
         <script src="{{ STATIC_URL }}js/starratings.coffee" type="text/coffeescript"></script>
         <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
 {% endblock %}
