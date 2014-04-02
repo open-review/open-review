@@ -47,6 +47,26 @@ class ReviewForm(forms.ModelForm):
         }
 
 
+class CommentForm(forms.ModelForm):
+    def __init__(self, user, paper=None, **kwargs):
+        super(ReviewForm, self).__init__(**kwargs)
+        self.user = user
+        self.paper = paper
+
+    def save(self, commit=True, **kwargs):
+        review = super(ReviewForm, self).save(commit=False, **kwargs)
+        review.poster = self.user
+        review.paper = self.paper
+
+        if commit:
+            review.save()
+        return review
+
+    class Meta:
+        model = Review
+        fields = ['text']
+
+
 class PaperForm(forms.ModelForm):
     type_choices = [('',"Select an item"),
                     ('doi',"Digital object identifier"),

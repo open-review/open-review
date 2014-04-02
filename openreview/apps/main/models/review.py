@@ -204,8 +204,12 @@ class Review(models.Model):
         # Check if the star rating is correct
         if self.parent_id is not None:
             self.vote = -1
-        elif not (1 <= self.rating <= 7):
+        elif self.parent_id is None and not (1 <= self.rating <= 7) and self.poster is not None: # poster is None if review is deleted
             raise ValueError("rating ({self.rating}) was not between 1 and 7 (inclusive)".format(self=self))
+
+        # Check if review has text
+        if self.text == "":
+            raise ValueError("Review or comment does not have any text")
 
         # We need to clean template caches if this is an existing review
         if self.id is not None:

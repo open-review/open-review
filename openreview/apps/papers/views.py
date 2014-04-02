@@ -16,7 +16,7 @@ from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
 
 from .scrapers import ArXivScraper
-from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
+from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
@@ -85,6 +85,13 @@ class BaseReviewView(ModelViewMixin, TemplateView):
 
         return self.get(kwargs)
 
+    def add_review_fields(self, review):
+        return {
+            'review': review,
+            'form': self.get_review_edit_form(review),
+            'submit_name': self.editing_review_name(review)
+        }
+
     def creating_review(self):
         return "add_review" in self.request.POST
 
@@ -151,11 +158,7 @@ class PaperWithReviewsView(BaseReviewView):
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
-        reviews = [{
-            'review': review,
-            'form': self.get_review_edit_form(review),
-            'submit_name': self.editing_review_name(review)
-        } for review in reviews]
+        reviews = [self.add_review_fields(review) for review in reviews]
 
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
@@ -197,6 +200,14 @@ class PapersView(TemplateView):
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
 
+    # Expands a tree so that each review in the tree gets its own form to edit the review
+    def expand_tree(self, tree):
+        return ReviewTree(
+            review=self.add_review_fields(tree.review),
+            level=tree.level,
+            children=[self.expand_tree(child) for child in tree.children]
+        )
+
     def get_context_data(self, **kwargs):
         if self.request.POST:
             return super().get_context_data(**kwargs)
@@ -205,8 +216,10 @@ class ReviewView(BaseReviewView):
         review = self.objects.review
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
+        
+        tree=self.expand_tree(review.get_tree())
 
-        return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
+        return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
     @method_decorator(login_required(raise_exception=True))
     def patch(self, request, *args, **kwargs):

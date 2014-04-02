@@ -1,8 +1,8 @@
 <div class="new row">
   <div class="col-md-6">
-      <form method="POST" action="{% url 'review' paper.id review.id|default:-1 %}">
+      <form method="POST" action="{% url 'review' paper.id parent.id %}">
           {% csrf_token %}
-          <textarea name="text" placeholder="Write a new review!">{{ review.text }}</textarea>
+          <textarea name="text" placeholder="Write a new comment!">{{ review.text }}</textarea>
           <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
           
           <input type="hidden" name="rating" value="{{ review.rating }}" />

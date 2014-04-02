@@ -27,7 +27,7 @@
 
     <footer>
       <span class="options">
-        {% include "papers/review-options.html" %}
+        {% include "papers/review-options.html" with review=review paper=paper %}
       </span>
       <span style="display:none;" class="deleted-message">
         You cannot cast votes on deleted reviews/comments.
@@ -39,15 +39,19 @@
   </div>
 
   <div style="display:none;" class="new">
-    {% include "papers/comment.html" with review=new_review %}
+    {% include "papers/comment.html" with review=new_review parent=review %}
   </div>
 
   <div style="display:none;" class="edit">
-    <form method="post">
-        {% csrf_token %}
-        <table>{{ edit_review_form }}</table>
-        <br /><input name="{{ edit_review_name }}" type="submit" value="Edit review">
-    </form>
+    {% if review.is_review %}
+        <form method="post" action="{% url 'paper' paper.id %}">
+            {% csrf_token %}
+            <table>{{ edit_review_form }}</table>
+            <br /><input name="{{ edit_review_name }}" type="submit" value="Edit review">
+        </form>
+    {% else %}
+        {% include "papers/comment.html" with review=review parent=review.parent %}
+    {% endif %}
   </div>
 </section>
 
