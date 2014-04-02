@@ -146,7 +146,17 @@ class TestReviewViewLive(SeleniumTestCase):
         new.find_element_by_css_selector("[type=submit]").click()
         self.wd.wait_for_css("body")
 
+        # Adding the review should fail, because the star rating is not set
+        self.assertEqual(0, paper.reviews.count())
+
+        # After setting the star rating, adding the review should succeed
+        #time.sleep(60)
+        self.wd.wait_for_css("div.starfield img")
+        new = self.wd.find_css(".new")
+        new.find_element_by_css_selector(".starfield img:nth-child(5)").click()
+        self.wd.find_css(".new [type=submit]").click()
         self.assertEqual(1, paper.reviews.count())
+        self.assertEqual(5, paper.reviews.all()[0].rating)
 
 
     def test_writing(self):
