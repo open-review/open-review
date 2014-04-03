@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from haystack import admin as admin2
 
 admin.autodiscover()
 
