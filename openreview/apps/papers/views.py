@@ -74,15 +74,18 @@ class BaseReviewView(ModelViewMixin, TemplateView):
                 return self.get(kwargs)
 
         # Is the user editing an existing review?
-        reviews = self.objects.get_paper().get_reviews()
-        for review in reviews:
-            if not self.editing_review(review):
-                continue
+        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page, where multiple reviews may be edited
+        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
+        # We can recognize the field name by finding which key named 'add_review{review_id}' is present in the POST-data.
+        for key, value in self.request.POST.items():
+            if key.startswith('add_review'):
+                review_id = key[len('add_review'):] # extract id from 'add_review{review_id}'
+                review = Review.objects.get(id=review_id)
 
-            review_form = self.get_review_edit_form(review)
-            if review_form.is_valid():
-                review = review_form.save()
-                return self.redirect(review)
+                review_form = self.get_review_edit_form(review)
+                if review_form.is_valid():
+                    review = review_form.save()
+                    return self.redirect(review)
 
         return self.get(kwargs)
 
@@ -211,6 +214,9 @@ class PreviewView(BaseReviewView):
         review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
+        # Note that the review's text field can be either submitted as '{review_id}-text' (on the paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page, where only one review may be added)
+        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
+        # This is easily solved by taking any field that ends with 'text' as the review text.
         text = ""
         for key, value in request.POST.items():
             if key.endswith("text"):

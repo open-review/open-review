@@ -11,7 +11,7 @@ from openreview.apps.main.models.paper import Paper
 class StarInput(forms.TextInput):
     def render(self, name, value, attrs=None):
         hidden = forms.HiddenInput().render(name, value, attrs)
-        div    = '<div class="starfield" data-field="' + name + '"></div>'
+        div    = '<div class="starfield" data-field="{name}"></div>'.format(name=name)
         
         return mark_safe(hidden + div)
 
@@ -23,7 +23,7 @@ class ReviewForm(forms.ModelForm):
 
     def clean_rating(self):
         rating = self.cleaned_data['rating']
-        if rating < 1 or rating > 7:
+        if not (1 <= rating <= 7):
             raise ValidationError('Rating ({}) was not between 1 and 7 (inclusive)'.format(rating))
 
         return rating
