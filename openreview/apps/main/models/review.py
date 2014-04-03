@@ -213,7 +213,8 @@ class Review(models.Model):
             raise ValueError("rating ({self.rating}) was not between 1 and 7 (inclusive)".format(self=self))
 
         # Check if review has text
-        if self.text.strip() == "":
+        # Note that self.text can be None, if the review is being deleted (see self.delete()). This should not raise a ValueError.
+        if self.text is not None and self.text.strip() == "":
             raise ValueError("Review or comment does not have any text")
 
         # We need to clean template caches if this is an existing review
