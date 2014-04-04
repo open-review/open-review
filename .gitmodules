@@ -2,3 +2,6 @@
 	path = static/mathjax
 	url = git://github.com/mathjax/MathJax.git
 	
+[submodule "static/raty"]
+	path = static/raty
+	url = git://github.com/wbotelhos/raty.git

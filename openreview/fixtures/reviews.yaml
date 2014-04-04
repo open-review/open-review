@@ -4,6 +4,7 @@
     paper: 1
     parent: ~
     poster: 3
+    rating: 2
     timestamp: 2014-03-06 18:23:25
     text: >
       OpenReview is lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
@@ -20,6 +21,7 @@
     paper: 1
     parent: ~
     poster: 4
+    rating: 4
     timestamp: 2014-10-06 19:55:25
     text: >
       Consectetur adipiscing elit. Aenean

@@ -33,7 +33,7 @@ class Review(models.Model):
     referred to as a comment in the user interface (parent != None).
     """
     text = models.TextField(verbose_name="contents", null=True)
-    rating = models.SmallIntegerField(default=-1)
+    rating = models.SmallIntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     poster = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="reviews", null=True)
@@ -89,6 +89,10 @@ class Review(models.Model):
     @property
     def deleted(self):
         return self.text is None
+
+    @property
+    def is_review(self):
+        return self.parent is None
 
     def cache(self, select_related=None, defer=None, order=False, order_reverse=False):
         """
@@ -201,6 +205,17 @@ class Review(models.Model):
         # Check whether the whole tree has the same paper.
         if self.parent_id is not None and self.parent.paper_id is not self.paper_id:
             raise ValueError("parent.paper ({self.parent.paper_id}) was not {self.paper_id}".format(self=self))
+
+        # Check if the star rating is correct
+        if self.parent_id is not None:
+            self.vote = -1
+        elif self.parent_id is None and not (1 <= self.rating <= 7) and self.poster is not None: # poster is None if review is deleted
+            raise ValueError("rating ({self.rating}) was not between 1 and 7 (inclusive)".format(self=self))
+
+        # Check if review has text
+        # Note that self.text can be None, if the review is being deleted (see self.delete()). This should not raise a ValueError.
+        if self.text is not None and self.text.strip() == "":
+            raise ValueError("Review or comment does not have any text")
 
         # We need to clean template caches if this is an existing review
         if self.id is not None:

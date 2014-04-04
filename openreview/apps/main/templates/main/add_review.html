@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block meta %}
+    <div class="hide">
+        <div id="anonymous">{{ user.is_anonymous|lower }}</div>
+        <div id="my_votes">{{ my_votes|safe }}</div>
+        <div id="my_reviews">{{ my_reviews|safe }}</div>
+    </div>
+{% endblock %}
 {% block content %}
 <div class="well">
     <p>Whale whale whale.. what have we got here?</p>
@@ -19,12 +26,12 @@
 
 <div id="coffee"></div>
 
-<form method="post" class="form">
+<form method="post" class="new form">
     {% csrf_token %}
     <div class="row">
       <div class="col-md-4">
           <h2>Select Paper</h2>
-           {{ add_paper_form }}
+          {{ add_paper_form }}
           <div id="id-scraper-field">
               <div id="scraper-result" style="display: none;">
                   <h2 id="scraper-title"></h2><br/>
@@ -41,11 +48,14 @@
           <h2>New Review</h2>
           {{ add_review_form }}
           <input id="login" class="btn btn-primary" name="add_review" type="submit" value="Submit">
+          {% include "papers/preview.html" %}
       </div>
     </div>
 </form>
 {% endblock %}
-
 {% block js%}
         <script src="{{ STATIC_URL }}js/paperform.coffee" type="text/coffeescript"></script>
+        <script src="{{ STATIC_URL }}js/starratings.coffee" type="text/coffeescript"></script>
+        <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
 {% endblock %}

@@ -7,3 +7,7 @@ body > header h1 {
     padding: 20px;
     margin: 0;
 }
+
+.review .starfield {
+	float: right;
+}
