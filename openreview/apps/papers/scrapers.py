@@ -16,7 +16,7 @@ class Controller:
     def __init__(self, scraper, caching=True):
         self.scraper = scraper
         self.scraper_name = scraper.__class__.__name__
-        self.caching = caching
+        self.caching = False
 
     def run(self, doc_id):
         url = self.scraper.get_url(doc_id)
@@ -72,9 +72,4 @@ class ArXivScraper(Scraper):
         yield "authors", [x.text for x in doc.cssselect("entry author name")]
         yield "publisher", "ArXiv"
         yield "publish_date", datetime.strptime(doc.cssselect("entry published")[0].text, "%Y-%m-%dT%H:%M:%SZ")
-        try:
-            categories = [Category.objects.get(arxiv_code=x.get('term')).pk for x in doc.cssselect("entry category")]
-            yield "categories", categories
-        except Category.DoesNotExist:
-            yield "categories", None
-
+        yield "categories", [c.pk for c in Category.objects.filter(arxiv_code__in=[x.get('term') for x in doc.cssselect("entry category")])]
