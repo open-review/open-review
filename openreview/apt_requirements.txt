@@ -1,8 +1,0 @@
-python3
-python3-dev
-libpq-dev
-coffeescript
-python3-lxml
-libxml2-dev
-libxslt1-dev
-memcached
