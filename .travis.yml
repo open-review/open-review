@@ -25,6 +25,8 @@ install:
  - cat openreview/requirements/apt/{common,dev,prod}.txt | tr '\n' ' ' | xargs sudo apt-get install -y
  - pip install -r openreview/requirements/pip/dev.txt --use-mirrors
  - pip install -r openreview/requirements/pip/prod.txt --use-mirrors
+ # Travis, why do you hold broken versions of psycopg2?! :-(
+ - pip install psycopg2==2.5.2
 
 script:
  - coverage run --source=openreview --omit=*/migrations/*,openreview/wsgi.py manage.py test
