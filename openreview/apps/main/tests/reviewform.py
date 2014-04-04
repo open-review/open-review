@@ -10,7 +10,7 @@ from django.test.client import Client
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
 from openreview.apps.tools.testing import create_test_author, create_test_user
-from openreview.apps.main.models import Paper, Review, Vote
+from openreview.apps.main.models import Paper, Review, Vote, Category
 
 from openreview.apps.papers import scrapers
 

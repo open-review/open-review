@@ -13,10 +13,10 @@ class ScraperError(BaseException):
 
 
 class Controller:
-    def __init__(self, scraper, caching=True):
+    def __init__(self, scraper, caching=False):
         self.scraper = scraper
         self.scraper_name = scraper.__class__.__name__
-        self.caching = False
+        self.caching = caching
 
     def run(self, doc_id):
         url = self.scraper.get_url(doc_id)

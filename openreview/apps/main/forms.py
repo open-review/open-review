@@ -2,7 +2,6 @@ from django import forms
 from django.forms import widgets
 from django.core.exceptions import ObjectDoesNotExist
 from openreview.apps.main.models import Author, Keyword, Category
-from itertools import chain
 
 from openreview.apps.main.models.review import Review
 from openreview.apps.main.models.paper import Paper
@@ -36,7 +35,6 @@ class PaperForm(forms.ModelForm):
                     ('arxiv',"arXiv identifier"),
                     ('manually',"Manually")]
 
-
     type = forms.ChoiceField(choices=type_choices, help_text="Select an option")
     authors = forms.CharField(widget=widgets.Textarea(), help_text="Authors of this paper, separated with a newline.")
     keywords = forms.CharField(widget=widgets.Textarea(), help_text="Keywords, separated with a comma.", required=False)
@@ -68,8 +66,7 @@ class PaperForm(forms.ModelForm):
         keywords_models = {k.label: k for k in Keyword.objects.filter(label__in=keywords)}
         keywords = [keywords_models.get(k, Keyword(label=k)) for k in keywords]
         self.cleaned_data["keywords"] = keywords
-        return keywords      
-         
+        return keywords         
 
     def save(self, commit=True, **kwargs):
         """
