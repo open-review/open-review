@@ -1,6 +1,7 @@
 from datetime import date
-from unittest import TestCase
 import os
+from unittest import TestCase
+from django.core.management import call_command
 
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
@@ -20,8 +21,7 @@ __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
 class TestReviewForm(TestCase):
     def setUp(self):
-        management.call_command('loaddata', 'openreview/fixtures/categories.yaml', verbosity=0)
-        super().setUp()
+        call_command("loaddata", "initial_data")
 
     def test_paper_form(self):
         test_data = {
@@ -146,7 +146,6 @@ class TestReviewFormLive(SeleniumTestCase):
     def setUp(self):
         self.a = create_test_author(name="tester")
         self.u = create_test_user()
-        management.call_command('loaddata', 'openreview/fixtures/categories.yaml', verbosity=0)
         super().setUp()
 
     def test_paper_gets_committed(self):

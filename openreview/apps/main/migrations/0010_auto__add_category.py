@@ -29,7 +29,6 @@ class Migration(SchemaMigration):
 
 
         db.send_create_signal('main', ['Category'])
-        call_command('loaddata', 'openreview/fixtures/categories.yaml')
 
 
     def backwards(self, orm):
