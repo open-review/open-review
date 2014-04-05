@@ -13,7 +13,7 @@ class ScraperError(BaseException):
 
 
 class Controller:
-    def __init__(self, scraper, caching=False):
+    def __init__(self, scraper, caching=True):
         self.scraper = scraper
         self.scraper_name = scraper.__class__.__name__
         self.caching = caching

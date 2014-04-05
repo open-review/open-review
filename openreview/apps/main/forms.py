@@ -76,7 +76,7 @@ class PaperForm(forms.ModelForm):
         keywords_models = {k.label: k for k in Keyword.objects.filter(label__in=keywords)}
         keywords = [keywords_models.get(k, Keyword(label=k)) for k in keywords]
         self.cleaned_data["keywords"] = keywords
-        return keywords         
+        return keywords
 
     def save(self, commit=True, **kwargs):
         """
