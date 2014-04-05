@@ -83,6 +83,10 @@ class BaseReviewView(ModelViewMixin, TemplateView):
                 review = Review.objects.get(id=review_id)
 
                 review_form = self.get_review_edit_form(review)
+                if review_form is None:
+                    msg = "You are not the owner of the review or comment you are trying to edit"
+                    return HttpResponseForbidden(msg)
+
                 if review_form.is_valid():
                     review = review_form.save()
                     return self.redirect(review)
@@ -110,6 +114,9 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return (self.editing_review_name(review)) in self.request.POST
 
     def get_review_edit_form(self, review):
+        if review.poster != self.request.user:
+            return
+
         args = {
             'user': self.request.user,
             'paper': self.objects.paper,
@@ -288,6 +295,9 @@ class ReviewView(BaseReviewView):
 
         if "edit" in self.request.POST:
             review = Review.objects.get(id=self.request.POST["edit"])
+            if (review.poster != request.user):
+                msg = "You are not the owner of the review or comment you are trying to edit"
+                return HttpResponseForbidden(msg)
         else:
             review = Review()
 
