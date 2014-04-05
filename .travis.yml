@@ -1,6 +1,6 @@
 language: python
-python:
-  - "3.3"
+python: "3.3"
+node_js: "0.10"
 
 services:
  - postgresql
@@ -21,9 +21,15 @@ before_install:
 
 
 install:
+ # Upgrading nodejs..
+ - sudo apt-get install python-software-properties
+ - sudo add-apt-repository ppa:chris-lea/node.js -y
  - sudo apt-get update
  - cat openreview/apt_requirements.txt | tr '\n' ' ' | xargs sudo apt-get install -y
  - sudo apt-get build-dep lxml
+ - sudo apt-get install nodejs
+ - sudo npm install -g bower
+ - cd static; bower install; cd ..
  - pip install -r openreview/pip_requirements.txt --use-mirrors --upgrade
  - pip install coverage coveralls
 
