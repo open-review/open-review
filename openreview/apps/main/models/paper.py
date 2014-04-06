@@ -34,7 +34,7 @@ class Paper(models.Model):
     keywords = models.ManyToManyField(Keyword)
 
     @classmethod
-    def trending(cls, top=5):
+    def trending(cls, top=5, days=7):
         """Returns the trending papers. The paper with the most reviews the last
         seven days will end on top. Papers without (recent) reviews cannot be trending.
 
@@ -43,7 +43,7 @@ class Paper(models.Model):
 
         @rtype: list
         """
-        seven_days_ago = timezone.now() - datetime.timedelta(days=7)
+        seven_days_ago = timezone.now() - datetime.timedelta(days=days)
         reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
         papers = reviews.values_list('paper').annotate(n=Count('paper')).order_by("-n")[0:top]
         papers_objects = Paper.objects.in_bulk(pid for pid, pcount in papers)
@@ -54,11 +54,13 @@ class Paper(models.Model):
         return Paper.objects.order_by('-publish_date')
 
     @classmethod
-    def controversial(cls, top=5):
+    def controversial(cls, top=5, days=7):
         """Returns list of the most controversial papers.
 
         TODO: Implement ;-)
         """
+        seven_days_ago = timezone.now() - datetime.timedelta(days=days)
+        reviews = Review.objects.filter(parent__isnull=True, timestamp__gt=seven_days_ago)
         return Paper.objects.order_by()
 
     def get_reviews(self):

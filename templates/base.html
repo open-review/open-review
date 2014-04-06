@@ -32,6 +32,7 @@
             {% block js %}{% endblock %}
         {% endcompress %}
 
+        <script type="text/javascript">window.staticUrl = "{{ STATIC_URL }}";</script>
         <script type="text/x-mathjax-config">
           MathJax.Hub.Config({
             tex2jax: {
