@@ -215,10 +215,11 @@ class PapersView(TemplateView):
 
 class PreviewView(BaseReviewView):
     @method_decorator(login_required(raise_exception=True))
-    def post(self, request, paper_id, **kwargs):
+    def post(self, request, **kwargs):
         review = Review()
         review.poster = request.user
-        review.paper = self.objects.paper
+        if "paper_id" in kwargs:
+            review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
         # Note that the review's text field can be either submitted as '{review_id}-text' (on the paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page, where only one review may be added)
@@ -230,9 +231,13 @@ class PreviewView(BaseReviewView):
                 text = value
 
         review.text = text
+        if "paper_id" in kwargs:
+            paper=Paper.objects.get(id=kwargs["paper_id"])
+        else:
+            paper=Paper()
 
         return render(request, "papers/review.html", {
-        	'paper': Paper.objects.get(id=paper_id),
+        	'paper': paper,
         	'review': review,
         	'preview': True
         })

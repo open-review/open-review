@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^(?P<paper_id>\d+)/review/(?P<review_id>\d+)/vote$', VoteView.as_view(), name="vote"),
     url(r'^(?P<paper_id>\d+)/review/(?P<review_id>\-?\d+)$', ReviewView.as_view(), name="review"),
     url(r'^(?P<paper_id>\d+)/preview$', PreviewView.as_view(), name="preview"),
+    url(r'^-1/preview$', PreviewView.as_view(), name="preview"),
     url(r'^doi/(?P<id>[a-zA-Z0-9.]*)', doi_scraper, name="doi-scraper"),
     url(r'^arxiv/(?P<doc_id>[a-zA-Z0-9.]*)', arxiv_scraper, name="arxiv-scraper")
 )
