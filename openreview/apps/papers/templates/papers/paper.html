@@ -8,6 +8,8 @@
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/voting.coffee"></script>
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/deleting.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}js/starratings.coffee"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
 {% endblock %}
 
 {% block meta %}
@@ -66,14 +68,25 @@
     <hr/>
     {% url 'paper' paper.id as url %}
     {% for review in reviews %}
-        {% include "papers/review.html" with review=review user=user url=url %}
+        {% include "papers/review.html" with review=review.review user=user url=url edit_review_form=review.form edit_review_name=review.submit_name %}
     {% empty %}
         <em>No reviews yet!</em>
     {% endfor %}
 
     <hr/>
 
-    {% include "papers/comment.html" %}
+    {% if not user.is_anonymous %}
+    <form method="post" class="new" data-preview="{% url 'preview' paper.id %}">
+        {% csrf_token %}
+        <table>{{ add_review_form }}</table>
+        <br /><input name="add_review" type="submit" value="Submit review">
+        {% include "papers/preview.html" %}
+    </form>
+    {% else %}
+        <p>
+            <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}">Log in</a> to add a review.
+        </p>
+    {% endif %}
 
 
 {% endblock %}

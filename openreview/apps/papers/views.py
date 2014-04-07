@@ -1,9 +1,12 @@
 import json
 import datetime
+
 from urllib import parse
 from django.core.paginator import Paginator, EmptyPage
 
 from django.db import transaction
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
 
 from django.shortcuts import render, HttpResponse, redirect
@@ -13,8 +16,9 @@ from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
 
-from openreview.apps.papers import scrapers
-from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
+from .scrapers import ArXivScraper
+from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
+from openreview.apps.main.forms import ReviewForm
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
@@ -47,10 +51,88 @@ class VoteView(View):
         return HttpResponse("OK", status=201)
 
 class BaseReviewView(ModelViewMixin, TemplateView):
+    def redirect(self, review):
+        review.cache()
+
+        # Determine root of comment thread
+        root = review
+        while root.parent is not None:
+            root = root.parent
+
+        url = reverse("review", args=[review.paper_id, root.id])
+        return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
+
+    def post(self, request, *args, **kwargs):
+    	# Is the user saving a new review?
+        if self.creating_review():
+            review_form = self.get_review_form()
+            if review_form.is_valid():
+                review = review_form.save()
+
+                return self.redirect(review)
+            else:
+                return self.get(kwargs)
+
+        # Is the user editing an existing review?
+        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page, where multiple reviews may be edited
+        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
+        # We can recognize the field name by finding which key named 'add_review{review_id}' is present in the POST-data.
+        for key, value in self.request.POST.items():
+            if key.startswith('add_review'):
+                review_id = key[len('add_review'):] # extract id from 'add_review{review_id}'
+                review = Review.objects.get(id=review_id)
+
+                review_form = self.get_review_edit_form(review)
+                if review_form is None:
+                    msg = "You are not the owner of the review or comment you are trying to edit"
+                    return HttpResponseForbidden(msg)
+
+                if review_form.is_valid():
+                    review = review_form.save()
+                    return self.redirect(review)
+
+        return self.get(kwargs)
+
+    def add_review_fields(self, review):
+        return {
+            'review': review,
+            'form': self.get_review_edit_form(review),
+            'submit_name': self.editing_review_name(review)
+        }
+
+    def creating_review(self):
+        return "add_review" in self.request.POST
+
+    def get_review_form(self):
+        data = self.request.POST if self.creating_review() else None
+        return ReviewForm(data=data, user=self.request.user, paper=self.objects.paper)
+
+    def editing_review_name(self, review):
+        return "add_review{}".format(review.id)
+
+    def editing_review(self, review):
+        return (self.editing_review_name(review)) in self.request.POST
+
+    def get_review_edit_form(self, review):
+        if review.poster != self.request.user:
+            return
+
+        args = {
+            'user': self.request.user,
+            'paper': self.objects.paper,
+            'prefix': review.id,
+            'instance': review
+        }
+
+        if self.editing_review(review):
+            args['data'] = self.request.POST
+
+        return ReviewForm(**args)
+
     def get_context_data(self, **kwargs):
         # Do not load context data if user is anonymous (no posts) or
         # the current method is POST (votes/reviews not needed)
-        if self.request.user.is_anonymous() or self.request.POST:
+        if self.request.user.is_anonymous():
             return super().get_context_data(**kwargs)
 
         # Passing reviews and votes of user allows efficient caching of templates
@@ -64,6 +146,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return super().get_context_data(
             my_reviews=json.dumps(my_reviews),
             my_votes=json.dumps(my_votes),
+            add_review_form=self.get_review_form(),
             **kwargs
         )
 
@@ -86,8 +169,10 @@ class PaperWithReviewsView(BaseReviewView):
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
 
+        reviews = [self.add_review_fields(review) for review in reviews]
+
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
-           
+
 
 class PapersView(TemplateView):
     template_name = "papers/overview.html"
@@ -126,11 +211,43 @@ class PapersView(TemplateView):
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
-        
+
+
+class PreviewView(BaseReviewView):
+    @method_decorator(login_required(raise_exception=True))
+    def post(self, request, paper_id, **kwargs):
+        review = Review()
+        review.poster = request.user
+        review.paper = self.objects.paper
+        review.timestamp = datetime.datetime.now()
+
+        # Note that the review's text field can be either submitted as '{review_id}-text' (on the paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page, where only one review may be added)
+        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
+        # This is easily solved by taking any field that ends with 'text' as the review text.
+        text = ""
+        for key, value in request.POST.items():
+            if key.endswith("text"):
+                text = value
+
+        review.text = text
+
+        return render(request, "papers/review.html", {
+        	'paper': Paper.objects.get(id=paper_id),
+        	'review': review,
+        	'preview': True
+        })
 
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"
+
+    # Expands a tree so that each review in the tree gets its own form to edit the review
+    def expand_tree(self, tree):
+        return ReviewTree(
+            review=self.add_review_fields(tree.review),
+            level=tree.level,
+            children=[self.expand_tree(child) for child in tree.children]
+        )
 
     def get_context_data(self, **kwargs):
         if self.request.POST:
@@ -140,19 +257,10 @@ class ReviewView(BaseReviewView):
         review = self.objects.review
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
+        
+        tree=self.expand_tree(review.get_tree())
 
-        return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
-
-    def redirect(self, review):
-        review.cache()
-
-        # Determine root of comment thread
-        root = review
-        while root.parent is not None:
-            root = root.parent
-
-        url = reverse("review", args=[review.paper_id, root.id])
-        return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
+        return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
     @method_decorator(login_required(raise_exception=True))
     def patch(self, request, *args, **kwargs):
@@ -185,8 +293,25 @@ class ReviewView(BaseReviewView):
         if "text" not in request.POST:
             return HttpResponseBadRequest("You should provide 'text' in request data.")
 
-        review = Review()
+        if "edit" in self.request.POST:
+            review = Review.objects.get(id=self.request.POST["edit"])
+            if (review.poster != request.user):
+                msg = "You are not the owner of the review or comment you are trying to edit"
+                return HttpResponseForbidden(msg)
+        else:
+            review = Review()
+
         review.text = request.POST["text"]
+
+        try:
+            vote = int(self.request.POST["rating"])
+        except (ValueError, KeyError):
+            vote = 0
+
+        if not (1 <= vote <= 7):
+            vote = 0
+
+        review.rating = vote
         review.poster = request.user
         review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
@@ -209,7 +334,7 @@ class ReviewView(BaseReviewView):
             return self.redirect(review)
 
         review.id = -1
-        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review))
+        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review, add_review_form=self.get_review_form()))
 
     @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):

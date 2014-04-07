@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="http://necolas.github.io/normalize.css/3.0.0/normalize.css" />
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Merriweather:400,700' rel='stylesheet' type='text/css'>
         {% compress css %}
+            <link href='{{ STATIC_URL }}open-review-static/css/fonts.css' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="{{ STATIC_URL }}normalize/normalize.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/general.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/splash.css" />
             <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
@@ -24,12 +24,12 @@
 
         {% include 'includes/footer.html' %}
 
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         {% block meta %}{% endblock %}
 
         {% compress js %}
+            <script type="text/javascript" src="{{ STATIC_URL }}bower_components/jquery/jquery.js"></script>
             {% block js %}{% endblock %}
         {% endcompress %}
 

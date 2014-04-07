@@ -180,7 +180,8 @@ def create_test_review(**kwargs):
         "text": "review content",
         "poster": poster,
         "paper": paper,
-        "timestamp": datetime.now()
+        "timestamp": datetime.now(),
+        "rating": 4
     }, **kwargs))
 
 @up_counter
