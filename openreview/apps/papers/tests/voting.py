@@ -1,16 +1,15 @@
-import unittest
-
 from django.core.urlresolvers import reverse
 from django.test import Client
 from selenium.common.exceptions import NoSuchElementException
 
 from openreview.apps.main.models import Review, Vote
-from openreview.apps.tools.testing import create_test_review, SeleniumTestCase, create_test_paper, create_test_user
+from openreview.apps.tools.testing import create_test_review, SeleniumTestCase, create_test_paper, create_test_user, \
+    BaseTestCase
 
 __all__ = ["TestVoteView", "TestVoteViewLive"]
 
 
-class TestVoteView(unittest.TestCase):
+class TestVoteView(BaseTestCase):
     def test_get(self):
         review = create_test_review()
         paper = review.paper

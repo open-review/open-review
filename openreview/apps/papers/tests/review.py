@@ -1,4 +1,3 @@
-import unittest
 from django.core.urlresolvers import reverse
 from django.test import Client
 from django.utils.http import urlencode
@@ -6,10 +5,11 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 import time
 from openreview.apps.main.models import Paper, Review
-from openreview.apps.tools.testing import create_test_user, create_test_review, SeleniumTestCase, create_test_paper
+from openreview.apps.tools.testing import create_test_user, create_test_review, SeleniumTestCase, create_test_paper, \
+    BaseTestCase
 
 
-class TestReviewView(unittest.TestCase):
+class TestReviewView(BaseTestCase):
     def test_get(self):
         pass
 
@@ -147,7 +147,6 @@ class TestReviewViewLive(SeleniumTestCase):
         self.wd.wait_for_css("body")
 
         self.assertEqual(1, paper.reviews.count())
-
 
     def test_writing(self):
         user = create_test_user(username="writing", password="test")

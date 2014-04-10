@@ -1,13 +1,11 @@
-import unittest
-
 from django.core.urlresolvers import reverse
 from django.test import Client
 
-from openreview.apps.tools.testing import create_test_paper
+from openreview.apps.tools.testing import create_test_paper, BaseTestCase
 
 __all__ = ["TestPapersView"]
 
-class TestPapersView(unittest.TestCase):
+class TestPapersView(BaseTestCase):
 
     def test_get(self): 
         create_test_paper()   

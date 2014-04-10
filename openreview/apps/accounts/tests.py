@@ -3,12 +3,12 @@ from django.core.urlresolvers import reverse
 from django.test.client import Client
 from openreview.apps.accounts.forms import is_email, RegisterForm, SettingsForm
 from openreview.apps.accounts.models import User
-from openreview.apps.tools.testing import SeleniumTestCase
+from openreview.apps.tools.testing import SeleniumTestCase, BaseTestCase
 from openreview.apps.tools.testing import create_test_author
 from openreview.apps.tools.testing import create_test_review
 
 
-class TestForms(unittest.TestCase):
+class TestForms(BaseTestCase):
     def test_is_email(self):
         # It is way too hard to test for all valid emails. Assuming correctness in validate_email().
         self.assertTrue(is_email("bla@bla.nl"))
@@ -30,7 +30,7 @@ class TestForms(unittest.TestCase):
     # Assuming UserCreationForm is already tested
 
 
-class TestLoginView(unittest.TestCase):
+class TestLoginView(BaseTestCase):
     def test_register(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
@@ -124,7 +124,7 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertEqual(user.username, "abc")
 
 
-class TestSettingsForms(unittest.TestCase):
+class TestSettingsForms(BaseTestCase):
     u = None
 
     def setUp(self):
@@ -166,6 +166,7 @@ class TestSettingsForms(unittest.TestCase):
             create_test_review(poster=self.u)
 
         self.assertEqual(len(self.u.reviews.all()), 5)
+
 
 class TestSettingsFormLive(SeleniumTestCase):
     def setUp(self):

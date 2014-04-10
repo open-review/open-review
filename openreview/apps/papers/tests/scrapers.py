@@ -1,12 +1,12 @@
-import unittest
 import os
 
 from openreview.apps.papers import scrapers
+from openreview.apps.tools.testing import BaseTestCase
 
 __all__ = ['TestArXivScraper']
 
 
-class TestArXivScraper(unittest.TestCase):
+class TestArXivScraper(BaseTestCase):
     def setUp(self):
         self.arxivscraper = scrapers.Controller(scrapers.ArXivScraper, caching=False)
         self.oldurlopen = scrapers.urlopen

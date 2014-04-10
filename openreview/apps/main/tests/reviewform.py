@@ -1,5 +1,4 @@
 from datetime import date
-from unittest import TestCase
 import os
 
 from django.core.urlresolvers import reverse
@@ -8,7 +7,7 @@ from django.test.client import Client
 
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
-from openreview.apps.tools.testing import create_test_author, create_test_user
+from openreview.apps.tools.testing import create_test_author, create_test_user, BaseTestCase
 from openreview.apps.main.models import Paper, Review, Vote
 
 from openreview.apps.papers import scrapers
@@ -17,7 +16,7 @@ from openreview.apps.papers import scrapers
 __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
 
-class TestReviewForm(TestCase):
+class TestReviewForm(BaseTestCase):
     def test_paper_form(self):
         test_data = {
             "type": "manually",

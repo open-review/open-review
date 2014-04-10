@@ -8,13 +8,17 @@ from contextlib import contextmanager
 from functools import wraps
 import functools
 import unittest
+import haystack
 from datetime import datetime
 from logging import getLogger
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.core.management import call_command
 from django.db import connection
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, SimpleTestCase
+from django.test.utils import override_settings
+
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -57,7 +61,19 @@ same_browser = functools.partial(get_bool, "SELENIUM_SAME_BROWSER", False)
 if not skip() and same_browser():
     WEBDRIVER = SeleniumWebDriver()
 
-class SeleniumTestCase(LiveServerTestCase):
+
+@override_settings(HAYSTACK_CONNECTIONS=settings.HAYSTACK_TESTING_CONNECTIONS)
+class BaseTestCase(SimpleTestCase):
+
+    def setUp(self):
+        haystack.connections.reload('default')
+        super(BaseTestCase,self).setUp()
+
+    def tearDown(self):
+        call_command('clear_index', interactive=False, verbosity=0)
+
+
+class SeleniumTestCase(LiveServerTestCase, BaseTestCase):
     """TestCase for in-browser testing. Sets up `wd` property, which is an initialised Selenium
     webdriver (defaults to Firefox)."""
     def __init__(self, *args, **kwargs):
@@ -74,10 +90,15 @@ class SeleniumTestCase(LiveServerTestCase):
     def wd(self):
         return WEBDRIVER if same_browser() else self._wd
 
+    def setUp(self):
+        super(BaseTestCase, self).setUp()
+        super(LiveServerTestCase, self).setUp()
+
     def tearDown(self):
         if not skip():
             self.wd.delete_all_cookies()
-        super().tearDown()
+        super(LiveServerTestCase, self).tearDown()
+        super(BaseTestCase, self).tearDown()
 
     @classmethod
     def setUpClass(cls):

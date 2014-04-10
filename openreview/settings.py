@@ -133,6 +133,18 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+"""
+Unfortunatly, it is necassary to explicitly define another database for testing
+To garantuee test isolation. http://bwreilly.github.io/blog/2013/07/21/testing-search-haystack-in-django/
+"""
+HAYSTACK_TESTING_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack_test',
+    },
+}
+
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 if DEBUG:

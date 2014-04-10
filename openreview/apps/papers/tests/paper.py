@@ -1,13 +1,13 @@
-import unittest
 
 from django.core.urlresolvers import reverse
 from django.test import Client
 
-from openreview.apps.tools.testing import create_test_paper, assert_max_queries, create_test_user
+from openreview.apps.tools.testing import create_test_paper, assert_max_queries, create_test_user, BaseTestCase
 
 __all__ = ["TestPaperWithReviewsView"]
 
-class TestPaperWithReviewsView(unittest.TestCase):
+
+class TestPaperWithReviewsView(BaseTestCase):
     def setUp(self):
         self.paper = create_test_paper(2, 2, 2, 2)
         self.client = Client()
