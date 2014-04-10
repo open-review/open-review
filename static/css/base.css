@@ -1,13 +1,69 @@
 body > header {
-
+    border-bottom: 1px #D3D3D3 solid;
+    background: #FCFCFC;
 }
 
-body > header h1 {
+body > header > nav {
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+body > header > nav h1 {
     text-align: left;
-    padding: 20px;
+    padding: 25px 0;
     margin: 0;
+    float: left;
 }
 
-.review .starfield {
-	float: right;
+body > header > nav h1 a,
+body > header > nav h1 a:hover {
+    font-size: 20px;
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body > header > nav ul {
+    overflow: hidden;
+    float: right;
+    display: block;
+    margin: 10px 0;
+    padding: 0;
+}
+
+body > header > nav h1 + ul {
+    margin-left: 40px;
+}
+
+body > header > nav ul li {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+
+body > header > nav ul li.seperator {
+    font-weight: bold;
+    line-height: 50px;
+    height: 50px;
+    font-weight: 30px;
+    color: #202020;
+}
+
+body > header > nav ul li a {
+    font-weight: bold;
+    display: block;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #202020;
+}
+
+body > header > nav ul li:last-child a {
+    padding-right: 0;
+}
+
+body > main {
+/*  padding: 100px 0;*/
 }
