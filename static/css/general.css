@@ -24,3 +24,14 @@ body h2 {
 body a:hover {
   text-decoration: underline;
 }
+
+body > main,
+body > hr,
+body > footer {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+body > main {
+    overflow: hidden;
+}
