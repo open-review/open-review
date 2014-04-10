@@ -1,9 +1,6 @@
 body > header {
     border-bottom: 1px #D3D3D3 solid;
-    background: #FEFEFE;
-    background: -moz-linear-gradient(top, #F7FAFA 0%, #FEFEFE 100%);
-    background: -webkit-linear-gradient(top, #F7FAFA 0%, #FEFEFE 100%);
-    background: linear-gradient(to bottom, #F7FAFA 0%, #FEFEFE 100%);
+    background: #FCFCFC;
 }
 
 body > header h1,
@@ -25,16 +22,8 @@ body > header p {
     padding: 20px 0 70px;
 }
 
-body > main,
-body > hr,
-body > footer {
-    width: 1000px;
-    margin: 0 auto;
-}
-
 body > main {
     padding-top: 90px;
-    overflow: hidden;
 }
 
 body > main section.search {
