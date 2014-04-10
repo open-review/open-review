@@ -43,3 +43,6 @@ collected_static
 
 # Ctags
 tags
+
+# Bower components
+static/components
