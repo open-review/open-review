@@ -94,7 +94,7 @@ class TestReview(unittest.TestCase):
             r.save()
 
     def test_delete(self):
-        review = create_test_review(rating=2)
+        review = create_test_review(rating=2, anonymous=False)
 
         self.assertIsNotNone(review.text)
         self.assertIsNotNone(review.poster)
@@ -105,12 +105,14 @@ class TestReview(unittest.TestCase):
         self.assertIsNone(review.text)
         self.assertIsNone(review.poster)
         self.assertEqual(-1, review.rating)
+        self.assertEqual(True, review.anonymous)
 
         # Is save() called?
         review = Review.objects.get(id=review.id)
         self.assertIsNone(review.text)
         self.assertIsNone(review.poster)
         self.assertEqual(-1, review.rating)
+        self.assertEqual(True, review.anonymous)
 
     def test_deleted(self):
         review = create_test_review()

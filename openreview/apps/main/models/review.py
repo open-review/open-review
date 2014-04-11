@@ -210,6 +210,7 @@ class Review(models.Model):
         self.text = None
         self.poster = None
         self.rating = -1
+        self.anonymous = True
         self.save(using=using)
 
     def save(self, *args, **kwargs):
