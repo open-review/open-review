@@ -28,6 +28,13 @@ class TestReview(unittest.TestCase):
         self.assertEqual(0, create_test_review().n_upvotes)
         self.assertEqual(5, self.review.n_upvotes)
 
+    def test_is_semi_anonymous(self):
+        r = create_test_review(poster=create_test_user())
+        r.anonymous = True
+        self.assertTrue(r.is_semi_anonymous, msg="(anonymous=1 and poster != None) => review is semi anonymous")
+        r.poster = None
+        self.assertFalse(r.is_semi_anonymous, msg="(anonymous=1 and poster is None) => review is not semi anonymous")
+
     def test_set_n_votes_cache(self):
         review1 = self.review
         self.setUp()
@@ -57,8 +64,34 @@ class TestReview(unittest.TestCase):
         review2 = create_test_review()
 
         self.assertNotEqual(review1.paper, review2.paper)
+
         review3 = Review(parent=review1, paper=review2.paper, poster=create_test_user(), text="foo")
-        self.assertRaises(ValueError, review3.save)
+        with self.assertRaises(ValueError, msg="review.parent.paper must be review.paper"):
+            review3.save()
+
+        r = create_test_review()
+        with self.assertRaises(ValueError, msg="Rating must 1 <= r <= 7"):
+            r.rating = 8
+            r.save()
+
+        # Values [1 <= r <= 7] + [-1] must be accepted
+        for rating in tuple(range(1, 8)) + (-1,):
+            r.rating = rating
+            r.save()
+
+        with self.assertRaises(ValueError, msg="Review.text.strip() cannot be an empty string"):
+            r.text = "\t\t\n\r  "
+            r.save()
+
+        with self.assertRaises(ValueError, msg="External review must be anonymous"):
+            r.anonymous = False
+            r.external = True
+            r.save()
+
+        with self.assertRaises(ValueError, msg="Non-deleted reviews with poster=None must be anonymous."):
+            r.anonymous = False
+            r.poster = None
+            r.save()
 
     def test_delete(self):
         review = create_test_review(rating=2)
@@ -81,9 +114,9 @@ class TestReview(unittest.TestCase):
 
     def test_deleted(self):
         review = create_test_review()
-        self.assertFalse(review.deleted)
+        self.assertFalse(review.is_deleted)
         review.delete()
-        self.assertTrue(review.deleted)
+        self.assertTrue(review.is_deleted)
 
     def test_get_tree(self):
         r1 = create_test_review()

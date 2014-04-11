@@ -21,7 +21,7 @@
       {% endif %}
     </header>
 
-    <article {% if review.deleted %}class="deleted"{% endif %}>
+    <article {% if review.is_deleted %}class="deleted"{% endif %}>
       {{ review.text|default_if_none:""|markdown }}
     </article>
 
