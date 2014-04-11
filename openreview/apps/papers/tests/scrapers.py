@@ -10,6 +10,7 @@ __all__ = ['TestArXivScraper']
 
 class TestArXivScraper(unittest.TestCase):
     def setUp(self):
+        management.call_command("loaddata", "initial_data")
         self.arxivscraper = scrapers.Controller(scrapers.ArXivScraper, caching=False)
         self.oldurlopen = scrapers.urlopen
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
