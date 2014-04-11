@@ -102,7 +102,10 @@ class SeleniumTestCase(LiveServerTestCase):
     def open(self, url):
         self.wd.get("%s%s" % (self.live_server_url, url))
 
-    def login(self, username, password):
+    def login(self, username=None, password="test"):
+        if username is None:
+            username = create_test_user(password="test").username
+
         self.logout()
         self.open(reverse("accounts-login"))
         self.wd.find_css("#id_login_username").send_keys(username)
