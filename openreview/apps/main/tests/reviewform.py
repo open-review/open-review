@@ -119,7 +119,7 @@ class TestReviewForm(TestCase):
         user = create_test_user()
         c.post(reverse("accounts-login"), {'username': user.username, 'password': "test", 'existing': "Login"})
         c.post(reverse("add_review"), {'type': "arxiv", 'doc_id': "1306.3879", 'text': "Just nutin",
-                                       'add_review': "Submit", 'rating': 5})
+                                       'add_review': "Submit", 'rating': 5, "visibility": "public"})
 
         # An item in de db for this paper should now exist
         p = Paper.objects.get(doc_id="1306.3879")

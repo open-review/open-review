@@ -21,6 +21,36 @@ class TestReview(unittest.TestCase):
             2: 1
         })
 
+    def test_set_public(self):
+        r = Review(anonymous=True, external=True)
+        r.set_public()
+        self.assertFalse(r.anonymous)
+        self.assertFalse(r.external)
+        self.assertFalse(r.external)
+
+    def test_set_anonymous(self):
+        r = Review(anonymous=False, poster=create_test_user())
+        r.set_anonymous()
+        self.assertTrue(r.anonymous)
+        self.assertFalse(r.external)
+        self.assertIsNone(r.poster)
+
+    def test_set_semi_anonymous(self):
+        r = Review(anonymous=False, poster=create_test_user())
+        r.set_semi_anonymous()
+        self.assertIsNotNone(r.poster)
+        self.assertTrue(r.anonymous)
+        self.assertTrue(r.is_semi_anonymous)
+        self.assertFalse(r.external)
+        r.poster = None
+        self.assertRaises(r.set_semi_anonymous)
+
+    def test_set_external(self):
+        r = Review(anonymous=False, external=False)
+        r.set_external()
+        self.assertTrue(r.external)
+        self.assertTrue(r.anonymous)
+
     def test_bulk_delete(self):
         r1 = create_test_review()
         r2 = create_test_review()

@@ -230,6 +230,23 @@ class Review(models.Model):
     def _invalidate_template_caches(self):
         cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))
 
+    def set_public(self):
+        self.anonymous = False
+        self.external = False
+
+    def set_anonymous(self):
+        self.anonymous = True
+        self.poster = None
+
+    def set_semi_anonymous(self):
+        self.anonymous = True
+        if self.poster_id is None:
+            raise ValueError("Review cannot be set to semi-anonymous if poster_id is None.")
+
+    def set_external(self):
+        self.anonymous = True
+        self.external = True
+
     def delete(self, using=None):
         """
         Deletes review object. This does not delete rows from the database, instead it merely updates

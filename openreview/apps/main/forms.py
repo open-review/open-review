@@ -1,23 +1,24 @@
 from django import forms
 from django.forms import widgets, ValidationError
 from django.utils.html import mark_safe
-from django.core.exceptions import ObjectDoesNotExist
 from openreview.apps.main.models import Author, Keyword, Category
 
 from openreview.apps.main.models.review import Review
 from openreview.apps.main.models.paper import Paper
 
-from django.utils.functional import lazy, memoize
+from django.utils.functional import memoize
 
+VISIBILITY_CHOICES = ("public", "semi_anonymous", "anonymous", "external")
 
 class StarInput(forms.TextInput):
     def render(self, name, value, attrs=None):
         hidden = forms.HiddenInput().render(name, value, attrs)
-        div    = '<div class="starfield" data-field="{name}"></div>'.format(name=name)
-        
+        div = '<div class="starfield" data-field="{name}"></div>'.format(name=name)
         return mark_safe(hidden + div)
 
 class ReviewForm(forms.ModelForm):
+    visibility = forms.ChoiceField(choices=zip(VISIBILITY_CHOICES, VISIBILITY_CHOICES))
+
     def __init__(self, user, paper=None, **kwargs):
         super(ReviewForm, self).__init__(**kwargs)
         self.user = user
@@ -27,23 +28,26 @@ class ReviewForm(forms.ModelForm):
         rating = self.cleaned_data['rating']
         if not (1 <= rating <= 7):
             raise ValidationError('Rating ({}) was not between 1 and 7 (inclusive)'.format(rating))
-
         return rating
 
-    def save(self, commit=True, **kwargs):
-        review = super(ReviewForm, self).save(commit=False, **kwargs)
+    def save(self, commit=True):
+        review = super(ReviewForm, self).save(commit=False)
         review.poster = self.user
+
+        # Call set_{public,anonymous,semi_anonymous,external} on Review object
+        getattr(review, "set_%s" % self.cleaned_data["visibility"])()
 
         if self.paper is not None:
             review.paper = self.paper
 
         if commit:
             review.save()
+
         return review
 
     class Meta:
         model = Review
-        fields = ['rating', 'text']
+        fields = ['rating', 'text', 'visibility']
         widgets = {
             'rating': StarInput()
         }
