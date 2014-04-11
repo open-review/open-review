@@ -5,7 +5,6 @@ from django.core.management import call_command
 
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
-from django.core import management
 from django.test.client import Client
 
 from openreview.apps.main.forms import PaperForm
@@ -91,8 +90,8 @@ class TestReviewForm(TestCase):
         self.assertIsNotNone(a.id)
         self.assertIsNotNone(b.id)
 
-        self.assertEqual(set([jean, piere]), set(paper.authors.all()))
-        self.assertEqual(set([a, b]), set(paper.keywords.all()))
+        self.assertEqual({jean, piere}, set(paper.authors.all()))
+        self.assertEqual({a, b}, set(paper.keywords.all()))
 
     def test_no_duplicate_papers(self):
         test_data = {
