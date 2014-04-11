@@ -2,6 +2,7 @@ from pprint import pprint
 import unittest
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
+from openreview.apps.main.models import review
 from openreview.apps.main.models import Review, set_n_votes_cache, ReviewTree
 from openreview.apps.tools.testing import create_test_review, create_test_votes, assert_max_queries, list_queries, \
     create_test_paper, create_test_user, create_test_vote
@@ -19,6 +20,23 @@ class TestReview(unittest.TestCase):
             1: 3,
             2: 1
         })
+
+    def test_bulk_delete(self):
+        r1 = create_test_review()
+        r2 = create_test_review()
+
+        self.assertFalse(r1.is_deleted, msg="create_test_review() returned deleted review.")
+        self.assertFalse(r2.is_deleted, msg="create_test_review() returned deleted review.")
+
+        reviews = Review.objects.filter(id__in=[r1.id, r2.id])
+        review.bulk_delete(reviews)
+        self.assertFalse(r1.is_deleted, msg="bulk_delete() should not update given reviews")
+        self.assertFalse(r2.is_deleted, msg="bulk_delete() should not update given reviews")
+
+        r1, r2 = Review.objects.order_by("id").filter(id__in=[r1.id, r2.id])
+        self.assertTrue(r1.is_deleted, msg="bulk_delete() did not update review")
+        self.assertTrue(r2.is_deleted, msg="bulk_delete() did not update review")
+
 
     def test_n_downvotes(self):
         self.assertEqual(0, create_test_review().n_downvotes)

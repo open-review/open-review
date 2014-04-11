@@ -23,9 +23,33 @@ def set_n_votes_cache(reviews):
         review._n_downvotes = -downvotes.get(review.id, 0)
         review._n_upvotes = upvotes.get(review.id, 0)
 
+def bulk_delete(reviews):
+    """
+    More efficient implementation of:
+
+    >>> len([r.delete() for r in reviews])
+
+    This does NOT update given reviews, so they may - for example - still hold
+    a non-empty text property.
+
+    @type reviews: django.db.QuerySet
+    @param reviews: reviews to delete
+
+    @rtype: int
+    @return: number of reviews deleted (includes already deleted reviews)
+    """
+    return reviews.update(**DELETED_VALUES)
+
 ReviewTree = namedtuple('ReviewTree', ['review', 'level', 'children'])
 
 REVIEW_FIELDS = {"text", "rating", "timestamp", "anonymous", "external"}
+
+DELETED_VALUES = {
+    "text": None,
+    "poster": None,
+    "rating": -1,
+    "anonymous": True
+}
 
 class Review(models.Model):
     """
@@ -207,10 +231,12 @@ class Review(models.Model):
         cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))
 
     def delete(self, using=None):
-        self.text = None
-        self.poster = None
-        self.rating = -1
-        self.anonymous = True
+        """
+        Deletes review object. This does not delete rows from the database, instead it merely updates
+        so we can recognize it's deleted.
+        """
+        for field_name, value in DELETED_VALUES.items():
+            setattr(self, field_name, value)
         self.save(using=using)
 
     def save(self, *args, **kwargs):
