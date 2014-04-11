@@ -63,7 +63,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
 
     def post(self, request, *args, **kwargs):
-    	# Is the user saving a new review?
+        # Is the user saving a new review?
         if self.creating_review():
             review_form = self.get_review_form()
             if review_form.is_valid():
@@ -232,9 +232,9 @@ class PreviewView(BaseReviewView):
         review.text = text
 
         return render(request, "papers/review.html", {
-        	'paper': Paper.objects.get(id=paper_id),
-        	'review': review,
-        	'preview': True
+            'paper': Paper.objects.get(id=paper_id),
+            'review': review,
+            'preview': True
         })
 
 
