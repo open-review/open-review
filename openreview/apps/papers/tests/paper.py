@@ -2,10 +2,11 @@ import unittest
 
 from django.core.urlresolvers import reverse
 from django.test import Client
+from selenium.common.exceptions import NoSuchElementException
 
-from openreview.apps.tools.testing import create_test_paper, assert_max_queries, create_test_user
+from openreview.apps.tools.testing import create_test_paper, assert_max_queries, create_test_user, SeleniumTestCase
 
-__all__ = ["TestPaperWithReviewsView"]
+__all__ = ["TestPaperWithReviewsView", "TestPaperViewLive"]
 
 class TestPaperWithReviewsView(unittest.TestCase):
     def setUp(self):
@@ -22,3 +23,16 @@ class TestPaperWithReviewsView(unittest.TestCase):
 
         with assert_max_queries(n=9):
             self.client.get(reverse("paper", args=[self.paper.id]))
+
+class TestPaperViewLive(SeleniumTestCase):
+    def test_new_review(self):
+        """
+        Merely clicking on 'new review' textarea should span a preview
+        """
+        self.login()
+
+        self.open(reverse("paper", args=[create_test_paper().id]))
+        self.wd.wait_for_css("body")
+        self.assertRaises(NoSuchElementException, self.wd.find_css, ".preview .review")
+        self.wd.find_css(".new-review textarea").click()
+        self.wd.wait_for_css(".preview .review")
