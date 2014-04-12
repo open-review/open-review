@@ -1,14 +1,11 @@
+from functools import partial
 import json
 import datetime
-
 from urllib import parse
-from django.core.paginator import Paginator, EmptyPage
 
+from django.core.paginator import Paginator, EmptyPage
 from django.db import transaction
 from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
-from django.core.exceptions import ValidationError
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
-
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
@@ -16,7 +13,6 @@ from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from django.views.generic import TemplateView, View
 
-from .scrapers import ArXivScraper
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
 from openreview.apps.tools.auth import login_required
@@ -24,6 +20,7 @@ from openreview.apps.tools.views import ModelViewMixin
 
 PAGE_COUNT = 25
 PAGINATION_COUNT = 6
+
 
 class VoteView(View):
     def get(self, request, paper_id, review_id):
@@ -50,6 +47,7 @@ class VoteView(View):
 
         return HttpResponse("OK", status=201)
 
+
 class BaseReviewView(ModelViewMixin, TemplateView):
     def redirect(self, review):
         review.cache()
@@ -63,7 +61,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
 
     def post(self, request, *args, **kwargs):
-    	# Is the user saving a new review?
+        # Is the user saving a new review?
         if self.creating_review():
             review_form = self.get_review_form()
             if review_form.is_valid():
@@ -79,7 +77,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         # We can recognize the field name by finding which key named 'add_review{review_id}' is present in the POST-data.
         for key, value in self.request.POST.items():
             if key.startswith('add_review'):
-                review_id = key[len('add_review'):] # extract id from 'add_review{review_id}'
+                review_id = key[len('add_review'):]  # extract id from 'add_review{review_id}'
                 review = Review.objects.get(id=review_id)
 
                 review_form = self.get_review_edit_form(review)
@@ -174,30 +172,26 @@ class PaperWithReviewsView(BaseReviewView):
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
 
+orderings = {
+    "new": Paper.latest,
+    "trending": partial(Paper.trending, 100),
+    "controversial": partial(Paper.controversial, 100)
+}
+
+
 class PapersView(TemplateView):
     template_name = "papers/overview.html"
     order = ''
 
-    def get_context_data(self, **kwargs):     
-        try:      
-            page = int(self.request.GET.get('p', '1'))
-        except ValueError:
+    def get_context_data(self, **kwargs):
+        page = self.request.GET.get('p', '1')
+
+        if not (page.isdigit() and int(page) >= 0):
             raise Http404
 
-        if not page >= 0:
-            raise Http404
+        page = int(page)
+        paginator = Paginator(orderings[self.order](), PAGE_COUNT)
 
-        if self.order == 'new':
-            source = Paper.latest()
-            title = "New"
-        elif self.order == 'trending':
-            source = Paper.trending(100)
-            title = "Trending"
-        elif self.order == 'controversial':            
-            source = Paper.controversial(100)
-            title = "Controversial"      
-
-        paginator = Paginator(source, PAGE_COUNT)
         try:
             papers = paginator.page(page)
         except EmptyPage:
@@ -205,9 +199,12 @@ class PapersView(TemplateView):
             papers = paginator.page(page)
 
         pages_right = paginator.page_range[page:]
-        pages_left = paginator.page_range[0:page-1]
+        pages_left = paginator.page_range[0:page - 1]
 
-        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))                           
+        return super().get_context_data(
+            title=self.order.title(), papers=papers, cur_page=page,
+            pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT,
+            **kwargs)
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
@@ -232,9 +229,9 @@ class PreviewView(BaseReviewView):
         review.text = text
 
         return render(request, "papers/review.html", {
-        	'paper': Paper.objects.get(id=paper_id),
-        	'review': review,
-        	'preview': True
+            'paper': Paper.objects.get(id=paper_id),
+            'review': review,
+            'preview': True
         })
 
 
@@ -257,8 +254,8 @@ class ReviewView(BaseReviewView):
         review = self.objects.review
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
-        
-        tree=self.expand_tree(review.get_tree())
+
+        tree = self.expand_tree(review.get_tree())
 
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
@@ -295,7 +292,7 @@ class ReviewView(BaseReviewView):
 
         if "edit" in self.request.POST:
             review = Review.objects.get(id=self.request.POST["edit"])
-            if (review.poster != request.user):
+            if review.poster != request.user:
                 msg = "You are not the owner of the review or comment you are trying to edit"
                 return HttpResponseForbidden(msg)
         else:
@@ -334,7 +331,8 @@ class ReviewView(BaseReviewView):
             return self.redirect(review)
 
         review.id = -1
-        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review, add_review_form=self.get_review_form()))
+        return render(request, "papers/review.html",
+                      dict(paper=self.objects.paper, review=review, add_review_form=self.get_review_form()))
 
     @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):
@@ -344,7 +342,7 @@ class ReviewView(BaseReviewView):
         return HttpResponse("OK", status=200)
 
 
-@cache_page(60*10)
+@cache_page(60 * 10)
 def doi_scraper(request, id):
     return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                         content_type="application/json")
