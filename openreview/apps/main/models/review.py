@@ -23,9 +23,33 @@ def set_n_votes_cache(reviews):
         review._n_downvotes = -downvotes.get(review.id, 0)
         review._n_upvotes = upvotes.get(review.id, 0)
 
+def bulk_delete(reviews):
+    """
+    More efficient implementation of:
+
+    >>> len([r.delete() for r in reviews])
+
+    This does NOT update given reviews, so they may - for example - still hold
+    a non-empty text property.
+
+    @type reviews: django.db.QuerySet
+    @param reviews: reviews to delete
+
+    @rtype: int
+    @return: number of reviews deleted (includes already deleted reviews)
+    """
+    return reviews.update(**DELETED_VALUES)
+
 ReviewTree = namedtuple('ReviewTree', ['review', 'level', 'children'])
 
-REVIEW_FIELDS = {"text", "rating", "timestamp"}
+REVIEW_FIELDS = {"text", "rating", "timestamp", "anonymous", "external"}
+
+DELETED_VALUES = {
+    "text": None,
+    "poster": None,
+    "rating": -1,
+    "anonymous": True
+}
 
 class Review(models.Model):
     """
@@ -39,6 +63,9 @@ class Review(models.Model):
     poster = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="reviews", null=True)
     paper = models.ForeignKey("main.Paper", related_name="reviews")
     parent = models.ForeignKey("self", null=True)
+
+    anonymous = models.BooleanField(help_text="Poster isn't be publicly visible.", default=False)
+    external = models.BooleanField(help_text="This review is posted by on behalf of somebody else.", default=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,12 +114,20 @@ class Review(models.Model):
         return self._reviews_children is not None
 
     @property
-    def deleted(self):
+    def is_semi_anonymous(self):
+        return self.anonymous and self.poster_id is not None
+
+    @property
+    def is_deleted(self):
         return self.text is None
 
     @property
     def is_review(self):
-        return self.parent is None
+        """Returns True if this is 'top-level' review (i.e.: not a comment)"""
+        return self.parent_id is None
+
+    def has_valid_rating(self):
+        return self.rating == -1 or 1 <= self.rating <= 7
 
     def cache(self, select_related=None, defer=None, order=False, order_reverse=False):
         """
@@ -195,26 +230,42 @@ class Review(models.Model):
     def _invalidate_template_caches(self):
         cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))
 
-    def delete(self, using=None):
-        self.text = None
+    def set_public(self):
+        self.anonymous = False
+        self.external = False
+
+    def set_anonymous(self):
+        self.anonymous = True
         self.poster = None
-        self.rating = -1
+
+    def set_semi_anonymous(self):
+        self.anonymous = True
+        if self.poster_id is None:
+            raise ValueError("Review cannot be set to semi-anonymous if poster_id is None.")
+
+    def set_external(self):
+        self.anonymous = True
+        self.external = True
+
+    def delete(self, using=None):
+        """
+        Deletes review object. This does not delete rows from the database, instead it merely updates
+        so we can recognize it's deleted.
+        """
+        for field_name, value in DELETED_VALUES.items():
+            setattr(self, field_name, value)
         self.save(using=using)
 
     def save(self, *args, **kwargs):
-        # Check whether the whole tree has the same paper.
-        if self.parent_id is not None and self.parent.paper_id is not self.paper_id:
-            raise ValueError("parent.paper ({self.parent.paper_id}) was not {self.paper_id}".format(self=self))
-
         # Check if the star rating is correct
-        if self.parent_id is not None:
+        if not self.is_review or self.is_deleted:
             self.vote = -1
-        elif self.parent_id is None and not (1 <= self.rating <= 7) and self.poster is not None: # poster is None if review is deleted
-            raise ValueError("rating ({self.rating}) was not between 1 and 7 (inclusive)".format(self=self))
+        elif not self.has_valid_rating():
+            raise ValueError("Rating ({self.rating}) was not between 1 and 7 (inclusive)".format(self=self))
 
-        # Check if review has text
-        # Note that self.text can be None, if the review is being deleted (see self.delete()). This should not raise a ValueError.
-        if self.text is not None and self.text.strip() == "":
+        # Check if review has text. Note that self.text can be None, if the review is being
+        # deleted (see self.delete()). This should not raise a ValueError.
+        if self.text is not None and not self.text.strip():
             raise ValueError("Review or comment does not have any text")
 
         # We need to clean template caches if this is an existing review
@@ -223,6 +274,15 @@ class Review(models.Model):
 
         # Note: we should probably also check for loops, but this makes saving very
         # inefficient. Instead, when generating trees this issue is detected.
+        if not self.is_review and self.parent.paper_id is not self.paper_id:
+            raise ValueError("parent.paper ({self.parent.paper_id}) was not {self.paper_id}".format(self=self))
+
+        if not self.anonymous and self.external:
+            raise ValueError("External reviews must be anonymous.")
+
+        if not self.is_deleted and not self.anonymous and not self.poster_id:
+            raise ValueError("Non-deleted reviews with poster=None must be anonymous.")
+
         return super().save(*args, **kwargs)
 
 class Vote(models.Model):

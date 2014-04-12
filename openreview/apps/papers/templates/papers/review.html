@@ -5,7 +5,7 @@
     <header>
       <i class="glyphicon glyphicon-user"></i>
       <span class="author">
-          {% if review.poster == None %}
+          {% if review.anonymous %}
             ?
           {% else %}
             {{ review.poster.username }}
@@ -21,7 +21,7 @@
       {% endif %}
     </header>
 
-    <article {% if review.deleted %}class="deleted"{% endif %}>
+    <article {% if review.is_deleted %}class="deleted"{% endif %}>
       {{ review.text|default_if_none:""|markdown }}
     </article>
 
