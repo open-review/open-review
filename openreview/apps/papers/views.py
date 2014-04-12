@@ -4,48 +4,51 @@ import datetime
 from urllib import parse
 
 from django.core.paginator import Paginator, EmptyPage
-from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, Http404
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, FormView
 
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
+from openreview.apps.papers.forms import VoteForm
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
+
 
 PAGE_COUNT = 25
 PAGINATION_COUNT = 6
 
+class VoteView(ModelViewMixin, FormView):
+    """
+    Allows voting on reviews. You can use the GET parameter 'vote' to cast one. For
+    downvoting, upvoting or removing a vote use -1, 1 and 0 as value.
+    """
+    form_class = VoteForm
+    template_name = "form.html"
 
-class VoteView(View):
-    def get(self, request, paper_id, review_id):
-        if request.user.is_anonymous():
-            return HttpResponseForbidden("You must be logged in to vote")
+    def get_form_kwargs(self):
+        instance, _ = Vote.objects.get_or_create(voter=self.request.user, review=self.objects.review)
+        return dict(super().get_form_kwargs(), instance=instance)
 
-        if not Review.objects.filter(id=review_id).exists():
-            return HttpResponseNotFound("Review with id {review_id} does not exist.".format(**locals()))
+    def get_success_url(self):
+        return self.request.path
 
-        try:
-            vote = int(self.request.GET["vote"])
-        except (ValueError, KeyError):
-            return HttpResponseBadRequest("No vote value, or non-int given.")
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
-        if not (-1 <= vote <= 1):
-            return HttpResponseBadRequest("You can only vote -1, 0 or 1.")
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        response.status_code = 400
+        return response
 
-        review = Review.objects.defer("text").get(id=review_id)
-        with transaction.atomic():
-            review._invalidate_template_caches()
-            Vote.objects.filter(review__id=review_id, voter=request.user).delete()
-            if vote:
-                Vote.objects.create(review_id=review_id, voter=request.user, vote=vote)
-
-        return HttpResponse("OK", status=201)
+    @method_decorator(login_required(raise_exception=False))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
@@ -72,9 +75,10 @@ class BaseReviewView(ModelViewMixin, TemplateView):
                 return self.get(kwargs)
 
         # Is the user editing an existing review?
-        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page, where multiple reviews may be edited
-        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
-        # We can recognize the field name by finding which key named 'add_review{review_id}' is present in the POST-data.
+        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page,
+        # where multiple reviews may be edited. This is because fields should have unique names -
+        # especially the star rating field, which is referenced to by name. We can recognize the field
+        # name by finding which key named 'add_review{review_id}' is present in the POST-data.
         for key, value in self.request.POST.items():
             if key.startswith('add_review'):
                 review_id = key[len('add_review'):]  # extract id from 'add_review{review_id}'
@@ -218,9 +222,11 @@ class PreviewView(BaseReviewView):
         review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
-        # Note that the review's text field can be either submitted as '{review_id}-text' (on the paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page, where only one review may be added)
-        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
-        # This is easily solved by taking any field that ends with 'text' as the review text.
+        # Note that the review's text field can be either submitted as '{review_id}-text' (on the
+        # paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page,
+        # where only one review may be added). This is because fields should have unique names -
+        # especially the star rating field, which is referenced to by name. This is easily solved
+        # by taking any field that ends with 'text' as the review text.
         text = ""
         for key, value in request.POST.items():
             if key.endswith("text"):
@@ -301,20 +307,21 @@ class ReviewView(BaseReviewView):
         review.text = request.POST["text"]
 
         try:
-            vote = int(self.request.POST["rating"])
+            review.rating = int(self.request.POST.get("rating") or -1)
         except (ValueError, KeyError):
-            vote = 0
+            return HttpResponseBadRequest("'rating' parameter should be specified and an integer.")
 
-        if not (1 <= vote <= 7):
-            vote = 0
+        if not review.has_valid_rating():
+            return HttpResponseBadRequest("Specify a valid rating.")
 
-        review.rating = vote
         review.poster = request.user
         review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
         if review_id != "-1":
-            review.parent_id = int(review_id)
+            review.parent_id = self.objects.review.id
+        else:
+            review.parent = self.objects.review
 
         # Set cache, so we can use default template to render preview
         review._n_upvotes = 0
@@ -331,8 +338,12 @@ class ReviewView(BaseReviewView):
             return self.redirect(review)
 
         review.id = -1
-        return render(request, "papers/review.html",
-                      dict(paper=self.objects.paper, review=review, add_review_form=self.get_review_form()))
+        return render(request, "papers/review.html", {
+            "paper": self.objects.paper,
+            "review": review,
+            "add_review_form": self.get_review_form(),
+            "preview": True
+        })
 
     @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):

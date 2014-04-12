@@ -34,9 +34,14 @@ vote = (btn, value) ->
   value = 0 if btn.hasClass("voted")
 
   # Send vote; don't do anything if server reports error.
-  url = review.find(".permalink").attr("href")
-  url += "/vote?vote=#{value}"
-  $.ajax url
+  $.ajax {
+    method: "POST",
+    url : review.find(".permalink").attr("href") + "/vote"
+    data: {
+      vote: value,
+      csrfmiddlewaretoken: $("body").attr("csrf")
+    }
+  }
 
   # Remove state of *other* button
   clear_btn btn.siblings(".btn")

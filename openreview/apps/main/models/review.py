@@ -110,6 +110,11 @@ class Review(models.Model):
         return -(self.votes.filter(vote__lt=0).aggregate(n=Sum("vote"))["n"] or 0)
 
     @property
+    def n_votes(self):
+        # Neutral votes don't count, only consider up- and downvotes
+        return self.n_downvotes + self.n_upvotes
+
+    @property
     def cached(self):
         return self._reviews_children is not None
 
@@ -225,7 +230,9 @@ class Review(models.Model):
         app_label = "main"
 
     def __str__(self):
-        return "{self.id}, poster={self.poster}, paper={self.paper}, parent={self.parent.id}".format(self=self)
+        str = "{self.id}, paper={self.paper}, parent={self.parent}, poster="
+        str += "anonymous" if self.anonymous else "{self.poster}"
+        return str.format(self=self)
 
     def _invalidate_template_caches(self):
         cache.delete(make_template_fragment_key('review', [self.paper_id, self.id]))
@@ -286,7 +293,7 @@ class Review(models.Model):
         return super().save(*args, **kwargs)
 
 class Vote(models.Model):
-    vote = models.SmallIntegerField(db_index=True)
+    vote = models.SmallIntegerField(db_index=True, default=0)
     review = models.ForeignKey(Review, related_name="votes")
     voter = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
 
@@ -305,7 +312,4 @@ class Vote(models.Model):
 
     def save(self, *args, **kwargs):
         self.review._invalidate_template_caches()
-
-        if self.vote == 0:
-            raise ValueError("You cannot vote neutral.")
         return super().save(*args, **kwargs)
