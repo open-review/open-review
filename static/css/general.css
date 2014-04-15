@@ -11,7 +11,6 @@ body {
     font-family: 'Open Sans', 'Arial', sans-serif;
 }
 
-
 body h1,
 body h2 {
     font-family: Merriweather, Georgia, serif;
@@ -86,6 +85,7 @@ body > footer {
 
 body > main {
     overflow: hidden;
-    padding-top: 20px;
+    width: 1040px;
+    padding: 20px 20px 0 20px;
     color: #1A3333;
 }

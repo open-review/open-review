@@ -88,10 +88,62 @@ body > main > section.reviews > h2 {
 body > main > section.reviews section.review.box {
     background-color: #fff;
     padding: 15px;
-    border-radius: 0;
+    border-radius: 0 2px 2px 2px;
 }
+
+body > main > section.reviews section.review {
+    position: relative;
+}
+
 body > main > section.reviews section.review + section.review {
     margin-top: 20px;
+}
+
+body > main > section.reviews section.review > div.voting {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px 0 0 2px;
+    left: -40px;
+    top: -1px;
+    width: 40px;
+    position: absolute;
+    background-color: #fff;
+}
+
+body > main > section.reviews section.review > div.voting a,
+body > main > section.reviews section.review > div.voting span {
+    display: block;
+    text-align: center;
+    position: relative;
+    width: 40px;
+    left: -1px;
+}
+
+body > main > section.reviews section.review > div.voting a,
+body > main > section.reviews section.review > div.voting a {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    font-size: 18px;
+    height: 40px;
+    line-height: 0px;
+    padding: 18px 0;
+    position: relative;
+}
+
+body > main > section.reviews section.review > div.voting span {
+    font-size: 20px;
+    z-index: 1;
+    width: 39px;
+    left: 0;
+    font-weight: bold;
+    color: #1A3333;
+    line-height: 20px;
+}
+
+
+body > main > section.reviews section.review > div.voting a:hover {
+    color: #1A3333;
+    font-size: 24px;
+    text-decoration: none;
 }
 
 body > main > section.reviews section.review > header {
