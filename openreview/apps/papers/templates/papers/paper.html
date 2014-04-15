@@ -12,72 +12,41 @@
     <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
 {% endblock %}
 
-{% block meta %}
-    <div class="hide">
-        <div id="anonymous">{{ user.is_anonymous|lower }}</div>
-        <div id="my_votes">{{ my_votes|safe }}</div>
-        <div id="my_reviews">{{ my_reviews|safe }}</div>
-    </div>
-{% endblock %}
-
 {% block content %}
-   <h1>
-        {{ paper.title|capfirst }} <br/>
-        {% for author in paper.authors.all %}
-          <small>{{ author.name }}{% if not forloop.last %},{% endif %}</small>
-        {% endfor %}
-    </h1>
+    <section class="paper box">
+        <header>
+            <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
+        </header>
+        <div class="abstract">
+            <p>
+                We establish adiabatic theorems with and without spectral gap condition for general
+                operators A(t):D(A(t))⊂X→X with possibly time-dependent domains in a Banach
+                space X. We first prove adiabatic theorems with uniform and non-uniform spectral
+                gap condition (including a slightly extended adiabatic theorem of higher order).
+                In these adiabatic theorems the considered spectral subsets σ(t) have only to be
+                compact -- in particular, they need not consist of eigenvalues.
+            </p>
+            <p>
+                We then prove an adiabatic theorem without spectral gap condition for not
+                necessarily (weakly)…
+            </p>
+        </div>
+        <div class="meta">
+            <ul>
+                <li><strong>Authors:</strong> M. Matsuo, N. Hinohara, K. Sato, K. Matsuyanagi, T. Nakatsukasa, K. Yoshida.</li>
+                <li><strong>Published at:</strong> 14 April 2014</li>
+                <li><strong>Keywords:</strong>
+                    <a href="#">Stochastic Frontier</a>,
+                    <a href="#">Sample Selection</a>,
+                    <a href="#">Simulation</a>,
+                    <a href="#">Efficiency</a>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-    <p>{{ paper.abstract }}</p>
+    <section class="reviews">
 
-    <p>
-        <strong>Keywords: </strong>
-        <em>
-            {% for keyword in paper.keywords.all %}
-                {{ keyword }}{% if not forloop.last %},{% endif %}
-            {% empty %}
-                No keyword available.
-            {% endfor %}
-        </em>
-    </p>
-
-    <p>
-        <strong>Links:</strong>
-        {% if not paper.urls %}
-            <em>No urls available.</em>
-        {% else %}
-            {{ paper.urls }}
-        {% endif %}
-    </p>
-
-    <p>
-        <strong>ID:</strong> {{ paper.id }}
-    </p>
-
-    <hr/>
-    {% url 'paper' paper.id as url %}
-    {% for review in reviews %}
-        {% include "papers/review.html" with review=review.review user=user url=url edit_review_form=review.form edit_review_name=review.submit_name %}
-    {% empty %}
-        <em>No reviews yet!</em>
-    {% endfor %}
-
-    <hr/>
-
-    {% if not user.is_anonymous %}
-    <form method="post" class="new" data-preview="{% url 'preview' paper.id %}">
-        {% csrf_token %}
-        <table>{{ add_review_form }}</table>
-        <br /><input name="add_review" type="submit" value="Submit review">
-        {% include "papers/preview.html" %}
-    </form>
-    {% else %}
-        <p>
-            <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}">Log in</a> to add a review.
-        </p>
-    {% endif %}
-
+    </section>
 
 {% endblock %}
-
-
