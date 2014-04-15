@@ -13,9 +13,14 @@ stopped_typing = (form) ->
     form_data[x.name] = x.value
   );
 
+  if form.data("preview")
+    url = form.data("preview")
+  else
+    url = form.attr("action")
+
   $.ajax({
     type: "POST",
-    url: form.attr("action"),
+    url: url,
     data: form_data,
     success: review_received.bind(form),
     error: error_received.bind(form)
@@ -69,6 +74,9 @@ icon_clicked = (hide, toggle) ->
 
 $(".review .options .edit").click(icon_clicked("new", "edit"))
 $(".review .options .reply").click(icon_clicked("edit", "new"))
-$(".new:visible textarea").focus(->
-  init_writing($(this).closest(".new"))
+$(".new-review:visible textarea").focus(->
+  init_writing($(this).closest(".review-container"))
 )
+
+# Show the edit form of reviews that were being edited but contain errors
+$(".edit .errorlist").parents(".edit").show()

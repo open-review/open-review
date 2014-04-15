@@ -62,6 +62,9 @@ class TestReviewView(BaseTestCase):
     def test_post(self):
         c = Client()
 
+        paper = create_test_paper()
+        review = create_test_review()
+
         self.assertFalse(Paper.objects.filter(id=0).exists())
         self.assertFalse(Review.objects.filter(id=0).exists())
 
@@ -78,16 +81,16 @@ class TestReviewView(BaseTestCase):
         self.assertEqual(400, response.status_code)
 
         # Paper not found
+        url = reverse("review", args=[0, review.id])
         response = c.post(url, dict(text="foo"))
         self.assertEqual(404, response.status_code)
 
         # Review not found
+        url = reverse("review", args=[paper.id, 0])
         response = c.post(url, dict(text="foo"))
         self.assertEqual(404, response.status_code)
 
         # Cannot create review with paper != given paper
-        paper = create_test_paper()
-        review = create_test_review()
         url = reverse("review", args=[paper.id, review.id])
         self.assertNotEqual(review.paper, paper)
         response = c.post(url, dict(text="foo", submit="blaat"))
@@ -146,7 +149,17 @@ class TestReviewViewLive(SeleniumTestCase):
         new.find_element_by_css_selector("[type=submit]").click()
         self.wd.wait_for_css("body")
 
+        # Adding the review should fail, because the star rating is not set
+        self.assertEqual(0, paper.reviews.count())
+
+        # After setting the star rating, adding the review should succeed
+        #time.sleep(60)
+        self.wd.wait_for_css("div.starfield img")
+        new = self.wd.find_css(".new")
+        new.find_element_by_css_selector(".starfield img:nth-child(5)").click()
+        self.wd.find_css(".new [type=submit]").click()
         self.assertEqual(1, paper.reviews.count())
+        self.assertEqual(5, paper.reviews.all()[0].rating)
 
     def test_writing(self):
         user = create_test_user(username="writing", password="test")
