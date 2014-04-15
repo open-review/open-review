@@ -1,3 +1,9 @@
+body h1,
+body h2,
+body h3 {
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
 body > header {
     border-bottom: 1px #D3D3D3 solid;
     background: #FCFCFC;
@@ -7,10 +13,12 @@ body > header > nav {
     width: 1000px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 0 20px;
+    padding: 0;
 }
 
 body > header > nav h1 {
+    font-family: Merriweather, Georgia, serif;
+    font-size: 24px;
     text-align: left;
     padding: 25px 0;
     margin: 0;
@@ -66,5 +74,34 @@ body > header > nav ul li:last-child a {
 }
 
 body > main {
-/*  padding: 100px 0;*/
+    padding: 20px 0 40px 0;
+}
+
+body > main p,
+body > main li {
+  font-family: Merriweather, Georgia, serif;
+  line-height: 1.7em;
+  font-size: 13px;
+}
+
+body > main .box > h2 {
+  font-size: 16px;
+  margin: 0;
+  padding: 17px 20px 15px 20px;
+  border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main .box > ol {
+    padding: 10px 20px;
+    margin: 0;
+}
+
+body > main .box > ol {
+    list-style: none;
+}
+
+body > main .box > ol li {
+    display: block;
+    padding: 6px 0;
+    overflow: hidden;
 }
