@@ -125,7 +125,7 @@ body > main .box h2 a {
 
 body > main .box ol,
 body > main .box p {
-    padding: 10px 20px;
+    padding: 10px 14px;
     margin: 0;
 }
 
@@ -135,27 +135,57 @@ body > main .box ol {
 
 body > main .box ol li {
     display: block;
-    padding: 6px 0;
     overflow: hidden;
+    padding: 0;
 }
 
-body > main .box.trending-papers ol li a,
-body > main .box.trending-papers ol li span {
+body > main .box ol li a {
     display: block;
+    padding: 6px;
 }
 
 body > main .box.trending-papers ol li a {
     float: left;
 }
 
-body > main .box.trending-papers ol li a:hover + span {
+body > main .box.trending-papers ol li a + a {
+    padding-left: 0;
+}
+
+body > main .box.trending-papers ol li a.title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 430px;
+}
+
+body > main .box.trending-papers ol li:hover > a.title {
+    text-decoration: underline;
+    width: 390px;
+    margin-right: -6px;
+}
+
+body > main .box.trending-papers ol li a.number-of-reviews {
+    float: right;
+    width: 28px;
+}
+
+body > main .box.trending-papers ol li a.number-of-reviews:hover,
+body > main .box.trending-papers ol li a.title:hover + a.number-of-reviews {
+    width: 76px;
+    right: 76px;
+}
+
+body > main .box.trending-papers ol li a.number-of-reviews:hover > span,
+body > main .box.trending-papers ol li a.title:hover + a.number-of-reviews > span {
     background: #187676;
     color: #fff;
     width: auto;
     padding: 0 5px;
 }
 
-body > main .box.trending-papers ol li a:hover + span:after {
+body > main .box.trending-papers ol li a.number-of-reviews:hover > span:after,
+body > main .box.trending-papers ol li a.title:hover + a.number-of-reviews > span:after {
     content: " reviews";
 }
 
@@ -174,4 +204,10 @@ body > main .box.trending-papers ol li span {
 
 body > main .box.top-reviews ol li + li {
   margin-top: 3px;
+}
+
+body > main .box.top-reviews ol li a > span.author {
+    color: #000;
+    text-decoration: none;
+    padding: 6px 0;
 }

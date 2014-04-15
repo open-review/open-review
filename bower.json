@@ -1,6 +1,7 @@
 {
   "name": "open-review",
   "dependencies": {
-    "jquery": "~2.0.3"
+    "jquery": "~2.0.3",
+    "normalize-css": "3.0.1"
   }
 }

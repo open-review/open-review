@@ -1,7 +1,5 @@
 python3-pip
-python3-dev
 python3-coverage
-
 python3-devel
 libpqxx-devel
 libxml2-devel

@@ -1,6 +1,7 @@
 import unittest
 
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.test import Client
 from selenium.common.exceptions import NoSuchElementException
 
@@ -20,25 +21,24 @@ class TestVoteView(unittest.TestCase):
         self.assertFalse(Review.objects.filter(id=review.id + 100000).exists())
 
         c = Client()
-        self.assertEqual(c.get(url).status_code, 403)
-        self.assertTrue(c.login(username="foo", password="bar"))
-        self.assertEqual(c.get(url).status_code, 404)
+        self.assertEqual(c.get(url).status_code, 302, msg="User must be logged in to vote")
+        self.assertTrue(c.login(username="foo", password="bar"), msg="Login failed")
+        self.assertEqual(c.get(url).status_code, 404, msg="Review should not exist")
 
         url = reverse("vote", args=[paper.id, review.id])
-        self.assertEqual(c.get(url).status_code, 400)
-        self.assertEqual(c.get(url + "?vote=-2").status_code, 400)
-        self.assertEqual(c.get(url + "?vote=3").status_code, 400)
-        self.assertEqual(c.get(url + "?vote=0").status_code, 201)
+        self.assertEqual(c.post(url).status_code, 400, msg="")
+        self.assertEqual(c.post(url, data=dict(vote=2)).status_code, 400)
+        self.assertEqual(c.post(url, data=dict(vote=3)).status_code, 400)
+        self.assertEqual(c.post(url, data=dict(vote=0)).status_code, 302)
 
-        self.assertFalse(Vote.objects.filter(voter=user, review=review))
-        self.assertEqual(c.get(url + "?vote=1").status_code, 201)
+        self.assertFalse(Vote.objects.filter(voter=user, review=review).filter(~Q(vote=0)))
+        self.assertEqual(c.post(url, dict(vote=1)).status_code, 302)
         self.assertEqual(Vote.objects.get(voter=user, review=review).vote, 1)
 
-        self.assertEqual(c.get(url + "?vote=0").status_code, 201)
-        self.assertFalse(Vote.objects.filter(voter=user, review=review))
+        self.assertEqual(c.post(url, dict(vote=0)).status_code, 302)
+        self.assertFalse(Vote.objects.filter(voter=user, review=review).filter(~Q(vote=0)))
 
-        self.assertFalse(Vote.objects.filter(voter=user, review=review))
-        self.assertEqual(c.get(url + "?vote=-1").status_code, 201)
+        self.assertEqual(c.post(url, dict(vote=-1)).status_code, 302)
         self.assertEqual(Vote.objects.get(voter=user, review=review).vote, -1)
 
 

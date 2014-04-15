@@ -1,54 +1,56 @@
+from functools import partial
 import json
 import datetime
-
 from urllib import parse
+
 from django.core.paginator import Paginator, EmptyPage
-
-from django.db import transaction
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
-from django.core.exceptions import ValidationError
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, HttpResponseNotFound, Http404
-
+from django.http import HttpResponseForbidden, HttpResponseBadRequest, Http404
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, FormView
 
-from .scrapers import ArXivScraper
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
+from openreview.apps.papers.forms import VoteForm
+from openreview.apps.papers import scrapers
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
+
 
 PAGE_COUNT = 25
 PAGINATION_COUNT = 6
 
-class VoteView(View):
-    def get(self, request, paper_id, review_id):
-        if request.user.is_anonymous():
-            return HttpResponseForbidden("You must be logged in to vote")
+class VoteView(ModelViewMixin, FormView):
+    """
+    Allows voting on reviews. You can use the GET parameter 'vote' to cast one. For
+    downvoting, upvoting or removing a vote use -1, 1 and 0 as value.
+    """
+    form_class = VoteForm
+    template_name = "form.html"
 
-        if not Review.objects.filter(id=review_id).exists():
-            return HttpResponseNotFound("Review with id {review_id} does not exist.".format(**locals()))
+    def get_form_kwargs(self):
+        instance, _ = Vote.objects.get_or_create(voter=self.request.user, review=self.objects.review)
+        return dict(super().get_form_kwargs(), instance=instance)
 
-        try:
-            vote = int(self.request.GET["vote"])
-        except (ValueError, KeyError):
-            return HttpResponseBadRequest("No vote value, or non-int given.")
+    def get_success_url(self):
+        return self.request.path
 
-        if not (-1 <= vote <= 1):
-            return HttpResponseBadRequest("You can only vote -1, 0 or 1.")
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
-        review = Review.objects.defer("text").get(id=review_id)
-        with transaction.atomic():
-            review._invalidate_template_caches()
-            Vote.objects.filter(review__id=review_id, voter=request.user).delete()
-            if vote:
-                Vote.objects.create(review_id=review_id, voter=request.user, vote=vote)
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        response.status_code = 400
+        return response
 
-        return HttpResponse("OK", status=201)
+    @method_decorator(login_required(raise_exception=False))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class BaseReviewView(ModelViewMixin, TemplateView):
     def redirect(self, review):
@@ -63,7 +65,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
 
     def post(self, request, *args, **kwargs):
-    	# Is the user saving a new review?
+        # Is the user saving a new review?
         if self.creating_review():
             review_form = self.get_review_form()
             if review_form.is_valid():
@@ -74,12 +76,13 @@ class BaseReviewView(ModelViewMixin, TemplateView):
                 return self.get(kwargs)
 
         # Is the user editing an existing review?
-        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page, where multiple reviews may be edited
-        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
-        # We can recognize the field name by finding which key named 'add_review{review_id}' is present in the POST-data.
+        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page,
+        # where multiple reviews may be edited. This is because fields should have unique names -
+        # especially the star rating field, which is referenced to by name. We can recognize the field
+        # name by finding which key named 'add_review{review_id}' is present in the POST-data.
         for key, value in self.request.POST.items():
             if key.startswith('add_review'):
-                review_id = key[len('add_review'):] # extract id from 'add_review{review_id}'
+                review_id = key[len('add_review'):]  # extract id from 'add_review{review_id}'
                 review = Review.objects.get(id=review_id)
 
                 review_form = self.get_review_edit_form(review)
@@ -155,7 +158,7 @@ class PaperWithReviewsView(BaseReviewView):
     template_name = "papers/paper.html"
 
     def get_context_data(self, **kwargs):
-        paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords"))
+        paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords", "categories"))
 
         try:
             review = paper.get_reviews()[0]
@@ -174,30 +177,26 @@ class PaperWithReviewsView(BaseReviewView):
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
 
+orderings = {
+    "new": Paper.latest,
+    "trending": partial(Paper.trending, 100),
+    "controversial": partial(Paper.controversial, 100)
+}
+
+
 class PapersView(TemplateView):
     template_name = "papers/overview.html"
     order = ''
 
-    def get_context_data(self, **kwargs):     
-        try:      
-            page = int(self.request.GET.get('p', '1'))
-        except ValueError:
+    def get_context_data(self, **kwargs):
+        page = self.request.GET.get('p', '1')
+
+        if not (page.isdigit() and int(page) >= 0):
             raise Http404
 
-        if not page >= 0:
-            raise Http404
+        page = int(page)
+        paginator = Paginator(orderings[self.order](), PAGE_COUNT)
 
-        if self.order == 'new':
-            source = Paper.latest()
-            title = "New"
-        elif self.order == 'trending':
-            source = Paper.trending(100)
-            title = "Trending"
-        elif self.order == 'controversial':            
-            source = Paper.controversial(100)
-            title = "Controversial"      
-
-        paginator = Paginator(source, PAGE_COUNT)
         try:
             papers = paginator.page(page)
         except EmptyPage:
@@ -205,9 +204,12 @@ class PapersView(TemplateView):
             papers = paginator.page(page)
 
         pages_right = paginator.page_range[page:]
-        pages_left = paginator.page_range[0:page-1]
+        pages_left = paginator.page_range[0:page - 1]
 
-        return dict(super().get_context_data(title=title, papers=papers, cur_page=page, pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT, **kwargs))                           
+        return super().get_context_data(
+            title=self.order.title(), papers=papers, cur_page=page,
+            pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT,
+            **kwargs)
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
@@ -215,31 +217,28 @@ class PapersView(TemplateView):
 
 class PreviewView(BaseReviewView):
     @method_decorator(login_required(raise_exception=True))
-    def post(self, request, **kwargs):
+    def post(self, request, paper_id, **kwargs):
         review = Review()
         review.poster = request.user
-        if "paper_id" in kwargs:
-            review.paper = self.objects.paper
+        review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
-        # Note that the review's text field can be either submitted as '{review_id}-text' (on the paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page, where only one review may be added)
-        # This is because fields should have unique names - especially the star rating field, which is referenced to by name.
-        # This is easily solved by taking any field that ends with 'text' as the review text.
+        # Note that the review's text field can be either submitted as '{review_id}-text' (on the
+        # paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page,
+        # where only one review may be added). This is because fields should have unique names -
+        # especially the star rating field, which is referenced to by name. This is easily solved
+        # by taking any field that ends with 'text' as the review text.
         text = ""
         for key, value in request.POST.items():
             if key.endswith("text"):
                 text = value
 
         review.text = text
-        if "paper_id" in kwargs:
-            paper=Paper.objects.get(id=kwargs["paper_id"])
-        else:
-            paper=Paper()
 
         return render(request, "papers/review.html", {
-        	'paper': paper,
-        	'review': review,
-        	'preview': True
+            'paper': Paper.objects.get(id=paper_id),
+            'review': review,
+            'preview': True
         })
 
 
@@ -262,8 +261,8 @@ class ReviewView(BaseReviewView):
         review = self.objects.review
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
-        
-        tree=self.expand_tree(review.get_tree())
+
+        tree = self.expand_tree(review.get_tree())
 
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
@@ -300,7 +299,7 @@ class ReviewView(BaseReviewView):
 
         if "edit" in self.request.POST:
             review = Review.objects.get(id=self.request.POST["edit"])
-            if (review.poster != request.user):
+            if review.poster != request.user:
                 msg = "You are not the owner of the review or comment you are trying to edit"
                 return HttpResponseForbidden(msg)
         else:
@@ -309,20 +308,21 @@ class ReviewView(BaseReviewView):
         review.text = request.POST["text"]
 
         try:
-            vote = int(self.request.POST["rating"])
+            review.rating = int(self.request.POST.get("rating") or -1)
         except (ValueError, KeyError):
-            vote = 0
+            return HttpResponseBadRequest("'rating' parameter should be specified and an integer.")
 
-        if not (1 <= vote <= 7):
-            vote = 0
+        if not review.has_valid_rating():
+            return HttpResponseBadRequest("Specify a valid rating.")
 
-        review.rating = vote
         review.poster = request.user
         review.paper = self.objects.paper
         review.timestamp = datetime.datetime.now()
 
         if review_id != "-1":
-            review.parent_id = int(review_id)
+            review.parent_id = self.objects.review.id
+        else:
+            review.parent = self.objects.review
 
         # Set cache, so we can use default template to render preview
         review._n_upvotes = 0
@@ -339,7 +339,12 @@ class ReviewView(BaseReviewView):
             return self.redirect(review)
 
         review.id = -1
-        return render(request, "papers/review.html", dict(paper=self.objects.paper, review=review, add_review_form=self.get_review_form()))
+        return render(request, "papers/review.html", {
+            "paper": self.objects.paper,
+            "review": review,
+            "add_review_form": self.get_review_form(),
+            "preview": True
+        })
 
     @method_decorator(login_required(raise_exception=True))
     def delete(self, request, **kwargs):
@@ -349,7 +354,7 @@ class ReviewView(BaseReviewView):
         return HttpResponse("OK", status=200)
 
 
-@cache_page(60*10)
+@cache_page(60 * 10)
 def doi_scraper(request, id):
     return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                         content_type="application/json")

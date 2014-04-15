@@ -74,8 +74,9 @@ icon_clicked = (hide, toggle) ->
 
 $(".review .options .edit").click(icon_clicked("new", "edit"))
 $(".review .options .reply").click(icon_clicked("edit", "new"))
-$(".new:visible textarea").focus(->
-  init_writing($(this).closest(".new"))
+$(".new-review:visible textarea").focus(->
+  init_writing($(this).closest(".review-container"))
 )
 
-$(".edit .errorlist").parents(".edit").show() # Show the edit form of reviews that were being edited but contain errors
+# Show the edit form of reviews that were being edited but contain errors
+$(".edit .errorlist").parents(".edit").show()

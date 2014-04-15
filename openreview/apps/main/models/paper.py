@@ -4,11 +4,12 @@ from django.utils import timezone
 from django.db import models
 from django.db.models import Count
 
+from openreview.apps.main.models.category import Category
 from openreview.apps.main.models.review import Vote, Review
 from openreview.apps.main.models.author import Author
 
 
-__all__ = ["Keyword", "Paper"]
+__all__ = ["Keyword", "Paper", "Category"]
 
 
 class Keyword(models.Model):
@@ -32,6 +33,7 @@ class Paper(models.Model):
     # These fields are *probably* a bad idea performance wise.
     authors = models.ManyToManyField(Author)
     keywords = models.ManyToManyField(Keyword)
+    categories = models.ManyToManyField(Category, blank=True)    
 
     @classmethod
     def trending(cls, top=5, days=7):
