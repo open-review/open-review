@@ -42,6 +42,17 @@
     </p>
 
     <p>
+        <strong>Categories: </strong>
+        <em>
+            {% for category in paper.categories.all %}
+                {{ category }}{% if not forloop.last %},{% endif %}
+            {% empty %}
+                No categories available.
+            {% endfor %}
+        </em>
+    </p>    
+
+    <p>
         <strong>Links:</strong>
         {% if not paper.urls %}
             <em>No urls available.</em>
@@ -65,12 +76,14 @@
     <hr/>
 
     {% if not user.is_anonymous %}
-    <form method="post" class="new" data-preview="{% url 'preview' paper.id %}">
-        {% csrf_token %}
-        <table>{{ add_review_form }}</table>
-        <br /><input name="add_review" type="submit" value="Submit review">
-        {% include "papers/preview.html" %}
-    </form>
+    <div class="review-container">
+        <form method="post" class="new new-review" data-preview="{% url 'preview' paper.id %}">
+            {% csrf_token %}
+            <table>{{ add_review_form }}</table>
+            <br /><input name="add_review" type="submit" value="Submit review">
+            {% include "papers/preview.html" %}
+        </form>
+    </div>
     {% else %}
         <p>
             <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}">Log in</a> to add a review.

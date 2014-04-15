@@ -11,10 +11,6 @@ class TestVote(unittest.TestCase):
         review = create_test_review()
 
         vote = Vote(review=review, voter=user)
-        vote.vote = 0
-        self.assertRaises(ValueError, vote.save)
-
-        vote.vote = -1
         vote.save()
 
         # You cannot vote twice on one review

@@ -2,12 +2,15 @@ import unittest
 import os
 
 from openreview.apps.papers import scrapers
+from openreview.apps.main.models import Category
+from django.core import management
 
 __all__ = ['TestArXivScraper']
 
 
 class TestArXivScraper(unittest.TestCase):
     def setUp(self):
+        management.call_command("loaddata", "initial_data")
         self.arxivscraper = scrapers.Controller(scrapers.ArXivScraper, caching=False)
         self.oldurlopen = scrapers.urlopen
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
@@ -35,3 +38,4 @@ as expected for shock (re)acceleration or adiabatic compression of fossil
 relativistic electrons.\n""")
         self.assertEqual(results['doc_id'], "1306.3879")
         self.assertEqual(results['urls'], "http://arxiv.org/abs/1306.3879v1")
+        self.assertEqual(results['categories'], [Category.objects.get(arxiv_code='astro-ph.CO').pk])

@@ -62,6 +62,9 @@ class TestReviewView(unittest.TestCase):
     def test_post(self):
         c = Client()
 
+        paper = create_test_paper()
+        review = create_test_review()
+
         self.assertFalse(Paper.objects.filter(id=0).exists())
         self.assertFalse(Review.objects.filter(id=0).exists())
 
@@ -78,16 +81,16 @@ class TestReviewView(unittest.TestCase):
         self.assertEqual(400, response.status_code)
 
         # Paper not found
+        url = reverse("review", args=[0, review.id])
         response = c.post(url, dict(text="foo"))
         self.assertEqual(404, response.status_code)
 
         # Review not found
+        url = reverse("review", args=[paper.id, 0])
         response = c.post(url, dict(text="foo"))
         self.assertEqual(404, response.status_code)
 
         # Cannot create review with paper != given paper
-        paper = create_test_paper()
-        review = create_test_review()
         url = reverse("review", args=[paper.id, review.id])
         self.assertNotEqual(review.paper, paper)
         response = c.post(url, dict(text="foo", submit="blaat"))
