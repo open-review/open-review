@@ -1,14 +1,14 @@
 * {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  background: #F7FAFA;
-  line-height: 1.4em;
-  font-size: 13px;
-  font-family: 'Open Sans', 'Arial', sans-serif;
+    background: #F7FAFA;
+    line-height: 1.4em;
+    font-size: 13px;
+    font-family: 'Open Sans', 'Arial', sans-serif;
 }
 
 
@@ -70,7 +70,7 @@ body a.button:active {
 body .box {
     padding: 15px;
     border-radius: 2px;
-    background: #FFF;
+    background: #FCFCFC;
     border: 1px solid rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 1px 0 0 #FFF;
     -webkit-box-shadow: 0 1px 0 0 #FFF;
