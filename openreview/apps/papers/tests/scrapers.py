@@ -31,7 +31,7 @@ as expected for shock (re)acceleration or adiabatic compression of fossil
 relativistic electrons.\n"""
     expected_doc_id = "1306.3879"
     expected_urls = "http://arxiv.org/abs/1306.3879v1"
-    expected_categories = [Category.objects.get(arxiv_code='astro-ph.CO').pk]
+    expected_categories = Category.objects.filter(arxiv_code='astro-ph.CO').values_list("id", flat=True)
 
     def setUp(self):
         management.call_command("loaddata", "initial_data")
@@ -50,7 +50,7 @@ relativistic electrons.\n"""
         self.assertEqual(results['abstract'], self.expected_abstract)
         self.assertEqual(results['doc_id'], self.expected_doc_id)
         self.assertEqual(results['urls'], self.expected_urls)
-        self.assertEqual(results['categories'], self.expected_categories)
+        self.assertEqual(results['categories'], list(self.expected_categories))
 
     def test_arxiv_scraper_request(self):
         response = Client().get(reverse("arxiv-scraper", kwargs={'doc_id': "1306.3879"}))
@@ -60,5 +60,5 @@ relativistic electrons.\n"""
         self.assertEqual(result.get('abstract'), self.expected_abstract)
         self.assertEqual(result.get('doc_id'), self.expected_doc_id)
         self.assertEqual(result.get('urls'), self.expected_urls)
-        self.assertEqual(result.get('categories'), self.expected_categories)
+        self.assertEqual(result.get('categories'), list(self.expected_categories))
 
