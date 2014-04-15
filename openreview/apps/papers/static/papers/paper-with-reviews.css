@@ -1,5 +1,5 @@
 body > main > section {
-    margin-bottom: 60px;
+    margin-bottom: 20px;
 }
 
 body > main > section.paper.box {
@@ -48,7 +48,6 @@ main > section.paper div.abstract p {
     margin: 0;
     padding: 0;
     font-size: 13px;
-    line-height: 1.6em;
     text-align: justify;
     text-shadow: 0 1px 0 #fff;
 }
@@ -70,5 +69,67 @@ body > main > section.paper div.meta ul li {
 }
 
 body > main > section.paper div.meta ul li + li {
+    margin-top: 10px;
+}
+
+body > main > section.reviews {
+    width: 640px;
+    padding: 0 20px 20px;
+    float: left;
+}
+
+body > main > section.reviews > h2 {
+    font-size: 16px;
+    margin: 0;
+    padding: 17px 0 15px;
+    border-bottom: none;
+}
+
+body > main > section.reviews section.review.box {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 0;
+}
+body > main > section.reviews section.review + section.review {
+    margin-top: 20px;
+}
+
+body > main > section.reviews section.review > header {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+body > main > section.reviews section.review > header a.author,
+body > main > section.reviews section.review > header span.rating {
+    display: block;
+}
+
+body > main > section.reviews section.review > header a.author {
+    float: left;
+    text-decoration: underline;
+}
+
+body > main > section.reviews section.review > header span.rating {
+    float: right;
+    color: #4b4b4b;
+}
+
+body > main > section.reviews section.review p.content {
+    text-align: justify;
+    color: #1A3333;
+    padding: 0;
+    margin: 0;
+}
+
+body > main > aside {
+    float: right;
+    width: 340px;
+}
+
+body > main > aside > div.box {
+    padding: 0;
+}
+
+body > main > aside > div.box + div.box {
     margin-top: 20px;
 }
