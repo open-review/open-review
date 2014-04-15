@@ -66,6 +66,31 @@ body a.button:active {
     box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
 }
 
+body input,
+body textarea {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.8);
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    padding: 7px 10px;
+}
+
+body input:focus,
+body textarea:focus {
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+body textarea {
+    font-family: Merriweather, Georgia, serif;
+    color: #202020;
+    font-size: 13px;
+    padding: 10px;
+}
+
 body .box {
     padding: 15px;
     border-radius: 2px;
