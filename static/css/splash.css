@@ -103,6 +103,7 @@ body > main section.search .query p strong {
 body > main .box {
     float: left;
     width: 490px;
+    background: #fff;
     padding: 0;
     margin-bottom: 40px;
 }
