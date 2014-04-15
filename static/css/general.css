@@ -11,18 +11,70 @@ body {
   font-family: 'Open Sans', 'Arial', sans-serif;
 }
 
-body a {
-  text-decoration: none;
-  color: #187676;
-}
 
 body h1,
 body h2 {
     font-family: Merriweather, Georgia, serif;
 }
 
+body a {
+    text-decoration: none;
+    color: #187676;
+}
+
 body a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
+}
+
+body button,
+body a.button {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 15px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    background: #FAFCFC;
+    background: -moz-linear-gradient(top, #FAFCFC 0%, #F3F7F7 100%);
+    background: -webkit-linear-gradient(top, #FAFCFC 0%, #F3F7F7 100%);
+    background: linear-gradient(to bottom, #FAFCFC 0%, #F3F7F7 100%);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
+    -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
+    box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
+    text-shadow: 0 1px 0 #fff;
+    font-weight: bold;
+    padding: 10px;
+}
+
+body button:hover,
+body button:focus,
+body a.button:hover,
+body a.button:focus {
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    outline: none;
+}
+
+body button:active,
+body a.button:active {
+    padding-top: 11px;
+    padding-bottom: 9px;
+    background: -moz-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
+    background: -webkit-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
+    background: linear-gradient(to top, #FAFCFC 0%, #F3F7F7 100%);
+    -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
+    -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
+    box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
+}
+
+body .box {
+    padding: 15px;
+    border-radius: 2px;
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 0 0 #FFF;
+    -webkit-box-shadow: 0 1px 0 0 #FFF;
+    box-shadow: 0 1px 0 0 #FFF;
 }
 
 body > main,
@@ -34,4 +86,6 @@ body > footer {
 
 body > main {
     overflow: hidden;
+    padding-top: 20px;
+    color: #1A3333;
 }

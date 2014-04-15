@@ -7,6 +7,7 @@ body > header > nav {
     width: 1000px;
     margin: 0 auto;
     overflow: hidden;
+    padding: 0 20px;
 }
 
 body > header > nav h1 {

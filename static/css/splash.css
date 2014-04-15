@@ -49,7 +49,7 @@ body > main section.search .action {
 
 body > main section.search .query input,
 body > main section.search .query p,
-body > main section.search .action input {
+body > main section.search .action button {
     width: 100%;
 }
 
@@ -81,7 +81,7 @@ body > main section.search .query p strong {
     font-weight: 700;
 }
 
-body > main section.search .action input {
+/*body > main section.search .action input {
     font-family: 'Open Sans', Arial, sans-serif;
     font-size: 15px;
     text-align: center;
@@ -98,35 +98,12 @@ body > main section.search .action input {
     text-shadow: 0 1px 0 #fff;
     font-weight: bold;
     padding: 9px 10px;
-}
-
-body > main section.search .action input:hover,
-body > main section.search .action input:focus {
-    color: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    outline: none;
-}
-
-body > main section.search .action input:active {
-  padding: 10px 10px 8px;
-  background: -moz-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
-  background: -webkit-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
-  background: linear-gradient(to top, #FAFCFC 0%, #F3F7F7 100%);
-
-  -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
-  -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
-  box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
-}
+}*/
 
 body > main .box {
     float: left;
     width: 490px;
-    border-radius: 2px;
-    background: #FFF;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2)
-    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+    padding: 0;
     margin-bottom: 40px;
 }
 
