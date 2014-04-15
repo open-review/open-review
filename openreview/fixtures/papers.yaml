@@ -13,4 +13,30 @@
     doc_id: doi:10.1002/0470841559.ch1
     keywords: []
     publish_date: 2014-03-06
+    # Using quotes here cause of the colon
     title: 'Bitcoin: A Peer-to-Peer Electronic Cash System'
+
+- model: main.paper
+  pk: 2
+  fields:
+    abstract: >
+      We establish adiabatic theorems with and without spectral gap condition for general operators
+      A(t):D(A(t))⊂X→X with possibly time-dependent domains in a Banach space X. We first prove
+      adiabatic theorems with uniform and non-uniform spectral gap condition (including a slightly
+      extended adiabatic theorem of higher order). In these adiabatic theorems the considered
+      spectral subsets σ(t) have only to be compact -- in particular, they need not consist of
+      eigenvalues. We then prove an adiabatic theorem without spectral gap condition for not
+      necessarily (weakly) semisimple eigenvalues: in essence, it is only required there that the
+      considered spectral subsets σ(t)={λ(t)} consist of eigenvalues λ(t)∈∂σ(A(t)) and that there
+      exist projections P(t) reducing A(t) such that A(t)|P(t)D(A(t))−λ(t) is nilpotent and
+      A(t)|(1−P(t))D(A(t))−λ(t) is injective with dense range in (1−P(t))X for almost every~t.
+      In all these theorems, the regularity conditions imposed on t↦A(t), σ(t), P(t) are fairly
+      mild. We explore the strength of the presented adiabatic theorems in numerous examples.
+      And finally, we apply the adiabatic theorems for time-dependent domains to obtain -- in a
+      very simple way -- adiabatic theorems for operators A(t) defined by symmetric sesquilinear
+      forms.
+    authors: [2, 3]
+    doc_id: ~
+    keywords: []
+    publish_date: 2013-12-31
+    title: Adiabatic theorems with spectral gap condition for semisimple spectral values
