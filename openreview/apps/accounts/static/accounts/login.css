@@ -1,11 +1,112 @@
-.register{
-    border-left: solid 1px lightgray;
+body > main > div.authentication {
+    overflow: hidden;
 }
 
-.login, .register{
+body > main > div.authentication > header {
+    border-bottom: 1px #4b4b4b solid;
+    margin: 0 350px;
+    width: 334px;
+    overflow: hidden;
+}
+
+body > main > div.authentication > header h1,
+body > main > div.authentication > header span {
+    float: left;
+    display: block;
+    margin: 15px 0;
     text-align: center;
 }
 
-.login input, .register input{
-    max-width:300px;
+body > main > div.authentication > header span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #4b4b4b;
+    font-family: Merriweather, Georgia, serif;
+    margin-left: 60px;
+    margin-right: 60px;
+    line-height: 22px;
+    display: block;
+    border-bottom: 2px #ccc solid;
+}
+
+body > main > div.authentication > section.box {
+    padding: 0;
+    float: left;
+    width: 490px;
+    margin-top: 20px;
+}
+
+body > main > div.authentication > section.box + section.box {
+    margin-left: 20px;
+}
+
+body > main > div.authentication > section.box h3 {
+    font-size: 16px;
+    margin: 0;
+    color: #5a5a5a;
+    padding: 17px 20px 15px 20px;
+    border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main > div.authentication > section.box form {
+    padding: 20px;
+    overflow: hidden;
+}
+
+body > main > div.authentication > section.box form label,
+body > main > div.authentication > section.box form input {
+    display: block;
+    margin-bottom: 20px;
+}
+
+body > main > div.authentication > section.box form label {
+    clear: left;
+    float: left;
+    width: 150px;
+    line-height: 34px;
+}
+
+body > main > div.authentication > section.box form input {
+    clear: right;
+    float: right;
+    width: 260px;
+}
+
+body > main > div.authentication > section.box form span {
+    clear: both;
+    display: block;
+    background: #1A3333;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px 10px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    position: relative;
+}
+
+body > main > div.authentication > section.box form span:before {
+    border-left: 6px transparent solid;
+    border-right: 6px transparent solid;
+    border-bottom: 6px #1A3333 solid;
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    content: ' ';
+    top: -6px;
+    left: 6px;
+}
+
+body > main > div.authentication > section.box form hr {
+    display: block;
+    clear: both;
+    border: none;
+    border-top: 1px rgba(0, 0, 0, 0.4) dotted;
+    margin: 0 0 20px 0;
+}
+
+body > main > div.authentication > section.box button {
+    display: block;
+    clear: both;
+    width: 100%;
 }
