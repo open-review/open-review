@@ -104,4 +104,6 @@ body > main .box > ol li {
     display: block;
     padding: 6px 0;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
