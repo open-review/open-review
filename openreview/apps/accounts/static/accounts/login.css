@@ -3,30 +3,18 @@ body > main > div.authentication {
 }
 
 body > main > div.authentication > header {
-    border-bottom: 1px #4b4b4b solid;
-    margin: 0 350px;
-    width: 334px;
     overflow: hidden;
 }
 
-body > main > div.authentication > header h1,
-body > main > div.authentication > header span {
+body > main > div.authentication > header h1 {
     float: left;
     display: block;
-    margin: 15px 0;
-    text-align: center;
+    margin: 10px 0;
+    width: 490px;
 }
 
-body > main > div.authentication > header span {
-    font-size: 14px;
-    font-weight: bold;
-    color: #4b4b4b;
-    font-family: Merriweather, Georgia, serif;
-    margin-left: 60px;
-    margin-right: 60px;
-    line-height: 22px;
-    display: block;
-    border-bottom: 2px #ccc solid;
+body > main > div.authentication > header h1 + h1 {
+    margin-left: 20px;
 }
 
 body > main > div.authentication > section.box {
