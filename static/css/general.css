@@ -85,7 +85,6 @@ body textarea:focus {
 }
 
 body textarea {
-    font-family: Merriweather, Georgia, serif;
     color: #202020;
     font-size: 13px;
     padding: 10px;
