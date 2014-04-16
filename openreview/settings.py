@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # This function is used to convert environment variables to booleans
@@ -84,10 +85,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'compressor',
     'south',
+    'rest_framework',
     'openreview.apps.accounts',
     'openreview.apps.papers',
     'openreview.apps.main',
     'openreview.apps.tools',
+    'openreview.apps.api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -159,3 +162,21 @@ COMPRESS_PARSER = 'compressor.parser.LxmlParser'
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --compile --stdio'),
 )
+
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default. Only used if the `serializer_class`
+    # attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+
+    'DEFAULT_PAGINATION_SERIALIZER_CLASS': 'rest_framework.pagination.PaginationSerializer',
+
+    'PAGINATE_BY': 10,
+    'PAGINATE_BY_PARAM': 'page_size',
+    'MAX_PAGINATE_BY': 100
+}
