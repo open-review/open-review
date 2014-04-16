@@ -55,6 +55,9 @@ body > main section.search .action button {
 
 body > main section.search .query input {
     font-family: 'Open Sans', Arial, sans-serif;
+    /* TODO: Save image to static folder */
+    font-size: 18px;
+    padding: 7px 10px;
     background: #fff url('http://f.cl.ly/items/3a2e0X0D1r1O1b1o0Z3Q/magnifier.png') no-repeat right 10px center;
 }
 
