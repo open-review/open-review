@@ -76,18 +76,22 @@ body a.button:active {
 }
 
 body input[type=text],
+body input[type=password],
+body input[type=email],
 body textarea {
-    font-size: 18px;
+    font-size: 13px;
+    padding: 7px 10px;
     color: rgba(0, 0, 0, 0.8);
     border-radius: 2px;
     border: 1px solid rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-    padding: 7px 10px;
 }
 
 body input[type=text]:focus,
+body input[type=password]:focus,
+body input[type=email]:focus,
 body textarea:focus {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.8);
