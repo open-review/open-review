@@ -210,33 +210,6 @@ body > main > section.compose-review div.rating {
     font-size: 18px;
 }
 
-body > main > section.compose-review div.rating span.star {
-    display: block;
-    float: left;
-    font-weight: bold;
-    cursor: pointer;
-}
-body > main > section.compose-review div.rating span.star + span.star {
-    margin-left: 2px;
-}
-
-body > main > section.compose-review div.rating span.star:before {
-    content: '★';
-    margin-right: -9px;
-    color: #fff;
-}
-
-body > main > section.compose-review div.rating span.star:after {
-    content: '☆';
-    margin-left: -8px;
-    color: #0C0C0B;
-}
-
-body > main > section.compose-review div.rating span.star:hover:before,
-body > main > section.compose-review div.rating span.star.enabled:before {
-    color: #0C0C0B;
-}
-
 body > main > section.compose-review form {
     overflow: hidden;
     clear: both;
@@ -255,12 +228,32 @@ body > main > section.compose-review form textarea:focus {
     height: 160px;
 }
 
+body > main > section.compose-review form label {
+    display: block;
+    float: left;
+    padding: 10px 0;
+}
+
+body > main > section.compose-review form label:hover {
+    cursor: pointer;
+}
+
+body > main > section.compose-review form label > input[type=checkbox] {
+    margin-right: 10px;
+}
+
+body > main > section.compose-review form label:hover > span,
+body > main > section.compose-review form label > input[type=checkbox]:checked + span {
+    text-decoration: underline;
+}
+
 body > main > section.compose-review form button {
     font-size: 13px;
     float: right;
-    padding: 8px 12px;
+    padding: 8px 20px;
 }
 
 body > main > section.compose-review form button:active {
-    padding: 9px 12px 7px 12px;
+    padding-top: 9px;
+    padding-bottom: 7px;
 }

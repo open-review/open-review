@@ -66,7 +66,7 @@ body a.button:active {
     box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
 }
 
-body input,
+body input[type=text],
 body textarea {
     font-size: 18px;
     color: rgba(0, 0, 0, 0.8);
@@ -78,7 +78,7 @@ body textarea {
     padding: 7px 10px;
 }
 
-body input:focus,
+body input[type=text]:focus,
 body textarea:focus {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.8);
