@@ -19,7 +19,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 
 from openreview.apps.accounts.models import User
-from openreview.apps.main.models import Author, Paper, Keyword, Review, Vote
+from openreview.apps.main.models import Author, Paper, Keyword, Review, Vote, Category
 from openreview.settings import get_bool
 
 log = getLogger(__name__)
@@ -224,6 +224,14 @@ def create_test_votes(counts=None, review=None):
             create_test_vote(review=review, vote=vote)
 
     return review
+
+@up_counter
+def create_test_category(**kwargs):
+    return Category.objects.create(**dict({
+        "name": "category-%s" % COUNTER,
+        "arxiv_code": "arxiv-%s" % COUNTER,
+        "parent": None
+    }, **kwargs))
 
 @contextmanager
 def assert_max_queries(n=0):
