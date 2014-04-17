@@ -77,8 +77,7 @@ body > main {
     padding-bottom: 40px;
 }
 
-body > main p,
-body > main li {
+body > main p {
     font-family: Merriweather, Georgia, serif;
     line-height: 1.7em;
     font-size: 13px;

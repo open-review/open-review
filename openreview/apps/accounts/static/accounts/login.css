@@ -54,10 +54,26 @@ body > main > div.authentication > section.box form label {
     line-height: 34px;
 }
 
-body > main > div.authentication > section.box form input {
+body > main > div.authentication > section.box form input,
+body > main > div.authentication > section.box form ul.errorlist {
     clear: right;
     float: right;
     width: 260px;
+}
+
+body > main > div.authentication > section.box form ul.errorlist {
+    background: #331A1A;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px 10px;
+    margin: 0 0 20px 0;
+    font-size: 12px;
+}
+
+body > main > div.authentication > section.box form ul.errorlist + input {
+    clear: both;
+    float: none;
+    width: 100%;
 }
 
 body > main > div.authentication > section.box form span {
