@@ -1,7 +1,8 @@
-from rest_framework import viewsets, serializers
+from rest_framework import viewsets
 
 from openreview.apps.accounts.models import User
 from openreview.apps.api.fields import RelativeField
+from openreview.apps.api.serializers import CustomHyperlinkedModelSerializer
 from openreview.apps.api.viewsets.review import ReviewSerializer
 from openreview.apps.main.models import Review, Vote
 from openreview.apps.tools.views import ModelSerializerMixin
@@ -28,7 +29,9 @@ class ReviewViewSet(ModelSerializerMixin, viewsets.ReadOnlyModelViewSet):
 
 class VoteViewSet(ModelSerializerMixin, viewsets.ReadOnlyModelViewSet):
     """
-    If user has set `votes_public` to `False` (default) no votes are displayed.
+    If user has set `votes_public` to `False` (default) no votes are displayed. You
+    cannot vote twice on the same post: if a duplicate vote is detected, the first one
+    will be overridden.
     """
     model = Vote
 
@@ -37,7 +40,7 @@ class VoteViewSet(ModelSerializerMixin, viewsets.ReadOnlyModelViewSet):
             return Vote.objects.none()
         return self.objects.user.votes.all()
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(CustomHyperlinkedModelSerializer):
     reviews = RelativeField()
     votes = RelativeField()
 

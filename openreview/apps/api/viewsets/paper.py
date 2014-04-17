@@ -1,9 +1,9 @@
-from rest_framework import viewsets, serializers
+from rest_framework import viewsets
 from rest_framework.relations import RelatedField
 
 from openreview.apps.api.fields import RelativeField
+from openreview.apps.api.serializers import CustomHyperlinkedModelSerializer
 from openreview.apps.api.viewsets.review import ReviewSerializer
-
 from openreview.apps.main.models import Paper, Review, Author, Keyword
 from openreview.apps.tools.views import ModelSerializerMixin
 
@@ -21,7 +21,7 @@ class AuthorViewSet(ModelSerializerMixin, viewsets.ReadOnlyModelViewSet):
 class KeywordViewSet(ModelSerializerMixin, viewsets.ReadOnlyModelViewSet):
     model = Keyword
 
-class PaperSerializer(serializers.HyperlinkedModelSerializer):
+class PaperSerializer(CustomHyperlinkedModelSerializer):
     reviews = RelativeField()
     authors = RelatedField(many=True)
     keywords = RelatedField(many=True)

@@ -2,7 +2,7 @@ from collections import namedtuple, defaultdict, OrderedDict
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
-from django.db import models
+from django.db import models, IntegrityError, connection
 from django.db.models import Sum
 from django.conf import settings
 
@@ -290,7 +290,25 @@ class Review(models.Model):
         if not self.is_deleted and not self.anonymous and not self.poster_id:
             raise ValueError("Non-deleted reviews with poster=None must be anonymous.")
 
+        # New reviews should not be deleted, of course
+        if self.id is None and self.is_deleted:
+            raise ValueError("Cannot save new, deleted review.")
+
         return super().save(*args, **kwargs)
+
+    ### PERMISSIONS ###
+    def can_delete(self, user):
+        # User must be logged in, review must not be deleted, review must have a poster and
+        # the deleter must be the owner of the review.
+        return not any((
+            user.is_anonymous(),
+            self.is_deleted,
+            self.poster_id is None,
+            self.poster_id is not user.id
+        ))
+
+    def can_change(self, user):
+        return self.can_delete(user)
 
 class Vote(models.Model):
     vote = models.SmallIntegerField(db_index=True, default=0)
@@ -310,6 +328,18 @@ class Vote(models.Model):
         self.review._invalidate_template_caches()
         super().delete(using=using)
 
+    @property
+    def _same(self):
+        return Vote.objects.filter(review__id=self.review_id, voter__id=self.voter_id)
+
     def save(self, *args, **kwargs):
         self.review._invalidate_template_caches()
         return super().save(*args, **kwargs)
+
+    ### PERMISSIONS ###
+    def can_delete(self, user):
+        return not user.is_anonymous() and user.id is self.voter_id
+
+    def can_change(self, user):
+        return self.can_delete(user)
+
