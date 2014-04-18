@@ -12,3 +12,9 @@ body > main > section.box {
 body > main > section.box + section.box {
     margin-left: 20px;
 }
+
+
+body > main > section.login form > br,
+body > main > section.register form > br {
+    display: none;
+}
