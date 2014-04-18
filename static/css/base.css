@@ -173,7 +173,7 @@ body > main > section.box > form ul.errorlist + input {
     width: 100%;
 }
 
-body > main > section.box > form span {
+body > main > section.box > form span.helptext {
     clear: both;
     display: block;
     background: #1A3333;
@@ -185,7 +185,7 @@ body > main > section.box > form span {
     position: relative;
 }
 
-body > main > section.box > form span:before {
+body > main > section.box > form span.helptext:before {
     border-left: 6px transparent solid;
     border-right: 6px transparent solid;
     border-bottom: 6px #1A3333 solid;

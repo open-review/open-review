@@ -216,6 +216,11 @@ body > main > section.reviews section.comments section.compose-comment button {
     float: right;
 }
 
+body > main > section.reviews section.comments section.compose-comment button:active {
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
 body > main > section.reviews section.comments section.comment span.author {
     font-weight: bold;
     color: #4b4b4b;
@@ -265,6 +270,7 @@ body > main > section.compose-review div.rating {
 body > main > section.compose-review form {
     overflow: hidden;
     clear: both;
+    padding: 0;
 }
 
 body > main > section.compose-review form textarea {
@@ -283,7 +289,11 @@ body > main > section.compose-review form textarea:focus {
 body > main > section.compose-review form label {
     display: block;
     float: left;
-    padding: 10px 0;
+    padding: 8px 0;
+    float: left;
+    width: auto;
+    line-height: normal;
+    margin-bottom: 0;
 }
 
 body > main > section.compose-review form label:hover {
@@ -292,6 +302,11 @@ body > main > section.compose-review form label:hover {
 
 body > main > section.compose-review form label > input[type=checkbox] {
     margin-right: 10px;
+    clear: none;
+    float: none;
+    width: auto;
+    display: inline;
+    margin-bottom: 0;
 }
 
 body > main > section.compose-review form label:hover > span,
@@ -299,10 +314,13 @@ body > main > section.compose-review form label > input[type=checkbox]:checked +
     text-decoration: underline;
 }
 
-body > main > section.compose-review form button {
+body > main > section.compose-review form button[type=submit] {
     font-size: 13px;
     float: right;
     padding: 8px 20px;
+    display: inline;
+    clear: none;
+    width: auto;
 }
 
 body > main > section.compose-review form button:active {
