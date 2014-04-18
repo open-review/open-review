@@ -76,7 +76,7 @@ class RegisterForm(UserCreationForm):
 
     """
     email = fields.EmailField(required=False, label=_("E-mail address (optional)"),
-                              help_text=_("E-mail addresses are use for password recovery only."))
+                              help_text=_("E-mail addresses are used for password recovery only."))
 
     def clean_username(self):
         user = super().clean_username()
