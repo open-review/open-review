@@ -238,12 +238,6 @@ body > main > aside > div.box + div.box {
     margin-top: 20px;
 }
 
-body > main > aside > div.box li {
-    font-family: Merriweather, Georgia, serif;
-    line-height: 1.7em;
-    font-size: 13px;
-}
-
 body > main > section.compose-review {
     clear: both;
     padding: 0 20px 20px;
