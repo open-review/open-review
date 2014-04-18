@@ -97,6 +97,16 @@ body textarea:focus {
     border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
+body input[type=text]:disabled,
+body input[type=password]:disabled,
+body input[type=email]:disabled,
+body textarea:disabled {
+    background: #F5F5F5;
+    color: #8A8888;
+    text-shadow: 0 1px 0 #FFF;
+}
+
+
 body textarea {
     color: #202020;
     font-size: 13px;
@@ -104,7 +114,6 @@ body textarea {
 }
 
 body .box {
-    padding: 15px;
     border-radius: 2px;
     background: #FCFCFC;
     border: 1px solid rgba(0, 0, 0, 0.2);
