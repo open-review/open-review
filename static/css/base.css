@@ -90,16 +90,24 @@ body > main .box > h2 {
     border-bottom: 2px #E5E5E5 solid;
 }
 
-body > main .box > ol {
+
+body > main > .box h3 {
+    font-size: 16px;
+    margin: 0;
+    color: #5a5a5a;
+    padding: 17px 20px 15px 20px;
+    border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main .box > ol,
+body > main .box > ul,
+body > main .box > p {
     padding: 10px 20px;
     margin: 0;
 }
 
-body > main .box > ol {
-    list-style: none;
-}
-
-body > main .box > ol li {
+body > main .box > ol li,
+body > main .box > ul li {
     display: block;
     padding: 6px 0;
     overflow: hidden;
