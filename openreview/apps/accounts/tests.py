@@ -30,7 +30,7 @@ class TestForms(unittest.TestCase):
     # Assuming UserCreationForm is already tested
 
 
-class TestLoginView(unittest.TestCase):
+class TestAuthenticationView(unittest.TestCase):
     def test_register(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())

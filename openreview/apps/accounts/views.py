@@ -11,8 +11,8 @@ from openreview.apps.main.models.review import set_n_votes_cache
 from openreview.apps.accounts.forms import RegisterForm, SettingsForm
 
 
-class LoginView(TemplateView):
-    template_name = "accounts/login.html"
+class AuthenticationView(TemplateView):
+    template_name = "accounts/authentication.html"
 
     def __init__(self, *args, **kwargs):
         self.register_form = None
