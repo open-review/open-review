@@ -103,6 +103,7 @@ body input[type=email]:disabled,
 body textarea:disabled {
     background: #F5F5F5;
     color: #8A8888;
+    -webkit-text-fill-color :#8A8888;
     text-shadow: 0 1px 0 #FFF;
 }
 
