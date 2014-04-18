@@ -1,15 +1,33 @@
-.contributions, .settings{
-    text-align: center;
+body > main > section.box {
+    padding: 0;
+    float: left;
+    width: 490px;
+    margin-top: 20px;
 }
 
-.contributions {
-    border-left: solid 1px lightgray;
+body > main > section.box + section.box {
+    margin-left: 20px;
 }
 
-.settings input{
-    max-width:300px;
+body > main > section.my-contributions ol li a {
+    font-weight: 600;
 }
 
-.reviews td{
-    border-top:none !important;
+body > main > section.my-contributions ol li span.number-of-votes {
+    color: #4b4b4b;
+    font-weight: bold;
+    padding-right: 6px;
+}
+
+body > main > section.my-contributions ol li blockquote {
+    display: block;
+    color: #4b4b4b;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 1.6em;
+    border-left: 2px #B1B1B1 solid;
+    padding-left: 7px;
+    margin: 6px 0 0px 0;
+    text-align: justify;
+    font-style: italic;
 }
