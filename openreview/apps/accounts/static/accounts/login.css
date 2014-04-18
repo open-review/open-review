@@ -1,116 +1,14 @@
-body > main > div.authentication {
+body > main {
     overflow: hidden;
 }
 
-body > main > div.authentication > header {
-    overflow: hidden;
-}
-
-body > main > div.authentication > header h1 {
-    float: left;
-    display: block;
-    margin: 10px 0;
-    width: 490px;
-}
-
-body > main > div.authentication > header h1 + h1 {
-    margin-left: 20px;
-}
-
-body > main > div.authentication > section.box {
+body > main > section.box {
     padding: 0;
     float: left;
     width: 490px;
     margin-top: 20px;
 }
 
-body > main > div.authentication > section.box + section.box {
+body > main > section.box + section.box {
     margin-left: 20px;
-}
-
-body > main > div.authentication > section.box h3 {
-    font-size: 16px;
-    margin: 0;
-    color: #5a5a5a;
-    padding: 17px 20px 15px 20px;
-    border-bottom: 2px #E5E5E5 solid;
-}
-
-body > main > div.authentication > section.box form {
-    padding: 20px;
-    overflow: hidden;
-}
-
-body > main > div.authentication > section.box form label,
-body > main > div.authentication > section.box form input {
-    display: block;
-    margin-bottom: 20px;
-}
-
-body > main > div.authentication > section.box form label {
-    clear: left;
-    float: left;
-    width: 150px;
-    line-height: 34px;
-}
-
-body > main > div.authentication > section.box form input,
-body > main > div.authentication > section.box form ul.errorlist {
-    clear: right;
-    float: right;
-    width: 260px;
-}
-
-body > main > div.authentication > section.box form ul.errorlist {
-    background: #331A1A;
-    border-radius: 4px;
-    color: #fff;
-    padding: 8px 10px;
-    margin: 0 0 20px 0;
-    font-size: 12px;
-}
-
-body > main > div.authentication > section.box form ul.errorlist + input {
-    clear: both;
-    float: none;
-    width: 100%;
-}
-
-body > main > div.authentication > section.box form span {
-    clear: both;
-    display: block;
-    background: #1A3333;
-    border-radius: 4px;
-    color: #fff;
-    padding: 8px 10px;
-    margin-bottom: 20px;
-    font-size: 12px;
-    position: relative;
-}
-
-body > main > div.authentication > section.box form span:before {
-    border-left: 6px transparent solid;
-    border-right: 6px transparent solid;
-    border-bottom: 6px #1A3333 solid;
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    content: ' ';
-    top: -6px;
-    left: 6px;
-}
-
-body > main > div.authentication > section.box form hr {
-    display: block;
-    clear: both;
-    border: none;
-    border-top: 1px rgba(0, 0, 0, 0.4) dotted;
-    margin: 0 0 20px 0;
-}
-
-body > main > div.authentication > section.box button {
-    display: block;
-    clear: both;
-    width: 100%;
 }
