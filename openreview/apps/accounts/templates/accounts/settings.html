@@ -26,51 +26,23 @@
 
         <ol>
             <li>
-                <a href="#">
-                    <span class="number-of-votes">+14</span>
-                    Bitcoin: A Peer-to-Peer Electronic Cash System
+                <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">
+                    <span class="number-of-votes">
+                        {{ review|format_votes }}
+                    </span>
+                    {{ review.paper.title }}
                 </a>
                 <blockquote>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sem neque,
-                    porttitor ut ante a, dictum lacinia tortor. Vestibulum ante ipsum primis in
-                    faucibus orci luctus et ultrices posuere cubiliae…
+                    {{ review.text|slice:":200" }}…
                 </blockquote>
             </li>
-            <li>
-                <a href="#">
-                    <span class="number-of-votes">+31</span>
-                    Finite size scaling of conformal theories in the presence of a near-marginal operator
-                </a>
-                <blockquote>
-                    Cras quis vulputate odio, in fermentum mauris. Sed porttitor at felis eget
-                    mattis. Nulla mauris turpis, dictum id volutpat nec, pharetra vitae dolor.
-                    Cras pharetra massa ut libero cursus lacinia. Sed eros ligula…
-                </blockquote>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="number-of-votes">-4</span>
-                    Vacuum alignment and lattice artifacts: Wilson fermions
-                </a>
-                <blockquote>
-                    Maecenas magna augue, interdum id orci in, venenatis scelerisque diam.
-                    Nam consequat lorem metus, a ornare est pulvinar id. Donec feugiat venenatis
-                    pellentesque. Phasellus ac elit lacinia, tristique massa nec…
-                </blockquote>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="number-of-votes">+10</span>
-                    A Complete Lattice Technicolor Model
-                </a>
-                <blockquote>
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-                    inceptos himenaeos. Nunc molestie accumsan aliquam. Aenean in est quis
-                    ligula accumsan mattis eget in erat. Nullam id augue sed lorem mollis…
-                </blockquote>
-            </li>
+        {% endfor %}
         </ol>
+
         <hr />
-        <p><a href="#">View all of my contributions →</a></p>
+
+        <p>
+            <a href="#">View all of my contributions →</a>
+        </p>
     </section>
 {% endblock %}
