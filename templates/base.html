@@ -23,7 +23,7 @@
               <li><a href="#">Reviews</a></li>
               <li class="seperator">·</li>
               {%  if user.is_anonymous %}
-                  <li><a href="{% url 'accounts-login' %}">Sign up</a></li>
+                  <li><a href="{% url 'accounts-register' %}">Sign up</a></li>
               {%  else %}
                   <li><a href="{% url 'accounts-settings' %}">My profile</a></li>
               {%  endif %}
