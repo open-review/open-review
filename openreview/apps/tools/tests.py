@@ -1,3 +1,5 @@
+import io
+import os
 import unittest
 
 from django.conf import settings
@@ -6,12 +8,57 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.test import RequestFactory
 from django.views.generic import View
+import sys
 from openreview.apps.main.models import Paper
 from openreview.apps.tools.auth import login_required
+from openreview.apps.tools.string import get_bool
 from openreview.apps.tools.testing import list_queries, assert_max_queries, create_test_user, create_test_review
 from openreview.apps.tools.views import ModelViewMixin
 
-__all__ = ["TestTesting", "TestModelViewMixin", "TestAuth"]
+__all__ = ["TestTesting", "TestModelViewMixin", "TestAuth", "TestString"]
+
+class TestString(unittest.TestCase):
+    def _test_get_bool(self):
+
+        os.environ.update({
+            "negative1": "0",
+            "negative2": "False",
+            "negative3": "false",
+            "negative4": "faLse",
+            "negative5": " \n  false\n\n \n\t",
+            "positive1": "1",
+            "positive2": "True",
+            "illegal": "foo"
+        })
+
+        self.assertFalse(get_bool("negative1"))
+        self.assertFalse(get_bool("negative2"))
+        self.assertFalse(get_bool("negative3"))
+        self.assertFalse(get_bool("negative4"))
+        self.assertFalse(get_bool("negative5"))
+        self.assertTrue(get_bool("positive1"))
+        self.assertTrue(get_bool("positive2"))
+
+        self.assertRaises(ValueError, get_bool, "illegal")
+
+        self.assertEqual(get_bool("non-existent"), None)
+        self.assertEqual(get_bool("non-existent", default=False), False)
+
+        self.assertRaises(ValueError, get_bool, "non-existent", err_empty=True)
+
+    def test_get_bool(self):
+        # Save and restore environment variables
+        environ = os.environ.copy()
+        os.environ.clear()
+
+        # Supress stupid printing of error messages
+        actualstdout = sys.stdout
+        sys.stdout = io.StringIO()
+        try:
+            self._test_get_bool()
+        finally:
+            os.environ.update(environ)
+            sys.stdout = actualstdout
 
 class TestAuth(unittest.TestCase):
     def test_login_required(self):
