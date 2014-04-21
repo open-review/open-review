@@ -20,7 +20,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from openreview.apps.accounts.models import User
 from openreview.apps.main.models import Author, Paper, Keyword, Review, Vote, Category
-from openreview.settings import get_bool
+from openreview.apps.tools.string import get_bool
 
 log = getLogger(__name__)
 
@@ -143,8 +143,12 @@ def create_test_keyword(label="keyword - %s"):
     return Keyword.objects.create(label=label % COUNTER)
 
 @up_counter
-def create_test_paper(n_authors=0, n_keywords=0, n_comments=0, n_reviews=0, **kwargs):
+def create_test_paper(n_authors=0, n_keywords=0, n_comments=0, n_reviews=0, n_categories=0, **kwargs):
     paper = Paper.objects.create(**dict({"title": "paper-%s" % COUNTER, "abstract": "abstract"}, **kwargs))
+
+    if n_categories > 0:
+        for i in range(n_categories):
+            paper.categories.add(create_test_category())
 
     if n_authors > 0:
         for i in range(n_authors):
@@ -227,11 +231,13 @@ def create_test_votes(counts=None, review=None):
 
 @up_counter
 def create_test_category(**kwargs):
-    return Category.objects.create(**dict({
+    category = Category(**dict({
         "name": "category-%s" % COUNTER,
         "arxiv_code": "arxiv-%s" % COUNTER,
         "parent": None
     }, **kwargs))
+    category.save(test_environment=True)
+    return category
 
 @contextmanager
 def assert_max_queries(n=0):

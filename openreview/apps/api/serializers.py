@@ -1,3 +1,4 @@
+from itertools import chain
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.serializers import HyperlinkedModelSerializer
 from openreview.apps.api.fields import CustomHyperlinkedRelatedField
@@ -18,10 +19,10 @@ class CustomHyperlinkedModelSerializer(HyperlinkedModelSerializer):
         # fields.
         return self.get_field(model_field)
 
-    def save_object(self, *args, **kwargs):
+    def save_object(self, obj, **kwargs):
         # save() functions can raise ValueErrors, which contents are displayed when
         # returning an error (with a HTTP403)
         try:
-            return super().save_object(*args, **kwargs)
+            return super().save_object(obj, **kwargs)
         except ValueError as e:
             raise PermissionDenied(str(e))

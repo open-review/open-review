@@ -12,7 +12,7 @@ def _get_json(url, client=None, data=None, encoding="utf-8"):
     if data is None:
         response = client.get(url)
     else:
-        response = client.post(url, data)
+        response = client.post(url, json.dumps(data), content_type="application/json")
     return response, json.loads(response.content.decode(encoding))
 
 def _patch(url, data=None, client=None):

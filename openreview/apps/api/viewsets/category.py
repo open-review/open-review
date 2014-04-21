@@ -1,8 +1,12 @@
 from rest_framework import viewsets
-from openreview.apps.api.viewsets.paper import PaperSerializer
+from openreview.apps.api.serializers import CustomHyperlinkedModelSerializer
 from openreview.apps.main.models import Category, Paper
 from openreview.apps.tools.views import ModelSerializerMixin
 
+
+class CategorySerializer(CustomHyperlinkedModelSerializer):
+    class Meta:
+        model = Category
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -11,10 +15,15 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     [arXiv.org](http://arxiv.org/).
     """
     model = Category
+    model_serializer_class = CategorySerializer
 
 class PaperViewSet(ModelSerializerMixin, viewsets.ReadOnlyModelViewSet):
     model = Paper
-    model_serializer_class = PaperSerializer
+
+    def get_serializer_class(self):
+        # Prevent circular import
+        from openreview.apps.api.viewsets.paper import PaperSerializer
+        return PaperSerializer
 
     def get_queryset(self):
         return self.objects.category.papers
