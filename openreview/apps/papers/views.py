@@ -185,7 +185,7 @@ orderings = {
 
 
 class PapersView(TemplateView):
-    template_name = "papers/overview.html"
+    template_name = "papers/list.html"
     order = ''
 
     def get_context_data(self, **kwargs):
@@ -368,4 +368,3 @@ def arxiv_scraper(request, doc_id):
     except scrapers.ScraperError:
         return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                             content_type="application/json")
-
