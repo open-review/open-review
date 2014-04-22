@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+        <h1>Delete your account</h1>
+        <div></div>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {{ delete_form }}
+                <input id="delete" class="btn btn-primary" name="delete" type="submit" value="Delete">
+            </form>
+        </div>
+
+
+
+{% endblock %}
