@@ -136,7 +136,6 @@ class AccountDeleteForm(forms.ModelForm):
 
     password = forms.CharField(label=_("password"), widget=forms.PasswordInput)
     option = forms.ChoiceField(choices=DELETE_CHOICES, widget=forms.RadioSelect(), initial="keep_reviews")
-    user = None
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)

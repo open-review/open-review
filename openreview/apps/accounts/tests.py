@@ -214,14 +214,6 @@ class TestSettingsFormLive(SeleniumTestCase):
 
 
 class TestDeleteAccount(unittest.TestCase):
-    u1 = None
-    u2 = None
-    paper = None
-    review_u1 = None
-    review_u2 = None
-    comment_u2 = None
-    comment_u2_u1 = None
-
     def setUp(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
