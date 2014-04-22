@@ -40,3 +40,30 @@
     keywords: []
     publish_date: 2013-12-31
     title: Adiabatic theorems with spectral gap condition for semisimple spectral values
+
+- model: main.paper
+  pk: 3
+  fields:
+    abstract: >
+      The scatter in the apparent magnitude of type Ia supernovae induced by stochastic
+      gravitational lensing is highly dependent on the nonlinear growth of cosmological
+      structure. In this paper, we show that such a dependence can potentially be employed
+      to gain significant information about the mass clustering at small scales. While the
+      mass clustering ultimately hinges on cosmology, here we demonstrate that, upon obtaining
+      more precise observational measurements through future cosmological surveys, the
+      lensing dispersion can very effectively be used to gain information on the poorly
+      understood astrophysical aspects of structure formation, such as the clumpiness of
+      dark matter halos and the importance of gas physics and star formation into shaping
+      the large-scale structure. In order to illustrate this point we verify that even the
+      tentative current measurements of the lensing dispersion performed on the Supernova
+      Legacy Survey sample favor a scenario where virialized structures are somewhat less
+      compact than predicted by n−body cosmological simulations. Moreover, we are also
+      able to put lower limits on the slope of the concentration-mass relation. By
+      artificially reducing the statistical observational error we argue that with forthcoming
+      data the stochastic lensing dispersion will allow one to importantly improve constraints
+      on the baryonic physics at work during the assembly of cosmological structure.
+    authors: [4, 5]
+    doc_id: ~
+    keywords: []
+    publish_date: 2013-04-22
+    title: 'Lensing dispersion of supernova flux: a probe of nonlinear structure growth'
