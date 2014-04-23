@@ -19,7 +19,7 @@ __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
 class TestReviewForm(BaseTestCase):
     def setUp(self):
-        call_command("loaddata", "initial_data")
+        call_command("loaddata", "initial_data", verbosity=0)
 
     def test_paper_form(self):
         test_data = {

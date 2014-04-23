@@ -16,6 +16,7 @@ from django.views.generic import TemplateView, FormView
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
 from openreview.apps.papers.forms import VoteForm
+from openreview.apps.papers import scrapers
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
