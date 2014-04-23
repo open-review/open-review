@@ -10,44 +10,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+from openreview.apps.tools.string import get_bool
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-# This function is used to convert environment variables to booleans
-def get_bool(var, default=None, err_empty=False):
-    """
-    Gets the value of variable `var` from environment variables and tries to convert
-    it to a boolean. Valid values are: {True, False, 0, 1}.
-
-    @param var: environment value to interpret
-    @type var: str
-
-    @param default: if no (valid) value is found, use this one
-    @type default: all
-
-    @rtype: bool
-    """
-    value = os.environ.get(var, "").lower().strip()
-
-    if value in ["true", "1"]:
-        return True
-
-    if value in ["false", "0"]:
-        return False
-
-    if len(value):
-        # You shouldn't use print in 'normal' code, however upon importing
-        # settings cryptic (and generally unhelpful) error messages are displayed
-        # in case of exceptions.
-        errmsg = "Could not interpret environment variable {value!r} as boolean value.".format(**locals())
-        print(errmsg)
-        raise ValueError(errmsg)
-
-    if err_empty:
-        errmsg = "Environment variable {var!r} must be specified.".format(**locals())
-        print(errmsg)
-        raise ValueError(errmsg)
-
-    return default
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_bool("DJANGO_DEBUG", True)
@@ -84,10 +50,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'compressor',
     'south',
+    'rest_framework',
     'openreview.apps.accounts',
     'openreview.apps.papers',
     'openreview.apps.main',
     'openreview.apps.tools',
+    'openreview.apps.api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -159,3 +127,22 @@ COMPRESS_PARSER = 'compressor.parser.LxmlParser'
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --compile --stdio'),
 )
+
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default. Only used if the `serializer_class`
+    # attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'openreview.apps.api.permissions.ObjectPermissions',
+    ],
+
+    'DEFAULT_PAGINATION_SERIALIZER_CLASS': 'rest_framework.pagination.PaginationSerializer',
+
+    'PAGINATE_BY': 10,
+    'PAGINATE_BY_PARAM': 'page_size',
+    'MAX_PAGINATE_BY': 100
+}
