@@ -52,7 +52,6 @@ body > header > nav ul li {
     padding: 0;
 }
 
-
 body > header > nav ul li.seperator {
     font-weight: bold;
     line-height: 50px;
@@ -227,4 +226,39 @@ body > main > section.box > form button[type=submit] {
     display: block;
     clear: both;
     width: 100%;
+}
+
+body > main > section.pagination {
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+body > main > section.pagination > div {
+    float: left;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 0 0 #FFF;
+    -webkit-box-shadow: 0 1px 0 0 #FFF;
+    box-shadow: 0 1px 0 0 #FFF;
+    margin-bottom: 1px;
+}
+
+body > main > section.pagination > div + div {
+    border-left-width: 0;
+}
+
+body > main > section.pagination > div > a,
+body > main > section.pagination > div.current {
+    display: block;
+    padding: 10px 20px;
+}
+
+body > main > section.pagination > div > a {
+    font-size: 20px;
+}
+
+body > main > section.pagination > div > a:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    text-decoration: none;
 }
