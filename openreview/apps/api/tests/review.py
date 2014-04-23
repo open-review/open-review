@@ -1,7 +1,6 @@
 import json
-from unittest import TestCase
 from django.core.urlresolvers import reverse
-from django.test import Client
+from django.test import Client, TestCase
 from openreview.apps.main.models import Review
 from openreview.apps.tools.testing import create_test_review, create_test_user, create_test_paper
 
