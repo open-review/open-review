@@ -9,9 +9,15 @@
         <header>
             <h1>All Papers</h1>
             <ul>
-                <li><a href="/papers/new">Newest</a></li>
-                <li><a href="/papers/controversial">Most controversial</a></li>
-                <li><a href="/papers/trending" class="active">Trending</a></li>
+                <li>
+                    <a href="/papers/new"{% if order == 'new' %} class="active"{% endif %}>Newest</a>
+                </li>
+                <li>
+                    <a href="/papers/controversial"{% if order == 'controversial' %} class="active"{% endif %}>Most controversial</a>
+                </li>
+                <li>
+                    <a href="/papers/trending"{% if order == 'trending' %} class="active"{% endif %}>Trending</a>
+                </li>
             </ul>
         </header>
     </section>
@@ -24,4 +30,5 @@
         </ol>
     </section>
 
+    {% include 'includes/pagination.html' with pages=papers %}
 {% endblock %}
