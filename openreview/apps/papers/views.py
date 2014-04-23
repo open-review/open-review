@@ -19,10 +19,6 @@ from openreview.apps.papers import scrapers
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 
-
-PAGE_COUNT = 25
-PAGINATION_COUNT = 6
-
 class VoteView(ModelViewMixin, FormView):
     """
     Allows voting on reviews. You can use the GET parameter 'vote' to cast one. For
@@ -189,13 +185,13 @@ class PapersView(TemplateView):
     order = ''
 
     def get_context_data(self, **kwargs):
-        page = self.request.GET.get('p', '1')
+        page = self.request.GET.get('page', '1')
 
         if not (page.isdigit() and int(page) >= 0):
             raise Http404
 
         page = int(page)
-        paginator = Paginator(orderings[self.order](), PAGE_COUNT)
+        paginator = Paginator(orderings[self.order](), 10)
 
         try:
             papers = paginator.page(page)
@@ -203,13 +199,7 @@ class PapersView(TemplateView):
             page = paginator.num_pages
             papers = paginator.page(page)
 
-        pages_right = paginator.page_range[page:]
-        pages_left = paginator.page_range[0:page - 1]
-
-        return super().get_context_data(
-            title=self.order.title(), papers=papers, cur_page=page,
-            pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT,
-            **kwargs)
+        return super().get_context_data(order=self.order, papers=papers, **kwargs)
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
