@@ -82,11 +82,11 @@ body > main p {
     font-size: 13px;
 }
 
-body > main > .box header {
+body > main > .box > header {
     border-bottom: 2px #E5E5E5 solid;
 }
 
-body > main > .box header h1 {
+body > main > .box > header h1 {
     font-size: 22px;
     line-height: 1.4em;
     padding: 0;
@@ -95,7 +95,7 @@ body > main > .box header h1 {
     padding: 17px 20px 15px 20px;
 }
 
-body > main > .box header h1 a {
+body > main > .box > header h1 a {
     color: rgba(0, 0, 0, 0.9);
 }
 
