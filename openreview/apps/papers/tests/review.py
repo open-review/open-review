@@ -158,6 +158,7 @@ class TestReviewViewLive(SeleniumTestCase):
         new = self.wd.find_css(".new")
         new.find_element_by_css_selector(".starfield img:nth-child(5)").click()
         self.wd.find_css(".new [type=submit]").click()
+        self.wd.wait_for_css("body")
         self.assertEqual(1, paper.reviews.count())
         self.assertEqual(5, paper.reviews.all()[0].rating)
 

@@ -73,7 +73,8 @@ class BaseTestCase(SimpleTestCase):
         call_command('clear_index', interactive=False, verbosity=0)
 
 
-class SeleniumTestCase(LiveServerTestCase, BaseTestCase):
+@override_settings(HAYSTACK_CONNECTIONS=settings.HAYSTACK_CONNECTIONS)
+class SeleniumTestCase(LiveServerTestCase):
     """TestCase for in-browser testing. Sets up `wd` property, which is an initialised Selenium
     webdriver (defaults to Firefox)."""
     def __init__(self, *args, **kwargs):
@@ -91,14 +92,15 @@ class SeleniumTestCase(LiveServerTestCase, BaseTestCase):
         return WEBDRIVER if same_browser() else self._wd
 
     def setUp(self):
-        super(BaseTestCase, self).setUp()
-        super(LiveServerTestCase, self).setUp()
+        haystack.connections.reload('default')
+        super().setUp()
 
     def tearDown(self):
         if not skip():
             self.wd.delete_all_cookies()
-        super(LiveServerTestCase, self).tearDown()
-        super(BaseTestCase, self).tearDown()
+        call_command('clear_index', interactive=False, verbosity=0)
+        super().tearDown()
+
 
     @classmethod
     def setUpClass(cls):
