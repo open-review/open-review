@@ -143,6 +143,7 @@ relativistic electrons.\n""")
 
 class TestReviewFormLive(SeleniumTestCase):
     def setUp(self):
+        call_command("loaddata", "initial_data", verbosity=0)
         self.a = create_test_author(name="tester")
         self.u = create_test_user()
         super().setUp()
