@@ -1,68 +1,1127 @@
-- model: main.paper
-  pk: 1
-  fields:
-    abstract: >
-      Phasellus suscipit leo turpis. Sed eget cursus erat. Ut a feugiat ante.
+- fields:
+    abstract: 'Phasellus suscipit leo turpis. Sed eget cursus erat. Ut a feugiat ante.
       Sed vitae dapibus lectus. Pellentesque faucibus libero et nunc posuere pellentesque.
-      Donec blandit nisl ac dui scelerisque, nec ultrices odio rhoncus. Sed ullamcorper enim
-      quis erat dapibus pharetra. Fusce convallis ut purus eget scelerisque. Nulla non nisi
-      elementum, tempor purus a, laoreet sem. Fusce et sem sit amet nisl aliquet porta sed at
-      nulla. Quisque a eros ut nulla ornare pharetra a egestas libero. Quisque sed lectus placerat,
-      aliquet elit vitae, laoreet augue. Sed interdum risus mi.
+      Donec blandit nisl ac dui scelerisque, nec ultrices odio rhoncus. Sed ullamcorper
+      enim quis erat dapibus pharetra. Fusce convallis ut purus eget scelerisque.
+      Nulla non nisi elementum, tempor purus a, laoreet sem. Fusce et sem sit amet
+      nisl aliquet porta sed at nulla. Quisque a eros ut nulla ornare pharetra a egestas
+      libero. Quisque sed lectus placerat, aliquet elit vitae, laoreet augue. Sed
+      interdum risus mi.
+
+      '
     authors: [1, 2]
+    categories: [14, 23]
     doc_id: doi:10.1002/0470841559.ch1
     keywords: []
     publish_date: 2014-03-06
+    publisher: null
     title: 'Bitcoin: A Peer-to-Peer Electronic Cash System'
+    urls: null
+  model: main.paper
+  pk: 1
+- fields:
+    abstract: 'The standard training method of Conditional Random Fields (CRFs) is
+      very slow for large-scale applications. As an alternative, piecewise training
+      divides the full graph into pieces, trains them independently, and combines
+      the learned weights at test time. In this paper, we present \emph{separate}
+      training for undirected models based on the novel Co-occurrence Rate Factorization
+      (CR-F). Separate training is a local training method. In contrast to MEMMs,
+      separate training is unaffected by the label bias problem. Experiments show
+      that separate training (i) is unaffected by the label bias problem; (ii) reduces
+      the training time from weeks to seconds; and (iii) obtains competitive results
+      to the standard and piecewise training on linear-chain CRFs.
 
-- model: main.paper
+      '
+    authors: [1, 2]
+    categories: []
+    doc_id: arxiv:1008.1566
+    keywords: []
+    publish_date: 2012-12-04
+    publisher: null
+    title: Separate Training for Conditional Random Fields Using Co-occurrence Rate
+      Factorization
+    urls: null
+  model: main.paper
   pk: 2
-  fields:
-    abstract: >
-      We establish adiabatic theorems with and without spectral gap condition for general operators
-      A(t):D(A(t))⊂X→X with possibly time-dependent domains in a Banach space X. We first prove
-      adiabatic theorems with uniform and non-uniform spectral gap condition (including a slightly
-      extended adiabatic theorem of higher order). In these adiabatic theorems the considered
-      spectral subsets σ(t) have only to be compact -- in particular, they need not consist of
-      eigenvalues. We then prove an adiabatic theorem without spectral gap condition for not
-      necessarily (weakly) semisimple eigenvalues: in essence, it is only required there that the
-      considered spectral subsets σ(t)={λ(t)} consist of eigenvalues λ(t)∈∂σ(A(t)) and that there
-      exist projections P(t) reducing A(t) such that A(t)|P(t)D(A(t))−λ(t) is nilpotent and
-      A(t)|(1−P(t))D(A(t))−λ(t) is injective with dense range in (1−P(t))X for almost every~t.
-      In all these theorems, the regularity conditions imposed on t↦A(t), σ(t), P(t) are fairly
-      mild. We explore the strength of the presented adiabatic theorems in numerous examples.
-      And finally, we apply the adiabatic theorems for time-dependent domains to obtain -- in a
-      very simple way -- adiabatic theorems for operators A(t) defined by symmetric sesquilinear
-      forms.
-    authors: [2, 3]
-    doc_id: ~
+- fields:
+    abstract: 'Blaatblaat blaatblaat blaatblaat blaat. '
+    authors: [7]
+    categories: [6]
+    doc_id: 1234:5678
     keywords: []
-    publish_date: 2013-12-31
-    title: Adiabatic theorems with spectral gap condition for semisimple spectral values
-
-- model: main.paper
+    publish_date: null
+    publisher: ''
+    title: Test
+    urls: ''
+  model: main.paper
   pk: 3
-  fields:
-    abstract: >
-      The scatter in the apparent magnitude of type Ia supernovae induced by stochastic
-      gravitational lensing is highly dependent on the nonlinear growth of cosmological
-      structure. In this paper, we show that such a dependence can potentially be employed
-      to gain significant information about the mass clustering at small scales. While the
-      mass clustering ultimately hinges on cosmology, here we demonstrate that, upon obtaining
-      more precise observational measurements through future cosmological surveys, the
-      lensing dispersion can very effectively be used to gain information on the poorly
-      understood astrophysical aspects of structure formation, such as the clumpiness of
-      dark matter halos and the importance of gas physics and star formation into shaping
-      the large-scale structure. In order to illustrate this point we verify that even the
-      tentative current measurements of the lensing dispersion performed on the Supernova
-      Legacy Survey sample favor a scenario where virialized structures are somewhat less
-      compact than predicted by n−body cosmological simulations. Moreover, we are also
-      able to put lower limits on the slope of the concentration-mass relation. By
-      artificially reducing the statistical observational error we argue that with forthcoming
-      data the stochastic lensing dispersion will allow one to importantly improve constraints
-      on the baryonic physics at work during the assembly of cosmological structure.
-    authors: [4, 5]
-    doc_id: ~
+- fields:
+    abstract: '  The standard training method of Conditional Random Fields (CRFs)
+      is very slow
+
+      for large-scale applications. As an alternative, piecewise training divides
+      the
+
+      full graph into pieces, trains them independently, and combines the learned
+
+      weights at test time. In this paper, we present \emph{separate} training for
+
+      undirected models based on the novel Co-occurrence Rate Factorization (CR-F).
+
+      Separate training is a local training method. In contrast to MEMMs, separate
+
+      training is unaffected by the label bias problem. Experiments show that
+
+      separate training (i) is unaffected by the label bias problem; (ii) reduces
+      the
+
+      training time from weeks to seconds; and (iii) obtains competitive results to
+
+      the standard and piecewise training on linear-chain CRFs.
+
+      '
+    authors: [8, 9, 10, 11]
+    categories: [7, 25]
+    doc_id: '1008.1566'
     keywords: []
-    publish_date: 2013-04-22
-    title: 'Lensing dispersion of supernova flux: a probe of nonlinear structure growth'
+    publish_date: 2010-08-09
+    publisher: ArXiv
+    title: "Separate Training for Conditional Random Fields Using Co-occurrence Rate\n\
+      \  Factorization"
+    urls: http://arxiv.org/abs/1008.1566v5
+  model: main.paper
+  pk: 4
+- fields:
+    abstract: '  In this report, we unify two quite distinct approaches to information
+
+      retrieval: region models and language models. Region models were developed for
+
+      structured document retrieval. They provide a well-defined behaviour as well
+      as
+
+      a simple query language that allows application developers to rapidly develop
+
+      applications. Language models are particularly useful to reason about the
+
+      ranking of search results, and for developing new ranking approaches. The
+
+      unified model allows application developers to define complex language modeling
+
+      approaches as logical queries on a textual database. We show a remarkable
+
+      one-to-one relationship between region queries and the language models they
+
+      represent for a wide variety of applications: simple ad-hoc search,
+
+      cross-language retrieval, video retrieval, and web search.
+
+      '
+    authors: [9, 12]
+    categories: [14, 23]
+    doc_id: '1005.4752'
+    keywords: []
+    publish_date: 2010-05-26
+    publisher: ArXiv
+    title: "A database approach to information retrieval: The remarkable\n  relationship\
+      \ between language models and region models"
+    urls: http://arxiv.org/abs/1005.4752v1
+  model: main.paper
+  pk: 5
+- fields:
+    abstract: '  We propose to use MapReduce to quickly test new retrieval approaches
+      on a
+
+      cluster of machines by sequentially scanning all documents. We present a small
+
+      case study in which we use a cluster of 15 low cost ma- chines to search a web
+
+      crawl of 0.5 billion pages showing that sequential scanning is a viable
+
+      approach to running large-scale information retrieval experiments with little
+
+      effort. The code is available to other researchers at:
+
+      http://mirex.sourceforge.net
+
+      '
+    authors: [9, 13]
+    categories: [23]
+    doc_id: '1004.4489'
+    keywords: []
+    publish_date: 2010-04-26
+    publisher: ArXiv
+    title: 'MIREX: MapReduce Information Retrieval Experiments'
+    urls: http://arxiv.org/abs/1004.4489v1
+  model: main.paper
+  pk: 6
+- fields:
+    abstract: '  ANIMO (Analysis of Networks with Interactive MOdeling) is a software
+      for
+
+      modeling biological networks, such as e.g. signaling, metabolic or gene
+
+      networks. An ANIMO model is essentially the sum of a network topology and a
+
+      number of interaction parameters. The topology describes the interactions
+
+      between biological entities in form of a graph, while the parameters determine
+
+      the speed of occurrence of such interactions. When a mismatch is observed
+
+      between the behavior of an ANIMO model and experimental data, we want to update
+
+      the model so that it explains the new data. In general, the topology of a model
+
+      can be expanded with new (known or hypothetical) nodes, and enables it to match
+
+      experimental data. However, the unrestrained addition of new parts to a model
+
+      causes two problems: models can become too complex too fast, to the point of
+
+      being intractable, and too many parts marked as "hypothetical" or "not known"
+
+      make a model unrealistic. Even if changing the topology is normally the easier
+
+      task, these problems push us to try a better parameter fit as a first step,
+      and
+
+      resort to modifying the model topology only as a last resource. In this paper
+
+      we show the support added in ANIMO to ease the task of expanding the knowledge
+
+      on biological networks, concentrating in particular on the parameter settings.
+
+      '
+    authors: [14, 15, 16, 17, 18, 19]
+    categories: [10, 83]
+    doc_id: '1404.0444'
+    keywords: []
+    publish_date: 2014-04-02
+    publisher: ArXiv
+    title: Setting Parameters for Biological Models With ANIMO
+    urls: http://arxiv.org/abs/1404.0444v1
+  model: main.paper
+  pk: 7
+- fields:
+    abstract: "  Recently, two new parallel algorithms for on-the-fly model checking\
+      \ of LTL\nproperties were presented at the same conference: Automated Technology\
+      \ for\nVerification and Analysis, 2011. Both approaches extend Swarmed NDFS,\
+      \ which\nruns several sequential NDFS instances in parallel. While parallel\
+      \ random\nsearch already speeds up detection of bugs, the workers must share\
+      \ some global\ninformation in order to speed up full verification of correct\
+      \ models. The two\nalgorithms differ considerably in the global information\
+      \ shared between\nworkers, and in the way they synchronize.\n  Here, we provide\
+      \ a thorough experimental comparison between the two\nalgorithms, by measuring\
+      \ the runtime of their implementations on a multi-core\nmachine. Both algorithms\
+      \ were implemented in the same framework of the model\nchecker LTSmin, using\
+      \ similar optimizations, and have been subjected to the\nfull BEEM model database.\n\
+      \  Because both algorithms have complementary advantages, we constructed an\n\
+      algorithm that combines both ideas. This combination clearly has an improved\n\
+      speedup. We also compare the results with the alternative parallel algorithm\n\
+      for accepting cycle detection OWCTY-MAP. Finally, we study a simple statistical\n\
+      model for input models that do contain accepting cycles. The goal is to\ndistinguish\
+      \ the speedup due to parallel random search from the speedup that can\nbe attributed\
+      \ to clever work sharing schemes.\n"
+    authors: [18, 20]
+    categories: [26]
+    doc_id: '1111.0369'
+    keywords: []
+    publish_date: 2011-11-02
+    publisher: ArXiv
+    title: Variations on Multi-Core Nested Depth-First Search
+    urls: http://arxiv.org/abs/1111.0369v1
+  model: main.paper
+  pk: 8
+- fields:
+    abstract: '  This paper presents a novel technique for state space reduction of
+
+      probabilistic specifications, based on a newly developed notion of confluence
+
+      for probabilistic automata. We prove that this reduction preserves branching
+
+      probabilistic bisimulation and can be applied on-the-fly. To support the
+
+      technique, we introduce a method for detecting confluent transitions in the
+
+      context of a probabilistic process algebra with data, facilitated by an earlier
+
+      defined linear format. A case study demonstrates that significant reductions
+
+      can be obtained.
+
+      '
+    authors: [18, 21, 22]
+    categories: [17, 19, 26]
+    doc_id: '1011.2314'
+    keywords: []
+    publish_date: 2010-11-10
+    publisher: ArXiv
+    title: Confluence Reduction for Probabilistic Systems (extended version)
+    urls: http://arxiv.org/abs/1011.2314v1
+  model: main.paper
+  pk: 9
+- fields:
+    abstract: '  This paper describes the GROOVE solution to the "Class Diagram Restructuring"
+
+      case study of the Tool Transformation Contest 2013. We show that the visual
+
+      rule formalism enables the required restructuring to be formulated in a very
+
+      concise manner. Moreover, the GROOVE functionality for state space exploration
+
+      allows checking confluence. Performance-wise, however, the solution does not
+
+      scale well.
+
+      '
+    authors: [23, 24]
+    categories: [26, 37]
+    doc_id: '1312.0350'
+    keywords: []
+    publish_date: 2013-12-02
+    publisher: ArXiv
+    title: Class Diagram Restructuring with GROOVE
+    urls: http://arxiv.org/abs/1312.0350v1
+  model: main.paper
+  pk: 10
+- fields:
+    abstract: "  Sound behavioral equations on open terms may become unsound after\n\
+      conservative extensions of the underlying operational semantics. Providing\n\
+      criteria under which such equations are preserved is extremely useful; in\n\
+      particular, it can avoid the need to repeat proofs when extending the specified\n\
+      language.\n  This paper investigates preservation of sound equations for several\
+      \ notions\nof bisimilarity on open terms: closed-instance (ci-)bisimilarity\
+      \ and\nformal-hypothesis (fh-)bisimilarity, both due to Robert de Simone, and\n\
+      hypothesis-preserving (hp-)bisimilarity, due to Arend Rensink. For both\nfh-bisimilarity\
+      \ and hp-bisimilarity, we prove that arbitrary sound equations on\nopen terms\
+      \ are preserved by all disjoint extensions which do not add labels. We\nalso\
+      \ define slight variations of fh- and hp-bisimilarity such that all sound\n\
+      equations are preserved by arbitrary disjoint extensions. Finally, we give two\n\
+      sets of syntactic criteria (on equations, resp. operational extensions) and\n\
+      prove each of them to be sufficient for preserving ci-bisimilarity.\n"
+    authors: [25, 26, 27]
+    categories: [26]
+    doc_id: '1011.6435'
+    keywords: []
+    publish_date: 2010-11-30
+    publisher: ArXiv
+    title: Robustness of Equations Under Operational Extensions
+    urls: http://arxiv.org/abs/1011.6435v1
+  model: main.paper
+  pk: 11
+- fields:
+    abstract: '  Most natural language processing systems based on machine learning
+      are not
+
+      robust to domain shift. For example, a state-of-the-art syntactic dependency
+
+      parser trained on Wall Street Journal sentences has an absolute drop in
+
+      performance of more than ten points when tested on textual data from the Web.
+
+      An efficient solution to make these methods more robust to domain shift is to
+
+      first learn a word representation using large amounts of unlabeled data from
+
+      both domains, and then use this representation as features in a supervised
+
+      learning algorithm. In this paper, we propose to use hidden Markov models to
+
+      learn word representations for part-of-speech tagging. In particular, we study
+
+      the influence of using data from the source, the target or both domains to
+
+      learn the representation and the different ways to represent words using an
+
+      HMM.
+
+      '
+    authors: [28, 29, 30]
+    categories: [11, 25]
+    doc_id: '1312.4092'
+    keywords: []
+    publish_date: 2013-12-14
+    publisher: ArXiv
+    title: Domain adaptation for sequence labeling using hidden Markov models
+    urls: http://arxiv.org/abs/1312.4092v1
+  model: main.paper
+  pk: 12
+- fields:
+    abstract: '  This essay suggests that a proper assessment of the presently unfolding
+
+      financial crisis, and its cure, requires going back at least to the late 1990s,
+
+      accounting for the cumulative effect of the ITC, real-estate and financial
+
+      derivative bubbles. We focus on the deep loss of trust, not only in Wall
+
+      Street, but more importantly in Main Street, and how to recover it on the short
+
+      and long terms. A multi-disciplinary approach is needed to deal with the
+
+      nonlinear complex systems of the present world, in order to develop a culture
+
+      of fairness, and of upside opportunities associated with a risky world.
+
+      '
+    authors: [31]
+    categories: []
+    doc_id: '0810.4608'
+    keywords: []
+    publish_date: 2008-10-25
+    publisher: ArXiv
+    title: Trust! Why it Has Been Lost and How to Regain It
+    urls: http://arxiv.org/abs/0810.4608v1
+  model: main.paper
+  pk: 13
+- fields:
+    abstract: '  Assembly of protein complexes like virus shells, the centriole, the
+      nuclear
+
+      pore complex or the actin cytoskeleton is strongly determined by their spatial
+
+      structure. Moreover it is becoming increasingly clear that the reversible
+
+      nature of protein assembly is also an essential element for their biological
+
+      function. Here we introduce a computational approach for the Brownian dynamics
+
+      of patchy particles with anisotropic assemblies and fully reversible reactions.
+
+      Different particles stochastically associate and dissociate with microscopic
+
+      reaction rates depending on their relative spatial positions. The translational
+
+      and rotational diffusive properties of all protein complexes are evaluated
+
+      on-the-fly. Because we focus on reversible assembly, we introduce a scheme
+
+      which ensures detailed balance for patchy particles. We then show how the
+
+      macroscopic rates follow from the microscopic ones. As an instructive example,
+
+      we study the assembly of a pentameric ring structure, for which we find
+
+      excellent agreement between simulation results and a macroscopic kinetic
+
+      description without any adjustable parameters. This demonstrates that our
+
+      approach correctly accounts for both the diffusive and reactive processes
+
+      involved in protein assembly.
+
+      '
+    authors: [32, 33]
+    categories: [80, 88]
+    doc_id: '1404.5827'
+    keywords: []
+    publish_date: 2014-04-23
+    publisher: ArXiv
+    title: "Studying protein assembly with reversible Brownian dynamics of patchy\n\
+      \  particles"
+    urls: http://arxiv.org/abs/1404.5827v1
+  model: main.paper
+  pk: 14
+- fields:
+    abstract: '  Several neurological disorders are associated with the aggregation
+      of
+
+      aberrant proteins, often localized in intracellular organelles such as the
+
+      endoplasmic reticulum. Here we study protein aggregation kinetics by mean-field
+
+      reactions and three dimensional Monte carlo simulations of diffusion-limited
+
+      aggregation of linear polymers in a confined space, representing the
+
+      endoplasmic reticulum. By tuning the rates of protein production and
+
+      degradation, we show that the system undergoes a non-equilibrium phase
+
+      transition from a physiological phase with little or no polymer accumulation
+      to
+
+      a pathological phase characterized by persistent polymerization. A combination
+
+      of external factors accumulating during the lifetime of a patient can thus
+
+      slightly modify the phase transition control parameters, tipping the balance
+
+      from a long symptomless lag phase to an accelerated pathological development.
+
+      The model can be successfully used to interpret experimental data on
+
+      amyloid-\b{eta} clearance from the central nervous system.
+
+      '
+    authors: [34, 35, 36, 37]
+    categories: [80, 84]
+    doc_id: '1404.4112'
+    keywords: []
+    publish_date: 2014-04-15
+    publisher: ArXiv
+    title: "Protein accumulation in the endoplasmic reticulum as a non-equilibrium\n\
+      \  phase transition"
+    urls: http://arxiv.org/abs/1404.4112v1
+  model: main.paper
+  pk: 15
+- fields:
+    abstract: '  The timed automata formalism is an important model for specifying
+      and
+
+      analysing real-time systems. Robustness is the correctness of the model in the
+
+      presence of small drifts on clocks or imprecision in testing guards. A symbolic
+
+      algorithm for the analysis of the robustness of timed automata has been
+
+      implemented. In this paper, we re-analyse an industrial case lip
+
+      synchronization protocol using the new robust reachability algorithm. This lip
+
+      synchronization protocol is an interesting case because timing aspects are
+
+      crucial for the correctness of the protocol. Several versions of the model are
+
+      considered: with an ideal video stream, with anchored jitter, and with
+
+      non-anchored jitter.
+
+      '
+    authors: [19, 38, 39]
+    categories: [26]
+    doc_id: '1003.0431'
+    keywords: []
+    publish_date: 2010-03-01
+    publisher: ArXiv
+    title: "Re-verification of a Lip Synchronization Protocol using Robust\n  Reachability"
+    urls: http://arxiv.org/abs/1003.0431v1
+  model: main.paper
+  pk: 16
+- fields:
+    abstract: '  We report results from a search for gravitational waves produced
+      by perturbed
+
+      intermediate mass black holes (IMBH) in data collected by LIGO and Virgo
+
+      between 2005 and 2010. The search was sensitive to astrophysical sources that
+
+      produced damped sinusoid gravitational wave signals, also known as ringdowns,
+
+      with frequency $50\le f_{0}/\mathrm{Hz} \le 2000$ and decay timescale
+
+      $0.0001\lesssim \tau/\mathrm{s} \lesssim 0.1$ characteristic of those produced
+
+      in mergers of IMBH pairs. No significant gravitational wave candidate was
+
+      detected. We report upper limits on the astrophysical coalescence rates of
+
+      IMBHs with total binary mass $50 \le M/\mathrm{M}_\odot \le 450$ and component
+
+      mass ratios of either 1:1 or 4:1. For systems with total mass $100 \le
+
+      M/\mathrm{M}_\odot \le 150$, we report a 90%-confidence upper limit on the rate
+
+      of binary IMBH mergers with non-spinning and equal mass components of
+
+      $6.9\times10^{-8}\,$Mpc$^{-3}$yr$^{-1}$. We also report a rate upper limit for
+
+      ringdown waveforms from perturbed IMBHs, radiating 1% of their mass as
+
+      gravitational waves in the fundamental, $\ell=m=2$, oscillation mode, that is
+
+      nearly three orders of magnitude more stringent than previous results.
+
+      '
+    authors: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56,
+      57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
+      76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94,
+      95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+      112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
+      128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143,
+      144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159,
+      160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175,
+      176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191,
+      192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207,
+      208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223,
+      224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
+      240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255,
+      256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271,
+      272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287,
+      288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303,
+      304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319,
+      320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335,
+      336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351,
+      352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367,
+      368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383,
+      384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399,
+      400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415,
+      416, 417, 418, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431,
+      432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447,
+      448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463,
+      464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479,
+      480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494, 495,
+      496, 497, 498, 499, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511,
+      512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527,
+      528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543,
+      544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557, 558, 559,
+      560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575,
+      576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 590, 591,
+      592, 593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606, 607,
+      608, 609, 610, 611, 612, 613, 614, 615, 616, 617, 618, 619, 620, 621, 622, 623,
+      624, 625, 626, 627, 628, 629, 630, 631, 632, 633, 634, 635, 636, 637, 638, 639,
+      640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655,
+      656, 657, 658, 659, 660, 661, 662, 663, 664, 665, 666, 667, 668, 669, 670, 671,
+      672, 673, 674, 675, 676, 677, 678, 679, 680, 681, 682, 683, 684, 685, 686, 687,
+      688, 689, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 701, 702, 703,
+      704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719,
+      720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733, 734, 735,
+      736, 737, 738, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751,
+      752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767,
+      768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783,
+      784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799,
+      800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815,
+      816, 817, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827, 828, 829, 830, 831,
+      832, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 847,
+      848, 849, 850, 851, 852, 853, 854, 855, 856, 857, 858, 859, 860, 861, 862, 863,
+      864, 865, 866, 867, 868, 869, 870, 871, 872, 873, 874, 875, 876, 877, 878, 879,
+      880, 881, 882, 883, 884, 885, 886, 887, 888, 889, 890, 891]
+    categories: [92]
+    doc_id: '1403.5306'
+    keywords: []
+    publish_date: 2014-03-20
+    publisher: ArXiv
+    title: "Search for gravitational wave ringdowns from perturbed intermediate mass\n\
+      \  black holes in LIGO-Virgo data from 2005-2010"
+    urls: http://arxiv.org/abs/1403.5306v1
+  model: main.paper
+  pk: 17
+- fields:
+    abstract: '  We embed spherical Rindler space -- a geometry with a spherical hole
+      in its
+
+      center -- in asymptotically AdS spacetime and show that it carries a
+
+      gravitational entropy proportional to the area of the hole. Spherical
+
+      AdS-Rindler space is holographically dual to an ultraviolet sector of the
+
+      boundary field theory given by restriction to a strip of finite duration in
+
+      time. Because measurements have finite durations, local observers in the field
+
+      theory can only access information about bounded spatial regions. We propose
+      a
+
+      notion of Residual Entropy that captures uncertainty about the state of a
+
+      system left by the collection of local, finite-time observables. For
+
+      two-dimensional conformal field theories we use holography and the strong
+
+      subadditivity of entanglement to propose a formula for Residual Entropy and
+
+      show that it precisely reproduces the areas of circular holes in AdS3.
+
+      Extending the notion to field theories on strips with variable durations in
+
+      time, we show more generally that Residual Entropy computes the areas of all
+
+      closed, inhomogenous curves on a spatial slice of AdS3. We discuss the
+
+      extension to higher dimensional field theories, the relation of Residual
+
+      Entropy to entanglement between scales, and some implications for the emergence
+
+      of space from the RG flow of entangled field theories.
+
+      '
+    authors: [892, 893, 894, 895, 896]
+    categories: [92]
+    doc_id: '1310.4204'
+    keywords: []
+    publish_date: 2013-10-15
+    publisher: ArXiv
+    title: A hole-ographic spacetime
+    urls: http://arxiv.org/abs/1310.4204v1
+  model: main.paper
+  pk: 18
+- fields:
+    abstract: '  Following transmission, HIV-1 evolves into a diverse population,
+      and next
+
+      generation sequencing enables us to detect variants occurring at low
+
+      frequencies. Studying viral evolution at the level of whole genomes was
+
+      hitherto not possible because next generation sequencing delivers relatively
+
+      short reads. We here provide a proof of principle that whole HIV-1 genomes can
+
+      be reliably reconstructed from short reads, and use this to study the selection
+
+      of immune escape mutations at the level of whole genome haplotypes. Using
+
+      realistically simulated HIV-1 populations, we demonstrate that reconstruction
+
+      of complete genome haplotypes is feasible with high fidelity. We do not
+
+      reconstruct all genetically distinct genomes, but each reconstructed haplotype
+
+      represents one or more of the quasispecies in the HIV-1 population. We then
+
+      reconstruct 30 whole genome haplotypes from published short sequence reads
+
+      sampled longitudinally from a single HIV-1 infected patient. We confirm the
+
+      reliability of the reconstruction by validating our predicted haplotype genes
+
+      with single genome amplification sequences, and by comparing haplotype
+
+      frequencies with observed epitope escape frequencies. Phylogenetic analysis
+
+      shows that the HIV-1 population undergoes selection driven evolution, with
+
+      successive replacement of the viral population by novel dominant strains. We
+
+      demonstrate that immune escape mutants evolve in a dependent manner with
+
+      various mutations hitchhiking along with others. As a consequence of this
+
+      clonal interference, selection coefficients have to be estimated for complete
+
+      haplotypes and not for individual immune escapes.
+
+      '
+    authors: [897, 898]
+    categories: [82, 86]
+    doc_id: '1309.6939'
+    keywords: []
+    publish_date: 2013-09-26
+    publisher: ArXiv
+    title: "Reliable reconstruction of HIV-1 whole genome haplotypes reveals clonal\n\
+      \  interference and genetic hitchhiking among immune escape variants"
+    urls: http://arxiv.org/abs/1309.6939v1
+  model: main.paper
+  pk: 19
+- fields:
+    abstract: '  Community detection, which aims to cluster N nodes in a given graph
+      into r
+
+      distinct groups based on the observed undirected edges, is an important problem
+
+      in network data analysis. In this paper, the popular stochastic block model
+
+      (SBM) is extended to the generalized stochastic block model (GSBM) that allows
+
+      for adversarial outlier nodes, which are connected with other nodes in the
+
+      graph in an arbitrary way. Under this model, we introduce a procedure using
+
+      convex optimization followed by k-means algorithm with k = r. Both theoretical
+
+      and numerical properties of the method are analyzed. A theoretical guarantee
+      is
+
+      given for our methodology to accurately detect the communities with small
+
+      misclassification rate under the setting where the number of clusters can grow
+
+      with N. This theoretical result admits to the best known result in the
+
+      literature of computationally feasible community detection. Numerical results
+
+      show that our method is both computationally fast and robust to different kinds
+
+      of outliers, while some popular computationally fast community detection
+
+      algorithms, such as spectral clustering applied to adjacency matrices or graph
+
+      Laplacians, may fail due to a very small portion of outliers. We apply a slight
+
+      modification of our method to a political blogs data set, showing that our
+
+      method is competent in practice, and comparable to existing computationally
+
+      feasible methods in the literature. To the best of the authors'' knowledge,
+      our
+
+      result is the first in the literature in terms of clustering communities with
+
+      fast growing numbers under the generalized stochastic block model where a
+
+      portion of arbitrary outlier nodes exist.
+
+      '
+    authors: [899, 900]
+    categories: [24, 44, 47, 64, 72, 78]
+    doc_id: '1404.6000'
+    keywords: []
+    publish_date: 2014-04-23
+    publisher: ArXiv
+    title: "Robust and Computationally Feasible Community Detection in the Presence\n\
+      \  of Arbitrary Outlier Nodes"
+    urls: http://arxiv.org/abs/1404.6000v1
+  model: main.paper
+  pk: 20
+- fields:
+    abstract: '  We focus on an interpolation method referred to Bayesian reconstruction
+      in
+
+      this paper. Whereas in standard interpolation methods missing data are
+
+      interpolated deterministically, in Bayesian reconstruction, missing data are
+
+      interpolated probabilistically using a Bayesian treatment. In this paper, we
+
+      address the framework of Bayesian reconstruction and its application to the
+
+      traffic data reconstruction problem in the field of traffic engineering. In
+      the
+
+      latter part of this paper, we describe the evaluation of the statistical
+
+      performance of our Bayesian traffic reconstruction model using a statistical
+
+      mechanical approach and clarify its statistical behavior.
+
+      '
+    authors: [901, 902, 903]
+    categories: [44]
+    doc_id: '1404.5793'
+    keywords: []
+    publish_date: 2014-04-23
+    publisher: ArXiv
+    title: Bayesian Reconstruction of Missing Observations
+    urls: http://arxiv.org/abs/1404.5793v1
+  model: main.paper
+  pk: 21
+- fields:
+    abstract: '  Very Low Frequency, VLF and Low Frequency, LF signal perturbations
+      were
+
+      examined to study ionospheric disturbances induced by solar X-ray flares. The
+
+      aim was to understand processes in propagation VLF/LF radio signals over short
+
+      paths, and to estimate specific characteristics of each short path. The
+
+      receiver at Belgrade station continuously monitor the amplitude and phase of
+
+      coherent and subionospherically propagating LF signal operated in Sicily, NSC
+
+      at 45.90, kHz and VLF signal operated in Isola di Tavolara ICV at 20.27 kHz,
+
+      with great circle distances of 953 km and 976 km, respectively. Geographical
+
+      locations of transmitters and receiver site result that these short paths have
+
+      many similarity. The main difference is in transmitter frequencies. In period
+
+      from 2008 to February 2014 were selected around 200 events for further
+
+      examination. In all selected examples amplitude and phase on VLF and LF signals
+
+      were perturbed by occurrence of solar X-ray flares. This six years period
+
+      covers minimum and maximum of solar activity. Also, simultaneous measurement
+      of
+
+      amplitude and phase on the VLF/LF signals during occurrence of solar flare were
+
+      employed for constructing electron density profile versus altitude and also
+      in
+
+      a function of time over middle Europe.
+
+      '
+    authors: [904, 905]
+    categories: []
+    doc_id: '1404.1019'
+    keywords: []
+    publish_date: 2014-04-03
+    publisher: ArXiv
+    title: "Comparative study of measured amplitude and phase perturbations on VLF\n\
+      \  and LF radio signals induced by solar flares"
+    urls: http://arxiv.org/abs/1404.1019v1
+  model: main.paper
+  pk: 22
+- fields:
+    abstract: '  The percentages of shares of world publications of the European Union
+      and its
+
+      member states, China, and the United States have been represented differently
+
+      as a result of using different databases. An analytical variant of the
+
+      Web-of-Science (of Thomson Reuters) enables us to study the dynamics in the
+
+      world publication system in terms of the field-normalized top-1% and top-10%
+
+      most-frequently-cited publications. Comparing the EU28, USA, and China at the
+
+      global level shows a top-level dynamics that is different from the analysis
+      in
+
+      terms of shares of publications: the United States remains far more productive
+
+      in the top-1% of all papers; China drops out of the competition for elite
+
+      status; and the EU28 increased its share among the top-cited papers from
+
+      2000-2010. Some of the EU28 member states overtook the U.S. during this decade,
+
+      but a clear divide remains between EU15 (Western Europe) and the Accession
+
+      Countries. Network analysis shows that internationally co-authored top-1%
+
+      publications perform far above expectation and also above top-10% ones. In
+
+      2005, China was embedded in this top-layer of internationally co-authored
+
+      publications. These publications often involve more than a single European
+
+      nation.
+
+      '
+    authors: [906, 907, 908]
+    categories: [16]
+    doc_id: '1404.0462'
+    keywords: []
+    publish_date: 2014-04-02
+    publisher: ArXiv
+    title: "The European Union, China, and the United States in the Top-1% and\n \
+      \ Top-10% Layers of Most-Frequently-Cited Publications: Competition and\n  Collaborations"
+    urls: http://arxiv.org/abs/1404.0462v1
+  model: main.paper
+  pk: 23
+- fields:
+    abstract: '  This paper examines the proximity of authors to those they cite using
+      degrees
+
+      of separation in a co-author network, essentially using collaboration networks
+
+      to expand on the notion of self-citations. While the proportion of direct
+
+      self-citations (including co-authors of both citing and cited papers) is
+
+      relatively constant in time and across specialties in the natural sciences (10%
+
+      of citations) and the social sciences (20%), the same cannot be said for
+
+      citations to authors who are members of the co-author network. Differences
+
+      between fields and trends over time lie not only in the degree of co-authorship
+
+      which defines the large-scale topology of the collaboration network, but also
+
+      in the referencing practices within a given discipline, computed by defining
+      a
+
+      propensity to cite at a given distance within the collaboration network.
+
+      Overall, there is little tendency to cite those nearby in the collaboration
+
+      network, excluding direct self-citations. By analyzing these social references,
+
+      we characterize the social capital of local collaboration networks in terms
+      of
+
+      the knowledge production within scientific fields. These results have
+
+      implications for the long-standing debate over biases common to most types of
+
+      citation analysis, and for understanding citation practices across scientific
+
+      disciplines over the past 50 years. In addition, our findings have important
+
+      practical implications for the availability of ''arm''s length'' expert reviewers
+
+      of grant applications and manuscripts.
+
+      '
+    authors: [909, 910, 911]
+    categories: [16, 36]
+    doc_id: '1107.5469'
+    keywords: []
+    publish_date: 2011-07-27
+    publisher: ArXiv
+    title: "A small world of citations? The influence of collaboration networks on\n\
+      \  citation practices"
+    urls: http://arxiv.org/abs/1107.5469v1
+  model: main.paper
+  pk: 24
+- fields:
+    abstract: '  This paper appeared in a collection of papers titled "Scientific
+      Papers
+
+      Presented to Max Born on his retirement from the Tait Chair of Natural
+
+      Philosophy in the University of Edinburgh", published in 1953 (Oliver and
+
+      Boyd), pages 33-40.
+
+      '
+    authors: [912]
+    categories: []
+    doc_id: '1107.3701'
+    keywords: []
+    publish_date: 2011-07-19
+    publisher: ArXiv
+    title: "Elementary Considerations on the Interpretation of the Foundations of\n\
+      \  Quantum Mechanics"
+    urls: http://arxiv.org/abs/1107.3701v1
+  model: main.paper
+  pk: 25
+- fields:
+    abstract: "  In this paper, we question the common practice of assigning security\
+      \ impact\nratings to OS updates. Specifically, we present evidence that ranking\
+      \ updates\nby their perceived security importance, in order to defer applying\
+      \ some\nupdates, exposes systems to significant risk.\n  We argue that OS vendors\
+      \ and security groups should not focus on security\nupdates to the detriment\
+      \ of other updates, but should instead seek update\ntechnologies that make it\
+      \ feasible to distribute updates for all disclosed OS\nbugs in a timely manner.\n"
+    authors: [913, 914, 915, 916, 917, 918, 919]
+    categories: [13]
+    doc_id: '0904.4058'
+    keywords: []
+    publish_date: 2009-04-26
+    publisher: ArXiv
+    title: Security impact ratings considered harmful
+    urls: http://arxiv.org/abs/0904.4058v1
+  model: main.paper
+  pk: 26
+- fields:
+    abstract: '  I informally review the Higgs mechanism, focusing on fundamental
+      aspects
+
+      which should be common knowledge but apparently are not, explain why your
+
+      understanding of gauge symmetry breaking is a decreasing function of your
+
+      reliance on the unitary gauge, and discuss some implications for cosmology
+
+      (domains, dark energy, CMB cold spot).
+
+      '
+    authors: [920]
+    categories: [6]
+    doc_id: '0804.2284'
+    keywords: []
+    publish_date: 2008-04-15
+    publisher: ArXiv
+    title: Unitary gauge considered harmful
+    urls: http://arxiv.org/abs/0804.2284v4
+  model: main.paper
+  pk: 27
+- fields:
+    abstract: '  There is considerable debate whether the domestic political institutions
+
+      (specifically, the country s level of democracy) of the host developing country
+
+      toward foreign investors are effective in establishing the credibility of
+
+      commitments are still underway, researchers have also analyzed the effect of
+
+      international institutions such as (GATT-WTO) membership and Bilateral
+
+      Investment treaties (BIT) in their role of establishing the credibility of
+
+      commitment to attract foreign investments. We argue that there are qualitative
+
+      differences among various types of trade agreements and full-fledged trade
+
+      agreements (FTA-CU) provide credibility to foreign investors and democracy
+
+      level in the host country conditions this effect whereas the partial scope
+
+      agreements (PSA) are not sufficient in providing credibility of commitments
+      and
+
+      not moderated by democracy. This paper analyses the impact of heterogeneous
+
+      TAs, and their interaction with domestic institutions, on FDI inflows.
+
+      Statistical analyses for 122 developing countries from 1970 to 2005 support
+
+      this argument. The method adopted relies on fixed effects estimator which is
+
+      robust to control endogeneity on a large panel dataset. The strict erogeneity
+
+      of results by using a method suggested by Baier and Bergstrand (2007) and no
+
+      feedback effect found in sample. The results state that (1) More the FTA-CU
+
+      concluded, larger the amount of FDI inflows are attracted into the developing
+
+      countries and PSA are insignificant in determining the FDI inflow; (2) FTA CU
+
+      are complementary to democratic regime whereas the conditional effect of PSA
+
+      with democracy on levels of FDI inflows is insignificant.
+
+      '
+    authors: [921, 922]
+    categories: []
+    doc_id: '1402.0139'
+    keywords: []
+    publish_date: 2014-02-02
+    publisher: ArXiv
+    title: "The Political Economy of FDI flows into Developing Countries: Does the\n\
+      \  depth of International Trade Agreements Matter?"
+    urls: http://arxiv.org/abs/1402.0139v1
+  model: main.paper
+  pk: 28
+- fields:
+    abstract: "  Quantitative theories of information flow give us an approach to\
+      \ relax the\nabsolute confidentiality properties that are difficult to satisfy\
+      \ for many\npractical programs. The classical information-theoretic approaches\
+      \ for\nsequential programs, where the program is modeled as a communication\
+      \ channel\nwith only input and output, and the measure of leakage is based on\
+      \ the notions\nof initial uncertainty and remaining uncertainty after observing\
+      \ the final\noutcomes, are not suitable to multi-threaded programs. Besides,\
+      \ the\ninformation-theoretic approaches have been also shown to conflict with\
+      \ each\nother when comparing programs. Reasoning about the exposed information\
+      \ flow of\nmulti-threaded programs is more complicated, since the outcomes of\
+      \ such\nprograms depend on the scheduler policy, and the leakages in intermediate\n\
+      states also contribute to the overall leakage of the program.\n  This paper\
+      \ proposes a novel model of quantitative analysis for multi-threaded\nprograms\
+      \ that also takes into account the effect of observables in intermediate\nstates\
+      \ along the trace. We define a notion of the leakage of a program trace.\nGiven\
+      \ the fact that the execution of a multi-threaded program is typically\ndescribed\
+      \ by a set of traces, the leakage of a program under a specific\nscheduler is\
+      \ computed as the expected value of the leakages of all possible\ntraces. Examples\
+      \ are given to compare our approach with the existing\napproaches.\n"
+    authors: [923, 924]
+    categories: [13]
+    doc_id: '1306.2693'
+    keywords: []
+    publish_date: 2013-06-12
+    publisher: ArXiv
+    title: Quantitative Security Analysis for Multi-threaded Programs
+    urls: http://arxiv.org/abs/1306.2693v1
+  model: main.paper
+  pk: 29
+- fields:
+    abstract: "  Turing progressions have been often used to measure the proof-theoretic\n\
+      strength of mathematical theories. Turing progressions based on $n$-provability\n\
+      give rise to a $\\Pi_{n+1}$ proof-theoretic ordinal. As such, to each theory\
+      \ $U$\nwe can assign the sequence of corresponding $\\Pi_{n+1}$ ordinals $\\\
+      langle\n|U|_n\\rangle_{n>0}$. We call this sequence a \\emph{Turing-Taylor expansion}\
+      \ of\na theory.\n  In this paper, we relate Turing-Taylor expansions of sub-theories\
+      \ of Peano\nArithmetic to Ignatiev's universal model for the closed fragment\
+      \ of the\npolymodal provability logic ${\\mathbf{GLP}}_\\omega$. In particular,\
+      \ in this\nfirst draft we observe that each point in the Ignatiev model can\
+      \ be seen as\nTuring-Taylor expansions of formal mathematical theories.\n  Moreover,\
+      \ each sub-theory of Peano Arithmetic that allows for a Turing-Taylor\nexpression\
+      \ will define a unique point in Ignatiev's model.\n"
+    authors: [925]
+    categories: [66]
+    doc_id: '1404.4483'
+    keywords: []
+    publish_date: 2014-04-17
+    publisher: ArXiv
+    title: Turing-Taylor expansions for arithmetic theories
+    urls: http://arxiv.org/abs/1404.4483v1
+  model: main.paper
+  pk: 30
