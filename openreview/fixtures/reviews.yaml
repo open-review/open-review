@@ -184,15 +184,6 @@
       09:33:56.066102+00:00'}
   model: main.review
   pk: 17
-- fields: {anonymous: false, external: false, paper: 17, parent: null, poster: 7,
-    rating: 6, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-      ut bibendum leo. Donec in tellus tempus, rutrum nulla quis, aliquam elit. Proin
-      vel venenatis mi, non congue mauris. Duis id facilisis libero. Pellentesque
-      augue urna, consequat quis lacinia id, tincidunt aliquam justo. Donec quam nisl,
-      volutpat vel dolor ut, laoreet vestibulum sapien.', timestamp: !!timestamp '2014-04-25
-      09:34:39.355787+00:00'}
-  model: main.review
-  pk: 18
 - fields: {anonymous: true, external: false, paper: 18, parent: null, poster: null,
     rating: 3, text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
       ut bibendum leo. Donec in tellus tempus, rutrum nulla quis, aliquam elit. Proin
