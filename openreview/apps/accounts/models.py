@@ -19,3 +19,10 @@ class User(AbstractUser):
             self.reviews.all().update(poster=None, anonymous=True)
         super().delete()
 
+    def full_name(self):
+        name = "{first} {last}".format(first=self.first_name, last=self.last_name) if \
+            self.first_name and self.last_name else "{{}}".format(self.username)
+        title = " ({title}, {university})".format(title=self.title, university = self.university) if \
+            self.title and self.university else ""
+        return name+title
+

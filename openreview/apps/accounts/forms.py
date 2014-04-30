@@ -114,6 +114,8 @@ class SettingsForm(RegisterForm):
     def save(self, commit=True):
         password = self.cleaned_data["password1"]
         email = self.cleaned_data["email"]
+        first_name = self.cleaned_data["first_name"]
+        last_name = self.cleaned_data["last_name"]
         title = self.cleaned_data["title"]
         university = self.cleaned_data["university"]
         if password:
@@ -122,6 +124,10 @@ class SettingsForm(RegisterForm):
             self.user.email = email
         if title:
             self.user.title = title
+        if first_name:
+            self.user.first_name = first_name
+        if last_name:
+            self.user.last_name = last_name
         if university:
             self.user.university = university
         if commit:
@@ -130,7 +136,7 @@ class SettingsForm(RegisterForm):
 
     class Meta:
         model = get_user_model()
-        fields = ("password1", "password2", "email", "title", "university")
+        fields = ("password1", "password2", "email", "first_name", "last_name", "title", "university")
         exclude = ["username"]
 
 
