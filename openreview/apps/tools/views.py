@@ -2,7 +2,7 @@ from functools import partial
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from openreview.apps.accounts.models import User
-from openreview.apps.main.models import Paper, Review, Vote, Author
+from openreview.apps.main.models import Paper, Review, Vote, Author, Keyword, Category
 
 __all__ = ["ModelViewMixin"]
 
@@ -11,11 +11,13 @@ MODEL_MAP = {
     "review_id": Review,
     "vote_id": Vote,
     "author_id": Author,
-    "user_id": User
+    "user_id": User,
+    "keyword_id": Keyword,
+    "category_id": Category
 }
 
 MODEL_ATTRIBUTES = {
-    "paper", "review", "vote", "author", "user"
+    "paper", "review", "vote", "author", "user", "keyword", "category"
 }
 
 class ModelViewMixin(object):
@@ -47,6 +49,11 @@ class ModelViewMixin(object):
     def __init__(self, *args, **kwargs):
         self.objects = ObjectManager(self)
         super().__init__(*args, **kwargs)
+
+class ModelSerializerMixin(object):
+    def dispatch(self, *args, **kwargs):
+        self.objects = ObjectManager(self)
+        return super().dispatch(*args, **kwargs)
 
 class ObjectManager(object):
     def __init__(self, view):

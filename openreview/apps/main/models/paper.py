@@ -15,6 +15,10 @@ __all__ = ["Keyword", "Paper", "Category"]
 class Keyword(models.Model):
     label = models.TextField(db_index=True)
 
+    @property
+    def papers(self):
+        return Paper.objects.filter(keywords__id=self.id)
+
     def __str__(self):
         return self.label
 
