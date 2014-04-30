@@ -20,7 +20,7 @@ __all__ = ["TestReviewForm", "TestReviewFormLive"]
 
 class TestReviewForm(TestCase):
     def setUp(self):
-        call_command("loaddata", "initial_data")
+        call_command("loaddata", "initial_data", verbosity=0)
 
     def test_paper_form(self):
         test_data = {
@@ -143,6 +143,7 @@ relativistic electrons.\n""")
 
 class TestReviewFormLive(SeleniumTestCase):
     def setUp(self):
+        call_command("loaddata", "initial_data", verbosity=0)
         self.a = create_test_author(name="tester")
         self.u = create_test_user()
         super().setUp()

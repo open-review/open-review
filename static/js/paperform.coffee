@@ -47,7 +47,7 @@ function load_scraper(){
                 $("#scraper-publish-date").text(data.publish_date);
                 
                 for(i=0; i < data.categories.length; i++){
-                  $('#span_id > select > option[value=data.category[i]]').attr("selected", "selected")
+                  $('#span_id > select > option[value=' + data.categories[i] + ']').attr("selected", "selected")
                 }
                 
                 $("#scraper-result").show();

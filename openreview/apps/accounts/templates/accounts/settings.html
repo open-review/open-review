@@ -41,7 +41,48 @@
         {% endfor %}
         </ol>
 
+<<<<<<< HEAD
         <hr />
+=======
+<div class="row">
+    <div class="settings col-md-6">
+        <h1>Settings of {{ user.username }}</h1>
+        <center>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {{ settings_form }}
+                <input id="update" class="btn btn-primary" name="update" type="submit" value="Update">
+            </form>
+        </center>
+        <a href="{% url 'accounts-delete' %}">Delete your account.</a>
+    </div>
+
+    <div class="contributions col-md-6">
+        <h1>Contributions</h1>
+        <h2>My reviews</h2>
+        <table class="table reviews">
+            {% for review in reviews %}
+                <tr>
+                    <td>
+                        <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">{{ review.paper.title }}</a>
+                    </td>
+                    <td>
+                        {{review.n_upvotes}} <i class="glyphicon glyphicon-arrow-up"></i>
+                    </td>
+                    <td>
+                        {{review.n_downvotes}} <i class="glyphicon glyphicon-arrow-down"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{review.text|slice:":50"}}...
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+>>>>>>> master
 
         <p>
             <a href="#">View all of my contributions →</a>
