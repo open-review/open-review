@@ -101,6 +101,8 @@ class SettingsForm(RegisterForm):
     """
 
     """
+    title = forms.CharField(help_text=_('e.g. "MSc" in "Pietje Puk (Msc, University of Twente)"'))
+    university = forms.CharField(help_text=_('e.g. "University of Twente" in "Pietje Puk (Msc, University of Twente)"'))
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -112,15 +114,21 @@ class SettingsForm(RegisterForm):
     def save(self, commit=True):
         password = self.cleaned_data["password1"]
         email = self.cleaned_data["email"]
+        title = self.cleaned_data["title"]
+        university = self.cleaned_data["university"]
         if password:
             self.user.set_password(password)
         if email:
             self.user.email = email
+        if title:
+            self.user.title = title
+        if university:
+            self.user.university = university
         if commit:
             self.user.save()
         return self.user
 
     class Meta:
         model = get_user_model()
-        fields = ("password1", "password2", "email")
+        fields = ("password1", "password2", "email", "title", "university")
         exclude = ["username"]
