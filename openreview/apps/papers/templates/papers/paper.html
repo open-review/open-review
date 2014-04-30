@@ -26,10 +26,13 @@
                 <li><strong>Authors:</strong> M. Matsuo, N. Hinohara, K. Sato, K. Matsuyanagi, T. Nakatsukasa, K. Yoshida.</li>
                 <li><strong>Publication date:</strong> {{ paper.publish_date }}</li>
                 <li><strong>Keywords:</strong>
-                    <a href="#">Stochastic Frontier</a>,
-                    <a href="#">Sample Selection</a>,
-                    <a href="#">Simulation</a>,
-                    <a href="#">Efficiency</a>
+                {% if not keywords %}
+                    None
+                {% else %}
+                    {% for keyword in keywords %}
+                        <a href="{{ keyword.url }}">{{ keyword.text }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
                 </li>
             </ul>
         </div>

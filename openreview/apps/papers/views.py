@@ -168,7 +168,9 @@ class PaperWithReviewsView(BaseReviewView):
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
         reviews = [self.add_review_fields(review) for review in reviews]
-        return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
+        
+        keywords = [ { 'url' : '#', 'text' : keyword } for keyword in paper.keywords.all() ]
+        return super().get_context_data(paper=paper, reviews=reviews, keywords=keywords, **kwargs)
 
 
 orderings = {
