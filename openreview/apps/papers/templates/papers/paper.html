@@ -39,7 +39,7 @@
         <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
         {% for review in reviews %}
-            {% include "papers/review.html" with tree=review %}
+            {% include "papers/review.html" with review=review.review %}
         {% endfor %}
 
 
