@@ -1,22 +1,31 @@
-$(document).ready ->
-    $(".starfield").each ->
-        field = $(this).data("field");
-        f = $(this).parents("form").find("input[name=#{field}]");
-        if $(this).data("score")
-            score = $(this).data("score");
-        else
-            score = f.val();
+# Star rating input fields
+fix_stars = (field, val) ->
+    html = "";
+    for i in [1..7]
+        do (i) ->
+            star = if val >= i then "★" else "☆"
+            html += "<span data-star=\"#{i}\">#{star}</span>";
+    
+    field.html(html);
+    
+    field.find("span").each ->
+        $(this).mouseenter ->
+            val = $(this).data("star");
+            fix_stars($(this).closest(".rating-input"), val);
         
-        readOnly = false;
-        if $(this).data("readonly")
-            readOnly = $(this).data("readonly");
-        
-        $(this).raty({
-            click       : (score) -> f.val(score),
-            hints       : ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars'],
-            number      : 7,
-            path        : "#{window.staticUrl}raty/lib/images/",
-            readOnly    : readOnly,
-            score       : score
-            # It should be possible to use scoreName: field instead of score and click, but for some unknown reason that does not seem to work
-        });
+        $(this).click ->
+            field_id = field.data("id");
+            val = $(this).data("star");
+            $("##{field_id}").val(val);
+    
+    field.mouseleave ->
+        field_id = field.data("id");
+        val = parseInt($("##{field_id}").val(), 10);
+        fix_stars(field, val);
+
+$(".rating-input").each ->
+    field_id = $(this).data("id");
+    val = parseInt($("##{field_id}").val(), 10);
+    fix_stars($(this), val);
+
+

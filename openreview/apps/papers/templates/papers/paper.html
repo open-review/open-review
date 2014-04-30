@@ -134,8 +134,11 @@
 
     <section class="compose-review box">
         <h2>Share your opinion by writing a review</h2>
-        <div class="rating">★★★☆☆</div>
+        <div class="rating rating-input" data-id="rating"></div>
         <form action="#" method="POST">
+            <input type="hidden" name="rating" id="rating" value="" />
+            
+            {% csrf_token %}
             <textarea placeholder="Provide a professional opinion on this paper."></textarea>
             <label>
                 <input type="checkbox" name="is_anonymously" />
