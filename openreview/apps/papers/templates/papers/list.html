@@ -25,7 +25,10 @@
     <section class="listing box">
         <ol>
         {% for paper in papers %}
-            <li><a href="{% url 'paper' paper.id %}">{{ paper.title }}</a></li>
+            <li>
+                <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
+                <a href="{% url 'paper' paper.id %}" class="number-of-reviews">{{ paper.num_reviews }} review{{ paper.num_reviews|pluralize }}</a>
+            </li>
         {% endfor %}
         </ol>
     </section>
