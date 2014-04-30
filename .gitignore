@@ -46,3 +46,6 @@ tags
 
 # Bower components
 static/components
+
+# Gedit temporary files
+*~
