@@ -35,3 +35,12 @@
 
     {% include 'includes/pagination.html' with pages=papers %}
 {% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+      $listItems = $('section.listing li')
+      $listItems.click(function() {
+        window.location.href = $(this).find('a:first').attr('href');
+      });
+    </script>
+{% endblock %}

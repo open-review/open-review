@@ -56,8 +56,8 @@ body > main > section.listing ol li span.number-of-reviews {
 }
 
 body > main > section.listing ol li a.title {
-    width: 93.31%;
-    padding: 6px 20px 6px 0;
+    padding: 6px 0;
+    max-width: 90%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -78,6 +78,10 @@ body > main > section.listing ol li a.number-of-reviews {
     line-height: 1.4em;
     font-size: 13px;
     font-family: 'Open Sans', 'Arial', sans-serif;
+}
+
+body > main > section.listing ol li:hover {
+    cursor: pointer;
 }
 
 body > main > section.listing ol li:hover a.title {
