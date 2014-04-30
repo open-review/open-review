@@ -342,6 +342,10 @@ class ReviewView(BaseReviewView):
         return HttpResponse("OK", status=200)
 
 
+class AddPaperView(TemplateView):
+  template_name = "papers/add.html"
+
+
 @cache_page(60 * 10)
 def doi_scraper(request, id):
     return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
