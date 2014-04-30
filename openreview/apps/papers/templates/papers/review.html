@@ -16,7 +16,11 @@
             <a class="author" href="#">{{ review.poster }}</a>,
         {% endif %} wrote on <span class="datetime">{{ review.timestamp }}</span>:
 
-        <span class="rating">★★☆☆☆</span>
+        <span class="rating">
+            {% for i in "1234567" %}
+                {% if review.rating > forloop.counter0 %}★{% else %}☆{% endif %}
+            {% endfor %}
+        </span>
     </header>
 
     <article class="content {% if review.is_deleted %}deleted{% endif %}">
