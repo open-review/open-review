@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="paper box">
+    <section data-votes="{{ my_votes }}" data-reviews="{{ my_reviews }}" class="paper box">
         <header>
             <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
         </header>
@@ -46,37 +46,16 @@
     </section>
 
     <section class="reviews box">
-        <h2>2 reviews</h2>
+        <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
-        <section class="review box">
-            <div class="voting">
-              <!-- See openreview/apps/tools/templatetags/voting.py#format_votes -->
-              <a class="up" href="#">❮</a>
-              <span class="counter">14</span>
-              <a class="down" href="#">❯</a>
-            </div>
+        {% for review in reviews %}
+            {% include "papers/review.html" with tree=review %}
+        {% endfor %}
 
-            <header>
-                <a href="#" class="author">Dr. T. A. Brus (University of Twente), wrote:</a>
-                <span class="rating">★★☆☆☆</span>
-            </header>
 
-            <p class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Duis sed velit elit. Ut iaculis pellentesque dui nec sodales. Maecenas
-                posuere lectus non tortor feugiat, id pretium eros varius. In et placerat
-                lorem. Proin sed neque fringilla, luctus nibh nec, interdum lorem.
-                Mauris hendrerit tellus sit amet ipsum porta, hendrerit lacin scelerisque
-                tristique aliquet a lectus. <br /> <br />
 
-                Integer at vestibulum velit, vitae tempus justo.
-                Etiam non nisi posuere, porttitor dolor ut, pellentesque massa. In varius in
-                diam in cursus. Proin sed justo id eros suscipit sollicitudin vitae sed nisl.
-                Duis vitae tempor eros, vitae dignissim tortor. Maecenas ut sollicitudin sem…
-                <a href="#">read more</a>.
-            </p>
-        </section>
 
+    <!--
         <section class="comments box">
             <section class="comment">
                 <span class="author">Br. B. van Den commented: </span>
@@ -101,7 +80,6 @@
 
         <section class="review box">
             <div class="voting">
-              <!-- See openreview/apps/tools/templatetags/voting.py#format_votes -->
               <a class="up" href="#">❮</a>
               <span class="counter">3</span>
               <a class="down" href="#">❯</a>
@@ -137,7 +115,7 @@
             </section>
         </section>
 
-    </section>
+-->    </section>
 
     <aside>
       <div class="more-by-these-authors box">

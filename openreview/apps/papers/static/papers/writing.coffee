@@ -1,6 +1,6 @@
 TIMEOUT_AFTER = 750
 
-anonymous = JSON.parse($("#anonymous").html())
+anonymous = $("body").data("anonymous")
 last_keypress = null
 timeout = null
 

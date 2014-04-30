@@ -167,9 +167,7 @@ class PaperWithReviewsView(BaseReviewView):
         # Set cache and sort reviews by up-/downvotes
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
-
         reviews = [self.add_review_fields(review) for review in reviews]
-
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
 

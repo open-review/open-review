@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% load voting %}
-
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}accounts/settings.css" />
 {% endblock %}
@@ -32,7 +30,7 @@
             <li>
                 <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">
                     <span class="number-of-votes">
-                        {{ review|format_votes }}
+                        {{ review.n_votes }}
                     </span>
                     {{ review.paper.title }}
                 </a>

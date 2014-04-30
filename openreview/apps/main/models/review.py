@@ -110,9 +110,13 @@ class Review(models.Model):
         return -(self.votes.filter(vote__lt=0).aggregate(n=Sum("vote"))["n"] or 0)
 
     @property
+    def score(self):
+        return self.n_upvotes - self.n_downvotes
+
+    @property
     def n_votes(self):
         # Neutral votes don't count, only consider up- and downvotes
-        return self.n_downvotes + self.n_upvotes
+        return self.n_upvotes + self.n_downvotes
 
     @property
     def cached(self):

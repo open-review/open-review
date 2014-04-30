@@ -110,6 +110,7 @@ body > main > section.reviews section.review > div.voting a {
     line-height: 0px;
     padding: 18px 0;
     position: relative;
+    cursor: pointer;
 }
 
 body > main > section.reviews section.review > div.voting span {
@@ -149,7 +150,7 @@ body > main > section.reviews section.review > header span.rating {
     color: #4b4b4b;
 }
 
-body > main > section.reviews section.review p.content {
+body > main > section.reviews section.review article.content {
     text-align: justify;
     color: #1A3333;
     padding: 0;
