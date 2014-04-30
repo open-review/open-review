@@ -137,7 +137,7 @@ body > footer {
 
 body > main {
     overflow: hidden;
-    width: 1040px;
+    max-width: 1040px;
     padding: 20px 20px 0 20px;
     color: #1A3333;
 }

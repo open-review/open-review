@@ -27,7 +27,8 @@ body > main {
 }
 
 body > main section.search {
-    width: 680px;
+    max-width: 680px;
+    width: 100%;
     margin: 0 auto;
     overflow: hidden;
     margin-bottom: 90px;
@@ -39,7 +40,9 @@ body > main section.search .action {
 }
 
 body > main section.search .query {
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
+  clear: left;
 }
 
 body > main section.search .action {
@@ -51,6 +54,7 @@ body > main section.search .query input,
 body > main section.search .query p,
 body > main section.search .action button {
     width: 100%;
+    max-width: 490px;
 }
 
 body > main section.search .query input {
@@ -97,7 +101,8 @@ body > main section.search .query p strong {
 
 body > main .box {
     float: left;
-    width: 490px;
+    max-width: 490px;
+    width: 100%;
     background: #fff;
     padding: 0;
     margin-bottom: 40px;
@@ -205,4 +210,14 @@ body > main .box.top-reviews ol li a > span.author {
     color: #000;
     text-decoration: none;
     padding: 6px 0;
+}
+
+@media all and (max-width: 1040px) {
+    body > main .box + .box {
+        margin-left: 0px;
+    }
+    
+    body > main div.action {
+        display: none;
+    }
 }
