@@ -51,3 +51,19 @@
     last_name: Noort
     password: pbkdf2_sha256$12000$70mJZfrrAWSI$ZcENbUWY3slLlPyVoJHeirvDZKHAOl+Xu9CspuDEyw0= # = test123
     username: willem.noort
+    
+- model: accounts.user
+  pk: 7
+  fields:
+    date_joined: 2014-04-25 09:04:49.701472+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-04-25 09:04:49.911528+00:00
+    last_name: ''
+    password: pbkdf2_sha256$12000$RLzOrDfiw6EJ$ooOl/38u5j7IJTYCeZUy7jupHWE7vHgSq7+W+sIwaRw=
+    user_permissions: []
+    username: OpenReview_user
