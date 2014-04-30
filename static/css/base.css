@@ -10,10 +10,10 @@ body > header {
 }
 
 body > header > nav {
-    width: 1000px;
+    max-width: 1000px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 0;
+    padding: 0 10px;
 }
 
 body > header > nav h1 {

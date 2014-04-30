@@ -45,6 +45,7 @@
         </div>
     </section>
 
+<div class="left">
     <section class="reviews box">
         <h2>2 reviews</h2>
 
@@ -139,6 +140,20 @@
 
     </section>
 
+    <section class="compose-review box">
+        <h2>Share your opinion by writing a review</h2>
+        <div class="rating">★★★☆☆</div>
+        <form action="#" method="POST">
+            <textarea placeholder="Provide a professional opinion on this paper."></textarea>
+            <label>
+                <input type="checkbox" name="is_anonymously" />
+                <span>Place anonymously</span>
+            </label>
+            <button type="submit">Submit review</button>
+        </form>
+    </section>
+</div>
+
     <aside>
       <div class="more-by-these-authors box">
           <h2>More by these authors</h2>
@@ -161,17 +176,6 @@
       </div>
     </aside>
 
-    <section class="compose-review box">
-        <h2>Share your opinion by writing a review</h2>
-        <div class="rating">★★★☆☆</div>
-        <form action="#" method="POST">
-            <textarea placeholder="Provide a professional opinion on this paper."></textarea>
-            <label>
-                <input type="checkbox" name="is_anonymously" />
-                <span>Place anonymously</span>
-            </label>
-            <button type="submit">Submit review</button>
-        </form>
-    </section>
+
 
 {% endblock %}
