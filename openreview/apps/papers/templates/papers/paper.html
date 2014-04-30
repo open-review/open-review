@@ -18,23 +18,13 @@
             <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
         </header>
         <div class="abstract">
-            <p>
-                We establish adiabatic theorems with and without spectral gap condition for general
-                operators A(t):D(A(t))⊂X→X with possibly time-dependent domains in a Banach
-                space X. We first prove adiabatic theorems with uniform and non-uniform spectral
-                gap condition (including a slightly extended adiabatic theorem of higher order).
-                In these adiabatic theorems the considered spectral subsets σ(t) have only to be
-                compact -- in particular, they need not consist of eigenvalues.
-            </p>
-            <p>
-                We then prove an adiabatic theorem without spectral gap condition for not
-                necessarily…
-            </p>
+            <p>{{ paper.abstract }}</p>
         </div>
         <div class="meta">
             <ul>
-                <li><strong>Authors:</strong> M. Matsuo, N. Hinohara, K. Sato, K. Matsuyanagi, T. Nakatsukasa, K. Yoshida.</li>
-                <li><strong>Publication date:</strong> 14 April 2014</li>
+                <li><strong>Authors:</strong>
+                    {% for author in paper.authors.all %} {{ author.name }}{% if not forloop.last %},{% endif %}{% endfor %}</li>
+                <li><strong>Publication date:</strong> {{ paper.publish_date }}</li>
                 <li><strong>Keywords:</strong>
                     <a href="#">Stochastic Frontier</a>,
                     <a href="#">Sample Selection</a>,
