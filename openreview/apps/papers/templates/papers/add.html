@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load markdown %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/add.css" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
+{% endblock %}
+
+{% block content %}
+    <header>
+      <h1>Submit a paper</h1>
+    </header>
+
+    <section class="paper-details box">
+        <h3>Paper details</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Title:</label><input type="text" placeholder="Example: A solution space for a system of null-state partial differential equations 2" />
+            <label>Authors:</label><input type="text" placeholder="Example: Steven M. Flores, Peter Kleban" />
+
+            <button name="submit-paper" type="submit">Submit this paper</button>
+        </form>
+    </section>
+
+{% endblock %}

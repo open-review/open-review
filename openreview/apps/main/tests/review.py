@@ -1,5 +1,6 @@
 from pprint import pprint
 import unittest
+from django.contrib.auth.models import AnonymousUser
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
 from openreview.apps.main.models import review
@@ -394,4 +395,21 @@ class TestReview(unittest.TestCase):
         with assert_max_queries(n=0):
             r.text
 
+    def test_can_delete(self):
+        r1 = create_test_review()
+        u1 = create_test_user()
+        anon = AnonymousUser()
+
+        self.assertFalse(r1.can_delete(anon), "Anonymous user can't delete review.")
+        self.assertFalse(r1.can_delete(u1), "Non-owner can't delete review.")
+        self.assertTrue(r1.can_delete(r1.poster), "Owner can delete review.")
+        r1.set_anonymous()
+        self.assertFalse(r1.can_delete(u1), "Anonymous reviews can't be deleted.")
+        r1 = Review.objects.get(id=r1.id)
+        r1.delete()
+        self.assertFalse(r1.can_delete(u1), "Deleted reviews can't be deleted.")
+
+    def test_can_change(self):
+        # Same as can_delete for now.
+        pass
 

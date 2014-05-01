@@ -1,9 +1,7 @@
 {% load markdown %}
 
-{% with tree.review as review %}
-
 <section data-review-id="{{ review.id }}" class="review box">
-    <div data-url="{% url "vote" paper.id review.id %}" class="voting">
+    <div data-url="{% url "vote" review.paper_id review.id %}" class="voting">
       <a class="up">❮</a>
       <span class="counter">{{ review.score }}</span>
       <a class="down">❯</a>
@@ -13,7 +11,7 @@
         {% if review.anonymous %}
             Anonymous,
         {% else %}
-            <a class="author" href="#">{{ review.poster }}</a>,
+            <a class="author" href="#">{{ review.poster.username }}</a>,
         {% endif %} wrote on <span class="datetime">{{ review.timestamp }}</span>:
 
         <span class="rating">★★☆☆☆</span>
@@ -28,8 +26,7 @@
     </article>
 
     <footer>
-        <a href="{% url 'review' paper.id review.id %}">permalink</a>
+        <a href="{% url 'review' review.paper_id review.id %}">permalink</a>
     </footer>
 </section>
 
-{% endwith %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown %}
 
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper-with-reviews.css" />
@@ -18,7 +19,7 @@
             <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
         </header>
         <div class="abstract">
-            <p>{{ paper.abstract }}</p>
+            {{ paper.abstract | truncatewords:75 | markdown}}
         </div>
         <div class="meta">
             <ul>
@@ -39,7 +40,7 @@
         <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
         {% for review in reviews %}
-            {% include "papers/review.html" with tree=review %}
+            {% include "papers/review.html" with review=review.review %}
         {% endfor %}
 
 
