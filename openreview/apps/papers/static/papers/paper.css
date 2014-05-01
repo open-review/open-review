@@ -1,0 +1,155 @@
+body > main > section {
+    margin-bottom: 20px;
+}
+
+body > main > section.paper.box {
+    padding: 0;
+    overflow: hidden;
+    background-color: #FCFCFC;
+}
+
+body > main > section.paper div.abstract,
+body > main > section.paper div.meta {
+    float: left;
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+
+body > main > section.paper div.abstract {
+    width: 618px;
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+body > main > section.paper div.meta {
+    margin-right: 20px;
+    width: 320px;
+}
+
+main > section.paper div.abstract p {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    text-align: justify;
+    text-shadow: 0 1px 0 #fff;
+}
+
+main > section.paper div.abstract p + p {
+    margin-top: 10px;
+}
+
+body > main > section.paper div.meta ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+body > main > section.paper div.meta ul li {
+    display: block;
+    padding: 0;
+    text-align: justify;
+}
+
+body > main > section.paper div.meta ul li + li {
+    margin-top: 10px;
+}
+
+
+body > main > aside {
+    float: right;
+    width: 340px;
+}
+
+body > main > aside > div.box {
+    padding: 0;
+}
+
+body > main > aside > div.box + div.box {
+    margin-top: 20px;
+}
+
+body > main > section.compose-review {
+    clear: both;
+    padding: 0 20px 20px;
+    width: 640px;
+}
+
+body > main > section.compose-review h2,
+body > main > section.compose-review div.rating {
+    padding: 17px 0 15px;
+    margin: 0;
+}
+
+body > main > section.compose-review h2 {
+    font-size: 16px;
+    border-bottom: none;
+    float: left;
+}
+
+body > main > section.compose-review div.rating {
+    float: right;
+    overflow: hidden;
+    font-size: 18px;
+}
+
+body > main > section.compose-review form {
+    overflow: hidden;
+    clear: both;
+    padding: 0;
+}
+
+body > main > section.compose-review form textarea {
+    font-size: 13px;
+    width: 100%;
+    height: 80px;
+    -webkit-transition: height 0.2s;
+    transition: height 0.2s;
+    margin-bottom: 10px;
+}
+
+body > main > section.compose-review form textarea:focus {
+    height: 160px;
+}
+
+body > main > section.compose-review form label {
+    display: block;
+    float: left;
+    padding: 8px 0;
+    float: left;
+    width: auto;
+    line-height: normal;
+    margin-bottom: 0;
+}
+
+body > main > section.compose-review form label:hover {
+    cursor: pointer;
+}
+
+body > main > section.compose-review form label > input[type=checkbox] {
+    margin-right: 10px;
+    clear: none;
+    float: none;
+    width: auto;
+    display: inline;
+    margin-bottom: 0;
+}
+
+body > main > section.compose-review form label:hover > span,
+body > main > section.compose-review form label > input[type=checkbox]:checked + span {
+    text-decoration: underline;
+}
+
+body > main > section.compose-review form button[type=submit] {
+    font-size: 13px;
+    float: right;
+    padding: 8px 20px;
+    display: inline;
+    clear: none;
+    width: auto;
+}
+
+body > main > section.compose-review form button:active {
+    padding-top: 9px;
+    padding-bottom: 7px;
+}
