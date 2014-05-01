@@ -1,0 +1,57 @@
+.comments,
+body .box.comments {
+    margin: 20px 0 0 40px;
+    background: #fff;
+    padding: 0;
+    border-left: 3px rgba(0, 0, 0, 0.2) solid;
+}
+
+.comments section.comment {
+    line-height: 1.7em;
+    font-size: 13px;
+    font-family: Merriweather, Georgia, serif;
+    padding: 10px 10px 10px 13px;
+}
+
+.comments section.comment + section.compose-comment,
+.comments section.comment + section.comment {
+    border-top: 1px rgba(0, 0, 0, 0.2) dotted;
+}
+
+.comments section.compose-comment {
+    padding: 7px 5px 7px 5px;
+    overflow: hidden;
+    background: #F7FAFA;
+}
+
+.comments section.compose-comment input,
+.comments section.compose-comment button {
+    font-size: 13px;
+    padding: 7px;
+    display: block;
+    float: left;
+}
+
+.comments section.compose-comment input {
+    width: 425px;
+}
+
+
+.comments section.compose-comment button {
+    padding: 7px 10px;
+    float: right;
+}
+
+.comments section.compose-comment button:active {
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+.comments section.comment span.author {
+    font-weight: bold;
+    color: #4b4b4b;
+}
+
+.comments + section.review {
+    margin-top: 20px;
+}
