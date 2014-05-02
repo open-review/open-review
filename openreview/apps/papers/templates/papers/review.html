@@ -9,9 +9,9 @@
 
     <header>
         {% if review.anonymous %}
-            Anonymous,
+            Anonymous
         {% else %}
-            {{ review.poster.full_name }},
+            {{ review.poster.full_name }}
         {% endif %} <a href="{% url 'review' review.paper_id review.id %}">wrote on <span class="datetime">{{ review.timestamp }}</span></a>:
 
         <span class="rating">★★☆☆☆</span>
