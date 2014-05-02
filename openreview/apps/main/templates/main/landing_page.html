@@ -10,9 +10,9 @@
             <input placeholder="Discover interesting papers..." name="q" tabindex="1" type="text" autofocus />
             <p>
                 <strong>Popular search terms: </strong>
-                <a href="#">bitcoin</a>,
-                <a href="#">riemann sum</a>,
-                <a href="#">complex numbers</a>
+                <a href="{% url 'search-paper' %}?q=bitcoin">bitcoin</a>,
+                <a href="{% url 'search-paper' %}?q=riemann sum">riemann sum</a>,
+                <a href="{% url 'search-paper' %}?q=complex numbers">complex numbers</a>
             </p>
         </div>
     </form>
