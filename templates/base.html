@@ -13,15 +13,28 @@
         {% endcompress %}
         <title>OpenReview</title>
     </head>
-    <body csrf="{{ csrf_token }}">
+    <body data-anonymous="{{ user.is_anonymous|lower }}" data-csrf="{{ csrf_token }}">
         <header>
-          <h1>OpenReview.org</h1>
+          <nav>
+            <h1 class="logo"><a href="/">OpenReview.org</a></h1>
+            <ul>
+              <li><a href="/papers/new">Browse Papers</a></li>
+              <li class="seperator">·</li>
+              <li><a href="/papers/add">Add Paper</a></li>
+              <li class="seperator">·</li>
+              {%  if user.is_anonymous %}
+                  <li><a href="{% url 'accounts-register' %}">Sign up</a></li>
+              {%  else %}
+                  <li><a href="{% url 'accounts-settings' %}">My profile</a></li>
+              {%  endif %}
+            </ul>
+          </nav>
         </header>
         <main>
             {% block content %}{% endblock %}
         </main>
 
-        {% include 'footer.html' %}
+        {% include 'includes/footer.html' %}
 
         <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 

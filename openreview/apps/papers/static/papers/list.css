@@ -1,0 +1,96 @@
+body > main > section.navigation-bar {
+}
+
+body > main > section.navigation-bar > header {
+    overflow: hidden;
+}
+
+body > main > section.navigation-bar > header > h1 {
+    float: left;
+    display: block;
+}
+
+body > main > section.navigation-bar > header > ul {
+    float: right;
+    overflow: hidden;
+    margin: 0;
+    padding: 17px 20px 15px 20px;
+}
+
+body > main > section.navigation-bar > header > ul li {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+body > main > section.navigation-bar > header > ul li a {
+    padding: 0 10px;
+    line-height: 30px;
+    display: block;
+}
+
+body > main > section.navigation-bar > header > ul li a.active,
+body > main > section.navigation-bar > header > ul li a.active:hover {
+    background: #187676;
+    color: #fff;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+body > main > section.navigation-bar > header > ul li + li {
+    margin-left: 20px;
+}
+
+body > main > section.listing {
+    margin-top: 20px;
+}
+
+body > main > section.listing ol li {
+    padding: 0px;
+}
+
+body > main > section.listing ol li a.title,
+body > main > section.listing ol li span.number-of-reviews {
+    display: block;
+}
+
+body > main > section.listing ol li a.title {
+    padding: 6px 0;
+    max-width: 90%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    float: left;
+}
+
+body > main > section.listing ol li a.number-of-reviews {
+    float: right;
+    height: 20px;
+    padding: 0 5px;
+    margin: 6px 0;
+    line-height: 20px;
+    border: 1px rgba(0, 0, 0, 0.4) solid;
+    border-radius: 2px;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4em;
+    font-size: 13px;
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+
+body > main > section.listing ol li:hover {
+    cursor: pointer;
+}
+
+body > main > section.listing ol li:hover a.title {
+    text-decoration: underline;
+}
+
+body > main > section.listing ol li:hover a.number-of-reviews {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border: none;
+    text-decoration: none;
+}

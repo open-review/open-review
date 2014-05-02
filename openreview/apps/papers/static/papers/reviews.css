@@ -1,0 +1,102 @@
+.reviews {
+    width: 640px;
+    padding: 0 20px 20px;
+    float: left;
+}
+
+.reviews > h2,
+body > main .reviews > h2 {
+    font-size: 16px;
+    margin: 0;
+    padding: 17px 0 15px;
+    border-bottom: none;
+}
+
+.reviews section.review.box {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 0 2px 2px 2px;
+}
+
+.reviews section.review {
+    position: relative;
+}
+
+.reviews section.review + section.review {
+    margin-top: 20px;
+}
+
+.reviews section.review > div.voting {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px 0 0 2px;
+    left: -40px;
+    top: -1px;
+    width: 40px;
+    position: absolute;
+    background-color: #fff;
+}
+
+.reviews section.review > div.voting a,
+.reviews section.review > div.voting span {
+    display: block;
+    text-align: center;
+    position: relative;
+    width: 40px;
+    left: -1px;
+}
+
+.reviews section.review > div.voting a,
+.reviews section.review > div.voting a {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    font-size: 18px;
+    height: 40px;
+    line-height: 0px;
+    padding: 18px 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.reviews section.review > div.voting span {
+    font-size: 20px;
+    z-index: 1;
+    width: 39px;
+    left: 0;
+    font-weight: bold;
+    color: #1A3333;
+    line-height: 20px;
+}
+
+
+.reviews section.review > div.voting a:hover {
+    color: #1A3333;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.reviews section.review > header {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.reviews section.review > header a.author,
+.reviews section.review > header span.rating {
+    display: block;
+}
+
+.reviews section.review > header a.author {
+    float: left;
+    text-decoration: underline;
+}
+
+.reviews section.review > header span.rating {
+    float: right;
+    color: #4b4b4b;
+}
+
+.reviews section.review article.content {
+    text-align: justify;
+    color: #1A3333;
+    padding: 0;
+    margin: 0;
+}

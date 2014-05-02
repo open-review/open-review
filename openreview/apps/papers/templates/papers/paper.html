@@ -1,7 +1,10 @@
 {% extends "base.html" %}
+{% load markdown %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper-with-reviews.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/reviews.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/comments.css" />
 {% endblock %}
 
 {% block js %}
@@ -12,85 +15,133 @@
     <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
 {% endblock %}
 
-{% block meta %}
-    <div class="hide">
-        <div id="anonymous">{{ user.is_anonymous|lower }}</div>
-        <div id="my_votes">{{ my_votes|safe }}</div>
-        <div id="my_reviews">{{ my_reviews|safe }}</div>
-    </div>
-{% endblock %}
-
 {% block content %}
-   <h1>
-        {{ paper.title|capfirst }} <br/>
-        {% for author in paper.authors.all %}
-          <small>{{ author.name }}{% if not forloop.last %},{% endif %}</small>
+    <section data-votes="{{ my_votes }}" data-reviews="{{ my_reviews }}" class="paper box">
+        <header>
+            <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
+        </header>
+        <div class="abstract">
+            {{ paper.abstract|markdown }}
+        </div>
+        <div class="meta">
+            <ul>
+                <li><strong>Authors:</strong> M. Matsuo, N. Hinohara, K. Sato, K. Matsuyanagi, T. Nakatsukasa, K. Yoshida.</li>
+                <li><strong>Publication date:</strong> {{ paper.publish_date }}</li>
+                <li><strong>Keywords:</strong>
+                    <a href="#">Stochastic Frontier</a>,
+                    <a href="#">Sample Selection</a>,
+                    <a href="#">Simulation</a>,
+                    <a href="#">Efficiency</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="reviews box">
+        <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
+
+        {% for review in reviews %}
+            {% include "papers/review.html" with review=review.review %}
         {% endfor %}
-    </h1>
 
-    <p>{{ paper.abstract }}</p>
 
-    <p>
-        <strong>Keywords: </strong>
-        <em>
-            {% for keyword in paper.keywords.all %}
-                {{ keyword }}{% if not forloop.last %},{% endif %}
-            {% empty %}
-                No keyword available.
-            {% endfor %}
-        </em>
-    </p>
 
-    <p>
-        <strong>Categories: </strong>
-        <em>
-            {% for category in paper.categories.all %}
-                {{ category }}{% if not forloop.last %},{% endif %}
-            {% empty %}
-                No categories available.
-            {% endfor %}
-        </em>
-    </p>    
 
-    <p>
-        <strong>Links:</strong>
-        {% if not paper.urls %}
-            <em>No urls available.</em>
-        {% else %}
-            {{ paper.urls }}
-        {% endif %}
-    </p>
+    <!--
+        <section class="comments box">
+            <section class="comment">
+                <span class="author">Br. B. van Den commented: </span>
+                Non tortor feugiat, id pretium eros varius.
+                In et placerat lorem. Proin sed neque fringilla, luctus nibh nec, interdum
+                lorem.
+            </section>
 
-    <p>
-        <strong>ID:</strong> {{ paper.id }}
-    </p>
+            <section class="comment">
+                <span class="author">D. J. Hiemstra commented: </span>
+                Duis sed velit elit. Ut iaculis pellentesque dui nec sodales. Maecenas
+                posuere lectus non tortor feugiat, id pretium eros varius. In et placerat
+                lorem. Proin sed neque fringilla, luctus nibh nec, interdum lorem.
+            </section>
 
-    <hr/>
-    {% url 'paper' paper.id as url %}
-    {% for review in reviews %}
-        {% include "papers/review.html" with review=review.review user=user url=url edit_review_form=review.form edit_review_name=review.submit_name %}
-    {% empty %}
-        <em>No reviews yet!</em>
-    {% endfor %}
 
-    <hr/>
+            <section class="compose-comment">
+                <input type="text" placeholder="Write a comment..." />
+                <button type="submit">Add comment</button>
+            </section>
+        </section>
 
-    {% if not user.is_anonymous %}
-    <div class="review-container">
-        <form method="post" class="new new-review" data-preview="{% url 'preview' paper.id %}">
-            {% csrf_token %}
-            <table>{{ add_review_form }}</table>
-            <br /><input name="add_review" type="submit" value="Submit review">
-            {% include "papers/preview.html" %}
+        <section class="review box">
+            <div class="voting">
+              <a class="up" href="#">❮</a>
+              <span class="counter">3</span>
+              <a class="down" href="#">❯</a>
+            </div>
+
+            <header>
+                <a href="#" class="author">PhD. W. Beukema (University of Twente), wrote:</a>
+                <span class="rating">★★★★☆</span>
+            </header>
+
+            <p class="content">
+                Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+                per inceptos himenaeos. Nulla convallis congue nunc, vitae pellentesque
+                velit elementum sit amet. Nulla facilisi. Quisque ac nunc eu massa
+                scelerisque tristique aliquet a lectus. Integer at vestibulum velit,
+                vitae tempus justo. Etiam non nisi posuere, porttitor dolor ut,
+                pellentesque massa. In varius in diam in cursus. Duis aliquet…
+                <a href="#">read more</a>.
+            </p>
+        </section>
+
+        <section class="comments box">
+            <section class="comment">
+                <span class="author">T. A. Brus commented: </span>
+                Id pretium eros varius.
+                In et placerat lorem. Proin sed neque fringilla, luctus nibh nec, interdum
+                lorem. Mauris hendrerit tellus sit amet.
+            </section>
+
+            <section class="compose-comment">
+                <input type="text" placeholder="Write a comment..." />
+                <button type="submit">Add comment</button>
+            </section>
+        </section>
+
+-->    </section>
+
+    <aside>
+      <div class="more-by-these-authors box">
+          <h2>More by these authors</h2>
+          <ol>
+              <li><a href="#">Eguchi-Kawai reduction with one flavor of adjoint Moebius fermion</a></li>
+              <li><a href="#">Finite size scaling of conformal theories in the presence of a near-marginal operator</a></li>
+              <li><a href="#">Vacuum alignment and lattice artifacts: Wilson fermions</a></li>
+              <li><a href="#">A Complete Lattice Technicolor Model</a></li>
+          </ol>
+      </div>
+
+      <div class="related-papers box">
+          <h2>Related papers</h2>
+          <ol>
+              <li><a href="#">Nonperturbative tests of the renormalization of mixed clover-staggered currents in lattice QCD</a></li>
+              <li><a href="#">A Concise Force Calculation for Hybrid Monte Carlo with Improved Actions</a></li>
+              <li><a href="#">One flavor mass reweighting: foundations</a></li>
+              <li><a href="#">Finite-volume effects in the evaluation of the K_L - K_S mass difference</a></li>
+          </ol>
+      </div>
+    </aside>
+
+    <section class="compose-review box">
+        <h2>Share your opinion by writing a review</h2>
+        <div class="rating">★★★☆☆</div>
+        <form action="#" method="POST">
+            <textarea placeholder="Provide a professional opinion on this paper."></textarea>
+            <label>
+                <input type="checkbox" name="is_anonymously" />
+                <span>Place anonymously</span>
+            </label>
+            <button type="submit">Submit review</button>
         </form>
-    </div>
-    {% else %}
-        <p>
-            <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}">Log in</a> to add a review.
-        </p>
-    {% endif %}
-
+    </section>
 
 {% endblock %}
-
-

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}accounts/authentication.css" />
+{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>Log in</h1>
+        <h1>Register</h1>
+    </header>
+
+    <section class="login box">
+        <h3>Sign in using an existing account.</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ login_form }}
+            <button id="login-button" name="login" type="submit">Log in now</button>
+        </form>
+    </section>
+
+    <section class="register box">
+        <h3>Register for a new account.</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ register_form }}
+            <button id="register-button" name="new" type="submit">Register me</button>
+        </form>
+    </section>
+{% endblock %}

@@ -1,13 +1,264 @@
-body > header {
-
+body h1,
+body h2,
+body h3 {
+    font-family: 'Open Sans', Arial, sans-serif;
 }
 
-body > header h1 {
+body > header {
+    border-bottom: 1px #D3D3D3 solid;
+    background: #FCFCFC;
+}
+
+body > header > nav {
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0;
+}
+
+body > header > nav h1 {
+    font-family: Merriweather, Georgia, serif;
+    font-size: 24px;
     text-align: left;
-    padding: 20px;
+    padding: 25px 0;
+    margin: 0;
+    float: left;
+}
+
+body > header > nav h1 a,
+body > header > nav h1 a:hover {
+    font-size: 20px;
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+body > header > nav ul {
+    overflow: hidden;
+    float: right;
+    display: block;
+    margin: 10px 0;
+    padding: 0;
+}
+
+body > header > nav h1 + ul {
+    margin-left: 40px;
+}
+
+body > header > nav ul li {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+body > header > nav ul li.seperator {
+    font-weight: bold;
+    line-height: 50px;
+    height: 50px;
+    font-weight: 30px;
+    color: #202020;
+}
+
+body > header > nav ul li a {
+    font-weight: bold;
+    display: block;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #202020;
+}
+
+body > header > nav ul li:last-child a {
+    padding-right: 0;
+}
+
+body > main {
+    padding-bottom: 40px;
+}
+
+body > main p {
+    font-family: Merriweather, Georgia, serif;
+    line-height: 1.7em;
+    font-size: 13px;
+}
+
+body > main > .box > header {
+    border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main > .box > header h1 {
+    font-size: 22px;
+    line-height: 1.4em;
+    padding: 0;
+    margin: 0;
+    text-shadow: 0 1px 0 #fff;
+    padding: 17px 20px 15px 20px;
+}
+
+body > main > .box > header h1 a {
+    color: rgba(0, 0, 0, 0.9);
+}
+
+body > main .box > h2 {
+    font-size: 16px;
+    margin: 0;
+    padding: 17px 20px 15px 20px;
+    border-bottom: 2px #E5E5E5 solid;
+}
+
+
+body > main > .box h3 {
+    font-size: 16px;
+    margin: 0;
+    color: #5a5a5a;
+    padding: 17px 20px 15px 20px;
+    border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main .box > ol,
+body > main .box > ul,
+body > main .box > p {
+    padding: 10px 20px;
     margin: 0;
 }
 
-.review .starfield {
-	float: right;
+body > main .box > ol li,
+body > main .box > ul li {
+    display: block;
+    padding: 6px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: Merriweather, Georgia, serif;
+    line-height: 1.7em;
+    font-size: 13px;
+}
+
+body > main > header {
+    overflow: hidden;
+}
+
+body > main > header h1 {
+    float: left;
+    display: block;
+    margin: 10px 0;
+    width: 490px;
+}
+
+body > main > header h1 + h1 {
+    margin-left: 20px;
+}
+
+body > main > section.box > form {
+    padding: 20px;
+    overflow: hidden;
+}
+
+body > main > section.box > form label,
+body > main > section.box > form input {
+    display: block;
+    margin-bottom: 20px;
+}
+
+body > main > section.box > form label {
+    clear: left;
+    float: left;
+    width: 155px;
+    line-height: 34px;
+}
+
+body > main > section.box > form input,
+body > main > section.box > form ul.errorlist {
+    clear: right;
+    float: right;
+    width: 260px;
+}
+
+body > main > section.box > form ul.errorlist {
+    background: #331A1A;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px 10px;
+    margin: 0 0 20px 0;
+    font-size: 12px;
+}
+
+body > main > section.box > form ul.errorlist + input {
+    clear: both;
+    float: none;
+    width: 100%;
+}
+
+body > main > section.box > form span.helptext {
+    clear: both;
+    display: block;
+    background: #1A3333;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px 10px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    position: relative;
+}
+
+body > main > section.box > form span.helptext:before {
+    border-left: 6px transparent solid;
+    border-right: 6px transparent solid;
+    border-bottom: 6px #1A3333 solid;
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    content: ' ';
+    top: -6px;
+    left: 6px;
+}
+
+body > main > section.box hr {
+    display: block;
+    clear: both;
+    border: none;
+    border-top: 1px rgba(0, 0, 0, 0.4) dotted;
+    margin: 0;
+}
+
+body > main > section.box > form button[type=submit] {
+    display: block;
+    clear: both;
+    width: 100%;
+}
+
+body > main > section.pagination {
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+body > main > section.pagination > div {
+    float: left;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 0 0 #FFF;
+    -webkit-box-shadow: 0 1px 0 0 #FFF;
+    box-shadow: 0 1px 0 0 #FFF;
+    margin-bottom: 1px;
+}
+
+body > main > section.pagination > div + div {
+    border-left-width: 0;
+}
+
+body > main > section.pagination > div > a,
+body > main > section.pagination > div.current {
+    display: block;
+    padding: 10px 20px;
+}
+
+body > main > section.pagination > div > a {
+    font-size: 20px;
+}
+
+body > main > section.pagination > div > a:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    text-decoration: none;
 }

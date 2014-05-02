@@ -1,143 +1,75 @@
 body > header {
     border-bottom: 1px #D3D3D3 solid;
-    background: #FEFEFE;
-    background: -moz-linear-gradient(top, #F7FAFA 0%, #FEFEFE 100%);
-    background: -webkit-linear-gradient(top, #F7FAFA 0%, #FEFEFE 100%);
-    background: linear-gradient(to bottom, #F7FAFA 0%, #FEFEFE 100%);
+    background: #FCFCFC;
 }
 
-body > header h1,
-body > header p {
+body > header h1.title,
+body > header p.tagline {
     text-align: center;
     margin: 0;
 }
 
-body > header h1 {
-    font-size: 24px;
+body > header h1.title {
+    font-size: 25px;
     color: #000;
     font-weight: 700;
-    padding: 70px 0 0;
+    padding: 60px 0 0;
 }
 
-body > header p {
-    font-size: 13px;
-    color: #333;
-    padding: 20px 0 70px;
-}
-
-body > main,
-body > hr,
-body > footer {
-    width: 1000px;
-    margin: 0 auto;
+body > header p.tagline {
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 20px 0 60px;
 }
 
 body > main {
-    padding-top: 90px;
-    overflow: hidden;
+    padding-top: 60px;
 }
 
-body > main section.search {
-    width: 680px;
+body > header section.search {
+    width: 589px;
     margin: 0 auto;
     overflow: hidden;
-    margin-bottom: 90px;
+    margin-bottom: 60px;
 }
 
-body > main section.search .query,
-body > main section.search .action {
-  float: left;
+body > header section.search .query {
+/*      width: 500px;*/
 }
 
-body > main section.search .query {
-  width: 500px;
-}
-
-body > main section.search .action {
-  width: 160px;
-  margin-left: 20px;
-}
-
-body > main section.search .query input,
-body > main section.search .query p,
-body > main section.search .action input {
+body > header section.search .query input,
+body > header section.search .query p {
     width: 100%;
 }
 
-body > main section.search .query input {
-    font-size: 18px;
+body > header section.search .query input {
     font-family: 'Open Sans', Arial, sans-serif;
-    color: rgba(0, 0, 0, 0.8);
-    border-radius: 2px;
-    background: #fff url('http://f.cl.ly/items/3a2e0X0D1r1O1b1o0Z3Q/magnifier.png') no-repeat right 10px center;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    /* TODO: Save image to static folder */
+    font-size: 18px;
     padding: 7px 10px;
+    background: #fff url('http://f.cl.ly/items/3a2e0X0D1r1O1b1o0Z3Q/magnifier.png') no-repeat right 10px center;
 }
 
-body > main section.search .query input:focus {
+body > header section.search .query input:focus {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
-body > main section.search .query p {
-    text-align: center;
+body > header section.search .query p {
+    text-align: left;
     margin: 15px 0 0;
 }
 
-body > main section.search .query p strong {
-    color: rgba(0, 0, 0, 0.8);
-    font-weight: 700;
-}
-
-body > main section.search .action input {
-    font-family: 'Open Sans', Arial, sans-serif;
-    font-size: 15px;
-    text-align: center;
+body > header section.search .query p strong {
     color: rgba(0, 0, 0, 0.6);
-    border-radius: 5px;
-    background: #FAFCFC;
-    background: -moz-linear-gradient(top, #FAFCFC 0%, #F3F7F7 100%);
-    background: -webkit-linear-gradient(top, #FAFCFC 0%, #F3F7F7 100%);
-    background: linear-gradient(to bottom, #FAFCFC 0%, #F3F7F7 100%);
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
-    -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
-    box-shadow: 0 1px 0 0 #FFF, inset 0 -1px 2px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 1px #fff;
-    text-shadow: 0 1px 0 #fff;
-    font-weight: bold;
-    padding: 9px 10px;
-}
-
-body > main section.search .action input:hover,
-body > main section.search .action input:focus {
-    color: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    outline: none;
-}
-
-body > main section.search .action input:active {
-  padding: 10px 10px 8px;
-  background: -moz-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
-  background: -webkit-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
-  background: linear-gradient(to top, #FAFCFC 0%, #F3F7F7 100%);
-
-  -moz-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
-  -webkit-box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
-  box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
+    font-weight: 700;
 }
 
 body > main .box {
     float: left;
     width: 490px;
-    border-radius: 2px;
-    background: #FFF;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2)
-    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+    background: #fff;
+    padding: 0;
     margin-bottom: 40px;
 }
 
@@ -152,7 +84,7 @@ body > main .box h2 {
   border-bottom: 2px #E5E5E5 solid;
 }
 
-body > main .box h2 a {
+body > main .box h2 {
   color: #5D5D5D;
 }
 
@@ -243,4 +175,37 @@ body > main .box.top-reviews ol li a > span.author {
     color: #000;
     text-decoration: none;
     padding: 6px 0;
+}
+
+body > main .contributing-to-open-review,
+body > main .publishing-on-open-review {
+    width: 490px;
+    float: left;
+    margin-bottom: 40px;
+}
+
+body > main .publishing-on-open-review {
+    margin-left: 20px;
+}
+
+body > main .submit-paper-for-review {
+  width: 549px;
+  margin: 0 auto 60px auto;
+  height: 42px;
+}
+
+body > main .submit-paper-for-review p,
+body > main .submit-paper-for-review a.button {
+    float: left;
+}
+
+body > main .submit-paper-for-review p {
+    font-size: 17px;
+    line-height: 42px;
+    margin: 0;
+    font-weight: 600;
+}
+
+body > main .submit-paper-for-review a.button {
+    margin-left: 20px;
 }

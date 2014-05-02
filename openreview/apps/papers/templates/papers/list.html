@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/list.css" />
+{% endblock %}
+
+{% block content %}
+    <section class="navigation-bar box">
+        <header>
+            <h1>{% block pageh1 %}All Papers{% endblock %}</h1>
+            <ul>
+                <li>
+                    <a href="/papers/new"{% if order == 'new' %} class="active"{% endif %}>Newest</a>
+                </li>
+                <li>
+                    <a href="/papers/controversial"{% if order == 'controversial' %} class="active"{% endif %}>Most controversial</a>
+                </li>
+                <li>
+                    <a href="/papers/trending"{% if order == 'trending' %} class="active"{% endif %}>Trending</a>
+                </li>
+            </ul>
+        </header>
+    </section>
+
+    <section class="listing box">
+        <ol>
+        {% for paper in papers %}
+            <li>
+                <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
+                <a href="{% url 'paper' paper.id %}" class="number-of-reviews">{{ paper.num_reviews }} review{{ paper.num_reviews|pluralize }}</a>
+            </li>
+        {% endfor %}
+        </ol>
+    </section>
+
+    {% include 'includes/pagination.html' with pages=papers %}
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+      $listItems = $('section.listing li')
+      $listItems.click(function() {
+        window.location.href = $(this).find('a:first').attr('href');
+      });
+    </script>
+{% endblock %}

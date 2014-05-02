@@ -1,0 +1,19 @@
+{% if pages.paginator.num_pages > 1 %}
+    <section class="pagination">
+        {% if pages.has_previous %}
+            <div class="previous">
+                <a href="?page={{ pages.previous_page_number }}">«</a>
+            </div>
+        {% endif %}
+
+        <div class="current">
+            {{ pages.number }} / {{ pages.paginator.num_pages }}
+        </div>
+
+        {% if pages.has_next %}
+            <div class="next">
+                <a href="?page={{ pages.next_page_number }}">»</a>
+            </div>
+        {% endif %}
+    </section>
+{% endif %}

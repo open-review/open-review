@@ -21,10 +21,6 @@ from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
 
-
-PAGE_COUNT = 25
-PAGINATION_COUNT = 6
-
 class VoteView(ModelViewMixin, FormView):
     """
     Allows voting on reviews. You can use the GET parameter 'vote' to cast one. For
@@ -63,7 +59,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         while root.parent is not None:
             root = root.parent
 
-        url = reverse("review", args=[review.paper_id, root.id])
+        url = zreverse("review", args=[review.paper_id, root.id])
         return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
 
     def post(self, request, *args, **kwargs):
@@ -173,9 +169,7 @@ class PaperWithReviewsView(BaseReviewView):
         # Set cache and sort reviews by up-/downvotes
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
-
         reviews = [self.add_review_fields(review) for review in reviews]
-
         return super().get_context_data(paper=paper, reviews=reviews, **kwargs)
 
 
@@ -187,17 +181,17 @@ orderings = {
 
 
 class PapersView(TemplateView):
-    template_name = "papers/overview.html"
+    template_name = "papers/list.html"
     order = ''
 
     def get_context_data(self, **kwargs):
-        page = self.request.GET.get('p', '1')
+        page = self.request.GET.get('page', '1')
 
         if not (page.isdigit() and int(page) >= 0):
             raise Http404
 
         page = int(page)
-        paginator = Paginator(orderings[self.order](), PAGE_COUNT)
+        paginator = Paginator(orderings[self.order](), 10)
 
         try:
             papers = paginator.page(page)
@@ -205,13 +199,7 @@ class PapersView(TemplateView):
             page = paginator.num_pages
             papers = paginator.page(page)
 
-        pages_right = paginator.page_range[page:]
-        pages_left = paginator.page_range[0:page - 1]
-
-        return super().get_context_data(
-            title=self.order.title(), papers=papers, cur_page=page,
-            pages_l=pages_left, pages_r=pages_right, pag_max=PAGINATION_COUNT,
-            **kwargs)
+        return super().get_context_data(order=self.order, papers=papers, **kwargs)
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
@@ -356,14 +344,19 @@ class ReviewView(BaseReviewView):
         return HttpResponse("OK", status=200)
 
 
+
 class SearchView(TemplateView):
     template_name = "papers/search.html"
 
     def get_context_data(self, **kwargs):
         query = self.request.GET.get('q', '')
+        print(query)
         search_result = [x.object for x in SearchQuerySet().models(Paper).filter(content=query)]
 
         return dict(super().get_context_data(papers=search_result))
+
+class AddPaperView(TemplateView):
+  template_name = "papers/add.html"
 
 
 @cache_page(60 * 10)
@@ -380,4 +373,3 @@ def arxiv_scraper(request, doc_id):
     except scrapers.ScraperError:
         return HttpResponse(json.dumps({"error": "Invalid document identifier"}),
                             content_type="application/json")
-

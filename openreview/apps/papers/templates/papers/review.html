@@ -1,63 +1,32 @@
 {% load markdown %}
 
-<section class="review-container">
-  <div id="r{{ review.id }}" review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
+<section data-review-id="{{ review.id }}" class="review box">
+    <div data-url="{% url "vote" review.paper_id review.id %}" class="voting">
+      <a class="up">❮</a>
+      <span class="counter">{{ review.score }}</span>
+      <a class="down">❯</a>
+    </div>
+
     <header>
-      <i class="glyphicon glyphicon-user"></i>
-      <span class="author">
-          {% if review.anonymous %}
-            ?
-          {% else %}
-            {{ review.poster.username }}
-          {% endif %}
-      </span>
-      on
-      <span class="timestamp" unix="{{ review.timestamp|date:'U' }}">
-        {{ review.timestamp }}
-      </span>
-      
-      {% if not review.parent %}
-      <span class="starfield" data-readonly="true" data-score="{{ review.rating }}"></span>
-      {% endif %}
+        {% if review.anonymous %}
+            Anonymous,
+        {% else %}
+            <a class="author" href="#">{{ review.poster.full_name }}</a>,
+        {% endif %} wrote on <span class="datetime">{{ review.timestamp }}</span>:
+
+        <span class="rating">★★☆☆☆</span>
     </header>
 
-    <article {% if review.is_deleted %}class="deleted"{% endif %}>
-      {{ review.text|default_if_none:""|markdown }}
+    <article class="content {% if review.is_deleted %}deleted{% endif %}">
+        {% if review.text %}
+            {{ review.text|markdown }}
+        {% else %}
+            <p class="deleted">[deleted]</p>
+        {% endif %}
     </article>
 
-{% if not preview %}
     <footer>
-      <span class="options">
-        {% include "papers/review-options.html" with review=review paper=paper %}
-      </span>
-      <span style="display:none;" class="deleted-message">
-        You cannot cast votes on deleted reviews/comments.
-      </span>
-      <span style="display:none;" class="login-message">
-        You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote or comment!
-      </span>
+        <a href="{% url 'review' review.paper_id review.id %}">permalink</a>
     </footer>
-{% endif %}
-  </div>
-
-{% if not preview %}
-  <div style="display:none;" class="new">
-    {% include "papers/comment.html" with review=new_review parent=review %}
-  </div>
-
-  <div style="display:none;" class="edit">
-    {% if review.is_review %}
-        <form method="post" action="{% url 'paper' paper.id %}" data-preview="{% url 'preview' paper.id %}" class="new">
-            {% csrf_token %}
-            <table>{{ edit_review_form }}</table>
-            <br /><input name="{{ edit_review_name }}" type="submit" value="Edit review">
-            {% include "papers/preview.html" %}
-        </form>
-    {% else %}
-        {% include "papers/comment.html" with review=review parent=review.parent %}
-    {% endif %}
-  </div>
-{% endif %}
 </section>
-
 

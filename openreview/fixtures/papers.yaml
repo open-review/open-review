@@ -13,4 +13,57 @@
     doc_id: doi:10.1002/0470841559.ch1
     keywords: []
     publish_date: 2014-03-06
+    # Using quotes here cause of the colon
     title: 'Bitcoin: A Peer-to-Peer Electronic Cash System'
+
+- model: main.paper
+  pk: 2
+  fields:
+    abstract: >
+      We establish adiabatic theorems with and without spectral gap condition for general operators
+      A(t):D(A(t))⊂X→X with possibly time-dependent domains in a Banach space X. We first prove
+      adiabatic theorems with uniform and non-uniform spectral gap condition (including a slightly
+      extended adiabatic theorem of higher order). In these adiabatic theorems the considered
+      spectral subsets σ(t) have only to be compact -- in particular, they need not consist of
+      eigenvalues. We then prove an adiabatic theorem without spectral gap condition for not
+      necessarily (weakly) semisimple eigenvalues: in essence, it is only required there that the
+      considered spectral subsets σ(t)={λ(t)} consist of eigenvalues λ(t)∈∂σ(A(t)) and that there
+      exist projections P(t) reducing A(t) such that A(t)|P(t)D(A(t))−λ(t) is nilpotent and
+      A(t)|(1−P(t))D(A(t))−λ(t) is injective with dense range in (1−P(t))X for almost every~t.
+      In all these theorems, the regularity conditions imposed on t↦A(t), σ(t), P(t) are fairly
+      mild. We explore the strength of the presented adiabatic theorems in numerous examples.
+      And finally, we apply the adiabatic theorems for time-dependent domains to obtain -- in a
+      very simple way -- adiabatic theorems for operators A(t) defined by symmetric sesquilinear
+      forms.
+    authors: [2, 3]
+    doc_id: ~
+    keywords: []
+    publish_date: 2013-12-31
+    title: Adiabatic theorems with spectral gap condition for semisimple spectral values
+
+- model: main.paper
+  pk: 3
+  fields:
+    abstract: >
+      The scatter in the apparent magnitude of type Ia supernovae induced by stochastic
+      gravitational lensing is highly dependent on the nonlinear growth of cosmological
+      structure. In this paper, we show that such a dependence can potentially be employed
+      to gain significant information about the mass clustering at small scales. While the
+      mass clustering ultimately hinges on cosmology, here we demonstrate that, upon obtaining
+      more precise observational measurements through future cosmological surveys, the
+      lensing dispersion can very effectively be used to gain information on the poorly
+      understood astrophysical aspects of structure formation, such as the clumpiness of
+      dark matter halos and the importance of gas physics and star formation into shaping
+      the large-scale structure. In order to illustrate this point we verify that even the
+      tentative current measurements of the lensing dispersion performed on the Supernova
+      Legacy Survey sample favor a scenario where virialized structures are somewhat less
+      compact than predicted by n−body cosmological simulations. Moreover, we are also
+      able to put lower limits on the slope of the concentration-mass relation. By
+      artificially reducing the statistical observational error we argue that with forthcoming
+      data the stochastic lensing dispersion will allow one to importantly improve constraints
+      on the baryonic physics at work during the assembly of cosmological structure.
+    authors: [4, 5]
+    doc_id: ~
+    keywords: []
+    publish_date: 2013-04-22
+    title: 'Lensing dispersion of supernova flux: a probe of nonlinear structure growth'
