@@ -110,6 +110,7 @@
 -->    </section>
 
     <aside>
+      {% if related_a|length > 0 %}
       <div class="more-by-these-authors box">
           <h2>More by these authors</h2>
           <ol>
@@ -118,15 +119,18 @@
             {% endfor %}          
           </ol>
       </div>
+      {% endif %}
 
+      {% if related_s|length > 0 %}
       <div class="related-papers box">
           <h2>Related papers</h2>
           <ol>
-            {% for related_paper in related_p %}
+            {% for related_paper in related_s %}
                  <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
             {% endfor %}          
           </ol>
       </div>
+      {% endif %}
     </aside>
 
     <section class="compose-review box">
