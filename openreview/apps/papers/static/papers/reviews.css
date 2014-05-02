@@ -77,6 +77,7 @@ body > main .reviews > h2 {
 .reviews section.review > header {
     overflow: hidden;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .reviews section.review > header a.author,
@@ -99,4 +100,12 @@ body > main .reviews > h2 {
     color: #1A3333;
     padding: 0;
     margin: 0;
+}
+
+.reviews section.review article.content p {
+    margin: 0;
+}
+
+.reviews section.review article.content p + p {
+    margin-top: 10px;
 }
