@@ -42,3 +42,6 @@ script:
 after_success:
  - coverage report -m
  - coveralls
+
+branches:
+  except: base-design
