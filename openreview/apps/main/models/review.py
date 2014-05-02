@@ -97,6 +97,10 @@ class Review(models.Model):
             return self._n_comments
         return self.get_tree_size() - 1
 
+    def get_comments(self):
+        """Fetches direct (self.level + 1) comments"""
+        return self._reviews_children[self.id]
+
     @property
     def n_upvotes(self):
         if self._n_upvotes is not None:
@@ -346,4 +350,3 @@ class Vote(models.Model):
 
     def can_change(self, user):
         return self.can_delete(user)
-
