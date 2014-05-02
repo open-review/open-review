@@ -113,20 +113,18 @@
       <div class="more-by-these-authors box">
           <h2>More by these authors</h2>
           <ol>
-              <li><a href="#">Eguchi-Kawai reduction with one flavor of adjoint Moebius fermion</a></li>
-              <li><a href="#">Finite size scaling of conformal theories in the presence of a near-marginal operator</a></li>
-              <li><a href="#">Vacuum alignment and lattice artifacts: Wilson fermions</a></li>
-              <li><a href="#">A Complete Lattice Technicolor Model</a></li>
+            {% for related_paper in related_a %}
+                 <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
+            {% endfor %}          
           </ol>
       </div>
 
       <div class="related-papers box">
           <h2>Related papers</h2>
           <ol>
-              <li><a href="#">Nonperturbative tests of the renormalization of mixed clover-staggered currents in lattice QCD</a></li>
-              <li><a href="#">A Concise Force Calculation for Hybrid Monte Carlo with Improved Actions</a></li>
-              <li><a href="#">One flavor mass reweighting: foundations</a></li>
-              <li><a href="#">Finite-volume effects in the evaluation of the K_L - K_S mass difference</a></li>
+            {% for related_paper in related_p %}
+                 <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
+            {% endfor %}          
           </ol>
       </div>
     </aside>
