@@ -128,7 +128,7 @@ CACHES = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': '127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
     },
 }
@@ -140,7 +140,7 @@ To garantuee test isolation. http://bwreilly.github.io/blog/2013/07/21/testing-s
 HAYSTACK_TESTING_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': '127.0.0.1:9200/',
         'INDEX_NAME': 'haystack_test',
     },
 }
