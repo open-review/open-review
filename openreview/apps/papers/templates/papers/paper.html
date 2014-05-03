@@ -12,6 +12,12 @@
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/deleting.coffee"></script>
     <script type="text/coffeescript" src="{{ STATIC_URL }}js/starratings.coffee"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dotdotdot.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $(".abstract").dotdotdot();
+      });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +26,7 @@
             <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
         </header>
         <div class="abstract">
-            {{ paper.abstract | truncatewords:75 | markdown}}
+            {{ paper.abstract | markdown}}
         </div>
         <div class="meta">
             <ul>
