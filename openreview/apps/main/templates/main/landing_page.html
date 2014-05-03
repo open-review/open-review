@@ -48,20 +48,11 @@
         <h2><a href="/papers/new">Recently submitted papers</a></h2>
         {% if new_papers %}
             <ol>
-            {% for review in top_reviews %}
+            {% for paper in new_papers %}
                 <li>
-                    <a href="{% url 'paper' review.paper.id %}#r{{ review.id }}">
-                        <span class="author">
-                            {% if review.poster == None %}
-                                Anonymous
-                            {% else %}
-                                {{ review.poster.username }}
-                            {% endif %}
-
-                            —
-                        </span>
-
-                        {{ review.text|truncatechars:110 }}
+                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
+                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
+                        <span>{{ paper.num_reviews }}</span>
                     </a>
                 </li>
             {% endfor %}
@@ -69,6 +60,5 @@
         {% else %}
           <p><em>No papers are available yet.</em></p>
         {% endif %}
-
     </section>
 {% endblock %}

@@ -10,11 +10,10 @@ from openreview.apps.papers import scrapers
 
 def landing_page(request):
     paper_count = 5
-    review_count = 3
 
     return render(request, "main/landing_page.html", {
       "trending_papers": Paper.trending(top=paper_count),
-      "top_reviews": Review.latest()[:review_count]
+      "new_papers": Paper.latest()[:paper_count]
     })
 
 @login_required
