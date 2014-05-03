@@ -20,6 +20,9 @@ body > main .reviews > h2 {
 
 .reviews section.review {
     position: relative;
+    line-height: 1.7em;
+    font-size: 13px;
+    font-family: Merriweather, Georgia, serif;
 }
 
 .reviews section.review + section.review {
@@ -58,9 +61,11 @@ body > main .reviews > h2 {
 }
 
 .reviews section.review > div.voting span {
+    font-family: 'Open Sans', 'Arial', sans-serif;
     font-size: 20px;
+    text-align: center;
     z-index: 1;
-    width: 39px;
+    width: 44px;
     left: 0;
     font-weight: bold;
     color: #1A3333;
@@ -77,7 +82,7 @@ body > main .reviews > h2 {
 .reviews section.review > header {
     overflow: hidden;
     margin-bottom: 10px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .reviews section.review > header a.author,
