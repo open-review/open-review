@@ -19,7 +19,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dotdotdot.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        $(".abstract").dotdotdot();
+        $(".abstract").dotdotdot({ after: "a.readmore" });
       });
     </script>
 {% endblock %}
@@ -31,6 +31,9 @@
         </header>
         <div class="abstract">
             {{ paper.abstract | markdown}}
+            {% if paper.urls %}
+            <a href="{{ paper.urls }}" class="readmore">&raquo; Read full abstract on {{ paper.get_url_domain }}</a>
+            {% endif %}
         </div>
         <div class="meta">
             <ul>

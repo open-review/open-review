@@ -3,6 +3,7 @@ import datetime
 from django.utils import timezone
 from django.db import models
 from django.db.models import Count
+from urllib.parse import urlparse
 
 from openreview.apps.main.models.category import Category
 from openreview.apps.main.models.review import Vote, Review
@@ -94,7 +95,13 @@ class Paper(models.Model):
         result = ", ".join([x.name for x in self.authors.all()][:authors])
         if self.authors.count() > authors:
             result += " et al."
-        return result
+        return 
+
+    def get_url_domain(self):
+        if self.urls:
+            parsed_uri = urlparse(self.urls)
+            return '{uri.netloc}'.format(uri=parsed_uri)     
+        return None
 
     def __str__(self):
         return self.title
