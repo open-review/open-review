@@ -74,18 +74,23 @@ body > main .box {
 }
 
 body > main .box + .box {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 body > main .box h2 {
-  font-size: 16px;
-  margin: 0;
-  padding: 17px 20px 15px 20px;
-  border-bottom: 2px #E5E5E5 solid;
+    font-size: 16px;
+    margin: 0;
+    border-bottom: 2px #E5E5E5 solid;
 }
 
-body > main .box h2 {
-  color: #5D5D5D;
+body > main .box h2 span,
+body > main .box h2 a {
+    display: block;
+    padding: 17px 20px 15px 20px;
+}
+
+body > main .box h2 a {
+    color: #5D5D5D;
 }
 
 body > main .box ol,
@@ -109,52 +114,52 @@ body > main .box ol li a {
     padding: 6px;
 }
 
-body > main .box.trending-papers ol li a {
+body > main .box.papers ol li a {
     float: left;
 }
 
-body > main .box.trending-papers ol li a + a {
+body > main .box.papers ol li a + a {
     padding-left: 0;
 }
 
-body > main .box.trending-papers ol li a.title {
+body > main .box.papers ol li a.title {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     width: 430px;
 }
 
-body > main .box.trending-papers ol li:hover > a.title {
+body > main .box.papers ol li:hover > a.title {
     text-decoration: underline;
     width: 390px;
     margin-right: -6px;
 }
 
-body > main .box.trending-papers ol li a.number-of-reviews {
+body > main .box.papers ol li a.number-of-reviews {
     float: right;
     width: 28px;
 }
 
-body > main .box.trending-papers ol li a.number-of-reviews:hover,
-body > main .box.trending-papers ol li a.title:hover + a.number-of-reviews {
+body > main .box.papers ol li a.number-of-reviews:hover,
+body > main .box.papers ol li a.title:hover + a.number-of-reviews {
     width: 76px;
     right: 76px;
 }
 
-body > main .box.trending-papers ol li a.number-of-reviews:hover > span,
-body > main .box.trending-papers ol li a.title:hover + a.number-of-reviews > span {
+body > main .box.papers ol li a.number-of-reviews:hover > span,
+body > main .box.papers ol li a.title:hover + a.number-of-reviews > span {
     background: #187676;
     color: #fff;
     width: auto;
     padding: 0 5px;
 }
 
-body > main .box.trending-papers ol li a.number-of-reviews:hover > span:after,
-body > main .box.trending-papers ol li a.title:hover + a.number-of-reviews > span:after {
+body > main .box.papers ol li a.number-of-reviews:hover > span:after,
+body > main .box.papers ol li a.title:hover + a.number-of-reviews > span:after {
     content: " reviews";
 }
 
-body > main .box.trending-papers ol li span {
+body > main .box.papers ol li span {
     float: right;
     width: 16px;
     height: 16px;
@@ -167,7 +172,7 @@ body > main .box.trending-papers ol li span {
     font-weight: 600;
 }
 
-body > main .box.top-reviews ol li + li {
+/*body > main .box.top-reviews ol li + li {
   margin-top: 3px;
 }
 
@@ -175,21 +180,10 @@ body > main .box.top-reviews ol li a > span.author {
     color: #000;
     text-decoration: none;
     padding: 6px 0;
-}
-
-body > main .contributing-to-open-review,
-body > main .publishing-on-open-review {
-    width: 490px;
-    float: left;
-    margin-bottom: 40px;
-}
-
-body > main .publishing-on-open-review {
-    margin-left: 20px;
-}
+}*/
 
 body > main .submit-paper-for-review {
-  width: 549px;
+  width: 590px;
   margin: 0 auto 60px auto;
   height: 42px;
 }
