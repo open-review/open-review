@@ -17,6 +17,7 @@ body > main > section.paper div.meta {
 
 body > main > section.paper div.abstract {
     width: 618px;
+    max-height: 140px;
     float: left;
     margin-left: 20px;
     margin-right: 20px;
