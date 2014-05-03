@@ -86,6 +86,15 @@ class Paper(models.Model):
         votes = Vote.objects.filter(review__paper=self)
         return votes if include_comments else votes.filter(parent=None)
 
+    def get_authors(self, authors=5):
+        print("hi");
+        print([x.name for x in self.authors.all()]);
+        result = ", ".join([x.name for x in self.authors.all()][:authors])
+        if self.authors.count() > authors:
+            result += " et al."
+        print("hi")
+        return result
+
     def __str__(self):
         return self.title
 
