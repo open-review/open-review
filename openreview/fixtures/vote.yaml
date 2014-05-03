@@ -1,0 +1,66 @@
+- fields: {review: 25, vote: 1, voter: 7}
+  model: main.vote
+  pk: 1
+- fields: {review: 26, vote: -1, voter: 7}
+  model: main.vote
+  pk: 2
+- fields: {review: 35, vote: 1, voter: 7}
+  model: main.vote
+  pk: 3
+- fields: {review: 34, vote: -1, voter: 7}
+  model: main.vote
+  pk: 4
+- fields: {review: 31, vote: 1, voter: 7}
+  model: main.vote
+  pk: 5
+- fields: {review: 25, vote: 1, voter: 3}
+  model: main.vote
+  pk: 6
+- fields: {review: 26, vote: 1, voter: 3}
+  model: main.vote
+  pk: 7
+- fields: {review: 27, vote: 1, voter: 3}
+  model: main.vote
+  pk: 8
+- fields: {review: 35, vote: 1, voter: 3}
+  model: main.vote
+  pk: 9
+- fields: {review: 28, vote: 1, voter: 3}
+  model: main.vote
+  pk: 10
+- fields: {review: 29, vote: 1, voter: 3}
+  model: main.vote
+  pk: 11
+- fields: {review: 31, vote: 1, voter: 3}
+  model: main.vote
+  pk: 12
+- fields: {review: 11, vote: -1, voter: 3}
+  model: main.vote
+  pk: 13
+- fields: {review: 12, vote: -1, voter: 3}
+  model: main.vote
+  pk: 14
+- fields: {review: 25, vote: 1, voter: 1}
+  model: main.vote
+  pk: 15
+- fields: {review: 27, vote: -1, voter: 1}
+  model: main.vote
+  pk: 16
+- fields: {review: 26, vote: -1, voter: 1}
+  model: main.vote
+  pk: 17
+- fields: {review: 11, vote: -1, voter: 1}
+  model: main.vote
+  pk: 18
+- fields: {review: 12, vote: -1, voter: 1}
+  model: main.vote
+  pk: 19
+- fields: {review: 29, vote: 1, voter: 1}
+  model: main.vote
+  pk: 20
+- fields: {review: 2, vote: -1, voter: 1}
+  model: main.vote
+  pk: 21
+- fields: {review: 31, vote: 1, voter: 1}
+  model: main.vote
+  pk: 22
