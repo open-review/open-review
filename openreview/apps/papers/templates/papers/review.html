@@ -28,9 +28,7 @@
 <section class="comments box">
     {% for comment in review.get_comments %}
         <section class="comment">
-            <span class="author">
-                {{ comment|format_author }} <a href="#">commented:</a>
-            </span>
+            <span class="author">{{ comment|format_author }} <a href="#">commented:</a></span>
             {% if comment.text %}
                 {{ comment.text|markdown }}
             {% else %}

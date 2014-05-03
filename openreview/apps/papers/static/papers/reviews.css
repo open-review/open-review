@@ -114,3 +114,7 @@ body > main .reviews > h2 {
 .reviews section.review article.content p + p {
     margin-top: 10px;
 }
+
+.reviews section.review article.content a.add-comment {
+    float: right;
+}
