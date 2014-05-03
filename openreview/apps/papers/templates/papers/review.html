@@ -1,4 +1,5 @@
 {% load markdown %}
+{% load author %}
 
 <section data-review-id="{{ review.id }}" class="review box">
     <div data-url="{% url "vote" review.paper_id review.id %}" class="voting">
@@ -8,12 +9,10 @@
     </div>
 
     <header>
-        {% if review.anonymous %}
-            Anonymous
-        {% else %}
-            {{ review.poster.full_name }}
-        {% endif %} <a href="{% url 'review' review.paper_id review.id %}">wrote on <span class="datetime">{{ review.timestamp }}</span></a>:
-
+        <span class="author">
+            {{ review|format_author}}
+            <a href="{% url 'review' review.paper_id review.id %}">wrote on {{ review.timestamp }}</a>:
+        </span>
         <span class="rating">★★☆☆☆</span>
     </header>
 
@@ -24,4 +23,24 @@
             <p class="deleted">[deleted]</p>
         {% endif %}
     </article>
+</section>
+
+<section class="comments box">
+    {% for comment in review.get_comments %}
+        <section class="comment">
+            <span class="author">
+                {{ comment|format_author }} <a href="#">commented:</a>
+            </span>
+            {% if comment.text %}
+                {{ comment.text|markdown }}
+            {% else %}
+                <p class="deleted">[deleted]</p>
+            {% endif %}
+        </section>
+    {% endfor %}
+
+    <section class="compose-comment">
+        <input type="text" placeholder="Write a comment..." />
+        <button type="submit">Add comment</button>
+    </section>
 </section>
