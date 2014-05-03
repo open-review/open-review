@@ -95,7 +95,7 @@ class Paper(models.Model):
         result = ", ".join([x.name for x in self.authors.all()][:authors])
         if self.authors.count() > authors:
             result += " et al."
-        return 
+        return result
 
     def get_url_domain(self):
         if self.urls:
