@@ -97,9 +97,12 @@ class Review(models.Model):
             return self._n_comments
         return self.get_tree_size() - 1
 
+    @property
     def get_comments(self):
         """Fetches direct (self.level + 1) comments"""
-        return self._reviews_children[self.id]
+        if self._reviews_children[self.id] is not None:
+            return self._reviews_children[self.id]
+        return []
 
     @property
     def n_upvotes(self):
