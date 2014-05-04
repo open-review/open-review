@@ -16,7 +16,10 @@ stopped_typing = (form) ->
 
   form_data.paper = $(".paper").data("paper-id")
   form_data.visibility = "public"
-  form_data.rating = 2
+
+  if (form_data.rating == "")
+    form_data.rating = 1
+
 
   $.ajax({
     type: "POST",
