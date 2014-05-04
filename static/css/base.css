@@ -262,3 +262,7 @@ body > main > section.pagination > div > a:hover {
     color: #fff;
     text-decoration: none;
 }
+
+body > main > section.compose-review > div.rating-input > span {
+    cursor: pointer;
+}

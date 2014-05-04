@@ -40,10 +40,13 @@
                 <li><strong>Authors:</strong> {{ paper.get_authors }}</li>
                 <li><strong>Publication date:</strong> {{ paper.publish_date }}</li>
                 <li><strong>Keywords:</strong>
-                    <a href="#">Stochastic Frontier</a>,
-                    <a href="#">Sample Selection</a>,
-                    <a href="#">Simulation</a>,
-                    <a href="#">Efficiency</a>
+                {% if not keywords %}
+                    None
+                {% else %}
+                    {% for keyword in keywords %}
+                        <a href="{{ keyword.url }}">{{ keyword.text }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
                 </li>
             </ul>
         </div>
@@ -81,13 +84,15 @@
 
     <section data-preview-id="new-review-preview" class="compose-review box">
         <h2>Share your opinion by writing a review</h2>
-        <div class="rating">★★★☆☆</div>
+        <div class="rating rating-input" data-id="rating"></div>
         <form action="#" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="rating" id="rating" value="" />
             <textarea name="text" placeholder="Provide a professional opinion on this paper."></textarea>
             <p style="display:none;" class="preview-error permission-denied">
                 You need to be <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}#new">logged</a> in to submit a review!
             </p>
+
             <label>
                 <input type="checkbox" name="is_anonymously" />
                 <span>Place anonymously</span>

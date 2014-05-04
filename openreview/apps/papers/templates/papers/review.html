@@ -13,7 +13,12 @@
             {{ review|format_author}}
             <a href="{% url 'review' review.paper_id review.id %}">wrote on {{ review.timestamp }}</a>:
         </span>
-        <span class="rating">★★☆☆☆</span>
+
+        <span class="rating">
+            {% for i in "1234567" %}
+                {% if review.rating > forloop.counter0 %}★{% else %}☆{% endif %}
+            {% endfor %}
+        </span>
     </header>
 
     <article class="content {% if review.is_deleted %}deleted{% endif %}">
