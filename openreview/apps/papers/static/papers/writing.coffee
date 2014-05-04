@@ -1,4 +1,5 @@
 TIMEOUT_AFTER = 750
+PREVIEW_PROCEDURE_API_URL = "/api/v1/procedures/preview"
 
 anonymous = $("body").data("anonymous")
 last_keypress = null
@@ -13,14 +14,13 @@ stopped_typing = (form) ->
     form_data[x.name] = x.value
   );
 
-  if form.data("preview")
-    url = form.data("preview")
-  else
-    url = form.attr("action")
+  form_data.paper = $(".paper").data("paper-id")
+  form_data.visibility = "public"
+  form_data.rating = 2
 
   $.ajax({
     type: "POST",
-    url: url,
+    url: PREVIEW_PROCEDURE_API_URL,
     data: form_data,
     success: review_received.bind(form),
     error: error_received.bind(form)
@@ -29,18 +29,20 @@ stopped_typing = (form) ->
   last_keypress = null
 
 error_received = (jqXHR, textStatus) ->
-  preview = this.closest(".new")
+  preview = this.closest(".compose-review")
   error_class = if jqXHR.status == 403 then "permission-denied" else "uknown"
   error = preview.find(".preview-error.#{error_class}")
   error.find(".status-code").text(jqXHR.status)
   error.find(".status-text").text(jqXHR.statusText)
   error.show()
+  preview.find("[type=submit]").attr("disabled", "disabled")
 
 review_received = (html) ->
-  preview = this.closest(".new").find(".preview")
+  preview = $("#"+$(this).closest(".compose-review").data("preview-id"));
   preview.html(html)
   preview.find(".voting").hide()
   preview.find(".options").hide()
+  preview.find(".comments").hide()
   MathJax.Hub.Queue(["Typeset", MathJax.Hub, preview.get(0)]);
 
 keyup = (e) ->
@@ -74,8 +76,9 @@ icon_clicked = (hide, toggle) ->
 
 $(".review .options .edit").click(icon_clicked("new", "edit"))
 $(".review .options .reply").click(icon_clicked("edit", "new"))
-$(".new-review:visible textarea").focus(->
-  init_writing($(this).closest(".review-container"))
+
+$("main > .compose-review.box textarea").focus(->
+  init_writing($(this).closest(".compose-review"))
 )
 
 # Show the edit form of reviews that were being edited but contain errors

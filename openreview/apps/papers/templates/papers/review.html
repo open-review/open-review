@@ -1,7 +1,7 @@
 {% load markdown %}
 {% load author %}
 
-<section data-review-id="{{ review.id }}" class="review box">
+<section data-paper-id="{{ review.paper_id }}" data-review-id="{{ review.id }}" class="review box">
     <div data-url="{% url "vote" review.paper_id review.id %}" class="voting">
       <a class="up">❮</a>
       <span class="counter">{{ review.score }}</span>

@@ -1,48 +1,48 @@
-body > main > section.navigation-bar {
+main > section.navigation-bar {
 }
 
-body > main > section.navigation-bar > header {
+main > section.navigation-bar > header {
     overflow: hidden;
 }
 
-body > main > section.navigation-bar > header > h1 {
+main > section.navigation-bar > header > h1 {
     float: left;
     display: block;
 }
 
-body > main > section.navigation-bar > header > ul {
+main > section.navigation-bar > header > ul {
     float: right;
     overflow: hidden;
     margin: 0;
     padding: 17px 20px 15px 20px;
 }
 
-body > main > section.navigation-bar > header > ul li {
+main > section.navigation-bar > header > ul li {
     display: block;
     float: left;
     margin: 0;
     padding: 0;
 }
 
-body > main > section.navigation-bar > header > ul li a {
+main > section.navigation-bar > header > ul li a {
     padding: 0 10px;
     line-height: 30px;
     display: block;
 }
 
-body > main > section.navigation-bar > header > ul li a.active,
-body > main > section.navigation-bar > header > ul li a.active:hover {
+main > section.navigation-bar > header > ul li a.active,
+main > section.navigation-bar > header > ul li a.active:hover {
     background: #187676;
     color: #fff;
     border-radius: 2px;
     text-decoration: none;
 }
 
-body > main > section.navigation-bar > header > ul li + li {
+main > section.navigation-bar > header > ul li + li {
     margin-left: 20px;
 }
 
-body > main > section.listing {
+main > section.listing {
     margin-top: 20px;
 }
 
