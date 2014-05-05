@@ -5,7 +5,7 @@ class PaperDetailsBox
     @$submissionTypeSelect.change -> paperDetailsBox.switchSubmissionType($(this).val())
 
   hasSubmissionType: (type) ->
-    @$elem.has('#' + type + '-details')
+    $('#' + type + '-details').length > 0
 
   switchSubmissionType: (type) ->
     return unless @hasSubmissionType(type)
