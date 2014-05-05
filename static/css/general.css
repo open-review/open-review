@@ -79,6 +79,7 @@ body a.button:active {
 body input[type=text],
 body input[type=password],
 body input[type=email],
+body input[type=date],
 body textarea {
     font-size: 13px;
     padding: 7px 10px;
@@ -93,6 +94,7 @@ body textarea {
 body input[type=text]:focus,
 body input[type=password]:focus,
 body input[type=email]:focus,
+body input[type=date]:focus,
 body textarea:focus {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.8);
@@ -101,6 +103,7 @@ body textarea:focus {
 body input[type=text]:disabled,
 body input[type=password]:disabled,
 body input[type=email]:disabled,
+body input[type=date]:disabled,
 body textarea:disabled {
     background: #F5F5F5;
     color: #8A8888;

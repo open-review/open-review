@@ -31,8 +31,21 @@ body > main > section.box > form label {
     width: 100px;
 }
 
-body > main > section.box > form input {
+body > main > section.box > form input,
+body > main > section.box > form textarea {
     width: 448px;
+}
+
+body > main > section.box > form textarea {
+    min-height: 100px;
+}
+
+body > main > section.box > form label:before {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
 }
 
 body > main > section.box > form button[type=submit] {
@@ -40,4 +53,8 @@ body > main > section.box > form button[type=submit] {
     width: auto;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+body > main > section.box > form hr {
+    margin-bottom: 20px;
 }

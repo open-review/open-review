@@ -155,7 +155,8 @@ body > main > section.box > form {
 }
 
 body > main > section.box > form label,
-body > main > section.box > form input {
+body > main > section.box > form input,
+body > main > section.box > form textarea {
     display: block;
     margin-bottom: 20px;
 }
@@ -168,6 +169,7 @@ body > main > section.box > form label {
 }
 
 body > main > section.box > form input,
+body > main > section.box > form textarea,
 body > main > section.box > form ul.errorlist {
     clear: right;
     float: right;
@@ -183,11 +185,13 @@ body > main > section.box > form ul.errorlist {
     font-size: 12px;
 }
 
-body > main > section.box > form ul.errorlist + input {
+body > main > section.box > form ul.errorlist + input,
+body > main > section.box > form ul.errorlist + textarea {
     clear: both;
     float: none;
     width: 100%;
 }
+
 
 body > main > section.box > form span.helptext {
     clear: both;

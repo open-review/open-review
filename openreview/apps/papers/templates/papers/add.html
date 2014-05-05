@@ -29,20 +29,25 @@
         <form method="POST" id="arxiv-details">
             {% csrf_token %}
             <label>Arxiv ID:</label><input type="text" placeholder="For example: 1401.0003" />
-            <button name="submit-paper" type="submit">Submit this paper</button>
+            <button name="submit-paper" type="submit">Save details &amp; submit paper</button>
         </form>
 
         <form method="POST" id="doi-details">
             {% csrf_token %}
             <label>DOI:</label><input type="text" placeholder="For example: 10.1006/jmbi.1998.2354" />
-            <button name="submit-paper" type="submit">Submit this paper</button>
+            <button name="submit-paper" type="submit">Save details &amp; submit paper</button>
         </form>
 
         <form method="POST" id="manually-details">
             {% csrf_token %}
             <label>Title:</label><input type="text" />
             <label>Authors:</label><input type="text" placeholder="Seperated by commas, for example: Tony Cai, Xiaodong Li" />
-            <button name="submit-paper" type="submit">Submit this paper</button>
+            <label>Abstract:</label><textarea placeholder="May contain \LaTeX and *Markdown*"></textarea>
+            <hr />
+            <label>Publish date:</label><input type="date" />
+            <label>Publisher:</label><input type="text" placeholder="For example: Elsevier" />
+            <label>Link:</label><input type="text" placeholder="For example: http://www.sciencedirect.com/science/article/pii/S0004370201001667" />
+            <button name="submit-paper" type="submit">Save details &amp; submit paper</button>
         </form>
     </section>
 
