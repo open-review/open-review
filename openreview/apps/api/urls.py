@@ -4,12 +4,13 @@ from rest_framework import routers
 from openreview.apps.api import procedures
 from openreview.apps.api.procedures import ProcedureViewSet
 
-from openreview.apps.api.viewsets import user, paper, author, category, keyword
+from openreview.apps.api.viewsets import user, paper, author, category, keyword, review
 from openreview.apps.api.viewsets.keyword import KeywordViewSet
 
 top_router = routers.DefaultRouter()
 top_router.register(r'users', user.UserViewSet)
 top_router.register(r'papers', paper.PaperViewSet)
+top_router.register(r'reviews', review.ReviewViewSet)
 top_router.register(r'authors', author.AuthorViewSet)
 top_router.register(r'categories', category.CategoryViewSet)
 top_router.register(r'keywords', KeywordViewSet)
@@ -23,6 +24,8 @@ papers_router = routers.DefaultRouter()
 papers_router.register(r'reviews', paper.ReviewViewSet)
 papers_router.register(r'authors', paper.AuthorViewSet)
 papers_router.register(r'keywords', paper.KeywordViewSet)
+
+reviews_router = routers.DefaultRouter()
 
 keywords_router = routers.DefaultRouter()
 keywords_router.register(r'papers', keyword.PaperViewSet)
@@ -38,6 +41,7 @@ urlpatterns = patterns('',
     url(r'^papers/(?P<paper_id>[0-9]+)/', include(papers_router.urls)),
     url(r'^keywords/(?P<keyword_id>[0-9]+)/', include(keywords_router.urls)),
     url(r'^categories/(?P<category_id>[0-9]+)/', include(categories_router.urls)),
+    url(r'^reviews/(?P<review_id>[0-9]+)/', include(reviews_router.urls)),
     url(r'^procedures/', include(procedures.urlpatterns)),
 )
 
