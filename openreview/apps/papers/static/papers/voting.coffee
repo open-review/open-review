@@ -1,4 +1,5 @@
 anonymous = $("body").data("anonymous")
+VOTE_PROCEDURE_API_URL = "/api/v1/procedures/vote"
 
 ###
 Given a vote-button, change its value with `delta`.
@@ -28,10 +29,11 @@ vote = (btn, value) ->
   # Send vote; don't do anything if server reports error.
   $.ajax {
     method: "POST",
-    url : review.find(".voting").data("url")
+    url : VOTE_PROCEDURE_API_URL
     data: {
       vote: if reversed then 0 else value,
-      csrfmiddlewaretoken: $("body").data("csrf")
+      csrfmiddlewaretoken: $("body").data("csrf"),
+      review: review.data("review-id")
     }
   }
 

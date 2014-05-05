@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from openreview.apps.api.procedures.preview import PreviewProcedure
+from openreview.apps.api.procedures.vote import VoteProcedure
 
 
 __all__ = [
@@ -11,7 +12,7 @@ __all__ = [
     "PreviewProcedure"
 ]
 
-PROCEDURES = [PreviewProcedure]
+PROCEDURES = [PreviewProcedure, VoteProcedure]
 
 def get_procedure_name(viewcls):
     """

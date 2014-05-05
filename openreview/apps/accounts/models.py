@@ -20,9 +20,13 @@ class User(AbstractUser):
         super().delete()
 
     def full_name(self):
-        name = "{first} {last}".format(first=self.first_name, last=self.last_name) if \
-            self.first_name and self.last_name else "{{}}".format(self.username)
-        title = " ({title}, {university})".format(title=self.title, university = self.university) if \
-            self.title and self.university else ""
-        return name+title
+        full_name = "{self.username}"
+
+        if self.first_name and self.last_name:
+            full_name = "{self.first_name} {self.last_name}"
+        if self.university and self.title:
+            full_name += " ({self.title}, {self.university})"
+
+        return full_name.format(self=self)
+
 

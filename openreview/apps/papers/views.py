@@ -11,43 +11,13 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from haystack.query import SearchQuerySet
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView
 
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
-from openreview.apps.papers.forms import VoteForm
-from openreview.apps.papers import scrapers
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
-
-class VoteView(ModelViewMixin, FormView):
-    """
-    Allows voting on reviews. You can use the GET parameter 'vote' to cast one. For
-    downvoting, upvoting or removing a vote use -1, 1 and 0 as value.
-    """
-    form_class = VoteForm
-    template_name = "form.html"
-
-    def get_form_kwargs(self):
-        instance, _ = Vote.objects.get_or_create(voter=self.request.user, review=self.objects.review)
-        return dict(super().get_form_kwargs(), instance=instance)
-
-    def get_success_url(self):
-        return self.request.path
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        response.status_code = 400
-        return response
-
-    @method_decorator(login_required(raise_exception=False))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
@@ -59,7 +29,7 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         while root.parent is not None:
             root = root.parent
 
-        url = zreverse("review", args=[review.paper_id, root.id])
+        url = reverse("review", args=[review.paper_id, root.id])
         return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
 
     def post(self, request, *args, **kwargs):
@@ -205,34 +175,6 @@ class PapersView(TemplateView):
 
     def get_object(self, queryset=None):
         return queryset.get(name=self.name)
-
-
-class PreviewView(BaseReviewView):
-    @method_decorator(login_required(raise_exception=True))
-    def post(self, request, paper_id, **kwargs):
-        review = Review()
-        review.poster = request.user
-        review.paper = self.objects.paper
-        review.timestamp = datetime.datetime.now()
-
-        # Note that the review's text field can be either submitted as '{review_id}-text' (on the
-        # paper page, where multiple reviews may be edited) or as 'text' (on the 'add review' page,
-        # where only one review may be added). This is because fields should have unique names -
-        # especially the star rating field, which is referenced to by name. This is easily solved
-        # by taking any field that ends with 'text' as the review text.
-        text = ""
-        for key, value in request.POST.items():
-            if key.endswith("text"):
-                text = value
-
-        review.text = text
-
-        return render(request, "papers/review.html", {
-            'paper': Paper.objects.get(id=paper_id),
-            'review': review,
-            'preview': True
-        })
-
 
 class ReviewView(BaseReviewView):
     template_name = "papers/comments.html"

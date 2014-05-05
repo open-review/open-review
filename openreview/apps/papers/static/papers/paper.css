@@ -107,10 +107,8 @@ body > main > section.compose-review form textarea {
     -webkit-transition: height 0.2s;
     transition: height 0.2s;
     margin-bottom: 10px;
-}
-
-body > main > section.compose-review form textarea:focus {
-    height: 160px;
+    max-width:100%;
+    min-width:100%;
 }
 
 body > main > section.compose-review form label {

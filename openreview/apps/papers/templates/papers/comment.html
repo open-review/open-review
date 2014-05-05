@@ -1,17 +1,16 @@
-<div class="new row">
-  <div class="col-md-6">
-      <form method="POST" action="{% url 'review' paper.id parent.id %}">
-          {% csrf_token %}
-          <textarea name="text" placeholder="Write a new comment!">{{ review.text }}</textarea>
-          <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
-          
-          <input type="hidden" name="rating" value="{{ review.rating }}" />
-          {% if review.id %}
-              <input type="hidden" name="edit" value="{{ review.id }}" />
-          {% endif %}
-      </form>
-  </div>
-  <div class="col-md-6">
-      {% include "papers/preview.html" %}
-  </div>
-</div>
+<textarea name="text" placeholder="You can use markdown and LaTeX"></textarea>
+
+<p style="display:none;" class="preview-error permission-denied">
+    You need to be <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}#new">logged</a> in to submit a review!
+</p>
+
+<select name="visibility">
+    <option value="public">Public</option>
+    <option value="semi_anonymous">Semi-anonymous</option>
+    <option value="anonymous">Anonymous</option>
+    <option value="external">External</option>
+</select>
+
+<small><a href="#">What do these options mean?</a></small>
+
+<button type="submit">Submit review</button>
