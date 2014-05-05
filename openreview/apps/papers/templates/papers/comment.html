@@ -4,13 +4,16 @@
     You need to be <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}#new">logged</a> in to submit a review!
 </p>
 
-<select name="visibility">
-    <option value="public">Public</option>
-    <option value="semi_anonymous">Semi-anonymous</option>
-    <option value="anonymous">Anonymous</option>
-    <option value="external">External</option>
-</select>
+<label>
+    <select name="visibility">
+        <option value="public">Public</option>
+        <option value="semi_anonymous">Semi-anonymous</option>
+        <option value="anonymous">Anonymous</option>
+        <option value="external">External</option>
+    </select>
 
-<small><a href="#">What do these options mean?</a></small>
+    <!-- TODO: Add small tooltip with black bg and triangle     -->
+    <small><a href="#">What do these options mean?</a></small>
+</label>
 
 <button type="submit">Submit review</button>

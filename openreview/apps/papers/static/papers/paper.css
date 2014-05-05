@@ -125,18 +125,13 @@ body > main > section.compose-review form label:hover {
     cursor: pointer;
 }
 
-body > main > section.compose-review form label > input[type=checkbox] {
+body > main > section.compose-review form label > select {
     margin-right: 10px;
     clear: none;
     float: none;
     width: auto;
     display: inline;
     margin-bottom: 0;
-}
-
-body > main > section.compose-review form label:hover > span,
-body > main > section.compose-review form label > input[type=checkbox]:checked + span {
-    text-decoration: underline;
 }
 
 body > main > section.compose-review form button[type=submit] {
@@ -153,7 +148,7 @@ body > main > section.compose-review form button:active {
     padding-bottom: 7px;
 }
 
-#new-review-preview{
+#new-review-preview {
     margin-top:20px;
     padding-right:21px;
 }
