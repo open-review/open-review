@@ -11,31 +11,68 @@ body {
     font-family: 'Open Sans', 'Arial', sans-serif;
 }
 
-body h1,
-body h2 {
+h1,
+h2 {
     font-family: Merriweather, Georgia, serif;
     text-shadow: 0 1px 0 #fff;
 }
 
-body h1 {
+h1 {
     font-size: 28px;
 }
 
-body h2 {
+h2 {
     font-size: 22px;
 }
 
-body a {
+a {
     text-decoration: none;
     color: #187676;
 }
 
-body a:hover {
+a:hover {
     text-decoration: underline;
 }
 
-body button,
-body a.button {
+a.tooltip:hover {
+    text-decoration: none;
+    padding-bottom: 10px;
+}
+
+a.tooltip span {
+    z-index: 1;
+    display: none;
+    padding: 7px;
+    margin-top: 25px;
+    margin-left: -55px;
+    line-height: 1.5em;
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 4px;
+}
+
+a.tooltip:hover span {
+    display: inline;
+    position: absolute;
+    border: 2px solid #FFF;
+    color: #fff;
+}
+
+a.tooltip:hover span:before {
+  border-left: 5px transparent solid;
+  border-right: 5px transparent solid;
+  border-bottom: 5px rgba(0, 0, 0, 0.9) solid;
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  content: ' ';
+  top: -5px;
+  left: 5px;
+}
+
+button,
+a.button {
     font-family: 'Open Sans', Arial, sans-serif;
     font-size: 15px;
     text-align: center;
@@ -54,18 +91,18 @@ body a.button {
     padding: 10px;
 }
 
-body button:hover,
-body button:focus,
-body a.button:hover,
-body a.button:focus {
+button:hover,
+button:focus,
+a.button:hover,
+a.button:focus {
     color: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     outline: none;
     text-decoration: none;
 }
 
-body button:active,
-body a.button:active {
+button:active,
+a.button:active {
     padding-top: 11px;
     padding-bottom: 9px;
     background: -moz-linear-gradient(bottom, #FAFCFC 0%, #F3F7F7 100%);
@@ -76,11 +113,11 @@ body a.button:active {
     box-shadow: 0 1px 0 0 #FFF, inset 0 1px 0 1px #FFF;
 }
 
-body input[type=text],
-body input[type=password],
-body input[type=email],
-body input[type=date],
-body textarea {
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=date],
+textarea {
     font-size: 13px;
     padding: 7px 10px;
     color: rgba(0, 0, 0, 0.8);
@@ -91,33 +128,33 @@ body textarea {
     box-shadow: 0 1px 0 0 #fff, inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 
-body input[type=text]:focus,
-body input[type=password]:focus,
-body input[type=email]:focus,
-body input[type=date]:focus,
-body textarea:focus {
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=date]:focus,
+textarea:focus {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
-body input[type=text]:disabled,
-body input[type=password]:disabled,
-body input[type=email]:disabled,
-body input[type=date]:disabled,
-body textarea:disabled {
+input[type=text]:disabled,
+input[type=password]:disabled,
+input[type=email]:disabled,
+input[type=date]:disabled,
+textarea:disabled {
     background: #F5F5F5;
     color: #8A8888;
     -webkit-text-fill-color :#8A8888;
     text-shadow: 0 1px 0 #FFF;
 }
 
-body textarea {
+textarea {
     color: #202020;
     font-size: 13px;
     padding: 10px;
 }
 
-body .box {
+.box {
     border-radius: 2px;
     background: #FCFCFC;
     border: 1px solid rgba(0, 0, 0, 0.2);

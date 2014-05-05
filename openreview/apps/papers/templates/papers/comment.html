@@ -5,6 +5,16 @@
 </p>
 
 <label>
+    <a class="tooltip" href="#">
+        Visibility:
+        <span>
+            <strong>Public:</strong> visible to everyone<br />
+            <strong>Semi-anonymous:</strong> name will be hidden<br />
+            <strong>Anonymous:</strong> completely anonymous<br />
+            <strong>External:</strong> written by external author<br />
+        </span>
+    </a>
+
     <select name="visibility">
         <option value="public">Public</option>
         <option value="semi_anonymous">Semi-anonymous</option>
@@ -12,8 +22,6 @@
         <option value="external">External</option>
     </select>
 
-    <!-- TODO: Add small tooltip with black bg and triangle     -->
-    <small><a href="#">What do these options mean?</a></small>
 </label>
 
 <button type="submit">Submit review</button>

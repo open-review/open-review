@@ -121,12 +121,8 @@ body > main > section.compose-review form label {
     margin-bottom: 0;
 }
 
-body > main > section.compose-review form label:hover {
-    cursor: pointer;
-}
-
 body > main > section.compose-review form label > select {
-    margin-right: 10px;
+    margin-left: 10px;
     clear: none;
     float: none;
     width: auto;
