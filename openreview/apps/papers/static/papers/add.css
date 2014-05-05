@@ -58,3 +58,37 @@ body > main > section.box > form button[type=submit] {
 body > main > section.box > form hr {
     margin-bottom: 20px;
 }
+
+body > main > section.box > form .fetcher-results {
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: 150px;
+    display: none;
+    text-align: right;
+    font-style: italic;
+    line-height: 20px;
+}
+
+body > main > section.box > form .fetcher-results:before {
+    padding-right: 4px;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+body > main > section.box > form .fetcher-results.error:before {
+    content: "✗";
+}
+
+body > main > section.box > form .fetcher-results.success:before {
+    content: "✓";
+    color: #187676;
+}
+
+body > main > section.box > form .fetcher-results.loading {
+    height: 22px;
+}
+
+body > main > section.box > form .fetcher-results.loading:after {
+    content: "…";
+}

@@ -29,12 +29,14 @@
         <form method="POST" id="arxiv-details">
             {% csrf_token %}
             <label>Arxiv ID:</label><input type="text" placeholder="For example: 1401.0003" />
+            <div class="fetcher-results"></div>
             <button name="submit-paper" type="submit">Save details &amp; submit paper</button>
         </form>
 
         <form method="POST" id="doi-details">
             {% csrf_token %}
             <label>DOI:</label><input type="text" placeholder="For example: 10.1006/jmbi.1998.2354" />
+            <div class="fetcher-results"></div>
             <button name="submit-paper" type="submit">Save details &amp; submit paper</button>
         </form>
 
