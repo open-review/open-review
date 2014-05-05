@@ -1,4 +1,5 @@
 from datetime import datetime
+from django import forms
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelChoiceField
 from django.shortcuts import render
@@ -10,6 +11,12 @@ from openreview.apps.main.models import Paper
 
 class PreviewForm(ReviewForm):
     paper = ModelChoiceField(queryset=Paper.objects.all())
+
+    def clean_rating(self):
+        # Rating may also be not yet given in preview
+        if self.cleaned_data['rating'] == -1:
+            return -1
+        return super().clean_rating()
 
     def save(self, commit=True):
         review = super().save(commit=False)

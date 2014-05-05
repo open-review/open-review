@@ -21,12 +21,12 @@ set_value = (field, value) ->
 
 # Sets hidden value of `field` to `value`.
 set_hidden_value = (field, value) ->
-  $("#" + field.data("id")).val(value)
+  $("#" + field.parent().data("id")).val(value)
 
 # Get current value of hidden input field. Returns -1 if an illegal value
 # is currently specified.
 get_value = (field) ->
-  input = $("#" + field.data("id"))
+  input = $("#" + field.parent().data("id"))
   value = parseInt(input.val(), 10)
 
   if isNaN(value)
@@ -35,6 +35,8 @@ get_value = (field) ->
 
 # Initialises star_input (sets triggers, creates empty star containers)
 init_star_input = (field) ->
+  field.append($("<div>"))
+  field = field.children().first()
   field.html ($("<span>").data("star", i) for i in [1..7])
   field.mouseleave(mouse_leave.bind(field))
 
