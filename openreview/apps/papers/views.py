@@ -11,43 +11,13 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.datastructures import MultiValueDict
 from haystack.query import SearchQuerySet
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView
 
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.main.forms import ReviewForm
-from openreview.apps.papers.forms import VoteForm
-from openreview.apps.papers import scrapers
 from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
-
-class VoteView(ModelViewMixin, FormView):
-    """
-    Allows voting on reviews. You can use the GET parameter 'vote' to cast one. For
-    downvoting, upvoting or removing a vote use -1, 1 and 0 as value.
-    """
-    form_class = VoteForm
-    template_name = "form.html"
-
-    def get_form_kwargs(self):
-        instance, _ = Vote.objects.get_or_create(voter=self.request.user, review=self.objects.review)
-        return dict(super().get_form_kwargs(), instance=instance)
-
-    def get_success_url(self):
-        return self.request.path
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        response.status_code = 400
-        return response
-
-    @method_decorator(login_required(raise_exception=False))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
