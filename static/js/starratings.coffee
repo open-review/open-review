@@ -21,7 +21,7 @@ set_value = (field, value) ->
 
 # Sets hidden value of `field` to `value`.
 set_hidden_value = (field, value) ->
-  $("#" + field.parent().data("id")).val(value)
+  $("#" + field.parent().data("id")).val(value).trigger("change")
 
 # Get current value of hidden input field. Returns -1 if an illegal value
 # is currently specified.

@@ -15,7 +15,6 @@ stopped_typing = (form) ->
   );
 
   form_data.paper = $(".paper").data("paper-id")
-  form_data.visibility = "public"
 
   if (form_data.rating == "")
     form_data.rating = 1
@@ -59,9 +58,13 @@ keyup = (e) ->
     timeout = setTimeout(stopped_typing.bind(e), TIMEOUT_AFTER);
 
 init_writing = (container) ->
+  form = $(container).find("form")
   $(container).find("textarea").keyup(keyup)
-  stopped_typing $(container).find("form")
   $(container).prop("initialised", true);
+
+  stopped_typing form
+  form.find("select,input").change(-> stopped_typing form)
+
 
 icon_clicked = (hide, toggle) ->
   if anonymous
