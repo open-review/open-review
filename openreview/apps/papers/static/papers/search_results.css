@@ -20,3 +20,16 @@ main > section.query-bar > header > form {
 main > section.query-bar > header > form input[type=text] {
     width: 380px;
 }
+
+main > section.no-results {
+    margin-top: 20px;
+}
+
+main > section.no-results > form {
+    margin: 20px auto 0 auto;
+    width: 400px;
+}
+
+main > section.no-results > form input[type=text] {
+    width: 100%;
+}

@@ -13,17 +13,28 @@
     <section class="query-bar box">
         <header>
             <h1>Search results</h1>
-            <form method="GET" action="{% url 'search-paper' %}">
-                <input value="{{ query }}" name="q" tabindex="1" type="text" autofocus />
-            </form>
+            {% if papers %}
+                <form method="GET" action="{% url 'search-paper' %}">
+                    <input value="{{ query }}" name="q" tabindex="1" type="text" />
+                </form>
+            {% endif %}
         </header>
     </section>
 
-    <section class="listing box">
-        <ol>
-        {% for paper in papers %}
-            {% include 'papers/all/list_item.html' with paper=paper %}
-        {% endfor %}
-        </ol>
-    </section>
+    {% if papers %}
+        <section class="listing box">
+            <ol>
+            {% for paper in papers %}
+                {% include 'papers/all/list_item.html' with paper=paper %}
+            {% endfor %}
+            </ol>
+        </section>
+    {% else %}
+        <section class="banner no-results">
+            <h3>Your search yielded no results. Try a different query?</h3>
+            <form method="GET" action="{% url 'search-paper' %}">
+                <input value="{{ query }}" name="q" tabindex="1" type="text" autofocus />
+            </form>
+        </section>
+    {% endif %}
 {% endblock %}
