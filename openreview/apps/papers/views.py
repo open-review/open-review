@@ -128,7 +128,6 @@ class SearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         query = self.request.GET.get('q', '')
-        print(query)
         search_result = [x.object for x in SearchQuerySet().models(Paper).filter(content=query)]
 
         return dict(super().get_context_data(papers=search_result))
