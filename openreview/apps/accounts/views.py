@@ -71,7 +71,7 @@ class SettingsView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        settings_data = request.POST or None
+        settings_data = request.POST if 'update-settings' in request.POST else request.user._wrapped.__dict__
         self.settings_form = SettingsForm(data=settings_data, user=request.user)
         return super().dispatch(request, *args, **kwargs)
 
