@@ -1,0 +1,35 @@
+main > section.query-bar {
+}
+
+main > section.query-bar > header {
+    overflow: hidden;
+}
+
+main > section.query-bar > header > h1 {
+    float: left;
+    display: block;
+}
+
+main > section.query-bar > header > form {
+    float: right;
+    overflow: hidden;
+    margin: 0;
+    padding: 17px 20px 15px 20px;
+}
+
+main > section.query-bar > header > form input[type=text] {
+    width: 380px;
+}
+
+main > section.no-results {
+    margin-top: 20px;
+}
+
+main > section.no-results > form {
+    margin: 20px auto 0 auto;
+    width: 400px;
+}
+
+main > section.no-results > form input[type=text] {
+    width: 100%;
+}

@@ -163,6 +163,21 @@ textarea {
     box-shadow: 0 1px 0 0 #FFF;
 }
 
+.banner {
+    border-radius: 2px;
+    background: rgb(250, 250, 250);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    -moz-box-shadow: 0 1px 0 0 #FFF;
+    -webkit-box-shadow: 0 1px 0 0 #FFF;
+    box-shadow: 0 1px 0 0 #FFF;
+}
+
+.banner > h3 {
+    text-align: center;
+    margin: 0;
+}
+
 body > main,
 body > hr,
 body > footer {
