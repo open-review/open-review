@@ -82,13 +82,13 @@
       </div>
     </aside>
 
-    <section data-preview-id="new-review-preview" class="compose-review box">
+    <section data-preview-id="new-review-preview" class="compose compose-review box">
         <h2>Share your opinion by writing a review</h2>
         <div class="rating rating-input" data-id="rating"></div>
         <form action="#" method="POST">
             {% csrf_token %}
-            <input type="hidden" name="rating" id="rating" value="" />
-            {% include "papers/comment.html" with review_id=-1 %}
+            <input type="hidden" name="rating" id="rating" value="-1" />
+            {% include "papers/comment.html" with review_id=-1 is_review=True %}
         </form>
 
         <div class="reviews" id="new-review-preview"></div>

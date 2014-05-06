@@ -1,7 +1,6 @@
 from datetime import datetime
-from django import forms
 from django.contrib.auth.decorators import login_required
-from django.forms import ModelChoiceField
+from django.forms import ModelChoiceField, CharField
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
@@ -11,6 +10,7 @@ from openreview.apps.main.models import Paper
 
 class PreviewForm(ReviewForm):
     paper = ModelChoiceField(queryset=Paper.objects.all())
+    text = CharField(required=False)
 
     def clean_rating(self):
         # Rating may also be not yet given in preview
@@ -47,6 +47,9 @@ class PreviewProcedure(APIView):
         review._n_upvotes = 0
         review._reviews_children = {0: []}
         review.timestamp = datetime.now()
+
+        if not review.text:
+            review.text = "*No text entered*"
 
         return render(request, "papers/review.html", {"review": review})
 

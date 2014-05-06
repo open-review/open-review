@@ -31,7 +31,7 @@ stopped_typing = (form) ->
   last_keypress = null
 
 error_received = (jqXHR, textStatus) ->
-  preview = this.closest(".compose-review")
+  preview = this.closest(".compose")
   error_class = if jqXHR.status == 403 then "permission-denied" else "uknown"
   error = preview.find(".preview-error.#{error_class}")
   error.find(".status-code").text(jqXHR.status)
@@ -40,7 +40,7 @@ error_received = (jqXHR, textStatus) ->
   preview.find("[type=submit]").attr("disabled", "disabled")
 
 review_received = (html) ->
-  preview = $("#"+$(this).closest(".compose-review").data("preview-id"));
+  preview = $("#"+$(this).closest(".compose").data("preview-id"));
   preview.html(html)
   preview.find(".voting").hide()
   preview.find(".options").hide()
@@ -58,6 +58,9 @@ keyup = (e) ->
     timeout = setTimeout(stopped_typing.bind(e), TIMEOUT_AFTER);
 
 init_writing = (container) ->
+  if $(container).prop("initialised") == true
+    return
+
   form = $(container).find("form")
   $(container).find("textarea").keyup(keyup)
   $(container).prop("initialised", true);
@@ -83,8 +86,8 @@ icon_clicked = (hide, toggle) ->
 $(".review .options .edit").click(icon_clicked("new", "edit"))
 $(".review .options .reply").click(icon_clicked("edit", "new"))
 
-$("main > .compose-review.box textarea").focus(->
-  init_writing($(this).closest(".compose-review"))
+$(".compose textarea").focus(->
+  init_writing($(this).closest(".compose"))
 )
 
 # Show the edit form of reviews that were being edited but contain errors

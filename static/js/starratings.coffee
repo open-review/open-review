@@ -3,7 +3,6 @@ mouse_enter = (event) ->
 
 mouse_leave = ->
   set_value(this, get_value(this))
-  set_hidden_value(this, get_value(this))
 
 star_clicked = (event) ->
   set_hidden_value(this, $(event.currentTarget).data("star"))

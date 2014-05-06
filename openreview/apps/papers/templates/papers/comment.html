@@ -1,7 +1,7 @@
-<textarea name="text" placeholder="You can use markdown and LaTeX"></textarea>
+<textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below."></textarea>
 
 <p style="display:none;" class="preview-error permission-denied">
-    You need to be <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}#new">logged</a> in to submit a review!
+    You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
 </p>
 
 <label>
@@ -24,4 +24,4 @@
 
 </label>
 
-<button type="submit">Submit review</button>
+<button type="submit">Submit {% if is_review %}review{% else %}reply{% endif %}</button>

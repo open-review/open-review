@@ -14,11 +14,13 @@
             <a href="{% url 'review' review.paper_id review.id %}">wrote on {{ review.timestamp }}</a>:
         </span>
 
+        {% if review.rating != -1 %}
         <span class="rating">
             {% for i in "1234567" %}
                 {% if review.rating > forloop.counter0 %}★{% else %}☆{% endif %}
             {% endfor %}
         </span>
+        {% endif %}
     </header>
 
     <article class="content {% if review.is_deleted %}deleted{% endif %}">
@@ -42,8 +44,14 @@
         </section>
     {% endfor %}
 
-    <section class="compose-comment">
-        <input type="text" placeholder="Write a comment..." />
-        <button type="submit">Add comment</button>
+    <section data-preview-id="preview-of-comment-on-{{ review.id }}" class="compose compose-comment">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input name="rating" type="hidden" value="-1" />
+            {% include "papers/comment.html" %}
+        </form>
     </section>
+
+    <div id="preview-of-comment-on-{{ review.id }}"></div>
+
 </section>

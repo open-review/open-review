@@ -33,7 +33,7 @@ body .box.comments {
     background: #F7FAFA;
 }
 
-.comments section.compose-comment input,
+.comments section.compose-comment textarea,
 .comments section.compose-comment button {
     font-size: 13px;
     padding: 7px;
@@ -41,8 +41,10 @@ body .box.comments {
     float: left;
 }
 
-.comments section.compose-comment input {
-    width: 425px;
+.comments section.compose-comment textarea{
+    margin-bottom: 5px;
+    min-width: 100%;
+    max-width: 100%;
 }
 
 
