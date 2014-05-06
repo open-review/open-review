@@ -25,9 +25,6 @@ body > main .reviews > h2 {
     font-family: Merriweather, Georgia, serif;
 }
 
-.reviews section.review + section.review {
-    margin-top: 20px;
-}
 
 .reviews section.review > div.voting {
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -73,6 +70,7 @@ body > main .reviews > h2 {
     overflow: hidden;
     margin-bottom: 10px;
     font-weight: bold;
+    font-size:0.8em;
 }
 
 .reviews section.review > header a.author,

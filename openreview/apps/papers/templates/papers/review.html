@@ -32,16 +32,10 @@
     </article>
 </section>
 
+{% if include_comments %}
 <section class="comments box">
     {% for comment in review.get_comments %}
-        <section class="comment">
-            <span class="author">{{ comment|format_author }} <a href="#">commented:</a></span>
-            {% if comment.text %}
-                {{ comment.text|markdown }}
-            {% else %}
-                <p class="deleted">[deleted]</p>
-            {% endif %}
-        </section>
+        {% include "papers/review.html" with paper=paper review=comment include_comments=False %}
     {% endfor %}
 
     <section data-preview-id="preview-of-comment-on-{{ review.id }}" class="compose compose-comment">
@@ -54,3 +48,4 @@
     <div id="preview-of-comment-on-{{ review.id }}"></div>
 
 </section>
+{% endif %}
