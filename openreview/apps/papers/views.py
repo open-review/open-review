@@ -124,13 +124,13 @@ class ReviewView(BaseReviewView):
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
 class SearchView(TemplateView):
-    template_name = "papers/search.html"
+    template_name = "papers/search_results.html"
 
     def get_context_data(self, **kwargs):
         query = self.request.GET.get('q', '')
-        search_result = [x.object for x in SearchQuerySet().models(Paper).filter(content=query)]
+        search_results = [x.object for x in SearchQuerySet().models(Paper).filter(content=query)]
 
-        return dict(super().get_context_data(papers=search_result))
+        return dict(super().get_context_data(papers=search_results, query=query))
 
 class AddPaperView(TemplateView):
   template_name = "papers/add.html"
