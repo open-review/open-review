@@ -1,0 +1,11 @@
+main > section.query-bar {
+}
+
+main > section.query-bar > header {
+    overflow: hidden;
+}
+
+main > section.query-bar > header > h1 {
+    float: left;
+    display: block;
+}

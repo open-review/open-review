@@ -1,3 +1,25 @@
 {% extends "base.html" %}
 
-{% block pageh1 %}Search results{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/all.css" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/listing.coffee"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="query-bar box">
+        <header>
+            <h1>Search results</h1>
+        </header>
+    </section>
+
+    <section class="listing box">
+        <ol>
+        {% for paper in papers %}
+            {% include 'papers/all/list_item.html' with paper=paper %}
+        {% endfor %}
+        </ol>
+    </section>
+{% endblock %}
