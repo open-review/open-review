@@ -1,29 +1,29 @@
 TIMEOUT_AFTER = 750
+
 PREVIEW_PROCEDURE_API_URL = "/api/v1/procedures/preview"
+REVIEW_API_URL = "/api/v1/reviews/"
 
 anonymous = $("body").data("anonymous")
 last_keypress = null
 timeout = null
 
-stopped_typing = (form) ->
-  form = $(this.currentTarget).closest("form") if not form?
-
-  # Get form data as javascript object
+get_form_data = (form) ->
   form_data = {}
   form.serializeArray().map((x) ->
     form_data[x.name] = x.value
   );
 
-  form_data.paper = $(".paper").data("paper-id")
+  console.log(form)
 
-  if (form_data.rating == "")
-    form_data.rating = 1
+  return form_data
 
+stopped_typing = (form) ->
+  form = $(this.currentTarget).closest("form") if not form?
 
   $.ajax({
     type: "POST",
     url: PREVIEW_PROCEDURE_API_URL,
-    data: form_data,
+    data: get_form_data(form),
     success: review_received.bind(form),
     error: error_received.bind(form)
   })
@@ -45,7 +45,31 @@ review_received = (html) ->
   preview.find(".voting").hide()
   preview.find(".options").hide()
   preview.find(".comments").hide()
+  preview.find("[type=submit]").attr("disabled", null)
   MathJax.Hub.Queue(["Typeset", MathJax.Hub, preview.get(0)]);
+
+submit = (container) ->
+  form = container.find("> form")
+
+  # Validate rating input
+  if form.find("input[name=rating]").val() == "-1"
+    if container.hasClass("compose-review")
+      return container.find(".form-error.rating").show()
+
+  # Validate text
+  if !($.trim(form.find("textarea").val()))
+    return container.find(".form-error.text").show()
+
+  container.find("[type=submit]").hide().siblings(".spinner").show()
+
+  $.ajax({
+    type: "POST",
+    url: REVIEW_API_URL,
+    data: get_form_data(form),
+    success: (-> window.location.reload()),
+    error: error_received.bind(form)
+  })
+
 
 keyup = (e) ->
   last_keypress = Date.now() if not last_keypress?
@@ -69,26 +93,14 @@ init_writing = (container) ->
   form.find("select,input").change(-> stopped_typing form)
 
 
-icon_clicked = (hide, toggle) ->
-  if anonymous
-    return ->
-      $(this).closest(".review").find(".login-message").show()
-
-  return ->
-    container = $(this).closest(".review-container");
-    container.find("> .#{hide}").hide()
-    container.find("> .#{toggle}").toggle()
-
-    container = container.find("> .#{toggle}")
-    if not container.prop("initialised")
-      init_writing(container)
-
-$(".review .options .edit").click(icon_clicked("new", "edit"))
-$(".review .options .reply").click(icon_clicked("edit", "new"))
-
 $(".compose textarea").focus(->
-  init_writing($(this).closest(".compose"))
+  compose = $(this).closest(".compose")
+  init_writing(compose)
+  compose.find(".form-error.text").hide()
 )
 
-# Show the edit form of reviews that were being edited but contain errors
-$(".edit .errorlist").parents(".edit").show()
+$(".compose [type=submit]").click((e) ->
+  e.preventDefault()
+  submit($(this).closest(".compose"))
+)
+

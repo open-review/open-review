@@ -1,21 +1,15 @@
 from functools import partial
 import json
-import datetime
-from urllib import parse
 
 from django.core.paginator import Paginator, EmptyPage
-from django.http import HttpResponseForbidden, HttpResponseBadRequest, Http404
-from django.shortcuts import render, HttpResponse, redirect
+from django.http import Http404
+from django.shortcuts import HttpResponse, redirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
-from django.utils.datastructures import MultiValueDict
 from haystack.query import SearchQuerySet
 from django.views.generic import TemplateView
 
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
-from openreview.apps.main.forms import ReviewForm
-from openreview.apps.tools.auth import login_required
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
 
@@ -31,74 +25,6 @@ class BaseReviewView(ModelViewMixin, TemplateView):
 
         url = reverse("review", args=[review.paper_id, root.id])
         return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
-
-    def post(self, request, *args, **kwargs):
-        # Is the user saving a new review?
-        if self.creating_review():
-            review_form = self.get_review_form()
-            if review_form.is_valid():
-                review = review_form.save()
-
-                return self.redirect(review)
-            else:
-                return self.get(kwargs)
-
-        # Is the user editing an existing review?
-        # Note that the review's fields are submitted as '{review_id}-{fieldname}' on the paper page,
-        # where multiple reviews may be edited. This is because fields should have unique names -
-        # especially the star rating field, which is referenced to by name. We can recognize the field
-        # name by finding which key named 'add_review{review_id}' is present in the POST-data.
-        for key, value in self.request.POST.items():
-            if key.startswith('add_review'):
-                review_id = key[len('add_review'):]  # extract id from 'add_review{review_id}'
-                review = Review.objects.get(id=review_id)
-
-                review_form = self.get_review_edit_form(review)
-                if review_form is None:
-                    msg = "You are not the owner of the review or comment you are trying to edit"
-                    return HttpResponseForbidden(msg)
-
-                if review_form.is_valid():
-                    review = review_form.save()
-                    return self.redirect(review)
-
-        return self.get(kwargs)
-
-    def add_review_fields(self, review):
-        return {
-            'review': review,
-            'form': self.get_review_edit_form(review),
-            'submit_name': self.editing_review_name(review)
-        }
-
-    def creating_review(self):
-        return "add_review" in self.request.POST
-
-    def get_review_form(self):
-        data = self.request.POST if self.creating_review() else None
-        return ReviewForm(data=data, user=self.request.user, paper=self.objects.paper)
-
-    def editing_review_name(self, review):
-        return "add_review{}".format(review.id)
-
-    def editing_review(self, review):
-        return (self.editing_review_name(review)) in self.request.POST
-
-    def get_review_edit_form(self, review):
-        if review.poster != self.request.user:
-            return
-
-        args = {
-            'user': self.request.user,
-            'paper': self.objects.paper,
-            'prefix': review.id,
-            'instance': review
-        }
-
-        if self.editing_review(review):
-            args['data'] = self.request.POST
-
-        return ReviewForm(**args)
 
     def get_context_data(self, **kwargs):
         # Do not load context data if user is anonymous (no posts) or
@@ -117,7 +43,6 @@ class BaseReviewView(ModelViewMixin, TemplateView):
         return super().get_context_data(
             my_reviews=json.dumps(my_reviews),
             my_votes=json.dumps(my_votes),
-            add_review_form=self.get_review_form(),
             **kwargs
         )
 
@@ -139,9 +64,7 @@ class PaperWithReviewsView(BaseReviewView):
         # Set cache and sort reviews by up-/downvotes
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
-        reviews = [self.add_review_fields(review) for review in reviews]
-        
-        keywords = [ { 'url' : '#', 'text' : keyword } for keyword in paper.keywords.all() ]
+        keywords = [{'url': '#', 'text': keyword} for keyword in paper.keywords.all()]
         return super().get_context_data(paper=paper, reviews=reviews, keywords=keywords, **kwargs)
 
 
@@ -199,95 +122,6 @@ class ReviewView(BaseReviewView):
         tree = self.expand_tree(review.get_tree())
 
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
-
-    @method_decorator(login_required(raise_exception=True))
-    def patch(self, request, *args, **kwargs):
-        review = self.objects.review
-
-        if review.poster_id != self.request.user.id:
-            return HttpResponseForbidden("You must be owner of this post in order to edit it.")
-
-        # PATCH data is not standardised, but most javascript toolkits encode mappings as
-        # normal urlencoded (POST-like) data, which we will try to interpret here.
-        data = request.META['wsgi.input'].read()
-        try:
-            params = parse.parse_qs(data.decode("utf-8"))
-        except UnicodeDecodeError:
-            return HttpResponseBadRequest("Corrupt data. Encode is as UTF-8.")
-
-        params = MultiValueDict(params)
-
-        if "text" not in params:
-            return HttpResponseBadRequest("You should provide 'text' in request data.")
-
-        review.text = params["text"]
-        review.save()
-        return self.redirect(review)
-
-    @method_decorator(login_required(raise_exception=True))
-    def post(self, request, paper_id, review_id, **kwargs):
-        commit = "submit" in request.POST
-
-        if "text" not in request.POST:
-            return HttpResponseBadRequest("You should provide 'text' in request data.")
-
-        if "edit" in self.request.POST:
-            review = Review.objects.get(id=self.request.POST["edit"])
-            if review.poster != request.user:
-                msg = "You are not the owner of the review or comment you are trying to edit"
-                return HttpResponseForbidden(msg)
-        else:
-            review = Review()
-
-        review.text = request.POST["text"]
-
-        try:
-            review.rating = int(self.request.POST.get("rating") or -1)
-        except (ValueError, KeyError):
-            return HttpResponseBadRequest("'rating' parameter should be specified and an integer.")
-
-        if not review.has_valid_rating():
-            return HttpResponseBadRequest("Specify a valid rating.")
-
-        review.poster = request.user
-        review.paper = self.objects.paper
-        review.timestamp = datetime.datetime.now()
-
-        if review_id != "-1":
-            review.parent_id = self.objects.review.id
-        else:
-            review.parent = self.objects.review
-
-        # Set cache, so we can use default template to render preview
-        review._n_upvotes = 0
-        review._n_downvotes = 0
-        review._n_comments = 0
-
-        if commit:
-            try:
-                review.save()
-            except ValueError:
-                msg = "Could not save review/comment due to incorrect values. Did you enter paper/review correctly?"
-                return HttpResponseBadRequest(msg)
-
-            return self.redirect(review)
-
-        review.id = -1
-        return render(request, "papers/review.html", {
-            "paper": self.objects.paper,
-            "review": review,
-            "add_review_form": self.get_review_form(),
-            "preview": True
-        })
-
-    @method_decorator(login_required(raise_exception=True))
-    def delete(self, request, **kwargs):
-        if request.user.id != self.objects.review.poster_id:
-            return HttpResponseForbidden("You must be owner of this review/comment in order to delete it.")
-        self.objects.review.delete()
-        return HttpResponse("OK", status=200)
-
-
 
 class SearchView(TemplateView):
     template_name = "papers/search.html"

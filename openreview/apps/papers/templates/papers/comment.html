@@ -1,7 +1,23 @@
+<input type="hidden" name="poster" value="{{ user.id }}" />
+<input type="hidden" name="paper" value="{{ paper.id }}" />
+{% csrf_token %}
+
+{% if not is_review %}
+    <input type="hidden" name="rating" value="-1" />
+{% endif %}
+
 <textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below."></textarea>
 
 <p style="display:none;" class="preview-error permission-denied">
     You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
+</p>
+
+<p style="display:none;" class="form-error rating">
+    You need to provide a rating by clicking on a star.
+</p>
+
+<p style="display:none;" class="form-error text">
+    You need to provide text.
 </p>
 
 <label>
@@ -24,4 +40,5 @@
 
 </label>
 
+{% include "includes/spinner.html" %}
 <button type="submit">Submit {% if is_review %}review{% else %}reply{% endif %}</button>

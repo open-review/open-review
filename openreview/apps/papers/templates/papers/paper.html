@@ -56,7 +56,7 @@
         <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
         {% for review in reviews %}
-            {% include "papers/review.html" with review=review.review %}
+            {% include "papers/review.html" with paper=paper review=review %}
         {% endfor %}
     </section>
 
@@ -86,7 +86,6 @@
         <h2>Share your opinion by writing a review</h2>
         <div class="rating rating-input" data-id="rating"></div>
         <form action="#" method="POST">
-            {% csrf_token %}
             <input type="hidden" name="rating" id="rating" value="-1" />
             {% include "papers/comment.html" with review_id=-1 is_review=True %}
         </form>

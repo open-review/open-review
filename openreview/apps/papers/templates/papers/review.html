@@ -46,8 +46,7 @@
 
     <section data-preview-id="preview-of-comment-on-{{ review.id }}" class="compose compose-comment">
         <form action="" method="POST">
-            {% csrf_token %}
-            <input name="rating" type="hidden" value="-1" />
+            <input name="parent" type="hidden" value="{{ review.id }}" />
             {% include "papers/comment.html" %}
         </form>
     </section>

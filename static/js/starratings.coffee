@@ -6,6 +6,8 @@ mouse_leave = ->
 
 star_clicked = (event) ->
   set_hidden_value(this, $(event.currentTarget).data("star"))
+  get_hidden_input(this).closest("form").find(".form-error.rating").hide()
+
 
 # Set stars of `field` to `value` (populate an amount of 'coloured' stars).
 set_value = (field, value) ->
@@ -20,7 +22,10 @@ set_value = (field, value) ->
 
 # Sets hidden value of `field` to `value`.
 set_hidden_value = (field, value) ->
-  $("#" + field.parent().data("id")).val(value).trigger("change")
+  get_hidden_input(field).val(value).trigger("change")
+
+get_hidden_input = (field) ->
+  return $("#" + field.parent().data("id"))
 
 # Get current value of hidden input field. Returns -1 if an illegal value
 # is currently specified.
@@ -44,6 +49,7 @@ init_star_input = (field) ->
     .click(star_clicked.bind(field))
 
   set_value(field, get_value(field))
+  set_hidden_value(field, get_value(field))
 
 # Initialise all rating inputs
 $.map($(".rating-input"), (e) -> init_star_input $(e))
