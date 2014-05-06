@@ -1,0 +1,4 @@
+<li>
+    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
+    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">{{ paper.num_reviews }} review{{ paper.num_reviews|pluralize }}</a>
+</li>
