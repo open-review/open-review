@@ -20,12 +20,12 @@ class CommentsBox
 
   show: -> @$elem.show(); @;
 
-  focusInput: -> @$elem.find('input').focus(); @;
+  focus: -> @$elem.find('textarea').focus(); @;
 
 $('.review.box').each ->
   reviewBox = new ReviewBox($(this));
   commentsBox = new CommentsBox($(this).next('.comments.box'))
 
   if commentsBox.isEmpty()
-    reviewBox.appendAddCommentPrompt -> commentsBox.show().focusInput()
+    reviewBox.appendAddCommentPrompt -> commentsBox.show().focus()
     commentsBox.hide()
