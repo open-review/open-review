@@ -145,6 +145,6 @@ body > main > section.compose-review form button:active {
 }
 
 #new-review-preview {
-    margin-top:20px;
-    padding-right:21px;
+    padding:0px;
+    margin-left:-21px;
 }

@@ -20,7 +20,7 @@ class AuthenticationView(TemplateView):
         super().__init__(*args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
-        register_data = self.request.POST if "register" in self.request.POST else None
+        register_data = self.request.POST if "new" in self.request.POST else None
         login_data = self.request.POST if "login" in self.request.POST else None
         self.register_form = RegisterForm(data=register_data, auto_id='id_register_%s')
         self.login_form = AuthenticationForm(request=self.request, data=login_data, auto_id='id_login_%s')

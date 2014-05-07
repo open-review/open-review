@@ -1,30 +1,8 @@
 .comments,
 body .box.comments {
-    margin: 20px 0 0 40px;
+    margin: -1px 0 0 40px;
     background: #fff;
     padding: 0;
-    border-left: 3px rgba(0, 0, 0, 0.2) solid;
-}
-
-.comments section.comment {
-    line-height: 1.7em;
-    font-size: 13px;
-    font-family: Merriweather, Georgia, serif;
-    padding: 10px 10px 10px 13px;
-}
-
-.comments section.comment p {
-    display: inline;
-}
-
-.comments section.comment p + p {
-    /* FIXME: This might not work for inline elements*/
-    padding-top: 20px;
-}
-
-.comments section.comment + section.compose-comment,
-.comments section.comment + section.comment {
-    border-top: 1px rgba(0, 0, 0, 0.2) dotted;
 }
 
 .comments section.compose-comment {
@@ -58,11 +36,12 @@ body .box.comments {
     padding-bottom: 6px;
 }
 
-.comments section.comment span.author {
-    font-weight: bold;
-    color: #4b4b4b;
+.reviews > section.review {
+    margin-top: 20px;
 }
 
-.comments + section.review {
-    margin-top: 20px;
+.comments > section.review{
+    border-top:none;
+    border-right:none;
+    border-left:none;
 }

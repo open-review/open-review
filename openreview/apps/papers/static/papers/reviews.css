@@ -25,9 +25,6 @@ body > main .reviews > h2 {
     font-family: Merriweather, Georgia, serif;
 }
 
-.reviews section.review + section.review {
-    margin-top: 20px;
-}
 
 .reviews section.review > div.voting {
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -45,7 +42,6 @@ body > main .reviews > h2 {
     text-align: center;
     position: relative;
     width: 40px;
-    left: -1px;
 }
 
 .reviews section.review > div.voting a,
@@ -53,9 +49,8 @@ body > main .reviews > h2 {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     font-size: 18px;
-    height: 40px;
     line-height: 0px;
-    padding: 18px 0;
+    padding: 10px 0;
     position: relative;
     cursor: pointer;
 }
@@ -65,24 +60,17 @@ body > main .reviews > h2 {
     font-size: 20px;
     text-align: center;
     z-index: 1;
-    width: 44px;
+    width: 40px;
     left: 0;
     font-weight: bold;
-    color: #1A3333;
     line-height: 20px;
-}
-
-
-.reviews section.review > div.voting a:hover {
-    color: #1A3333;
-    font-size: 24px;
-    text-decoration: none;
 }
 
 .reviews section.review > header {
     overflow: hidden;
     margin-bottom: 10px;
     font-weight: bold;
+    font-size:0.8em;
 }
 
 .reviews section.review > header a.author,
@@ -123,3 +111,16 @@ body > main .reviews > h2 {
     cursor: pointer;
 }
 
+
+.voting a.up, .voting a.down{
+    color:grey;
+    text-decoration: none;
+}
+
+.voting a.up.voted, .voting a.up:hover{
+    color:green;
+}
+
+.voting a.down.voted, .voting a.down:hover{
+    color:red;
+}

@@ -1,5 +1,5 @@
 class ReviewBox
-  ADD_COMMENT_HTML = '<a href="#" class="add-comment">Add comment?</a>'
+  ADD_COMMENT_HTML = '<a href="#" class="add-comment">Reply</a>'
 
   constructor: (@$elem) ->
     @$lastParagraph = @$elem.find('article.content p:last')
@@ -10,7 +10,7 @@ class ReviewBox
 class CommentsBox
   constructor: (@$elem) ->
 
-  count: -> @$elem.find('.comment').length
+  count: -> @$elem.find('.review').length
 
   hasComments: -> @count() > 0
 
@@ -22,7 +22,7 @@ class CommentsBox
 
   focus: -> @$elem.find('textarea').focus(); @;
 
-$('.review.box').each ->
+$('.reviews > .review.box').each ->
   reviewBox = new ReviewBox($(this));
   commentsBox = new CommentsBox($(this).next('.comments.box'))
 
