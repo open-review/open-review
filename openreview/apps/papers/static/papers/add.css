@@ -13,7 +13,7 @@ body > main > section.box.title header select {
 }
 
 
-body > main > section.box + section.box {
+body > main > section.box {
     padding: 0;
     max-width: 640px;
 }
