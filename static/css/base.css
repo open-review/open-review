@@ -82,6 +82,12 @@ body > main p {
     font-size: 13px;
 }
 
+body > main form p {
+    line-height: 1.4em;
+    font-size: 13px;
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+
 body > main > .box > header {
     border-bottom: 2px #E5E5E5 solid;
 }
