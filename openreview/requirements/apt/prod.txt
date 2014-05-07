@@ -1,3 +1,2 @@
 memcached
 postgresql
-python3-psycopg2
