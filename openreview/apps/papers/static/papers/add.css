@@ -92,3 +92,7 @@ body > main > section.box > form .fetcher-results.loading {
 body > main > section.box > form .fetcher-results.loading:after {
     content: "…";
 }
+
+#manually-details p {
+    clear: both;
+}

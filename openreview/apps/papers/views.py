@@ -1,6 +1,7 @@
-from functools import partial
 import json
 
+from django.utils.decorators import method_decorator
+from functools import partial
 from django.core.paginator import Paginator, EmptyPage
 from django.http import Http404
 from django.shortcuts import HttpResponse, redirect
@@ -8,10 +9,11 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
 from haystack.query import SearchQuerySet
 from django.views.generic import TemplateView
-
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
+from openreview.apps.papers.forms import PaperForm, ArXivForm
+from django.contrib.auth.decorators import login_required
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
@@ -123,6 +125,7 @@ class ReviewView(BaseReviewView):
 
         return super().get_context_data(tree=tree, paper=paper, **kwargs)
 
+
 class SearchView(TemplateView):
     template_name = "papers/search_results.html"
 
@@ -132,9 +135,37 @@ class SearchView(TemplateView):
 
         return dict(super().get_context_data(papers=search_results, query=query))
 
-class AddPaperView(TemplateView):
-  template_name = "papers/add.html"
 
+class AddPaperView(TemplateView):
+    template_name = "papers/add.html"
+
+    def get_context_data(self, **kwargs):
+        manual_form_data = self.request.POST if 'manual_form' in self.request.POST else None
+        arxiv_form_data = self.request.POST if 'arxiv_form' in self.request.POST else None
+
+        manual_form = PaperForm(data=manual_form_data)
+        arxiv_form = ArXivForm(data=arxiv_form_data)
+
+        return dict(super().get_context_data(manual_form=manual_form, arxiv_form=arxiv_form))
+
+    @method_decorator(login_required)
+    def post(self, request):
+        if 'manual_form' in self.request.POST:
+            # Try to add paper to db
+            manual_form = PaperForm(data=self.request.POST)
+            if manual_form.is_valid():
+                paper = manual_form.save(commit=True)
+                return redirect(reverse("paper", args=[paper.id]))
+        elif 'arxiv_form' in self.request.POST:
+            arxiv_form = ArXivForm(data=self.request.POST)
+            if arxiv_form.is_valid():
+                paper = arxiv_form.save(commit=True)
+                return redirect(reverse("paper", args=[paper.id]))
+        else:
+            print("iets heel raars is gebeurd")
+
+
+        return super().get(request)
 
 @cache_page(60 * 10)
 def doi_scraper(request, id):
