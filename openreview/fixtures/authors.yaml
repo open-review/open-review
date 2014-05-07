@@ -1,35 +1,219 @@
-- model: main.author
+- fields: {name: Thomas Brus, user: 1}
+  model: main.author
   pk: 1
-  fields:
-    user: 1
-    name: Thomas Brus
-
-- model: main.author
+- fields: {name: Bas van den Brink, user: 2}
+  model: main.author
   pk: 2
-  fields:
-    user: 2
-    name: Bas van den Brink
-
-- model: main.author
+- fields: {name: Wietze Beukema, user: 3}
+  model: main.author
   pk: 3
-  fields:
-    user: 3
-    name: Wietze Beukema
-
-- model: main.author
+- fields: {name: Martijn Bastiaan, user: 4}
+  model: main.author
   pk: 4
-  fields:
-    user: 4
-    name: Martijn Bastiaan
-
-- model: main.author
+- fields: {name: Simon de Vries, user: 5}
+  model: main.author
   pk: 5
-  fields:
-    user: 5
-    name: Simon de Vries
-
-- model: main.author
+- fields: {name: Willem Noort, user: 6}
+  model: main.author
   pk: 6
-  fields:
-    user: 6
-    name: Willem Noort
+- fields: {name: E. van Dijk, user: null}
+  model: main.author
+  pk: 7
+- fields: {name: Zhemin Zhu, user: null}
+  model: main.author
+  pk: 8
+- fields: {name: Djoerd Hiemstra, user: null}
+  model: main.author
+  pk: 9
+- fields: {name: Peter Apers, user: null}
+  model: main.author
+  pk: 10
+- fields: {name: Andreas Wombacher, user: null}
+  model: main.author
+  pk: 11
+- fields: {name: Vojkan Mihajlovic, user: null}
+  model: main.author
+  pk: 12
+- fields: {name: Claudia Hauff, user: null}
+  model: main.author
+  pk: 13
+- fields: {name: Stefano Schivo, user: null}
+  model: main.author
+  pk: 14
+- fields: {name: Jetse Scholma, user: null}
+  model: main.author
+  pk: 15
+- fields: {name: Marcel Karperien, user: null}
+  model: main.author
+  pk: 16
+- fields: {name: Janine N. Post, user: null}
+  model: main.author
+  pk: 17
+- fields: {name: Jaco van de Pol, user: null}
+  model: main.author
+  pk: 18
+- fields: {name: Rom Langerak, user: null}
+  model: main.author
+  pk: 19
+- fields: {name: Alfons Laarman, user: null}
+  model: main.author
+  pk: 20
+- fields: {name: Mark Timmer, user: null}
+  model: main.author
+  pk: 21
+- fields: {name: "Mari\xEBlle Stoelinga", user: null}
+  model: main.author
+  pk: 22
+- fields: {name: Wietse Smid, user: null}
+  model: main.author
+  pk: 23
+- fields: {name: Arend Rensink, user: null}
+  model: main.author
+  pk: 24
+- fields: {name: Peter D. Mosses, user: null}
+  model: main.author
+  pk: 25
+- fields: {name: MohammadReza Mousavi, user: null}
+  model: main.author
+  pk: 26
+- fields: {name: Michel A. Reniers, user: null}
+  model: main.author
+  pk: 27
+- fields: {name: Edouard Grave, user: null}
+  model: main.author
+  pk: 28
+- fields: {name: Guillaume Obozinski, user: null}
+  model: main.author
+  pk: 29
+- fields: {name: Francis Bach, user: null}
+  model: main.author
+  pk: 30
+- fields: {name: D. Sornette, user: null}
+  model: main.author
+  pk: 31
+- fields: {name: Heinrich C. R. Klein, user: null}
+  model: main.author
+  pk: 32
+- fields: {name: Ulrich S. Schwarz, user: null}
+  model: main.author
+  pk: 33
+- fields: {name: Z. Budrikis, user: null}
+  model: main.author
+  pk: 34
+- fields: {name: G. Costantini, user: null}
+  model: main.author
+  pk: 35
+- fields: {name: C. A. La Porta, user: null}
+  model: main.author
+  pk: 36
+- fields: {name: S. Zapperi, user: null}
+  model: main.author
+  pk: 37
+- fields: {name: Piotr Kordy, user: null}
+  model: main.author
+  pk: 38
+- fields: {name: Jan Willem Polderman, user: null}
+  model: main.author
+  pk: 39
+- fields: {name: Vijay Balasubramanian, user: null}
+  model: main.author
+  pk: 892
+- fields: {name: Borun D. Chowdhury, user: null}
+  model: main.author
+  pk: 893
+- fields: {name: Bartlomiej Czech, user: null}
+  model: main.author
+  pk: 894
+- fields: {name: Jan de Boer, user: null}
+  model: main.author
+  pk: 895
+- fields: {name: Michal P. Heller, user: null}
+  model: main.author
+  pk: 896
+- fields: {name: Aridaman Pandit, user: null}
+  model: main.author
+  pk: 897
+- fields: {name: Rob J de Boer, user: null}
+  model: main.author
+  pk: 898
+- fields: {name: Tony Cai, user: null}
+  model: main.author
+  pk: 899
+- fields: {name: Xiaodong Li, user: null}
+  model: main.author
+  pk: 900
+- fields: {name: Shun Kataoka, user: null}
+  model: main.author
+  pk: 901
+- fields: {name: Muneki Yasuda, user: null}
+  model: main.author
+  pk: 902
+- fields: {name: Kazuyuki Tanaka, user: null}
+  model: main.author
+  pk: 903
+- fields: {name: D. M. Sulic, user: null}
+  model: main.author
+  pk: 904
+- fields: {name: V. A. Sreckovic, user: null}
+  model: main.author
+  pk: 905
+- fields: {name: Loet Leydesdorff, user: null}
+  model: main.author
+  pk: 906
+- fields: {name: Caroline S. Wagner, user: null}
+  model: main.author
+  pk: 907
+- fields: {name: Lutz Bornmann, user: null}
+  model: main.author
+  pk: 908
+- fields: {name: Matthew L. Wallace, user: null}
+  model: main.author
+  pk: 909
+- fields: {name: "Vincent Larivi\xE8re", user: null}
+  model: main.author
+  pk: 910
+- fields: {name: Yves Gingras, user: null}
+  model: main.author
+  pk: 911
+- fields: {name: Albert Einstein, user: null}
+  model: main.author
+  pk: 912
+- fields: {name: Jeff Arnold, user: null}
+  model: main.author
+  pk: 913
+- fields: {name: Tim Abbott, user: null}
+  model: main.author
+  pk: 914
+- fields: {name: Waseem Daher, user: null}
+  model: main.author
+  pk: 915
+- fields: {name: Gregory Price, user: null}
+  model: main.author
+  pk: 916
+- fields: {name: Nelson Elhage, user: null}
+  model: main.author
+  pk: 917
+- fields: {name: Geoffrey Thomas, user: null}
+  model: main.author
+  pk: 918
+- fields: {name: Anders Kaseorg, user: null}
+  model: main.author
+  pk: 919
+- fields: {name: Tommy Anderberg, user: null}
+  model: main.author
+  pk: 920
+- fields: {name: Arslan Tariq Rana, user: null}
+  model: main.author
+  pk: 921
+- fields: {name: Mazen Kebewar, user: null}
+  model: main.author
+  pk: 922
+- fields: {name: Tri Minh Ngo, user: null}
+  model: main.author
+  pk: 923
+- fields: {name: Marieke Huisman, user: null}
+  model: main.author
+  pk: 924
+- fields: {name: Joost J. Joosten, user: null}
+  model: main.author
+  pk: 925
