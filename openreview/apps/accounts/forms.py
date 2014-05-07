@@ -101,8 +101,8 @@ class SettingsForm(RegisterForm):
     """
 
     """
-    title = forms.CharField(help_text=_('e.g. "MSc" in "Pietje Puk (Msc, University of Twente)"'))
-    university = forms.CharField(help_text=_('e.g. "University of Twente" in "Pietje Puk (Msc, University of Twente)"'))
+    title = forms.CharField(help_text=_('e.g. "MSc" in "Pietje Puk (Msc, University of Twente)"'), required=False)
+    university = forms.CharField(help_text=_('e.g. "University of Twente" in "Pietje Puk (Msc, University of Twente)"'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
