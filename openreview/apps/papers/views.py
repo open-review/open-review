@@ -148,7 +148,6 @@ class AddPaperView(TemplateView):
 
         return dict(super().get_context_data(manual_form=manual_form, arxiv_form=arxiv_form))
 
-    @method_decorator(login_required)
     def post(self, request):
         if 'manual_form' in self.request.POST:
             # Try to add paper to db
