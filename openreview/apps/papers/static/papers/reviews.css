@@ -12,13 +12,13 @@ body > main .reviews > h2 {
     border-bottom: none;
 }
 
-.reviews section.review.box {
+.review.box {
     background-color: #fff;
     padding: 15px;
     border-radius: 0 2px 2px 2px;
 }
 
-.reviews section.review {
+.review {
     position: relative;
     line-height: 1.7em;
     font-size: 13px;
@@ -26,7 +26,7 @@ body > main .reviews > h2 {
 }
 
 
-.reviews section.review > div.voting {
+.review > div.voting {
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px 0 0 2px;
     left: -40px;
@@ -36,16 +36,16 @@ body > main .reviews > h2 {
     background-color: #fff;
 }
 
-.reviews section.review > div.voting a,
-.reviews section.review > div.voting span {
+.review > div.voting a,
+.review > div.voting span {
     display: block;
     text-align: center;
     position: relative;
     width: 40px;
 }
 
-.reviews section.review > div.voting a,
-.reviews section.review > div.voting a {
+.review > div.voting a,
+.review > div.voting a {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     font-size: 18px;
@@ -55,7 +55,7 @@ body > main .reviews > h2 {
     cursor: pointer;
 }
 
-.reviews section.review > div.voting span {
+.review > div.voting span {
     font-family: 'Open Sans', 'Arial', sans-serif;
     font-size: 20px;
     text-align: center;
@@ -66,44 +66,44 @@ body > main .reviews > h2 {
     line-height: 20px;
 }
 
-.reviews section.review > header {
+.review > header {
     overflow: hidden;
     margin-bottom: 10px;
     font-weight: bold;
     font-size:0.8em;
 }
 
-.reviews section.review > header a.author,
-.reviews section.review > header span.rating {
+.review > header a.author,
+.review > header span.rating {
     display: block;
 }
 
-.reviews section.review > header a.author {
+.review > header a.author {
     float: left;
     text-decoration: underline;
 }
 
-.reviews section.review > header span.rating {
+.review > header span.rating {
     float: right;
     color: #4b4b4b;
 }
 
-.reviews section.review article.content {
+.review article.content {
     text-align: justify;
     color: #1A3333;
     padding: 0;
     margin: 0;
 }
 
-.reviews section.review article.content p {
+.review article.content p {
     margin: 0;
 }
 
-.reviews section.review article.content p + p {
+.review article.content p + p {
     margin-top: 10px;
 }
 
-.reviews section.review article.content a.add-comment {
+.review article.content a.add-comment {
     float: right;
 }
 
@@ -111,16 +111,15 @@ body > main .reviews > h2 {
     cursor: pointer;
 }
 
-
-.voting a.up, .voting a.down{
+.review .voting a.up, .voting a.down{
     color:grey;
     text-decoration: none;
 }
 
-.voting a.up.voted, .voting a.up:hover{
+.review .voting a.up.voted, .voting a.up:hover{
     color:green;
 }
 
-.voting a.down.voted, .voting a.down:hover{
+.review .voting a.down.voted, .voting a.down:hover{
     color:red;
 }
