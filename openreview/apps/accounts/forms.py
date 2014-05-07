@@ -83,7 +83,7 @@ class RegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.keyOrder = ["username", "first_name", "last_name", "password1", "password2", "email"]
+        self.fields.keyOrder = ["username", "first_name", "last_name", "password1", "password2", "email", "title", "university"]
 
     def clean_username(self):
         user = super().clean_username()
