@@ -1,6 +1,7 @@
 language: python
-python: "3.3"
-node_js: "0.10"
+python:
+  - "3.4"
+  - "3.3"
 
 services:
  - postgresql
@@ -8,7 +9,7 @@ services:
  - elasticsearch
 
 virtualenv:
-  system_site_packages: true
+  system_site_packages: false
 
 before_install:
  - psql -c 'create database openreview;' -U postgres
@@ -43,5 +44,5 @@ after_success:
  - coverage report -m
  - coveralls
 
-branches:
-  except: base-design
+notifications:
+  email: false
