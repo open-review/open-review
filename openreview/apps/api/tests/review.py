@@ -99,6 +99,26 @@ class TestReviewAPI(TestCase):
         self.assertTrue(Review.objects.get(id=r1.id).is_deleted)
         self.assertEqual(response.status_code, 204, "Deleting as owner should be OK")
 
+    def test_patch_visibility(self):
+        """Can we change visibility through a PATCH request?"""
+        # Create test review
+        review = create_test_review(poster=create_test_user(password="test"), rating=2)
+        self.assertFalse(review.anonymous, msg="New review should not be anonymous by default.")
+
+        # Login
+        c = Client()
+        c.login(username=review.poster.username, password="test")
+        url = reverse("review-detail", args=[review.id])
+
+        # Try to change visibility
+        response = _patch(url, {"visibility": "semi_anonymous"}, client=c)
+        self.assertTrue(Review.objects.get(id=review.id).anonymous)
+
+        # Try illegal visibility option
+        response = _patch(url, {"visibility": "foo"}, client=c)
+        self.assertTrue(Review.objects.get(id=review.id).anonymous)
+        self.assertEqual(response.content, b'{"detail": {"visibility": ["foo not one of the available choices."]}}')
+
     def test_patch(self):
         r1 = create_test_review(poster=create_test_user(password="test"), rating=2)
         url = reverse("review-detail", args=[r1.id])
@@ -140,7 +160,7 @@ class TestReviewAPI(TestCase):
         for field in ["poster", "paper", "rating"]:
             self.assertEqual(content[field][0], "This field is required.")
 
-        # Forget 'text'
+        # Forget to include 'text'
         paper = create_test_paper()
         data = dict(poster=u.id, paper=paper.id, rating=2)
         response, content = _get_json(url, data=data, client=client)

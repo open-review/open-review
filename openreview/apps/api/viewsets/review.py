@@ -1,9 +1,10 @@
 from rest_framework import viewsets
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, APIException
 from rest_framework.fields import Field
 
 from openreview.apps.api.fields import HyperlinkedRelatedFieldOrNone
 from openreview.apps.api.serializers import CustomHyperlinkedModelSerializer
+from openreview.apps.main.forms import VISIBILITY_CHOICES
 from openreview.apps.main.models import Review, set_n_votes_cache
 
 
@@ -26,7 +27,19 @@ class ReviewSerializer(CustomHyperlinkedModelSerializer):
         # We want to prevent users creating loops, so we disable parents changing.
         if instance is not None and "parent" in attrs:
             raise PermissionDenied("You cannot change a reviews parent.")
-        return super().restore_object(attrs=attrs, instance=instance)
+
+        review = super().restore_object(attrs=attrs, instance=instance)
+
+        # Set visibility manually, as it is not a model field
+        # TODO: Incorporate form logic somehow?
+        visibility = self.request.DATA.get("visibility")
+        if visibility is not None:
+            if visibility not in VISIBILITY_CHOICES:
+                raise APIException(dict(visibility=["%s not one of the available choices." % visibility]))
+            getattr(review, "set_%s" % visibility)()
+
+        return review
+
 
     class Meta:
         model = Review
