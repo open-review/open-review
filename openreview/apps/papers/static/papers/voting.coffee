@@ -37,6 +37,11 @@ vote = (btn, value) ->
     }
   }
 
+  # When going from up to downvote, or the other way around we need
+  # to add/substract double the value.
+  if btn.siblings(".voted").length
+    value *= 2
+
   # Remove state of *other* button
   btn.siblings().removeClass("voted")
   console.log(counter, value, reversed)
