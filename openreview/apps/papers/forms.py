@@ -75,7 +75,7 @@ class ArXivForm(forms.Form):
         with transaction.atomic():
             paper = Paper.objects.create(**data)
             for a in authors:
-                _, author = Author.objects.get_or_create(name=a)
+                author, _ = Author.objects.get_or_create(name=a)
                 paper.authors.add(author)
 
             for c in categories:
