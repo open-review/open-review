@@ -11,7 +11,7 @@ class PaperForm(forms.ModelForm):
     title = forms.CharField()
     authors = forms.CharField(widget=forms.TextInput(attrs={'placeholder': "Seperated by commas, for example: Tony Cai, Xiaodong Li"}))
     publisher = forms.CharField(widget=forms.TextInput(attrs={'placeholder': "For example: Elsevier"}))
-    publish_date = forms.DateField(help_text="yyyy-mm-dd", widget=forms.DateInput(attrs={'type': 'date'}))
+    publish_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     doc_id = forms.CharField(label="Document identifier")
 
     # TODO: clean_{authors,keywords} use the same algorithm. Generalise?
@@ -49,7 +49,7 @@ class PaperForm(forms.ModelForm):
         model = Paper
         fields = ['title', 'authors', 'abstract', 'publish_date', 'publisher', 'urls', 'doc_id']
         widgets = {
-            'abstract': forms.Textarea(attrs={'placeholder': "May contain \LaTeX and *Markdown*"}),
+            'abstract': forms.Textarea(attrs={'placeholder': "May contain $\LaTeX$ and *Markdown*"}),
             'urls': forms.TextInput(attrs={'placeholder': "For example: http://www.sciencedirect.com/science/article/pii/S0004370201001667"})
         }
 
