@@ -78,6 +78,13 @@ class RegisterForm(UserCreationForm):
     email = fields.EmailField(required=False, label=_("E-mail address (optional)"),
                               help_text=_("E-mail addresses are used for password recovery only."))
 
+    first_name = fields.RegexField(required=False, label="First name (optional)", regex=r"[\w]+")
+    last_name = fields.RegexField(required=False, label="Last name (optional)", regex=r"[\w]+")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.keyOrder = ["username", "first_name", "last_name", "password1", "password2", "email"]
+
     def clean_username(self):
         user = super().clean_username()
         if is_email(user):
@@ -87,6 +94,8 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
 
         if commit:
             user.save()
