@@ -12,7 +12,6 @@ body > main > section.box.title header select {
     width: 150px;
 }
 
-
 body > main > section.box {
     padding: 0;
     max-width: 640px;
@@ -31,7 +30,7 @@ body > main > section.box > form {
 }
 
 body > main > section.box > form label {
-    width: 100px;
+    width: 125px;
 }
 
 body > main > section.box > form input,
