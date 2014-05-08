@@ -70,58 +70,51 @@ body > main > aside > div.box + div.box {
     margin-top: 20px;
 }
 
-body > main > section.compose-review {
+.compose-review {
     clear: both;
-    padding: 0 20px 20px;
-    width: 640px;
 }
 
-body > main > section.compose-review h2,
-body > main > section.compose-review div.rating {
+.compose-review h2,
+.compose-review div.rating {
     padding: 17px 0 15px;
     margin: 0;
 }
 
-body > main > section.compose-review h2 {
+.compose-review h2 {
     font-size: 16px;
-    border-bottom: none;
-    float: left;
 }
 
-body > main > section.compose-review div.rating {
+.compose-review div.rating {
     float: right;
     overflow: hidden;
     font-size: 18px;
 }
 
-body > main > section.compose-review form {
+.compose-review form {
     overflow: hidden;
     clear: both;
     padding: 0;
 }
 
-body > main > section.compose-review form textarea {
+.compose-review form textarea {
     font-size: 13px;
     width: 100%;
-    height: 80px;
-    -webkit-transition: height 0.2s;
-    transition: height 0.2s;
-    margin-bottom: 10px;
+    height: 280px;
     max-width:100%;
     min-width:100%;
 }
 
-body > main > section.compose-review form label {
+.compose-review form label {
     display: block;
-    float: left;
-    padding: 8px 0;
     float: left;
     width: auto;
     line-height: normal;
     margin-bottom: 0;
+    margin-top:0;
+    margin-left:2px;
 }
 
-body > main > section.compose-review form label > select {
+.compose-review form label > select {
     margin-left: 10px;
     clear: none;
     float: none;
@@ -130,21 +123,25 @@ body > main > section.compose-review form label > select {
     margin-bottom: 0;
 }
 
-body > main > section.compose-review form button[type=submit], .compose .spinner {
+.compose-review form button[type=submit], .compose .spinner {
     font-size: 13px;
     float: right;
-    padding: 8px 20px;
+    /*padding: 1px 10px;*/
     display: inline;
-    clear: none;
-    width: auto;
+    clear: none!important;
+    width: auto!important;
 }
 
-body > main > section.compose-review form button:active {
+.compose-review form button:active {
     padding-top: 9px;
     padding-bottom: 7px;
 }
 
-#new-review-preview {
-    padding:0px;
-    margin-left:-21px;
+main > .reviews .review.first{
+    margin-top:0;
 }
+
+main > .reviews .review{
+    margin-top: 20px;
+}
+

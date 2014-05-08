@@ -1,12 +1,8 @@
+{% csrf_token %}
 <input type="hidden" name="poster" value="{{ user.id }}" />
 <input type="hidden" name="paper" value="{{ paper.id }}" />
-{% csrf_token %}
 
-{% if not is_review %}
-    <input type="hidden" name="rating" value="-1" />
-{% endif %}
-
-<textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below."></textarea>
+<textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below.">{% if review %}{{ review.text }}{% endif %}</textarea>
 
 <p style="display:none;" class="preview-error permission-denied">
     You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
@@ -33,13 +29,13 @@
     </a>
 
     <select name="visibility">
-        <option value="public">Public</option>
-        <option value="semi_anonymous">Semi-anonymous</option>
-        <option value="anonymous">Anonymous</option>
-        <option value="external">External</option>
+        <option {% if review and not review.anonymous %}selected="selected"{% endif %} value="public">Public</option>
+        <option {% if review and review.is_semi_anonymous %}selected="selected"{% endif %}value="semi_anonymous">Semi-anonymous</option>
+        <option {% if review and review.anonymous and not review.is_semi_anonymous %}selected="selected"{% endif %}value="anonymous">Anonymous</option>
+        <option {% if review and review.external %}selected="selected"{% endif %}value="external">External</option>
     </select>
 
 </label>
 
 {% include "includes/spinner.html" %}
-<button type="submit">Submit {% if is_review %}review{% else %}reply{% endif %}</button>
+<button type="submit">{{ name }}</button>

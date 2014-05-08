@@ -1,7 +1,10 @@
-.reviews {
+.reviews, #new-review-preview {
     width: 640px;
-    padding: 0 20px 20px;
     float: left;
+}
+
+.reviews{
+    padding: 0 20px 20px;
 }
 
 .reviews > h2,
@@ -92,15 +95,8 @@ body > main .reviews > h2 {
     text-align: justify;
     color: #1A3333;
     padding: 0;
-    margin: 0;
-}
-
-.review article.content p {
-    margin: 0;
-}
-
-.review article.content p + p {
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .review article.content a.add-comment {
@@ -123,3 +119,55 @@ body > main .reviews > h2 {
 .review .voting a.down.voted, .voting a.down:hover{
     color:red;
 }
+
+.review .options a{
+}
+
+.review .options .comments{
+    float:right;
+}
+
+.preview{
+    margin-top:-21px;
+}
+
+.preview .review{
+    background: url('/static/papers/preview.png') repeat-y 50%;
+}
+
+.compose-top-level{
+    width:640px;
+}
+
+.compose-top-level > header{
+    height:50px;
+}
+
+.compose-top-level > header > h2, .edit-form > header > h2{
+    float:left;
+}
+
+.compose-top-level > header > h2{
+    margin-left:20px;
+}
+
+.edit-form{
+    padding-left:20px;
+    padding-right:20px;
+    padding-bottom:20px;
+}
+
+.compose-top-level > header > .rating{
+    float:right;
+    margin-right:20px;
+}
+
+.compose-top-level form{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+#new-review-preview > .preview{
+    margin-top:5px;
+}
+
