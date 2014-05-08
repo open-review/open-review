@@ -72,6 +72,7 @@ class Review(models.Model):
         self._n_upvotes = None
         self._n_downvotes = None
         self._n_comments = None
+        self._tree_size = None
 
         # If cache() is called this is a defaultdict(list) with
         # review_id -> [children_ids].
@@ -234,8 +235,13 @@ class Review(models.Model):
         self.cache()
         return self._get_tree(level=0, seen=set(), lazy=lazy)
 
-    def get_tree_size(self):
+    def _get_tree_size(self):
         return 1 + sum(r.review.get_tree_size() for r in self.get_tree().children)
+
+    def get_tree_size(self):
+        if self._tree_size is None:
+            self._tree_size = self._get_tree_size()
+        return self._tree_size
 
     class Meta:
         app_label = "main"
