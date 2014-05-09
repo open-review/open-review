@@ -22,10 +22,10 @@
 
 {% block content %}
     <section data-paper-id="{{ paper.id }}" data-votes="{{ my_votes }}" data-reviews="{{ my_reviews }}" class="paper box">
-        <header class="title">
+        <header class="tex title">
             <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
         </header>
-        <div class="abstract">
+        <div class="tex abstract">
             {{ paper.abstract | markdown}}
             {% if paper.urls %}
             <a href="{{ paper.urls }}" class="readmore">&raquo; Read full abstract on {{ paper.get_url_domain }}</a>

@@ -27,7 +27,7 @@
         </header>
 
         <!-- Review content -->
-        <article class="content {% if review.is_deleted %}deleted{% endif %}">
+        <article class="tex content {% if review.is_deleted %}deleted{% endif %}">
             {% if review.text %}
                 {{ review.text|markdown }}
             {% else %}
