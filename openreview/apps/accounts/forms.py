@@ -78,6 +78,13 @@ class RegisterForm(UserCreationForm):
     email = fields.EmailField(required=False, label=_("E-mail address (optional)"),
                               help_text=_("E-mail addresses are used for password recovery only."))
 
+    first_name = fields.RegexField(required=False, label="First name (optional)", regex=r"[\w]+")
+    last_name = fields.RegexField(required=False, label="Last name (optional)", regex=r"[\w]+")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.keyOrder = ["username", "first_name", "last_name", "password1", "password2", "email"]
+
     def clean_username(self):
         user = super().clean_username()
         if is_email(user):
@@ -87,6 +94,8 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
 
         if commit:
             user.save()
@@ -97,19 +106,36 @@ class RegisterForm(UserCreationForm):
         fields = ("username", "password1", "password2", "email")
 
 
-class SettingsForm(RegisterForm):
+class SettingsForm(forms.ModelForm):
     """
 
     """
-    title = forms.CharField(help_text=_('e.g. "MSc" in "Pietje Puk (Msc, University of Twente)"'), required=False)
-    university = forms.CharField(help_text=_('e.g. "University of Twente" in "Pietje Puk (Msc, University of Twente)"'), required=False)
+    error_messages = {
+        'password_mismatch': _("The two password fields didn't match."),
+    }
+
+    password1 = forms.CharField(required=False, label=_("Password"),
+                                widget=forms.PasswordInput)
+    password2 = forms.CharField(required=False, label=_("Password confirmation"),
+                                widget=forms.PasswordInput,
+                                help_text=_("Enter the same password as above, for verification."))
+
+    title = forms.CharField(required=False, help_text=_('e.g. "MSc" in "Pietje Puk (Msc, University of Twente)"'))
+    university = forms.CharField(required=False, help_text=_('e.g. "University of Twente" in "Pietje Puk (Msc, University of Twente)"'))
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
-        self.fields["password1"].required = False
-        self.fields["password2"].required = False
-        self.fields.pop("username")
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        return password2
 
     def save(self, commit=True):
         password = self.cleaned_data["password1"]
@@ -137,7 +163,6 @@ class SettingsForm(RegisterForm):
     class Meta:
         model = get_user_model()
         fields = ("password1", "password2", "email", "first_name", "last_name", "title", "university")
-        exclude = ["username"]
 
 
 class AccountDeleteForm(forms.ModelForm):
