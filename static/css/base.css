@@ -52,7 +52,7 @@ body > header > nav ul li {
     padding: 0;
 }
 
-body > header > nav ul li.seperator {
+body > header > nav ul li.separator {
     font-weight: bold;
     line-height: 50px;
     height: 50px;
