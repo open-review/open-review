@@ -1,8 +1,8 @@
 {% load markdown %}
 {% load author %}
 
-<div class="{% if is_preview %}preview{% endif %} review-container">
-    <section data-paper-id="{{ review.paper_id }}" data-review-id="{{ review.id }}" class="level-{{ level }} review box {% if first %}first{% endif %}">
+<div class="{% if is_preview %}preview{% endif %} level-{{ level }} review-container {% if first %}first{% endif %}">
+    <section data-paper-id="{{ review.paper_id }}" data-review-id="{{ review.id }}" class="review box ">
         <!-- Voting -->
         <div class="voting">
           <a class="up">❮</a>
@@ -40,6 +40,7 @@
         <footer class="options">
             <a style="display:none;" data-edit-id="edit-{{ review.id }}" class="edit" href="">edit</a>
             <a style="display:none;" class="delete" href="">delete</a>
+            <a style="display:none;" data-edit-id="reply-to-{{ review.id }}" class="reply" href="">reply</a>
             <a class="permalink" href="{% url 'review' review.paper_id review.id %}">permalink</a>
             {% with tree_size=review.get_tree_size|add:-1 %}
                 {% if level == -1 or level == 9 %}
@@ -53,6 +54,26 @@
         <div class="clearfix"></div>
     </section>
 
+    {% comment %}Reply area{% endcomment %}
+    {% if not is_preview %}
+    <!-- Reply form for reviews -->
+    <section style="display:none;" data-preview-id="preview-of-reply-{{ review.id }}" id="reply-to-{{ review.id }}" class="box compose compose-review edit-form">
+        <header>
+            <h2>Reply to review</h2>
+        </header>
+
+        <form action="#" method="POST">
+            <input type="hidden" name="parent" value="{{ review.id }}" />
+            <input type="hidden" name="rating" id="rating-top-level" value="-1" />
+            {% include "papers/comment.html" with name="Submit reply" review=None %}
+        </form>
+    </section>
+
+    <!-- Preview for editing review -->
+    <div style="display:none;" class="preview-container" id="preview-of-reply-{{ review.id }}"></div>
+    {% endif %}
+
+    {% comment %}Edit area{% endcomment %}
     {% if not review.is_deleted and not is_preview %}
     <!-- Edit form for reviews -->
     <section id="edit-{{ review.id }}" style="display:none;" data-preview-id="preview-of-edit-{{ review.id }}" class="box compose compose-review edit-form">
@@ -72,7 +93,7 @@
     </section>
 
     <!-- Preview for editing review -->
-    <div id="preview-of-edit-{{ review.id }}"></div>
+    <div style="display:none;" class="preview-container" id="preview-of-edit-{{ review.id }}"></div>
     {% endif %}
 </div>
 

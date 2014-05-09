@@ -133,12 +133,28 @@ $(".compose [type=submit]").click((e) ->
 )
 
 # Collapse / show editing area if user clicked edit button
-$(".review .options .edit").click((e) ->
+$(".review .options .edit, .review .options .reply").click((e) ->
   e.preventDefault();
-  $("#" + $(e.currentTarget).data("edit-id")).toggle()
+  target = $("#" + $(e.currentTarget).data("edit-id"))
+  other = target.siblings(".edit-form")
+
+  # Hide other and its preview
+  other.hide()
+  $("#" + other.data("preview-id")).hide()
+
+  # Toggle ourselves
+  target.toggle()
+  $("#" + target.data("preview-id")).toggle()
+
+  if target.is(":visible")
+    target.find("textarea").focus()
 )
 
 # Show edit button for each owned review
 $.map($(".paper").data("reviews"), (review_id) ->
   $(".review[data-review-id=#{review_id}] .edit").show();
 )
+
+# Show reply button if logged in
+if not anonymous
+  $(".review .options .reply").show();

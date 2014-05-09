@@ -70,78 +70,13 @@ body > main > aside > div.box + div.box {
     margin-top: 20px;
 }
 
-.compose-review {
-    clear: both;
-}
 
-.compose-review h2,
-.compose-review div.rating {
-    padding: 17px 0 15px;
-    margin: 0;
-}
 
-.compose-review h2 {
-    font-size: 16px;
-}
-
-.compose-review div.rating {
-    float: right;
-    overflow: hidden;
-    font-size: 18px;
-}
-
-.compose-review form {
-    overflow: hidden;
-    clear: both;
-    padding: 0;
-}
-
-.compose-review form textarea {
-    font-size: 13px;
-    width: 100%;
-    height: 280px;
-    max-width:100%;
-    min-width:100%;
-}
-
-.compose-review form label {
-    display: block;
-    float: left;
-    width: auto;
-    line-height: normal;
-    margin-bottom: 0;
-    margin-top:0;
-    margin-left:2px;
-}
-
-.compose-review form label > select {
-    margin-left: 10px;
-    clear: none;
-    float: none;
-    width: auto;
-    display: inline;
-    margin-bottom: 0;
-}
-
-.compose-review form button[type=submit], .compose .spinner {
-    font-size: 13px;
-    float: right;
-    /*padding: 1px 10px;*/
-    display: inline;
-    clear: none!important;
-    width: auto!important;
-}
-
-.compose-review form button:active {
-    padding-top: 9px;
-    padding-bottom: 7px;
-}
-
-main > .reviews .review.first{
+main > .reviews .review-container.first{
     margin-top:0;
 }
 
-main > .reviews .review{
+main > .reviews > .review-container{
     margin-top: 20px;
 }
 
@@ -155,6 +90,27 @@ main > .reviews .review{
     padding-bottom:0!important;
 }
 
+.compose-top-level{
+    width:640px;
+}
+
+.compose-top-level > header{
+    height:50px;
+}
+
+.compose-top-level > header > h2, .edit-form > header > h2{
+    float:left;
+}
+
+.compose-top-level > header > h2{
+    margin-left:20px;
+}
+
 #new-review-preview{
     margin-bottom: 20px;
 }
+
+#new-review-preview > .preview{
+    margin-top:5px;
+}
+
