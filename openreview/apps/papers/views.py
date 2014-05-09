@@ -17,17 +17,6 @@ from django.contrib.auth.decorators import login_required
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
-    def redirect(self, review):
-        review.cache()
-
-        # Determine root of comment thread
-        root = review
-        while root.parent is not None:
-            root = root.parent
-
-        url = reverse("review", args=[review.paper_id, root.id])
-        return redirect("{url}#r{review.id}".format(**locals()), permanent=False)
-
     def get_context_data(self, **kwargs):
         # Do not load context data if user is anonymous (no posts) or
         # the current method is POST (votes/reviews not needed)
@@ -56,6 +45,9 @@ class PaperWithReviewsView(BaseReviewView):
         paper = self.objects.get_paper(lambda p: p.prefetch_related("authors", "keywords", "categories"))
 
         try:
+            # We cannot pass a plain QuerySet to the template, as it would generate
+            # way too much calls to the DBMS. Instead, we use .cache() and pass a
+            # list of Review objects.
             review = paper.get_reviews()[0]
         except IndexError:
             reviews = []
@@ -105,9 +97,6 @@ class ReviewView(BaseReviewView):
     template_name = "papers/comment_thread.html"
 
     def get_context_data(self, **kwargs):
-        if self.request.POST:
-            return super().get_context_data(**kwargs)
-
         paper = self.objects.paper
         review = self.objects.review
         review.cache(select_related=("poster",))

@@ -1,109 +1,49 @@
+import time
+
+from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.test import Client
-from django.utils.http import urlencode
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-import time
-from openreview.apps.main.models import Paper, Review
+
+from openreview.apps.main.models import Review, Paper
 from openreview.apps.tools.testing import create_test_user, create_test_review, SeleniumTestCase, create_test_paper, \
-    BaseTestCase
+    assert_max_queries
 
+__all__ = ["TestReviewView", "TestReviewView2", "TestReviewViewLive"]
 
-class TestReviewView(BaseTestCase):
-    def test_get(self):
-        pass
+class TestReviewView(TestCase):
+    def test_n_queries_anonymous(self):
+        """As an anonymous user, TestReview doesn't have to fetch owned reviews or votes."""
+        paper = create_test_paper(n_reviews=1)
 
-    def test_patch(self):
-        u1 = create_test_user(username="password", password="username")
-        u2 = create_test_user(username="username", password="password")
+        with assert_max_queries(n=8):
+            # [0] Paper
+            # [1][2][3] Authors, keywords, categories (M2M relations)
+            # [4] Review
+            # [5] (Tree of) reviews
+            # [6] Upvotes
+            # [7] Downvotes
+            Client().get(reverse("paper", args=[paper.id]))
 
-        review = create_test_review(text="test123", poster=u2)
+class TestReviewView2(TestCase):
+    """Running both n_queries test in the same TestCase somehow causes database queries
+    to be cached. This should not happen, but I am not """
+    def test_n_queries_logged_in(self):
+        Paper.objects.all().delete()
 
-        url = reverse("review", args=[review.paper.id, review.id])
+        paper = create_test_paper(n_reviews=1)
+        user = create_test_user(password="test")
 
-        # Not logged in
-        c = Client()
-        self.assertEqual(c.patch(url).status_code, 403)
-        self.assertEqual(Review.objects.get(id=review.id).text, "test123")
+        client = Client()
+        client.login(username=user.username, password="test")
 
-        # Incorrect user
-        c.login(username="password", password="username")
-        self.assertEqual(c.patch(url).status_code, 403)
-        self.assertEqual(Review.objects.get(id=review.id).text, "test123")
-
-        # Correct user but missing 'text'
-        c.login(username="username", password="password")
-        self.assertEqual(c.patch(url).status_code, 400)
-        self.assertEqual(Review.objects.get(id=review.id).text, "test123")
-
-        # Non UTF-8 string
-        self.assertEqual(c.patch(url, b"text=\x81").status_code, 400)
-        self.assertEqual(Review.objects.get(id=review.id).text, "test123")
-
-        # Correct request
-        response = c.patch(url, urlencode(dict(text="foo123")))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Review.objects.get(id=review.id).text, "foo123")
-
-    def test_delete(self):
-        user = create_test_user(username="f", password="f")
-        review = create_test_review(poster=create_test_user())
-
-        url = reverse("review", args=[review.paper.id, review.id])
-        c = Client()
-
-        self.assertEqual(c.delete(url).status_code, 403)
-        c.login(username="f", password="f")
-        self.assertEqual(c.delete(url).status_code, 403)
-        review = create_test_review(poster=user)
-        url = reverse("review", args=[review.paper.id, review.id])
-        self.assertEqual(c.delete(url).status_code, 200)
-
-    def test_post(self):
-        c = Client()
-
-        paper = create_test_paper()
-        review = create_test_review()
-
-        self.assertFalse(Paper.objects.filter(id=0).exists())
-        self.assertFalse(Review.objects.filter(id=0).exists())
-
-        url = reverse("review", args=[0, 0])
-        user = create_test_user(username="food", password="pizza")
-
-        # Not logged in
-        response = c.post(url)
-        self.assertEqual(403, response.status_code)
-
-        # No text provided
-        c.login(username="food", password="pizza")
-        response = c.post(url)
-        self.assertEqual(400, response.status_code)
-
-        # Paper not found
-        url = reverse("review", args=[0, review.id])
-        response = c.post(url, dict(text="foo"))
-        self.assertEqual(404, response.status_code)
-
-        # Review not found
-        url = reverse("review", args=[paper.id, 0])
-        response = c.post(url, dict(text="foo"))
-        self.assertEqual(404, response.status_code)
-
-        # Cannot create review with paper != given paper
-        url = reverse("review", args=[paper.id, review.id])
-        self.assertNotEqual(review.paper, paper)
-        response = c.post(url, dict(text="foo", submit="blaat"))
-        self.assertEqual(400, response.status_code)
-
-        # We can if we don't commit
-        response = c.post(url, dict(text="foo"))
-        self.assertEqual(200, response.status_code)
-
-        # Finally a successful try
-        url = reverse("review", args=[review.paper.id, review.id])
-        c.post(url, dict(text="foo-post-test", submit="blaat"))
-        self.assertTrue(Review.objects.filter(text="foo-post-test", parent=review, poster=user).exists())
+        with assert_max_queries(n=11):
+            # [0-7] See test_n_queries_anonymous
+            # [8] User
+            # [9] Owned reviews
+            # [10] Owned votes
+            client.get(reverse("paper", args=[paper.id]))
 
 
 class TestReviewViewLive(SeleniumTestCase):
