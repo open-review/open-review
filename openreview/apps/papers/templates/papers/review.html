@@ -2,7 +2,10 @@
 {% load author %}
 
 <div class="{% if is_preview %}preview{% endif %} level-{{ level }} review-container {% if first %}first{% endif %}">
-    <section data-paper-id="{{ review.paper_id }}" data-review-id="{{ review.id }}" class="review box ">
+    <section data-api-url="{% url 'review-detail' review.id %}"
+             data-paper-id="{{ review.paper_id }}"
+             data-review-id="{{ review.id }}"
+             class="review box ">
         <!-- Voting -->
         <div class="voting">
           <a class="up">❮</a>
@@ -39,7 +42,7 @@
              default, as only javascript knows which reviews are 'ours'. -->
         <footer class="options">
             <a style="display:none;" data-edit-id="edit-{{ review.id }}" class="edit" href="">edit</a>
-            <a style="display:none;" class="delete" href="">delete</a>
+            <a style="display:none;" href="{% url 'review-detail' review.id %}" class="delete">delete</a>
             <a style="display:none;" data-edit-id="reply-to-{{ review.id }}" class="reply" href="">reply</a>
             <a class="permalink" href="{% url 'review' review.paper_id review.id %}">permalink</a>
             {% with tree_size=review.get_tree_size|add:-1 %}
@@ -64,7 +67,7 @@
 
         <form action="#" method="POST">
             <input type="hidden" name="parent" value="{{ review.id }}" />
-            <input type="hidden" name="rating" id="rating-top-level" value="-1" />
+            <input type="hidden" name="rating" value="-1" />
             {% include "papers/comment.html" with name="Submit reply" review=None %}
         </form>
     </section>
