@@ -29,7 +29,7 @@
         <!-- Review content -->
         <article class="tex content {% if review.is_deleted %}deleted{% endif %}">
             {% if review.text %}
-                {{ review.text|markdown }}
+                {{ review.text|markdown|urlize }}
             {% else %}
                 <p class="deleted">[deleted]</p>
             {% endif %}
