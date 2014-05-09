@@ -2,7 +2,7 @@
 {% load author %}
 
 <div class="{% if is_preview %}preview{% endif %} review-container">
-    <section data-paper-id="{{ review.paper_id }}" data-review-id="{{ review.id }}" class="review box {% if first %}first{% endif %}">
+    <section data-paper-id="{{ review.paper_id }}" data-review-id="{{ review.id }}" class="level-{{ level }} review box {% if first %}first{% endif %}">
         <!-- Voting -->
         <div class="voting">
           <a class="up">❮</a>
@@ -42,9 +42,11 @@
             <a style="display:none;" class="delete" href="">delete</a>
             <a class="permalink" href="{% url 'review' review.paper_id review.id %}">permalink</a>
             {% with tree_size=review.get_tree_size|add:-1 %}
+                {% if level == -1 or level == 9 %}
                 <a class="comments" href="{% url 'review' review.paper_id review.id %}">
                     {{ tree_size }} comment{{ tree_size|pluralize }}
                 </a>
+                {% endif %}
             {% endwith %}
         </footer>
 
@@ -73,3 +75,4 @@
     <div id="preview-of-edit-{{ review.id }}"></div>
     {% endif %}
 </div>
+

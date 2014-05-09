@@ -102,15 +102,7 @@ class PapersView(TemplateView):
         return queryset.get(name=self.name)
 
 class ReviewView(BaseReviewView):
-    template_name = "papers/comments.html"
-
-    # Expands a tree so that each review in the tree gets its own form to edit the review
-    def expand_tree(self, tree):
-        return ReviewTree(
-            review=self.add_review_fields(tree.review),
-            level=tree.level,
-            children=[self.expand_tree(child) for child in tree.children]
-        )
+    template_name = "papers/comment_thread.html"
 
     def get_context_data(self, **kwargs):
         if self.request.POST:
@@ -121,9 +113,7 @@ class ReviewView(BaseReviewView):
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
 
-        tree = self.expand_tree(review.get_tree())
-
-        return super().get_context_data(tree=tree, paper=paper, **kwargs)
+        return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
 
 
 class SearchView(TemplateView):

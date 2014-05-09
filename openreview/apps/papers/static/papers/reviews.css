@@ -171,3 +171,24 @@ body > main .reviews > h2 {
     margin-top:5px;
 }
 
+.review.level-1, .review.level-2, .review.level-3,
+.review.level-4, .review.level-5, .review.level-6,
+.review.level-7, .review.level-8, .review.level-9{
+    /* Fixes 'double' border of parent and this review. Disabling border
+       causes borders to be ended unexpectedly due to rounded corners. */
+    margin-top:-1px;
+}
+
+.review.level-1{
+    /* Width of voting widget - 1 due to border. */
+    margin-left:39px;
+}
+
+.review.level-2{ margin-left:78px; }
+.review.level-3{ margin-left:117px; }
+.review.level-4{ margin-left:156px; }
+.review.level-5{ margin-left:195px; }
+.review.level-6{ margin-left:234px; }
+.review.level-7{ margin-left:273px; }
+.review.level-8{ margin-left:312px; }
+.review.level-9{ margin-left:351px; }

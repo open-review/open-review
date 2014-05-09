@@ -52,7 +52,7 @@
         <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
         {% for review in reviews %}
-            {% include "papers/review.html" with paper=paper review=review first=forloop.first %}
+            {% include "papers/review.html" with first=forloop.first paper=paper review=review level=-1 %}
         {% endfor %}
     </section>
 

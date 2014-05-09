@@ -145,3 +145,16 @@ main > .reviews .review{
     margin-top: 20px;
 }
 
+/* TODO: !important is fugly. Remove? */
+.compose-top-level > header{
+    border:none!important;
+}
+
+.compose-top-level form{
+    padding-top:0!important;
+    padding-bottom:0!important;
+}
+
+#new-review-preview{
+    margin-bottom: 20px;
+}
