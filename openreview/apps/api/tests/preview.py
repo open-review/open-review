@@ -27,7 +27,7 @@ class PreviewProcedureTest(TestCase):
         response, content = _get_json(self.url, data={}, client=self.client)
         self.assertEqual(response.status_code, 400)
 
-        for field in ['rating', 'visibility', 'text', 'paper']:
+        for field in ['rating', 'visibility', 'paper']:
             self.assertEqual(content['details'][field], ["This field is required."])
 
     def test_post(self):
