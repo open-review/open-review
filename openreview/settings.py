@@ -70,6 +70,13 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
+    # Template dirs below will be found by 'dynamic' template dir finders, but
+    # PyCharm can't handle it thus marking each template as non-existent.
+    os.path.join(BASE_DIR, "openreview/apps", "accounts", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "papers", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "main", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "tools", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "api", "templates"),
 )
 
 ROOT_URLCONF = 'openreview.urls'
