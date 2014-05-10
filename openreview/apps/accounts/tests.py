@@ -129,8 +129,6 @@ class TestLoginViewSelenium(SeleniumTestCase):
 
 
 class TestSettingsForms(BaseTestCase):
-    u = None
-
     def setUp(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
@@ -138,16 +136,20 @@ class TestSettingsForms(BaseTestCase):
         super().setUp()
 
     def test_settings_form(self):
-        form = SettingsForm(user=self.u, data={"password1": "test", "password2": "differentpassword"})
+        data = {"password1": "test", "password2": "differentpassword"}
+        form = SettingsForm(data=data, instance=self.u)
         self.assertFalse(form.is_valid())
 
-        form = SettingsForm(user=self.u, data={"password1": "test123", "password2": "test123"})
+        data = {"password1": "test123", "password2": "test123"}
+        form = SettingsForm(data=data, instance=self.u)
         self.assertTrue(form.is_valid())
 
-        form = SettingsForm(user=self.u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet.com"})
+        data = {"password1": "test", "password2": "test", "email": "pietje@pietenpiet.com"}
+        form = SettingsForm(data=data, instance=self.u)
         self.assertTrue(form.is_valid())
 
-        form = SettingsForm(user=self.u, data={"password1": "test", "password2": "test", "email": "pietje@pietenpiet"})
+        data = {"password1": "test", "password2": "test", "email": "pietje@pietenpiet"}
+        form = SettingsForm(data=data, instance=self.u)
         self.assertFalse(form.is_valid())
 
     def test_username(self):
@@ -159,11 +161,13 @@ class TestSettingsForms(BaseTestCase):
 
     def test_change_change_password(self):
         c = Client()
-        c.post(reverse("accounts-login"), {"username": "TestHero", "password": "test123", "login": ""})
+
+        # Make sure we can login using old password
+        self.assertTrue(c.login(username="TestHero", password="test123"))
+
+        # Posting only 'password1' and 'password2' should suffice for changing a password
         c.post(reverse("accounts-settings"), {"password1": "test12345", "password2": "test12345"})
-        c.post(reverse("accounts-logout"))
-        response = c.post(reverse("accounts-login"), {"username": "TestHero", "password": "test12345", "login": ""})
-        self.assertTrue("sessionid" in response.cookies)
+        self.assertTrue(User.objects.get(id=self.u.id).check_password("test12345"), msg="Password did not change")
 
     def test_reviews(self):
         for n in range(5):

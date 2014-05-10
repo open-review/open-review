@@ -71,22 +71,18 @@ class SettingsView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        settings_data = request.POST if 'update-settings' in request.POST else request.user._wrapped.__dict__
-        self.settings_form = SettingsForm(data=settings_data, user=request.user)
+        self.settings_form = SettingsForm(data=request.POST or None, instance=request.user)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
-        return self.update()
+        if self.settings_form.is_valid():
+            self.settings_form.save()
+        return redirect(reverse("accounts-settings"))
 
     def get(self, request):
         reviews = request.user.reviews.all()
         set_n_votes_cache(reviews)
         return super().get(request, reviews=reviews, settings_form=self.settings_form)
-
-    def update(self):
-        if self.settings_form.is_valid():
-            self.settings_form.save()
-        return redirect(reverse("accounts-settings"))
 
 class AccountDeleteView(TemplateView):
     template_name = "accounts/delete.html"

@@ -123,9 +123,8 @@ class SettingsForm(forms.ModelForm):
     title = forms.CharField(required=False, help_text=_('e.g. "MSc" in "Pietje Puk (Msc, University of Twente)"'))
     university = forms.CharField(required=False, help_text=_('e.g. "University of Twente" in "Pietje Puk (Msc, University of Twente)"'))
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.user = user
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -138,27 +137,17 @@ class SettingsForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
+        user = super().save(commit=False)
+
+        # Set password, as it will not be set by super().save
         password = self.cleaned_data["password1"]
-        email = self.cleaned_data["email"]
-        first_name = self.cleaned_data["first_name"]
-        last_name = self.cleaned_data["last_name"]
-        title = self.cleaned_data["title"]
-        university = self.cleaned_data["university"]
         if password:
-            self.user.set_password(password)
-        if email:
-            self.user.email = email
-        if title:
-            self.user.title = title
-        if first_name:
-            self.user.first_name = first_name
-        if last_name:
-            self.user.last_name = last_name
-        if university:
-            self.user.university = university
+            user.set_password(password)
+
         if commit:
-            self.user.save()
-        return self.user
+            user.save()
+
+        return user
 
     class Meta:
         model = get_user_model()
