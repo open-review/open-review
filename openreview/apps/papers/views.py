@@ -55,11 +55,19 @@ class PaperWithReviewsView(BaseReviewView):
             review.cache(select_related=["poster"])
             reviews = [r for r in review._reviews.values() if r.parent_id is None]
 
+        related_by_author = set(Paper.objects.filter(authors__in=paper.authors.all()).exclude(id=paper.id)[:4])
+        related_by_subject = set(Paper.objects.filter(keywords__in=paper.keywords.all()).exclude(id=paper.id)[:4])
+
+        if len(related_by_subject) < 4:
+            related_by_subject |= set(Paper.objects.filter(categories__in=paper.categories.all()).exclude(id=paper.id)[:4-len(related_by_subject)])
+
         # Set cache and sort reviews by up-/downvotes
         set_n_votes_cache(reviews)
         reviews.sort(key=lambda r: r.n_upvotes - r.n_downvotes, reverse=True)
         keywords = [{'url': '#', 'text': keyword} for keyword in paper.keywords.all()]
-        return super().get_context_data(paper=paper, reviews=reviews, keywords=keywords, **kwargs)
+        return super().get_context_data(
+            paper=paper, reviews=reviews, keywords=keywords, related_a=related_by_author,
+            related_s=related_by_subject, **kwargs)
 
 
 orderings = {

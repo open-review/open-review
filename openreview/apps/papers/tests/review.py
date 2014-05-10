@@ -14,13 +14,14 @@ class TestReviewView(TestCase):
         """As an anonymous user, TestReview doesn't have to fetch owned reviews or votes."""
         paper = create_test_paper(n_reviews=1)
 
-        with assert_max_queries(n=8):
+        with assert_max_queries(n=11):
             # [0] Paper
             # [1][2][3] Authors, keywords, categories (M2M relations)
             # [4] Review
             # [5] (Tree of) reviews
             # [6] Upvotes
             # [7] Downvotes
+            # [8][9][10] Authors, keywords, categories (fetching data)
             Client().get(reverse("paper", args=[paper.id]))
 
 
@@ -37,11 +38,11 @@ class TestReviewView2(TestCase):
         client = Client()
         client.login(username=user.username, password="test")
 
-        with assert_max_queries(n=11):
-            # [0-7] See test_n_queries_anonymous
-            # [8] User
-            # [9] Owned reviews
-            # [10] Owned votes
+        with assert_max_queries(n=14):
+            # [0-10] See test_n_queries_anonymous
+            # [9] User
+            # [10] Owned reviews
+            # [11] Owned votes
             client.get(reverse("paper", args=[paper.id]))
 
 
