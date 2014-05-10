@@ -34,7 +34,6 @@ class TestPaperViewLive(SeleniumTestCase):
         self.login()
 
         self.open(reverse("paper", args=[create_test_paper().id]))
-        self.wd.wait_for_css("body")
         self.assertRaises(NoSuchElementException, self.wd.find_css, ".preview .review")
-        self.wd.find_css(".new-review textarea").click()
+        self.wd.find_css(".compose-top-level textarea").click()
         self.wd.wait_for_css(".preview .review")
