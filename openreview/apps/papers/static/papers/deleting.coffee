@@ -4,10 +4,11 @@ delete_review = (e) ->
   csrf = $("body").data("csrf")
 
   $.ajax({
-    type: "DELETE", url: url,
-    beforeSend: (xhr) ->
-      # JQuery is confused when using data, this is a workaround
-      xhr.setRequestHeader("X-CSRFToken", csrf);
+    type: "POST", url: url,
+    headers: {
+      'X-HTTP-Method-Override': 'DELETE',
+      'X-CSRFToken': csrf
+    }
   })
 
   review = $(this).closest(".review")
