@@ -29,34 +29,3 @@ def dashboard(request):
     })
 
 
-@login_required
-def add_review(request):
-    data = request.POST if "add_review" in request.POST else None
-
-    review_form = ReviewForm(data=data, user=request.user)
-
-    if data and data.get('type') == 'arxiv':
-        #TODO potentially unsave?
-        scraper = scrapers.Controller(scrapers.ArXivScraper).run(data.get('doc_id'))
-        scraper.update({"type": 'arxiv', "doc_id": data.get('doc_id')})
-        scraper.update({"authors": "\n".join(scraper['authors'])})
-
-        paper_form = PaperForm(data=scraper)
-    else:
-        paper_form = PaperForm(data=data)
-
-    with transaction.atomic():
-        if paper_form.is_valid() and review_form.is_valid():
-            paper = paper_form.save()
-            review = review_form.save(commit=False)
-            review.paper = paper
-            review.save()
-
-            #return redirect(reverse("paper", args=(paper.id,)), parmanent=False)
-            return redirect(reverse("dashboard"), parmanent=False)
-
-    return render(request, "main/add_review.html", {
-        "user": request.user,
-        "add_review_form": review_form,
-        "add_paper_form": paper_form
-    })
