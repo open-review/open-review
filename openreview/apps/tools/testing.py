@@ -68,7 +68,7 @@ class BaseTestCase(SimpleTestCase):
 
     def setUp(self):
         haystack.connections.reload('default')
-        super(BaseTestCase,self).setUp()
+        super(BaseTestCase, self).setUp()
 
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
@@ -175,7 +175,7 @@ class SeleniumTestCase(LiveServerTestCase):
         self.fail(msg="Could not find {model_cls.__name__}({kwargs}) within {_timeout} seconds.".format(**locals()))
 
 # This is a hack to generate unique names for test models
-COUNTER = 0
+COUNTER = 100000
 def up_counter(func):
     @wraps(func)
     def inner(*args, **kwargs):

@@ -1,10 +1,6 @@
-import time
-
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.test import Client
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.keys import Keys
 
 from openreview.apps.main.models import Review, Paper
 from openreview.apps.tools.testing import create_test_user, create_test_review, SeleniumTestCase, create_test_paper, \
@@ -148,6 +144,8 @@ class TestReviewViewLive(SeleniumTestCase):
 
         owned_review = self.wd.find_css('[data-review-id="%s"]' % self.review1.id)
         delete_button = owned_review.find_element_by_css_selector(".options .delete")
+
+
         delete_button.click()
 
         self.wait_for_model(Review, text=None)

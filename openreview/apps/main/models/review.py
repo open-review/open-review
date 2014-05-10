@@ -321,7 +321,7 @@ class Review(models.Model):
             user.is_anonymous(),
             self.is_deleted,
             self.poster_id is None,
-            self.poster_id is not user.id
+            self.poster_id != user.id
         ))
 
     def can_change(self, user):
