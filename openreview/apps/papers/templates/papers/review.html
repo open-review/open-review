@@ -29,6 +29,11 @@
             {% endif %}
         </header>
 
+        <section class="error-messages">
+            <div style="display:none;" class="login-message">You need to be logged in to vote!</div>
+            <div style="display:none;" class="deleted-message">You cannot vote on deleted contributions.</div>
+        </section>
+
         <!-- Review content -->
         <article class="tex content {% if review.is_deleted %}deleted{% endif %}">
             {% if review.text %}

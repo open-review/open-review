@@ -127,6 +127,10 @@ body > main .reviews > h2 {
     float:right;
 }
 
+.review .error-messages{
+    color:red;
+}
+
 
 .compose-review {
     clear: both;
