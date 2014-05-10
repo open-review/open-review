@@ -12,6 +12,7 @@ from openreview.apps.tools.testing import create_test_user, create_test_review, 
 
 __all__ = ["TestReviewView", "TestReviewView2", "TestReviewViewLive"]
 
+
 class TestReviewView(TestCase):
     def test_n_queries_anonymous(self):
         """As an anonymous user, TestReview doesn't have to fetch owned reviews or votes."""
@@ -26,9 +27,11 @@ class TestReviewView(TestCase):
             # [7] Downvotes
             Client().get(reverse("paper", args=[paper.id]))
 
+
 class TestReviewView2(TestCase):
     """Running both n_queries test in the same TestCase somehow causes database queries
     to be cached. This should not happen, but I am not """
+
     def test_n_queries_logged_in(self):
         Paper.objects.all().delete()
 
@@ -47,75 +50,17 @@ class TestReviewView2(TestCase):
 
 
 class TestReviewViewLive(SeleniumTestCase):
-    def test_aesthetics(self):
-        # Are own submissions coloured differently?
-        user = create_test_user(username="testdelete", password="123")
+    def setUp(self):
+        """
+        Create a paper with one review of `self.user` and one of another user.
+        """
+        self.user = create_test_user()
+        self.review1 = create_test_review(poster=self.user)
+        self.paper = self.review1.paper
+        self.review2 = create_test_review(paper=self.paper)
+        self.open(reverse("paper", args=[self.paper.id]))
 
-        r1 = create_test_review(poster=user)
-        r2 = create_test_review(paper=r1.paper)
-
-        self.login("testdelete", "123")
-        self.open(reverse("paper", args=[r1.paper.id]))
-        self.wd.wait_for_css("body")
-
-        self.wd.find_css(".review.bs-callout-info[review_id='%s']" % r1.id)
-        self.assertRaises(NoSuchElementException, self.wd.find_css, ".review.bs-callout-success[review_id='%s']" % r2.id)
-
-        self.logout()
-        self.open(reverse("paper", args=[r1.paper.id]))
-
-        # Is 'you must be logged in to comment' displayed?
-        self.wd.wait_for_css("body")
-
-        review_dom = self.wd.find_css(".review[review_id='%s']" % r1.id)
-        self.assertFalse(review_dom.find_element_by_class_name("login-message").is_displayed())
-        review_dom.find_element_by_css_selector(".options .reply").click()
-        self.assertTrue(review_dom.find_element_by_class_name("login-message").is_displayed())
-
-    def test_writing_new(self):
-        create_test_user(username="testdelete2", password="123")
-        paper = create_test_paper()
-
-        self.assertEqual(0, paper.reviews.count())
-
-        self.login("testdelete2", "123")
-        self.open(reverse("paper", args=[paper.id]))
-        self.wd.wait_for_css("body")
-
-        new = self.wd.find_css(".new")
-        textarea = new.find_element_by_css_selector("textarea")
-        textarea.send_keys("# Markdown\n")
-        self.wd.wait_for_css(".preview h1")
-        new.find_element_by_css_selector("[type=submit]").click()
-        self.wd.wait_for_css("body")
-
-        # Adding the review should fail, because the star rating is not set
-        self.assertEqual(0, paper.reviews.count())
-
-        # After setting the star rating, adding the review should succeed
-        #time.sleep(60)
-        self.wd.wait_for_css("div.starfield img")
-        new = self.wd.find_css(".new")
-        new.find_element_by_css_selector(".starfield img:nth-child(5)").click()
-        self.wd.find_css(".new [type=submit]").click()
-        self.wd.wait_for_css("body")
-        self.assertEqual(1, paper.reviews.count())
-        self.assertEqual(5, paper.reviews.all()[0].rating)
-
-    def test_writing(self):
-        user = create_test_user(username="writing", password="test")
-        r1 = create_test_review(poster=user)
-        self.login("writing", "test")
-
-        self.open(reverse("paper", args=[r1.paper.id]))
-        self.wd.wait_for_css("body")
-        review_dom = self.wd.find_css(".review[review_id='%s']" % r1.id)
-
-        review_dom.find_element_by_css_selector(".options .reply").click()
-        new = review_dom.parent.find_element_by_css_selector(".new")
-        preview = new.find_element_by_class_name("preview")
-        textarea = new.find_element_by_css_selector("textarea")
-
+    def _write_test_text(self, textarea):
         textarea.send_keys("# H1\n")
         textarea.send_keys("##H2\n")
         textarea.send_keys("*ooi* **oob**\n")
@@ -124,52 +69,113 @@ class TestReviewViewLive(SeleniumTestCase):
         textarea.send_keys("    code\n\n")
         textarea.send_keys("Inline $e^x$ LaTex\n\n")
         textarea.send_keys("Not $$e^x$$ inline LaTex\n\n")
-        text = textarea.get_attribute("value")
 
-        self.wd.wait_for_css(".review-container .new .preview h1")
+    def _test_preview_text(self, preview):
         h1 = preview.find_element_by_css_selector("h1")
-        h2 = preview.find_element_by_css_selector("h2")
-        em = preview.find_element_by_css_selector("em")
-        strong = preview.find_element_by_css_selector("strong")
-        hr = preview.find_element_by_css_selector("hr")
-        quote = preview.find_element_by_css_selector("blockquote")
-        code = preview.find_element_by_css_selector("pre")
-
         self.assertEqual(h1.text, "H1")
+
+        h2 = preview.find_element_by_css_selector("h2")
         self.assertEqual(h2.text, "H2")
+
+        em = preview.find_element_by_css_selector("em")
         self.assertEqual(em.text, "ooi")
+
+        strong = preview.find_element_by_css_selector("strong")
         self.assertEqual(strong.text, "oob")
+
+        quote = preview.find_element_by_css_selector("blockquote")
         self.assertEqual(quote.text, "quote")
+
+        code = preview.find_element_by_css_selector("pre")
         self.assertEqual(code.text, "code")
 
-        self.wd.wait_for_css(".MathJax")
-        self.wd.wait_for_css(".MathJax_Display")
-        self.assertEqual(1, len(preview.find_elements_by_css_selector(".MathJax_Display")))
-        self.assertEqual(2, len(preview.find_elements_by_css_selector(".MathJax")))
+        # Horizontal line should be present due to '--------'.
+        hr = preview.find_element_by_css_selector("hr")
 
-        new.find_element_by_css_selector("[type=submit]").click()
-        self.wd.wait_for_css("body")
+    def test_anonymous(self):
+        """No reply, edit or delete buttons should show if we're anonymous."""
+        for button in ("edit", "reply", "delete"):
+            for button_element in self.wd.find_css(".options .%s" % button):
+                self.assertFalse(button_element.is_displayed())
 
-        new_review = Review.objects.filter(poster=user, paper=r1.paper, parent=r1)
-        self.assertTrue(len(new_review), 1)
-        new_review = new_review[0]
+    def test_reply(self):
+        self.login(self.user.username)
 
-        # Browser may insert \r upon submitting
-        new_review_text = new_review.text.replace("\r", "")
-        self.assertEqual(text.strip(), new_review_text.strip())
+        # Setup DOM elements
+        owned_review = self.wd.find_css('[data-review-id="%s"]' % self.review1.id)
+        owned_review_container = owned_review.parent
+        reply_section = owned_review_container.find_element_by_css_selector('#reply-to-%s' % self.review1.id)
+        preview_section = owned_review_container.find_element_by_css_selector('#preview-of-reply-%s' % self.review1.id)
 
-        # Should display error if user logged out without browser knowing
-        self.wd.find_css("body").send_keys(Keys.CONTROL + 't')
-        self.logout()
-        self.wd.find_css("body").send_keys(Keys.CONTROL + 'w')
+        # Test whether buttons are displayed, and sections are hidden
+        reply_button = owned_review.find_element_by_css_selector(".options .reply")
+        self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
+        self.assertFalse(reply_section.is_displayed(), "Reply section should not be visible if edit button was not clicked.")
+        self.assertFalse(preview_section.is_displayed(), "Preview section should not be visible if edit button was not clicked.")
 
-        # Give browser time to close tab
-        time.sleep(0.3)
+        # Open writing area!
+        reply_button.click()
+        self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
+        self.assertTrue(reply_section.is_displayed(), "Reply section should be visible if edit button was clicked.")
+        self.assertTrue(preview_section.is_displayed(), "Preview section should be visible if edit button was clicked.")
 
-        review_dom = self.wd.find_css(".review[review_id='%s']" % new_review.id)
-        review_dom.find_element_by_css_selector(".options .reply").click()
+        # Does clicking on reply again close edit area?
+        reply_button.click()
+        self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
+        self.assertFalse(reply_section.is_displayed(), "Reply section should not be visible if edit button was not clicked.")
+        self.assertFalse(preview_section.is_displayed(), "Preview section should not be visible if edit button was not clicked.")
 
-        # Waiting on :visible is not supported be Selenium :|
-        time.sleep(0.5)
+        # Reopen area
+        reply_button.click()
 
-        review_dom.parent.find_element_by_css_selector(".preview-error").is_displayed()
+        # Test markdown, latex, etc.
+        self._write_test_text(reply_section.find_element_by_css_selector("textarea"))
+        self.wd.wait_for_css(".preview article h1")
+        self._test_preview_text(preview_section)
+
+        # Test submit.
+        self.assertFalse(Review.objects.filter(parent=self.review1.id).exists())
+        reply_section.find_element_by_css_selector('[type="submit"]').click()
+        self.wait_for_model(Review, parent=self.review1.id)
+
+        reply = Review.objects.get(parent=self.review1.id)
+        self.assertEqual(reply.poster, self.user)
+
+    def test_delete(self):
+        self.login(self.user.username)
+
+        self.assertFalse(Review.objects.filter(text=None))
+
+        owned_review = self.wd.find_css('[data-review-id="%s"]' % self.review1.id)
+        delete_button = owned_review.find_element_by_css_selector(".options .delete")
+        delete_button.click()
+
+        self.wait_for_model(Review, text=None)
+
+    def test_edit(self):
+        # Replying uses same codepaths as replying, so we will not test extensively here.
+        self.login(self.user.username)
+
+        # Setup DOM elements
+        owned_review = self.wd.find_css('[data-review-id="%s"]' % self.review1.id)
+        owned_review_container = owned_review.parent
+        edit_section = owned_review_container.find_element_by_css_selector('#edit-%s' % self.review1.id)
+        preview_section = owned_review_container.find_element_by_css_selector('#preview-of-edit-%s' % self.review1.id)
+        edit_button = owned_review.find_element_by_css_selector(".options .edit")
+
+        # Open editing area
+        edit_button.click()
+
+        # Test markdown, latex, etc.
+        textarea = edit_section.find_element_by_css_selector("textarea")
+        self._write_test_text(textarea)
+        self.wd.wait_for_css(".preview article h1")
+        self._test_preview_text(preview_section)
+
+        # Test submit.
+        self.assertFalse(Review.objects.filter(text="a"))
+        textarea.clear()
+        textarea.send_keys("a")
+        edit_section.find_element_by_css_selector('[type="submit"]').click()
+        self.wait_for_model(Review, text="a")
+

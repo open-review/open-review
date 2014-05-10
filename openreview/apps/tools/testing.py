@@ -138,11 +138,15 @@ class SeleniumTestCase(LiveServerTestCase):
         if username is None:
             username = create_test_user(password="test").username
 
+        current_url = self.wd.current_url
+
         self.logout()
         self.open(reverse("accounts-login"))
         self.wd.find_css("#id_login_username").send_keys(username)
         self.wd.find_css("#id_login_password").send_keys(password)
         self.wd.find_css('[name="login"]').click()
+        self.wd.wait_for_css("body")
+        self.wd.get(current_url)
         self.wd.wait_for_css("body")
 
     def logout(self):
