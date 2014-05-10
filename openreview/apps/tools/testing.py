@@ -9,6 +9,7 @@ from functools import wraps
 import functools
 import unittest
 import haystack
+import time
 from datetime import datetime
 from logging import getLogger
 
@@ -123,9 +124,17 @@ class SeleniumTestCase(LiveServerTestCase):
             pass
 
     def open(self, url):
+        """Convenience method for opening an url in browser"""
         self.wd.get("%s%s" % (self.live_server_url, url))
+        self.wd.wait_for_css("body")
 
     def login(self, username=None, password="test"):
+        """
+        Uses browser to login a user. If no arguments are given, it creates a new
+        user and log it in.
+
+        @param username: username of user
+        @param password password of user"""
         if username is None:
             username = create_test_user(password="test").username
 
@@ -133,12 +142,33 @@ class SeleniumTestCase(LiveServerTestCase):
         self.open(reverse("accounts-login"))
         self.wd.find_css("#id_login_username").send_keys(username)
         self.wd.find_css("#id_login_password").send_keys(password)
-        self.wd.find_css('input[value="Login"]').click()
+        self.wd.find_css('[name="login"]').click()
         self.wd.wait_for_css("body")
 
     def logout(self):
+        """Logout using reverse(accounts-logout)"""
         self.open(reverse("accounts-logout"))
         self.wd.wait_for_css("body")
+
+    def wait_for_model(self, model_cls, _timeout=7, _interval=0.1, **filters):
+        """Waits for given models + filters to pop up in database. Raises self.fail()
+        if no such model could be found within roughly `_timeout` seconds.
+
+        @param _timeout: timeout after X seconds
+        @type _timeout: float | int
+        @param _interval: check each X seconds
+        @type _interval: float | int
+
+        @param **filters: filters supplied to `model_cls`.filter.
+        @param model_cls: model class (for example: Review)
+        """
+        for i in range(int(_timeout / _interval)):
+            if model_cls.objects.filter(**filters).exists():
+                return
+            time.sleep(_interval)
+
+        kwargs = ",".join(["%s=%s" % (k, v) for k, v in filters.items()])
+        self.fail(msg="Could not find {model_cls.__name__}({kwargs}) within {_timeout} seconds.".format(**locals()))
 
 # This is a hack to generate unique names for test models
 COUNTER = 0
