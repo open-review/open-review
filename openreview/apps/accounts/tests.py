@@ -280,28 +280,40 @@ class TestDeleteAccount(unittest.TestCase):
 
 
 class TestDeleteAccountFormLive(SeleniumTestCase):
-    def test_form(self):
-        u = create_test_user(username="testHero", password="test")
-        review = create_test_review(poster=u)
-
-        self.login(username="testHero", password="test")
-
+    # TODO: Move to offline test?
+    def setUp(self):
+        self.user = create_test_user()
+        self.review = create_test_review(poster=self.user)
+        self.login(username=self.user.username)
         self.open(reverse("accounts-delete"))
         self.wd.wait_for_css("body")
         self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
 
+    def test_wrong_password(self):
         self.wd.find_css("#id_password").send_keys("lkjqdwdwqij")
         self.wd.find_css("#delete").click()
         self.wd.wait_for_css("body")
+
         # Wrong password entered, so should do nothing.
         self.assertTrue(self.wd.current_url.endswith(reverse("accounts-delete")))
-        self.assertTrue(User.objects.filter(id=u.id).exists())
+        self.assertTrue(User.objects.filter(id=self.user.id).exists())
 
-        # Now enter the correct password.
-        self.wd.find_css("input[value='delete_all']").click()
+    def test_delete_including_reviews(self):
+        """Test option 'delete all reviews' when deleting user"""
+        self.wd.find_css("#id_password").send_keys("test")
+        self.wd.find_css('input[value="delete_all"]').click()
+        self.wd.find_css("#delete").click()
+        self.wd.wait_for_css("body")
+
+        self.assertTrue(Review.objects.get(id=self.review.id).is_deleted)
+        self.assertFalse(User.objects.filter(id=self.user.id).exists())
+
+    def test_delete_preserve_reviews(self):
+        """Test option 'delete, but let reviews exist' when deleting user"""
         self.wd.find_css("#id_password").send_keys("test")
         self.wd.find_css("#delete").click()
         self.wd.wait_for_css("body")
-        self.assertFalse(User.objects.filter(id=u.id).exists())
-        review = Review.objects.get(id=review.id)
-        self.assertTrue(review.is_deleted)
+
+        self.assertFalse(Review.objects.get(id=self.review.id).is_deleted)
+        self.assertFalse(User.objects.filter(id=self.user.id).exists())
+
