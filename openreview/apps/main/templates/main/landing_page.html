@@ -1,30 +1,32 @@
 {% extends "splash.html" %}
 
 {% block header %}
-  <h1>Discover &amp; discuss research papers.</h1>
-  <p>Suspendisse nunc nisl, molestie eget tortor sed, pellentesque tempus ipsum. <a href="#">Read more.</a></p>
+  <h1 class="title">OpenReview — Discover &amp; discuss research papers</h1>
+  <p class="tagline">An open platform for reviewing and discussing scientific papers. <a href="/about">Learn more.</a></p>
+
+  <section class="search">
+    <form method="GET" action="{% url 'search-paper' %}">
+        <div class="query">
+            <input placeholder="Discover interesting papers..." name="q" tabindex="1" type="text" autofocus />
+            <p>
+                <strong>Popular search terms: </strong>
+                <a href="{% url 'search-paper' %}?q=bitcoin">bitcoin</a>,
+                <a href="{% url 'search-paper' %}?q=riemann sum">riemann sum</a>,
+                <a href="{% url 'search-paper' %}?q=complex numbers">complex numbers</a>
+            </p>
+        </div>
+    </form>
+  </section>
+
 {% endblock %}
 
 {% block content %}
-    <section class="search">
-      <form method="GET" action="#">
-          <div class="query">
-              <input placeholder="Find interesting papers..." name="query" tabindex="1" autofocus />
-              <p>
-                  <strong>Popular search terms: </strong>
-                  <a href="#">bitcoin</a>,
-                  <a href="#">riemann sum</a>,
-                  <a href="#">complex numbers</a>
-              </p>
-          </div>
-          <div class="action">
-              <input type="submit" value="Search" tabindex="2" />
-          </div>
-      </form>
-
+    <section class="submit-paper-for-review">
+        <p>Are you an author looking for feedback?</p>
+        <a href="/papers/add" class="button">Submit your paper for review</a>
     </section>
 
-    <section class="trending-papers box">
+    <section class="trending-papers papers box">
         <h2><a href="/papers/trending">Trending papers</a></h2>
         {% if trending_papers %}
             <ol>
@@ -38,34 +40,25 @@
             {% endfor %}
             </ol>
         {% else %}
-          <p><em>No papers are available yet.</em></p>
+          <p><em>No trending papers at the moment.</em></p>
         {% endif %}
     </section>
-    <section class="top-reviews box">
-        <h2><a href="/reviews/top">Top reviews</a></h2>
-        {% if top_reviews %}
+
+    <section class="recently-submitted-papers papers box">
+        <h2><a href="/papers/new">Recently submitted papers</a></h2>
+        {% if new_papers %}
             <ol>
-            {% for review in top_reviews %}
+            {% for paper in new_papers %}
                 <li>
-                    <a href="{% url 'paper' review.paper.id %}#r{{ review.id }}">
-                        <span class="author">
-                            {% if review.poster == None %}
-                                Anonymous
-                            {% else %}
-                                {{ review.poster.username }}
-                            {% endif %}
-
-                            —
-                        </span>
-
-                        {{ review.text|truncatechars:130 }}
+                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
+                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
+                        <span>{{ paper.num_reviews }}</span>
                     </a>
                 </li>
             {% endfor %}
             </ol>
         {% else %}
-            <p><em>No reviews written yet.</em></p>
+          <p><em>No papers are available yet.</em></p>
         {% endif %}
-
     </section>
 {% endblock %}

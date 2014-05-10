@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'compressor',
     'south',
+    'haystack',
     'rest_framework',
     'openreview.apps.accounts',
     'openreview.apps.papers',
@@ -69,6 +70,13 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
+    # Template dirs below will be found by 'dynamic' template dir finders, but
+    # PyCharm can't handle it thus marking each template as non-existent.
+    os.path.join(BASE_DIR, "openreview/apps", "accounts", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "papers", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "main", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "tools", "templates"),
+    os.path.join(BASE_DIR, "openreview/apps", "api", "templates"),
 )
 
 ROOT_URLCONF = 'openreview.urls'
@@ -91,6 +99,28 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+"""
+Unfortunatly, it is necassary to explicitly define another database for testing
+To garantuee test isolation. http://bwreilly.github.io/blog/2013/07/21/testing-search-haystack-in-django/
+"""
+HAYSTACK_TESTING_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': '127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack_test',
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 if DEBUG:
     CACHE_MIDDLEWARE_KEY_PREFIX = "DEBUG_"

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% load markdown %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper-with-reviews.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/reviews.css" />
 {% endblock %}
 
 {% block js %}
@@ -10,87 +12,87 @@
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/deleting.coffee"></script>
     <script type="text/coffeescript" src="{{ STATIC_URL }}js/starratings.coffee"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
-{% endblock %}
-
-{% block meta %}
-    <div class="hide">
-        <div id="anonymous">{{ user.is_anonymous|lower }}</div>
-        <div id="my_votes">{{ my_votes|safe }}</div>
-        <div id="my_reviews">{{ my_reviews|safe }}</div>
-    </div>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dotdotdot.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $(".abstract").dotdotdot({ after: "a.readmore" });
+      });
+    </script>
 {% endblock %}
 
 {% block content %}
-   <h1>
-        {{ paper.title|capfirst }} <br/>
-        {% for author in paper.authors.all %}
-          <small>{{ author.name }}{% if not forloop.last %},{% endif %}</small>
+    <section data-paper-id="{{ paper.id }}" data-votes="{{ my_votes }}" data-reviews="{{ my_reviews }}" class="paper box">
+        <header class="tex title">
+            <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
+        </header>
+        <div class="tex abstract">
+            {{ paper.abstract | markdown}}
+            {% if paper.urls %}
+            <a href="{{ paper.urls }}" class="readmore">&raquo; Read full abstract on {{ paper.get_url_domain }}</a>
+            {% endif %}
+        </div>
+        <div class="meta">
+            <ul>
+                <li><strong>Authors:</strong> {{ paper.get_authors }}</li>
+                <li><strong>Publication date:</strong> {{ paper.publish_date }}</li>
+                <li><strong>Keywords:</strong>
+                {% if not keywords %}
+                    None
+                {% else %}
+                    {% for keyword in keywords %}
+                        <a href="{{ keyword.url }}">{{ keyword.text }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="reviews box">
+        <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
+
+        {% for review in reviews %}
+            {% include "papers/review.html" with first=forloop.first paper=paper review=review level=-1 %}
         {% endfor %}
-    </h1>
+    </section>
 
-    <p>{{ paper.abstract }}</p>
+    <aside>
+      {% if related_a|length > 0 %}
+      <div class="more-by-these-authors box">
+          <h2>More by these authors</h2>
+          <ol>
+            {% for related_paper in related_a %}
+                 <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
+            {% endfor %}          
+          </ol>
+      </div>
+      {% endif %}
 
-    <p>
-        <strong>Keywords: </strong>
-        <em>
-            {% for keyword in paper.keywords.all %}
-                {{ keyword }}{% if not forloop.last %},{% endif %}
-            {% empty %}
-                No keyword available.
-            {% endfor %}
-        </em>
-    </p>
+      {% if related_s|length > 0 %}
+      <div class="related-papers box">
+          <h2>Related papers</h2>
+          <ol>
+            {% for related_paper in related_s %}
+                 <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
+            {% endfor %}          
+          </ol>
+      </div>
+      {% endif %}
+    </aside>
 
-    <p>
-        <strong>Categories: </strong>
-        <em>
-            {% for category in paper.categories.all %}
-                {{ category }}{% if not forloop.last %},{% endif %}
-            {% empty %}
-                No categories available.
-            {% endfor %}
-        </em>
-    </p>    
+    <section data-preview-id="new-review-preview" class="compose-top-level compose compose-review box">
+        <header>
+            <h2>Share your opinion by writing a review</h2>
+            <div class="rating rating-input" data-id="rating-top-level"></div>
+        </header>
 
-    <p>
-        <strong>Links:</strong>
-        {% if not paper.urls %}
-            <em>No urls available.</em>
-        {% else %}
-            {{ paper.urls }}
-        {% endif %}
-    </p>
-
-    <p>
-        <strong>ID:</strong> {{ paper.id }}
-    </p>
-
-    <hr/>
-    {% url 'paper' paper.id as url %}
-    {% for review in reviews %}
-        {% include "papers/review.html" with review=review.review user=user url=url edit_review_form=review.form edit_review_name=review.submit_name %}
-    {% empty %}
-        <em>No reviews yet!</em>
-    {% endfor %}
-
-    <hr/>
-
-    {% if not user.is_anonymous %}
-    <div class="review-container">
-        <form method="post" class="new new-review" data-preview="{% url 'preview' paper.id %}">
-            {% csrf_token %}
-            <table>{{ add_review_form }}</table>
-            <br /><input name="add_review" type="submit" value="Submit review">
-            {% include "papers/preview.html" %}
+        <form action="#" method="POST">
+            <input type="hidden" name="rating" id="rating-top-level" value="-1" />
+            {% include "papers/comment.html" with name="Submit review" %}
         </form>
-    </div>
-    {% else %}
-        <p>
-            <a href="{% url 'accounts-login' %}?next={% url 'paper' paper.id %}">Log in</a> to add a review.
-        </p>
-    {% endif %}
 
+    </section>
+
+    <div id="new-review-preview"></div>
 
 {% endblock %}
-
-

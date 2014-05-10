@@ -1,0 +1,100 @@
+body > main > section.box.title header {
+    overflow: hidden;
+}
+
+body > main > section.box.title header h1 {
+    float: left;
+}
+
+body > main > section.box.title header select {
+    float: right;
+    margin: 22px 20px;
+    width: 150px;
+}
+
+body > main > section.box {
+    padding: 0;
+    max-width: 640px;
+}
+
+body > main > section.box + section.box {
+    margin-top: 20px;
+}
+
+body > main > section.box > form {
+    display: none;
+}
+
+#arxiv-details {
+    display: block;
+}
+
+body > main > section.box > form label {
+    width: 125px;
+}
+
+body > main > section.box > form input,
+body > main > section.box > form textarea {
+    width: 448px;
+}
+
+body > main > section.box > form textarea {
+    min-height: 100px;
+}
+
+body > main > section.box > form label:before {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+
+body > main > section.box > form button[type=submit] {
+    float: right;
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+body > main > section.box > form hr {
+    margin-bottom: 20px;
+}
+
+body > main > section.box > form .fetcher-results {
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: 150px;
+    display: none;
+    text-align: right;
+    font-style: italic;
+    line-height: 20px;
+}
+
+body > main > section.box > form .fetcher-results:before {
+    padding-right: 4px;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+body > main > section.box > form .fetcher-results.error:before {
+    content: "✗";
+}
+
+body > main > section.box > form .fetcher-results.success:before {
+    content: "✓";
+    color: #187676;
+}
+
+body > main > section.box > form .fetcher-results.loading {
+    height: 22px;
+}
+
+body > main > section.box > form .fetcher-results.loading:after {
+    content: "…";
+}
+
+#manually-details p {
+    clear: both;
+}

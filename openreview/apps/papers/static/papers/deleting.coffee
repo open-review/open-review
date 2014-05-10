@@ -1,19 +1,25 @@
-delete_review = ->
-  review = $(this).closest(".review")
-  url = review.find(".permalink").attr("href")
-  csrf = $("body").attr("csrf")
+delete_review = (e) ->
+  e.preventDefault()
+  url = $(this).attr("href")
+  csrf = $("body").data("csrf")
 
   $.ajax({
-    type: "DELETE", url: url, csrf: csrf,
-    beforeSend: (xhr) ->
-      # JQuery is confused when using data, this is a workaround
-      xhr.setRequestHeader("X-CSRFToken", csrf);
+    type: "POST", url: url,
+    headers: {
+      'X-HTTP-Method-Override': 'DELETE',
+      'X-CSRFToken': csrf
+    }
   })
 
-  review.find("article").addClass("deleted").empty()
-  review.find(".author").text("?")
+  review = $(this).closest(".review")
+  review.find("article").addClass("deleted").empty().text("[deleted]")
+  review.find(".author").text("Anonymous")
   review.find(".delete").hide()
   review.find(".edit").hide()
 
 
-$(".review .delete.btn").click delete_review
+$(".review .options .delete").click delete_review
+
+$.each($(".paper").data("reviews"), ->
+  $("[data-review-id=#{this}] .options .delete").show()
+)

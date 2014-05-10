@@ -1,24 +1,24 @@
 from datetime import date
 import os
-from unittest import TestCase
-from django.core.management import call_command
 
+from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
+from django.test import TestCase
 from django.test.client import Client
 
 from openreview.apps.main.forms import PaperForm
 from openreview.apps.tools.testing import SeleniumTestCase, create_test_keyword, assert_max_queries
+from openreview.apps.tools.testing import BaseTestCase
 from openreview.apps.tools.testing import create_test_author, create_test_user
-from openreview.apps.main.models import Paper, Review, Vote, Category
-
+from openreview.apps.main.models import Paper, Review, Vote
 from openreview.apps.papers import scrapers
 
 
-__all__ = ["TestReviewForm", "TestReviewFormLive"]
+__all__ = ["TestAddPaperView", "TestPaperForm"]
 
 
-class TestReviewForm(TestCase):
+class TestPaperForm(BaseTestCase):
     def setUp(self):
         call_command("loaddata", "initial_data", verbosity=0)
 
@@ -111,15 +111,19 @@ class TestReviewForm(TestCase):
             # This should only return de existing database entry!
             p.save(commit=True)
 
+class TestAddPaperView(TestCase):
+    def setUp(self):
+        call_command("loaddata", "initial_data", verbosity=0)
+
     def test_form_filled_in_automatically(self):
         cache.clear()
         c = Client()
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
                                           "/../../papers/testfiles/1306.3879.xml")
         user = create_test_user()
-        c.post(reverse("accounts-login"), {'username': user.username, 'password': "test", 'existing': "Login"})
-        c.post(reverse("add_review"), {'type': "arxiv", 'doc_id': "1306.3879", 'text': "Just nutin",
-                                       'add_review': "Submit", 'rating': 5, "visibility": "public"})
+        c.login(username=user.username, password="test")
+
+        c.post(reverse("add"), {'arxiv_form': "", 'arxiv_id': "1306.3879"})
 
         # An item in de db for this paper should now exist
         p = Paper.objects.get(doc_id="1306.3879")
@@ -141,65 +145,3 @@ relativistic electrons.\n""")
         self.assertEqual([c.arxiv_code for c in p.categories.all()], ["astro-ph.CO"])
 
 
-class TestReviewFormLive(SeleniumTestCase):
-    def setUp(self):
-        call_command("loaddata", "initial_data", verbosity=0)
-        self.a = create_test_author(name="tester")
-        self.u = create_test_user()
-        super().setUp()
-
-    def test_paper_gets_committed(self):
-        Vote.objects.all().delete()
-        Review.objects.all().delete()
-        self.assertEqual(Review.objects.count(), 0)
-        self.open(reverse("add_review"))
-        # Check if redirected to login if not logged in
-        self.assertTrue(self.wd.current_url.endswith(
-            "{login}?next={next}".format(login=reverse("accounts-login"), next=reverse("add_review"))))
-        self.wd.wait_for_css("body")
-        self.wd.find_css("#id_login_username").send_keys(self.u.username)
-        self.wd.find_css("#id_login_password").send_keys("test")
-        self.wd.find_css('input[value="Login"]').click()
-        # Check if on the right page now
-        self.assertFalse(reverse("accounts-login") in self.wd.current_url)
-        self.assertTrue(self.wd.current_url.endswith(reverse("add_review")))
-        self.wd.wait_for_css("#id_title")
-
-        # Select the right paper
-        self.wd.find_css('#id_type option[value="manually"]').click()
-        self.wd.find_css("#id_title").send_keys("Some fancy paper title")
-        self.wd.find_css("#id_doc_id").send_keys("1403.04385")
-        self.wd.find_css("#id_authors").send_keys("Jéan-Pièrre van 't Hoff")
-        self.wd.find_css("#id_keywords").send_keys("Aa,Bb,Cc")
-        self.wd.find_css("#id_abstract").send_keys("This paper is fancy.")
-        self.wd.find_css("#id_publish_date").send_keys("2012-01-01")
-        self.wd.find_css("#id_publisher").send_keys("Springer")
-        self.wd.find_css("#id_urls").send_keys("http://example.org/document.pdf")
-        self.wd.find_css("#id_text").send_keys("test\nlol\ndoei")
-
-        catlist = self.wd.find_css("#id_categories")
-        for option in catlist.find_elements_by_tag_name('option'):
-            if option.text == 'Artificial Intelligence':
-                option.click()
-
-        self.wd.wait_for_css("div.starfield img")
-        new = self.wd.find_css(".new")
-        new.find_element_by_css_selector(".starfield img:nth-child(5)").click()
-        self.wd.find_css("input[name=\"add_review\"]").click()
-        self.wd.wait_for_css("body")
-
-        # Review is saved well
-        p = Paper.objects.get(title="Some fancy paper title")
-        self.assertEqual(p.doc_id, "1403.04385")
-        self.assertEqual([a.name for a in p.authors.all()], ["Jéan-Pièrre van 't Hoff"])
-        self.assertEqual([c.name for c in p.categories.all()], ["Artificial Intelligence"])
-        self.assertEqual([k.label for k in p.keywords.all()], ["Aa","Bb","Cc"])
-        self.assertEqual(p.abstract, "This paper is fancy.")
-        self.assertEqual(p.publish_date, date(2012, 1, 1))
-        self.assertEqual(p.publisher, "Springer")
-        self.assertEqual(p.urls, "http://example.org/document.pdf")
-
-        self.assertEqual(Review.objects.count(), 1)
-        r = Review.objects.get(paper=p.id)
-        self.assertEqual(r.poster, self.u)
-        self.assertEqual(r.text.replace("\r", ""), "test\nlol\ndoei")

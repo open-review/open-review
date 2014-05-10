@@ -6,6 +6,7 @@ python:
 services:
  - postgresql
  - memcached
+ - elasticsearch
 
 virtualenv:
   system_site_packages: false

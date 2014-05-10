@@ -1,0 +1,116 @@
+body > main > section {
+    margin-bottom: 20px;
+}
+
+body > main > section.paper.box {
+    padding: 0;
+    overflow: hidden;
+    background-color: #FCFCFC;
+}
+
+body > main > section.paper div.abstract,
+body > main > section.paper div.meta {
+    float: left;
+    margin-top: 17px;
+    margin-bottom: 17px;
+}
+
+body > main > section.paper div.abstract {
+    width: 618px;
+    max-height: 140px;
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+body > main > section.paper div.meta {
+    margin-right: 20px;
+    width: 320px;
+}
+
+main > section.paper div.abstract p {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    text-align: justify;
+    text-shadow: 0 1px 0 #fff;
+}
+
+main > section.paper div.abstract p + p {
+    margin-top: 10px;
+}
+
+body > main > section.paper div.meta ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+body > main > section.paper div.meta ul li {
+    display: block;
+    padding: 0;
+    text-align: justify;
+}
+
+body > main > section.paper div.meta ul li + li {
+    margin-top: 10px;
+}
+
+
+body > main > aside {
+    float: right;
+    width: 340px;
+}
+
+body > main > aside > div.box {
+    padding: 0;
+}
+
+body > main > aside > div.box + div.box {
+    margin-top: 20px;
+}
+
+
+
+main > .reviews .review-container.first{
+    margin-top:0;
+}
+
+main > .reviews > .review-container{
+    margin-top: 20px;
+}
+
+/* TODO: !important is fugly. Remove? */
+.compose-top-level > header{
+    border:none!important;
+}
+
+.compose-top-level form{
+    padding-top:0!important;
+    padding-bottom:0!important;
+}
+
+.compose-top-level{
+    width:640px;
+}
+
+.compose-top-level > header{
+    height:50px;
+}
+
+.compose-top-level > header > h2, .edit-form > header > h2{
+    float:left;
+}
+
+.compose-top-level > header > h2{
+    margin-left:20px;
+}
+
+#new-review-preview{
+    margin-bottom: 20px;
+}
+
+#new-review-preview > .preview{
+    margin-top:5px;
+}
+

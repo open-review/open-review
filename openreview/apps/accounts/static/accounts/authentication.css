@@ -1,0 +1,20 @@
+body > main {
+    overflow: hidden;
+}
+
+body > main > section.box {
+    padding: 0;
+    float: left;
+    width: 490px;
+    margin-top: 20px;
+}
+
+body > main > section.box + section.box {
+    margin-left: 20px;
+}
+
+
+body > main > section.login form > br,
+body > main > section.register form > br {
+    display: none;
+}

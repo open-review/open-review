@@ -11,8 +11,8 @@ from openreview.apps.main.models.review import set_n_votes_cache
 from openreview.apps.accounts.forms import RegisterForm, SettingsForm, AccountDeleteForm
 
 
-class LoginView(TemplateView):
-    template_name = "accounts/login.html"
+class AuthenticationView(TemplateView):
+    template_name = "accounts/authentication.html"
 
     def __init__(self, *args, **kwargs):
         self.register_form = None
@@ -21,7 +21,7 @@ class LoginView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         register_data = self.request.POST if "new" in self.request.POST else None
-        login_data = self.request.POST if "existing" in self.request.POST else None
+        login_data = self.request.POST if "login" in self.request.POST else None
         self.register_form = RegisterForm(data=register_data, auto_id='id_register_%s')
         self.login_form = AuthenticationForm(request=self.request, data=login_data, auto_id='id_login_%s')
         return super().dispatch(request, *args, **kwargs)
@@ -50,7 +50,7 @@ class LoginView(TemplateView):
 
     def redirect(self):
         # Redirect to GET parameter 'next', or dashboard
-        return redirect(self.request.GET.get("next", reverse("dashboard")), permanent=False)
+        return redirect(self.request.GET.get("next", reverse("new")), permanent=False)
 
 
 class LogoutView(RedirectView):
@@ -71,23 +71,18 @@ class SettingsView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        settings_data = request.POST or None
-        self.settings_form = SettingsForm(data=settings_data, user=request.user)
+        self.settings_form = SettingsForm(data=request.POST or None, instance=request.user)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request):
-        return self.update()
+        if self.settings_form.is_valid():
+            self.settings_form.save()
+        return redirect(reverse("accounts-settings"))
 
     def get(self, request):
         reviews = request.user.reviews.all()
         set_n_votes_cache(reviews)
         return super().get(request, reviews=reviews, settings_form=self.settings_form)
-
-    def update(self):
-        if self.settings_form.is_valid():
-            self.settings_form.save()
-        return redirect(reverse("accounts-settings"))
-
 
 class AccountDeleteView(TemplateView):
     template_name = "accounts/delete.html"

@@ -1,0 +1,13 @@
+{% include "papers/review.html" with review=tree.review level=tree.level %}
+
+{% if tree.level < 9 %}
+    {% for childtree in tree.children %}
+        {% comment %}
+        Using 'with' prevents static resolving of template_name, and forces -of course-
+        dynamic resolving on 'runtime'. This prevents a stack overflow.
+        {% endcomment %}
+        {% with template_name="papers/review_tree.html" %}
+            {% include template_name with tree=childtree %}
+        {% endwith %}
+    {% endfor %}
+{% endif %}

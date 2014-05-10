@@ -1,10 +1,10 @@
-from django.test import TestCase
 from openreview.apps.main.models import Paper
-from openreview.apps.tools.testing import create_test_paper
+from openreview.apps.tools.testing import create_test_paper, BaseTestCase
 
 __all__ = ["TestPaper"]
 
-class TestPaper(TestCase):
+
+class TestPaper(BaseTestCase):
     def test_get_reviews_comments(self):
         paper = create_test_paper(n_authors=0, n_keywords=1, n_comments=2, n_reviews=3)
         self.assertEqual(paper.get_reviews().count(), 3)

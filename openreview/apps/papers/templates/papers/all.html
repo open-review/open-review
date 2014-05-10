@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/listing.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/all.css" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/listing.coffee"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="navigation-bar box">
+        <header>
+            <h1>All Papers</h1>
+            <ul>
+                <li>
+                    <a href="/papers/new"{% if order == 'new' %} class="active"{% endif %}>Newest</a>
+                </li>
+                <li>
+                    <a href="/papers/controversial"{% if order == 'controversial' %} class="active"{% endif %}>Most controversial</a>
+                </li>
+                <li>
+                    <a href="/papers/trending"{% if order == 'trending' %} class="active"{% endif %}>Trending</a>
+                </li>
+            </ul>
+        </header>
+    </section>
+
+    <section class="listing box">
+        <ol>
+        {% for paper in papers %}
+            {% include 'papers/all/list_item.html' with paper=paper %}
+        {% endfor %}
+        </ol>
+    </section>
+
+    {% include 'includes/pagination.html' with pages=papers %}
+{% endblock %}

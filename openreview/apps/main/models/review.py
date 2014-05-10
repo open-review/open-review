@@ -72,6 +72,7 @@ class Review(models.Model):
         self._n_upvotes = None
         self._n_downvotes = None
         self._n_comments = None
+        self._tree_size = None
 
         # If cache() is called this is a defaultdict(list) with
         # review_id -> [children_ids].
@@ -98,6 +99,13 @@ class Review(models.Model):
         return self.get_tree_size() - 1
 
     @property
+    def get_comments(self):
+        """Fetches direct (self.level + 1) comments"""
+        if self._reviews_children[self.id] is not None:
+            return self._reviews_children[self.id]
+        return []
+
+    @property
     def n_upvotes(self):
         if self._n_upvotes is not None:
             return self._n_upvotes
@@ -110,9 +118,13 @@ class Review(models.Model):
         return -(self.votes.filter(vote__lt=0).aggregate(n=Sum("vote"))["n"] or 0)
 
     @property
+    def score(self):
+        return self.n_upvotes - self.n_downvotes
+
+    @property
     def n_votes(self):
         # Neutral votes don't count, only consider up- and downvotes
-        return self.n_downvotes + self.n_upvotes
+        return self.n_upvotes + self.n_downvotes
 
     @property
     def cached(self):
@@ -223,8 +235,13 @@ class Review(models.Model):
         self.cache()
         return self._get_tree(level=0, seen=set(), lazy=lazy)
 
-    def get_tree_size(self):
+    def _get_tree_size(self):
         return 1 + sum(r.review.get_tree_size() for r in self.get_tree().children)
+
+    def get_tree_size(self):
+        if self._tree_size is None:
+            self._tree_size = self._get_tree_size()
+        return self._tree_size
 
     class Meta:
         app_label = "main"
@@ -304,7 +321,7 @@ class Review(models.Model):
             user.is_anonymous(),
             self.is_deleted,
             self.poster_id is None,
-            self.poster_id is not user.id
+            self.poster_id != user.id
         ))
 
     def can_change(self, user):
@@ -342,4 +359,3 @@ class Vote(models.Model):
 
     def can_change(self, user):
         return self.can_delete(user)
-

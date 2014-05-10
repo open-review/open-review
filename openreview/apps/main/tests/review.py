@@ -1,17 +1,16 @@
-from pprint import pprint
-import unittest
 from django.contrib.auth.models import AnonymousUser
+
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
 from openreview.apps.main.models import review
 from openreview.apps.main.models import Review, set_n_votes_cache, ReviewTree
 from openreview.apps.tools.testing import create_test_review, create_test_votes, assert_max_queries, list_queries, \
-    create_test_paper, create_test_user, create_test_vote
+    create_test_paper, create_test_user, create_test_vote, BaseTestCase
 
 __all__ = ["TestReview"]
 
 
-class TestReview(unittest.TestCase):
+class TestReview(BaseTestCase):
     def setUp(self):
         self.review = create_test_review()
 

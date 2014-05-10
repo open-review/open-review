@@ -1,17 +1,41 @@
-<div class="new row">
-  <div class="col-md-6">
-      <form method="POST" action="{% url 'review' paper.id parent.id %}">
-          {% csrf_token %}
-          <textarea name="text" placeholder="Write a new comment!">{{ review.text }}</textarea>
-          <input name="submit" style="float:right;" class="btn btn-primary" type="submit" value="Submit" />
-          
-          <input type="hidden" name="rating" value="{{ review.rating }}" />
-          {% if review.id %}
-              <input type="hidden" name="edit" value="{{ review.id }}" />
-          {% endif %}
-      </form>
-  </div>
-  <div class="col-md-6">
-      {% include "papers/preview.html" %}
-  </div>
-</div>
+{% csrf_token %}
+<input type="hidden" name="poster" value="{{ user.id }}" />
+<input type="hidden" name="paper" value="{{ paper.id }}" />
+
+<textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below.">{% if review %}{{ review.text }}{% endif %}</textarea>
+
+<p style="display:none;" class="preview-error permission-denied">
+    You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
+</p>
+
+<p style="display:none;" class="form-error rating">
+    You need to provide a rating by clicking on a star.
+</p>
+
+<p style="display:none;" class="form-error text">
+    You need to provide text.
+</p>
+
+<label>
+    <a class="tooltip" href="#">
+        Visibility:
+        <span>
+            <strong>Public:</strong> name visible to everyone.<br />
+            <strong>Semi-anonymous:</strong> name will be hidden.<br />
+            <strong>Anonymous:</strong> name will not be present in database.</br >
+            You won't be able to edit or delete the contribution.<br />
+            <strong>External:</strong> written by external author.<br />
+        </span>
+    </a>
+
+    <select name="visibility">
+        <option {% if review and not review.anonymous %}selected="selected"{% endif %} value="public">Public</option>
+        <option {% if review and review.is_semi_anonymous %}selected="selected"{% endif %}value="semi_anonymous">Semi-anonymous</option>
+        <option {% if review and review.anonymous and not review.is_semi_anonymous %}selected="selected"{% endif %}value="anonymous">Anonymous</option>
+        <option {% if review and review.external %}selected="selected"{% endif %}value="external">External</option>
+    </select>
+
+</label>
+
+{% include "includes/spinner.html" %}
+<button type="submit">{{ name }}</button>

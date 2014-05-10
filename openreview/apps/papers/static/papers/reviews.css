@@ -1,0 +1,255 @@
+.reviews, #new-review-preview {
+    width: 640px;
+    float: left;
+}
+
+.reviews{
+    padding: 0 20px 20px;
+}
+
+.reviews > h2,
+body > main .reviews > h2 {
+    font-size: 16px;
+    margin: 0;
+    padding: 17px 0 15px;
+    border-bottom: none;
+}
+
+.review.box {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 0 2px 2px 2px;
+}
+
+.review {
+    position: relative;
+    line-height: 1.7em;
+    font-size: 13px;
+    font-family: Merriweather, Georgia, serif;
+}
+
+
+.review > div.voting {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px 0 0 2px;
+    left: -40px;
+    top: -1px;
+    width: 40px;
+    position: absolute;
+    background-color: #fff;
+}
+
+.review > div.voting a,
+.review > div.voting span {
+    display: block;
+    text-align: center;
+    position: relative;
+    width: 40px;
+}
+
+.review > div.voting a,
+.review > div.voting a {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    font-size: 18px;
+    line-height: 0px;
+    padding: 10px 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.review > div.voting span {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    z-index: 1;
+    width: 40px;
+    left: 0;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.review > header {
+    overflow: hidden;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size:0.8em;
+}
+
+.review > header a.author,
+.review > header span.rating {
+    display: block;
+}
+
+.review > header a.author {
+    float: left;
+    text-decoration: underline;
+}
+
+.review > header span.rating {
+    float: right;
+    color: #4b4b4b;
+}
+
+.review article.content {
+    text-align: justify;
+    color: #1A3333;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.review article.content a.add-comment {
+    float: right;
+}
+
+.rating-input span:hover{
+    cursor: pointer;
+}
+
+.review .voting a.up, .voting a.down{
+    color:grey;
+    text-decoration: none;
+}
+
+.review .voting a.up.voted, .voting a.up:hover{
+    color:green;
+}
+
+.review .voting a.down.voted, .voting a.down:hover{
+    color:red;
+}
+
+.review .options a{
+}
+
+.review .options .comments{
+    float:right;
+}
+
+.review .error-messages{
+    color:red;
+}
+
+
+.compose-review {
+    clear: both;
+}
+
+.compose-review h2,
+.compose-review div.rating {
+    padding: 17px 0 15px;
+    margin: 0;
+}
+
+.compose-review h2 {
+    font-size: 16px;
+}
+
+.compose-review div.rating {
+    float: right;
+    overflow: hidden;
+    font-size: 18px;
+}
+
+.compose-review form {
+    overflow: hidden;
+    clear: both;
+    padding: 0;
+}
+
+.compose-review form textarea {
+    font-size: 13px;
+    width: 100%;
+    height: 280px;
+    max-width:100%;
+    min-width:100%;
+}
+
+.compose-review form label {
+    display: block;
+    float: left;
+    width: auto;
+    line-height: normal;
+    margin-bottom: 0;
+    margin-top:0;
+    margin-left:2px;
+}
+
+.compose-review form label > select {
+    margin-left: 10px;
+    clear: none;
+    float: none;
+    width: auto;
+    display: inline;
+    margin-bottom: 0;
+}
+
+.compose-review form button[type=submit], .compose .spinner {
+    font-size: 13px;
+    float: right;
+    /*padding: 1px 10px;*/
+    display: inline;
+    clear: none!important;
+    width: auto!important;
+}
+
+.compose-review form button:active {
+    padding-top: 9px;
+    padding-bottom: 7px;
+}
+
+
+
+.edit-form{
+    padding-left:20px;
+    padding-right:20px;
+    padding-bottom:20px;
+    border-bottom: none;
+}
+
+.compose-top-level > header > .rating{
+    float:right;
+    margin-right:20px;
+}
+
+.compose-top-level form{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.preview{
+    border-top:none;
+}
+
+.preview{
+    /*margin-top:-21px;*/
+}
+
+.preview .review{
+    background: url('/static/papers/preview.png') repeat-y 50%;
+}
+
+
+
+.level-1, .level-2, .level-3,
+.level-4, .level-5, .level-6,
+.level-7, .level-8, .level-9{
+    /* Fixes 'double' border of parent and this review. Disabling border
+       causes borders to be ended unexpectedly due to rounded corners. */
+    margin-top:-1px;
+}
+
+.level-1{
+    /* Width of voting widget - 1 due to border. */
+    margin-left:39px;
+}
+
+.level-2{ margin-left:78px; }
+.level-3{ margin-left:117px; }
+.level-4{ margin-left:156px; }
+.level-5{ margin-left:195px; }
+.level-6{ margin-left:234px; }
+.level-7{ margin-left:273px; }
+.level-8{ margin-left:312px; }
+.level-9{ margin-left:351px; }

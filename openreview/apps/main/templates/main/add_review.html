@@ -48,13 +48,11 @@
           <h2>New Review</h2>
           {{ add_review_form }}
           <input id="login" class="btn btn-primary" name="add_review" type="submit" value="Submit">
-          {% include "papers/preview.html" %}
       </div>
     </div>
 </form>
 {% endblock %}
 {% block js%}
-        <script src="{{ STATIC_URL }}js/paperform.coffee" type="text/coffeescript"></script>
         <script src="{{ STATIC_URL }}js/starratings.coffee" type="text/coffeescript"></script>
         <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>

@@ -1,63 +1,107 @@
 {% load markdown %}
+{% load author %}
 
-<section class="review-container">
-  <div id="r{{ review.id }}" review_id="{{ review.id }}" class="bs-callout bs-callout-info review">
-    <header>
-      <i class="glyphicon glyphicon-user"></i>
-      <span class="author">
-          {% if review.anonymous %}
-            ?
-          {% else %}
-            {{ review.poster.username }}
-          {% endif %}
-      </span>
-      on
-      <span class="timestamp" unix="{{ review.timestamp|date:'U' }}">
-        {{ review.timestamp }}
-      </span>
-      
-      {% if not review.parent %}
-      <span class="starfield" data-readonly="true" data-score="{{ review.rating }}"></span>
-      {% endif %}
-    </header>
+<div class="{% if is_preview %}preview{% endif %} level-{{ level }} review-container {% if first %}first{% endif %}">
+    <section data-api-url="{% url 'review-detail' review.id %}"
+             data-paper-id="{{ review.paper_id }}"
+             data-review-id="{{ review.id }}"
+             class="review box ">
+        <!-- Voting -->
+        <div class="voting">
+          <a class="up">❮</a>
+          <span class="counter">{{ review.score }}</span>
+          <a class="down">❯</a>
+        </div>
 
-    <article {% if review.is_deleted %}class="deleted"{% endif %}>
-      {{ review.text|default_if_none:""|markdown }}
-    </article>
+        <!-- Author, rating in header -->
+        <header>
+            <span class="author">
+                {{ review|format_author}}
+                <a href="{% url 'review' review.paper_id review.id %}">wrote on {{ review.timestamp }}</a>:
+            </span>
 
-{% if not preview %}
-    <footer>
-      <span class="options">
-        {% include "papers/review-options.html" with review=review paper=paper %}
-      </span>
-      <span style="display:none;" class="deleted-message">
-        You cannot cast votes on deleted reviews/comments.
-      </span>
-      <span style="display:none;" class="login-message">
-        You must be <a href="{% url "accounts-login" %}?next={{ url }}">logged in</a> to vote or comment!
-      </span>
-    </footer>
-{% endif %}
-  </div>
+            {% if review.rating != -1 %}
+            <span class="rating">
+                {% for i in "1234567" %}
+                    {% if review.rating > forloop.counter0 %}★{% else %}☆{% endif %}
+                {% endfor %}
+            </span>
+            {% endif %}
+        </header>
 
-{% if not preview %}
-  <div style="display:none;" class="new">
-    {% include "papers/comment.html" with review=new_review parent=review %}
-  </div>
+        <section class="error-messages">
+            <div style="display:none;" class="login-message">You need to be logged in to vote!</div>
+            <div style="display:none;" class="deleted-message">You cannot vote on deleted contributions.</div>
+        </section>
 
-  <div style="display:none;" class="edit">
-    {% if review.is_review %}
-        <form method="post" action="{% url 'paper' paper.id %}" data-preview="{% url 'preview' paper.id %}" class="new">
-            {% csrf_token %}
-            <table>{{ edit_review_form }}</table>
-            <br /><input name="{{ edit_review_name }}" type="submit" value="Edit review">
-            {% include "papers/preview.html" %}
+        <!-- Review content -->
+        <article class="tex content {% if review.is_deleted %}deleted{% endif %}">
+            {% if review.text %}
+                {{ review.text|markdown|urlize }}
+            {% else %}
+                <p class="deleted">[deleted]</p>
+            {% endif %}
+        </article>
+
+        <!-- Footer with all options (editing, deleting, etc.). They're hidden by
+             default, as only javascript knows which reviews are 'ours'. -->
+        <footer class="options">
+            <a style="display:none;" data-edit-id="edit-{{ review.id }}" class="edit" href="">edit</a>
+            <a style="display:none;" href="{% url 'review-detail' review.id %}" class="delete">delete</a>
+            <a style="display:none;" data-edit-id="reply-to-{{ review.id }}" class="reply" href="">reply</a>
+            <a class="permalink" href="{% url 'review' review.paper_id review.id %}">permalink</a>
+            {% with tree_size=review.get_tree_size|add:-1 %}
+                {% if level == -1 or level == 9 %}
+                <a class="comments" href="{% url 'review' review.paper_id review.id %}">
+                    {{ tree_size }} comment{{ tree_size|pluralize }}
+                </a>
+                {% endif %}
+            {% endwith %}
+        </footer>
+
+        <div class="clearfix"></div>
+    </section>
+
+    {% comment %}Reply area{% endcomment %}
+    {% if not is_preview %}
+    <!-- Reply form for reviews -->
+    <section style="display:none;" data-preview-id="preview-of-reply-{{ review.id }}" id="reply-to-{{ review.id }}" class="box compose compose-review edit-form">
+        <header>
+            <h2>Reply to review</h2>
+        </header>
+
+        <form action="#" method="POST">
+            <input type="hidden" name="parent" value="{{ review.id }}" />
+            <input type="hidden" name="rating" value="-1" />
+            {% include "papers/comment.html" with name="Submit reply" review=None %}
         </form>
-    {% else %}
-        {% include "papers/comment.html" with review=review parent=review.parent %}
-    {% endif %}
-  </div>
-{% endif %}
-</section>
+    </section>
 
+    <!-- Preview for editing review -->
+    <div style="display:none;" class="preview-container" id="preview-of-reply-{{ review.id }}"></div>
+    {% endif %}
+
+    {% comment %}Edit area{% endcomment %}
+    {% if not review.is_deleted and not is_preview %}
+    <!-- Edit form for reviews -->
+    <section id="edit-{{ review.id }}" style="display:none;" data-preview-id="preview-of-edit-{{ review.id }}" class="box compose compose-review edit-form">
+        <header>
+            <h2>Edit review</h2>
+            <div class="rating rating-input" data-id="rating-of-{{ review.id }}"></div>
+        </header>
+
+        <form action="#" method="POST">
+            <input id="rating-of-{{ review.id }}" type="hidden" name="rating" value="{{ review.rating }}" />
+            <input type="hidden" name="review" value="{{ review.id }}" />
+            {% if review.parent_id %}
+                <input type="hidden" name="parent" value="{{ review.parent_id }}" />
+            {% endif %}
+            {% include "papers/comment.html" with review=review name="Save changes" %}
+        </form>
+    </section>
+
+    <!-- Preview for editing review -->
+    <div style="display:none;" class="preview-container" id="preview-of-edit-{{ review.id }}"></div>
+    {% endif %}
+</div>
 

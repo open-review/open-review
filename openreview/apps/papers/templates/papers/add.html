@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load markdown %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/add.css" />
+{% endblock %}
+
+{% block js %}
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/submitting.coffee"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="box title">
+        <header>
+            <h1>Submit paper</h1>
+
+            <select id="submission-type">
+              <option value="arxiv" selected="">By arXiv ID</option>
+              <!--<option value="doi">By DOI</option>-->
+              <option value="manually">Manually</option>
+            </select>
+        </header>
+    </section>
+
+    <section class="paper-details box">
+        <h3>Paper details</h3>
+
+        <form method="POST" id="arxiv-details">
+            {% csrf_token %}
+            {{ arxiv_form.as_p }}
+            <!--<label>Arxiv ID:</label><input type="text" placeholder="For example: 1401.0003" />-->
+            <div class="fetcher-results"></div>
+            <button name="arxiv_form" type="submit">Submit arXiv paper</button>
+        </form>
+
+        <!--<form method="POST" id="doi-details">
+            {% csrf_token %}
+            <label>DOI:</label><input type="text" placeholder="For example: 10.1006/jmbi.1998.2354" />
+            <div class="fetcher-results"></div>
+            <button name="submit-paper" type="submit">Submit paper</button>
+        </form>-->
+
+        <form method="POST" id="manually-details" method="post" action="{% url 'add' %}#manually">
+            {% csrf_token %}
+            {{ manual_form.as_p }}
+            <!--<label>Title:</label><input type="text" />
+            <label>Authors:</label><input type="text" placeholder="Seperated by commas, for example: Tony Cai, Xiaodong Li" />
+            <label>Abstract:</label><textarea placeholder="May contain \LaTeX and *Markdown*"></textarea>
+            <hr />
+            <label>Publish date:</label><input type="date" />
+            <label>Publisher:</label><input type="text" placeholder="For example: Elsevier" />
+            <label>Link:</label><input type="text" placeholder="For example: http://www.sciencedirect.com/science/article/pii/S0004370201001667" />-->
+            <button name="manual_form" type="submit">Save details &amp; submit paper</button>
+        </form>
+    </section>
+
+{% endblock %}

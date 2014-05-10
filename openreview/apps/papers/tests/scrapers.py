@@ -1,20 +1,18 @@
-import unittest
-import os
 import json
 
-from django.core import management
-
+import os
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-
+from django.core import management
 from openreview.apps.papers import scrapers
+from openreview.apps.tools.testing import BaseTestCase
 from openreview.apps.main.models import Category
 
 
 __all__ = ['TestArXivScraper']
 
 
-class TestArXivScraper(unittest.TestCase):
+class TestArXivScraper(BaseTestCase):
     expected_title = """Chandra View of the Ultra-Steep Spectrum Radio Source in Abell 2443:
   Merger Shock-Induced Compression of Fossil Radio Plasma?"""
     expected_authors = ["T. E. Clarke", "S. W. Randall", "C. L. Sarazin",
