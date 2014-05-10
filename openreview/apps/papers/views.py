@@ -140,8 +140,7 @@ class AddPaperView(TemplateView):
                 paper = arxiv_form.save(commit=True)
                 return redirect(reverse("paper", args=[paper.id]))
         else:
-            print("iets heel raars is gebeurd")
-
+            raise ValueError("Either `manual_form` or `arxiv_form` should be in POST parameters.")
 
         return super().get(request)
 
