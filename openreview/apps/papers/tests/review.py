@@ -107,19 +107,17 @@ class TestReviewViewLive(SeleniumTestCase):
         reply_button = owned_review.find_element_by_css_selector(".options .reply")
         self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
         self.assertFalse(reply_section.is_displayed(), "Reply section should not be visible if edit button was not clicked.")
-        self.assertFalse(preview_section.is_displayed(), "Preview section should not be visible if edit button was not clicked.")
 
         # Open writing area!
         reply_button.click()
         self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
         self.assertTrue(reply_section.is_displayed(), "Reply section should be visible if edit button was clicked.")
-        self.assertTrue(preview_section.is_displayed(), "Preview section should be visible if edit button was clicked.")
 
         # Does clicking on reply again close edit area?
         reply_button.click()
         self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
         self.assertFalse(reply_section.is_displayed(), "Reply section should not be visible if edit button was not clicked.")
-        self.assertFalse(preview_section.is_displayed(), "Preview section should not be visible if edit button was not clicked.")
+        self.assertFalse(preview_section.is_displayed(), "Preview section should not be visible after closing edit section.")
 
         # Reopen area
         reply_button.click()
@@ -127,6 +125,7 @@ class TestReviewViewLive(SeleniumTestCase):
         # Test markdown, latex, etc.
         self._write_test_text(reply_section.find_element_by_css_selector("textarea"))
         self.wd.wait_for_css(".preview article h1")
+        self.assertTrue(preview_section.is_displayed(), "Preview section should be visible if edit button was clicked.")
         self._test_preview_text(preview_section)
 
         # Test submit.
@@ -144,8 +143,6 @@ class TestReviewViewLive(SeleniumTestCase):
 
         owned_review = self.wd.find_css('[data-review-id="%s"]' % self.review1.id)
         delete_button = owned_review.find_element_by_css_selector(".options .delete")
-
-
         delete_button.click()
 
         self.wait_for_model(Review, text=None)
