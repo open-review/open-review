@@ -190,3 +190,7 @@ body > main {
     padding: 20px 20px 0 20px;
     color: #1A3333;
 }
+
+hr{
+    clear:both;
+}
