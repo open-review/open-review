@@ -31,6 +31,8 @@
         <ol>
         {% for paper in papers %}
             {% include 'papers/all/list_item.html' with paper=paper %}
+        {% empty %}
+            <em>No {{ order }} papers available.</em>
         {% endfor %}
         </ol>
     </section>

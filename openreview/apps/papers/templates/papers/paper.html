@@ -53,6 +53,8 @@
 
         {% for review in reviews %}
             {% include "papers/review.html" with first=forloop.first paper=paper review=review level=-1 %}
+        {% empty %}
+            <em>No reviews available. Be the first to write one!</em>
         {% endfor %}
     </section>
 
