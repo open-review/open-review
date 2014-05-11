@@ -1,7 +1,6 @@
 import json
-
-from django.utils.decorators import method_decorator
 from functools import partial
+
 from django.core.paginator import Paginator, EmptyPage
 from django.http import Http404
 from django.shortcuts import HttpResponse, redirect
@@ -9,11 +8,11 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
 from haystack.query import SearchQuerySet
 from django.views.generic import TemplateView
-from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper, ReviewTree
+
+from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
 from openreview.apps.papers.forms import PaperForm, ArXivForm
-from django.contrib.auth.decorators import login_required
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
@@ -117,8 +116,13 @@ class SearchView(TemplateView):
     template_name = "papers/search_results.html"
 
     def get_context_data(self, **kwargs):
-        query = self.request.GET.get('q', '')
-        search_results = [x.object for x in SearchQuerySet().models(Paper).autocomplete(content_auto=query)]
+        query = self.request.GET.get('q')
+        search_results = ()
+
+        if query:
+            search_results = (x.object for x in SearchQuerySet().models(Paper).autocomplete(content_auto=query))
+            # SearchQuerySet can end with 'None'. This filter will remove value from list.
+            search_results = tuple(filter(bool, search_results))
 
         return dict(super().get_context_data(papers=search_results, query=query))
 
