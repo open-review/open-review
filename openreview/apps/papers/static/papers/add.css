@@ -36,6 +36,7 @@ body > main > section.box > form label {
 body > main > section.box > form input,
 body > main > section.box > form textarea {
     width: 448px;
+    max-width: 100%;
 }
 
 body > main > section.box > form textarea {
@@ -64,7 +65,6 @@ body > main > section.box > form hr {
 body > main > section.box > form .fetcher-results {
     clear: both;
     margin-bottom: 20px;
-    margin-left: 150px;
     display: none;
     text-align: right;
     font-style: italic;
