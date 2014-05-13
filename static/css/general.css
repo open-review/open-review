@@ -194,3 +194,9 @@ body > main {
 hr{
     clear:both;
 }
+
+@media all and (max-width: 1000px){
+    body > main {
+        width: 100%;
+    }
+}
