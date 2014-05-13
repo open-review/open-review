@@ -48,6 +48,7 @@
         </div>
     </section>
 
+    <span class='left'>
     <section class="reviews box">
         <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
@@ -57,30 +58,6 @@
             <em>No reviews available. Be the first to write one!</em>
         {% endfor %}
     </section>
-
-    <aside>
-      {% if related_a|length > 0 %}
-      <div class="more-by-these-authors box">
-          <h2>More by these authors</h2>
-          <ol>
-            {% for related_paper in related_a %}
-                 <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
-            {% endfor %}          
-          </ol>
-      </div>
-      {% endif %}
-
-      {% if related_s|length > 0 %}
-      <div class="related-papers box">
-          <h2>Related papers</h2>
-          <ol>
-            {% for related_paper in related_s %}
-                 <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
-            {% endfor %}          
-          </ol>
-      </div>
-      {% endif %}
-    </aside>
 
     <section data-preview-id="new-review-preview" class="compose-top-level compose compose-review box">
         <header>
@@ -96,5 +73,30 @@
     </section>
 
     <div id="new-review-preview"></div>
+    </span>
+    <aside>
+  {% if related_a|length > 0 %}
+  <div class="more-by-these-authors box">
+      <h2>More by these authors</h2>
+      <ol>
+        {% for related_paper in related_a %}
+             <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
+        {% endfor %}          
+      </ol>
+  </div>
+  {% endif %}
+
+  {% if related_s|length > 0 %}
+  <div class="related-papers box">
+      <h2>Related papers</h2>
+      <ol>
+        {% for related_paper in related_s %}
+             <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
+        {% endfor %}          
+      </ol>
+  </div>
+  {% endif %}
+</aside>
+
 
 {% endblock %}
