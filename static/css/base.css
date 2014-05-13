@@ -275,3 +275,16 @@ body > main > section.pagination > div > a:hover {
 body > main > section.compose-review > div.rating-input > span {
     cursor: pointer;
 }
+
+@media all and (max-width:1000px) {
+    body > header > nav,
+    body > footer {
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    body > footer .column-left,
+    body > footer .column-right {
+        clear: both;  
+    }
+}
