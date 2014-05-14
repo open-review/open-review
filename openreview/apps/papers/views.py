@@ -109,7 +109,7 @@ class ReviewView(BaseReviewView):
         review.cache(select_related=("poster",))
         set_n_votes_cache(review._reviews.values())
 
-        return super().get_context_data(tree=review.get_tree(), paper=paper, **kwargs)
+        return super().get_context_data(tree=review.get_tree(), paper=paper, review=review, **kwargs)
 
 
 class SearchView(TemplateView):

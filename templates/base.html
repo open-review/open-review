@@ -12,7 +12,7 @@
             <link rel="stylesheet" href="{{ STATIC_URL }}css/spinner.css" />
             {% block css %}{% endblock %}
         {% endcompress %}
-        <title>OpenReview</title>
+        <title>{% block title %}{% endblock %} - OpenReview</title>
     </head>
     <body class="tex2jax_ignore" data-anonymous="{{ user.is_anonymous|lower }}" data-csrf="{{ csrf_token }}">
         <header>

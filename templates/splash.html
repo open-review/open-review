@@ -11,7 +11,7 @@
             <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
             {% block css %}{% endblock %}
         {% endcompress %}
-        <title>OpenReview</title>
+        <title>{% block title %}{% endblock %} - OpenReview</title>
     </head>
     <body csrf="{{ csrf_token }}">
         <header>

@@ -1,7 +1,6 @@
 {% extends "splash.html" %}
 
 {% block header %}
-  <h1 class="title">OpenReview — Discover &amp; discuss research papers</h1>
   <p class="tagline">An open platform for reviewing and discussing scientific papers. <a href="/about">Learn more.</a></p>
 
   <section class="search">
@@ -19,6 +18,8 @@
   </section>
 
 {% endblock %}
+
+{% block title %}Discover &amp; discuss research papers{% endblock %}
 
 {% block content %}
     <section class="submit-paper-for-review">
