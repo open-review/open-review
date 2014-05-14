@@ -181,12 +181,14 @@ textarea {
 body > main,
 body > hr,
 body > footer {
-    width: 1000px;
+    max-width: 1000px;
+    width: 100%;
     margin: 0 auto;
 }
 
 body > main {
-    width: 1040px;
+    max-width: 1040px;
+    width: 100%;
     padding: 20px 20px 0 20px;
     color: #1A3333;
 }
@@ -196,7 +198,11 @@ hr{
 }
 
 @media all and (max-width: 1000px){
-    body > main {
+    body > main .box {
+        width: 100%;
+    }
+    
+    body > main .box {
         width: 100%;
     }
 }
