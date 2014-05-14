@@ -33,6 +33,24 @@ body > header > nav h1 a:hover {
     text-decoration: none;
 }
 
+body > header > nav form {
+    float: right;
+    margin: 0;
+    padding: 20px 0 20px 30px;
+}
+
+body > header > nav form input[type=text] {
+    width: 200px;
+    padding: 5px 15px;
+    border-radius: 40px;
+    -webkit-transition: width 0.2s;
+    transition: width 0.2s;
+}
+
+body > header > nav form input[type=text]:focus {
+    width: 300px;
+}
+
 body > header > nav ul {
     overflow: hidden;
     float: right;
@@ -56,7 +74,6 @@ body > header > nav ul li.separator {
     font-weight: bold;
     line-height: 50px;
     height: 50px;
-    font-weight: 30px;
     color: #202020;
 }
 
