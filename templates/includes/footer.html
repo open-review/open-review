@@ -5,8 +5,8 @@
         <h3>Account</h3>
         <ul>
           {%  if user.is_anonymous %}
-              <li><a href="{% url 'accounts-login' %}">Login</a></li>
-              <li><a href="{% url 'accounts-register' %}">Register</a></li>
+              <li><a href="{% url 'accounts-login' %}#login">Login</a></li>
+              <li><a href="{% url 'accounts-register' %}#register">Register</a></li>
           {% else %}
               <li><a href="{% url 'accounts-logout' %}">Logout</a></li>
               <li><a href="{% url 'accounts-settings' %}">Settings </a></li>

@@ -25,8 +25,8 @@
               <li><a href="/papers/add">Add Paper</a></li>
               <li class="separator">·</li>
               {%  if user.is_anonymous %}
-                  <li><a href="{% url 'accounts-login' %}">Login</a></li>
-                  <li><a href="{% url 'accounts-register' %}">Register</a></li>
+                  <li><a href="{% url 'accounts-login' %}#login">Login</a></li>
+                  <li><a href="{% url 'accounts-register' %}#register">Register</a></li>
               {%  else %}
                   <li><a href="{% url 'accounts-settings' %}">My profile</a></li>
               {%  endif %}

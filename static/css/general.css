@@ -182,7 +182,7 @@ body > main,
 body > hr,
 body > footer {
     max-width: 1000px;
-    width: 100%;
+    width: 99%;
     margin: 0 auto;
 }
 
@@ -198,10 +198,6 @@ hr{
 }
 
 @media all and (max-width: 1000px){
-    body > main .box {
-        width: 100%;
-    }
-    
     body > main .box {
         width: 100%;
     }

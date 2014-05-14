@@ -113,7 +113,7 @@ body > main .box > h2 {
 }
 
 
-body > main > .box h3 {
+body > main .box h3 {
     font-size: 16px;
     margin: 0;
     color: #5a5a5a;
@@ -155,33 +155,34 @@ body > main > header h1 + h1 {
     margin-left: 20px;
 }
 
-body > main > section.box > form {
+body > main  section.box > form {
     padding: 20px;
     overflow: hidden;
 }
 
-body > main > section.box > form label,
-body > main > section.box > form input,
-body > main > section.box > form textarea {
+body > main section.box > form label,
+body > main section.box > form input,
+body > main section.box > form textarea {
     display: block;
     margin-bottom: 20px;
 }
 
-body > main > section.box > form label {
+body > main section.box > form label {
     clear: left;
     float: left;
     line-height: 34px;
 }
 
-body > main > section.box > form input,
-body > main > section.box > form textarea,
-body > main > section.box > form ul.errorlist {
+body > main section.box > form input,
+body > main section.box > form textarea,
+body > main section.box > form ul.errorlist {
     clear: right;
     float: right;
     width: 260px;
+    max-width: 100%;
 }
 
-body > main > section.box > form ul.errorlist {
+body > main section.box > form ul.errorlist {
     background: #331A1A;
     border-radius: 4px;
     color: #fff;
@@ -190,15 +191,15 @@ body > main > section.box > form ul.errorlist {
     font-size: 12px;
 }
 
-body > main > section.box > form ul.errorlist + input,
-body > main > section.box > form ul.errorlist + textarea {
+body > main section.box > form ul.errorlist + input,
+body > main section.box > form ul.errorlist + textarea {
     clear: both;
     float: none;
     width: 100%;
 }
 
 
-body > main > section.box > form span.helptext {
+body > main section.box > form span.helptext {
     clear: both;
     display: block;
     background: #1A3333;
@@ -210,7 +211,7 @@ body > main > section.box > form span.helptext {
     position: relative;
 }
 
-body > main > section.box > form span.helptext:before {
+body > main section.box > form span.helptext:before {
     border-left: 6px transparent solid;
     border-right: 6px transparent solid;
     border-bottom: 6px #1A3333 solid;
@@ -223,7 +224,7 @@ body > main > section.box > form span.helptext:before {
     left: 6px;
 }
 
-body > main > section.box hr {
+body > main section.box hr {
     display: block;
     clear: both;
     border: none;
@@ -231,7 +232,7 @@ body > main > section.box hr {
     margin: 0;
 }
 
-body > main > section.box > form button[type=submit] {
+body > main section.box > form button[type=submit] {
     display: block;
     clear: both;
     width: 100%;
