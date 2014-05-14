@@ -25,6 +25,7 @@
               <li class="separator">·</li>
               {%  if user.is_anonymous %}
                   <li><a href="{% url 'accounts-login' %}">Login</a></li>
+                  <li class="separator">·</li>
                   <li><a href="{% url 'accounts-register' %}">Register</a></li>
               {%  else %}
                   <li><a href="{% url 'accounts-settings' %}">My profile</a></li>
