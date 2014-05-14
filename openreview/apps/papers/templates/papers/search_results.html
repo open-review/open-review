@@ -13,11 +13,6 @@
     <section class="query-bar box">
         <header>
             <h1>Search results</h1>
-            {% if papers %}
-                <form method="GET" action="{% url 'search-paper' %}">
-                    <input value="{{ query }}" name="q" tabindex="1" type="text" />
-                </form>
-            {% endif %}
         </header>
     </section>
 
