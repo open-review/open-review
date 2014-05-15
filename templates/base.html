@@ -18,6 +18,11 @@
         <header>
           <nav>
             <h1 class="logo"><a href="/">OpenReview.org</a></h1>
+            <form method="GET" action="{% url 'search-paper' %}">
+                <div class="query">
+                    <input placeholder="Search for papers..." value="{{ query }}" name="q" tabindex="1" type="text" />
+                </div>
+            </form>
             <ul>
               <li><a href="/papers/new">Browse Papers</a></li>
               <li class="separator">·</li>
@@ -25,6 +30,7 @@
               <li class="separator">·</li>
               {%  if user.is_anonymous %}
                   <li><a href="{% url 'accounts-login' %}">Login</a></li>
+                  <li class="separator">·</li>
                   <li><a href="{% url 'accounts-register' %}">Register</a></li>
               {%  else %}
                   <li><a href="{% url 'accounts-settings' %}">My profile</a></li>
