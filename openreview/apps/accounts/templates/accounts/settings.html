@@ -24,9 +24,10 @@
     <section class="my-contributions box">
         <h3>Recent contributions</h3>
 
+        {% if reviews %}
         <ol>
         <!-- TODO: Limit number of reviews (4?), sort by date -->
-        {% for review in reviews %}
+        {% for review in reviews|slice:":4" %}
             <li>
                 <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">
                     <span class="number-of-votes">
@@ -35,7 +36,7 @@
                     {{ review.paper.title }}
                 </a>
                 <blockquote>
-                    {{ review.text|slice:":200" }}…
+                    {{ review.text|truncatechars:200 }}
                 </blockquote>
             </li>
         {% endfor %}
@@ -46,5 +47,10 @@
         <p>
             <a href="#">View all of my contributions →</a>
         </p>
+        {% else %}
+        <p>
+            No contributions yet...
+        </p>
+        {% endif %}
     </section>
 {% endblock %}
