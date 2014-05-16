@@ -79,10 +79,11 @@ class SettingsView(TemplateView):
             self.settings_form.save()
         return redirect(reverse("accounts-settings"))
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         reviews = request.user.reviews.all()
         set_n_votes_cache(reviews)
-        return super().get(request, reviews=reviews, settings_form=self.settings_form)
+        return super().get(request, reviews=reviews, settings_form=self.settings_form, *args, **kwargs)
+
 
 class AccountDeleteView(TemplateView):
     template_name = "accounts/delete.html"
@@ -97,8 +98,8 @@ class AccountDeleteView(TemplateView):
         self.delete_form = AccountDeleteForm(request.user, data=delete_data)
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
-        return super().get(request, delete_form=self.delete_form)
+    def get(self, request, *args, **kwargs):
+        return super().get(request, delete_form=self.delete_form, *args, **kwargs)
 
     def post(self, request):
         self.delete_form.is_valid()
@@ -109,3 +110,13 @@ class AccountDeleteView(TemplateView):
             self.delete_form.save()
             return redirect(reverse("landing_page"))
         return redirect(reverse("accounts-delete"))
+
+
+class ContributionsView(TemplateView):
+    template_name = "accounts/contributions.html"
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        reviews = request.user.reviews.all()
+        set_n_votes_cache(reviews)
+        return super().get(request, reviews=reviews, *args, **kwargs)

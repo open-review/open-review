@@ -2,6 +2,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}accounts/settings.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}accounts/contributions.css" />
 {% endblock %}
 
 {% block content %}
@@ -26,7 +27,6 @@
 
         {% if reviews %}
         <ol>
-        <!-- TODO: Limit number of reviews (4?), sort by date -->
         {% for review in reviews|slice:":4" %}
             <li>
                 <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">
@@ -45,11 +45,11 @@
         <hr />
 
         <p>
-            <a href="#">View all of my contributions →</a>
+            <a href="{% url 'accounts-contributions' %}">View all of my contributions →</a>
         </p>
         {% else %}
         <p>
-            No contributions yet...
+            No contributions yet.
         </p>
         {% endif %}
     </section>

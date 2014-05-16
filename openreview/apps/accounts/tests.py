@@ -128,7 +128,7 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertEqual(user.username, "abc")
 
 
-class TestSettingsForms(BaseTestCase):
+class TestSettingsForm(BaseTestCase):
     def setUp(self):
         User.objects.all().delete()
         self.assertEqual(set(User.objects.all()), set())
