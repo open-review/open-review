@@ -50,7 +50,7 @@ class AuthenticationView(TemplateView):
 
     def redirect(self):
         # Redirect to GET parameter 'next', or dashboard
-        return redirect(self.request.GET.get("next", reverse("new")), permanent=False)
+        return redirect(self.request.GET.get("next", reverse("dashboard")), permanent=False)
 
 
 class LogoutView(RedirectView):
