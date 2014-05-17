@@ -119,7 +119,7 @@ class TestAddPaperView(TestCase):
         cache.clear()
         c = Client()
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
-                                          "/../../papers/testfiles/1306.3879.xml")
+                                          "/../../papers/fixtures/arxiv/1306.3879.xml")
         user = create_test_user()
         c.login(username=user.username, password="test")
 

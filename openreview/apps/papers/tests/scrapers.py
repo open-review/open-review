@@ -36,7 +36,7 @@ relativistic electrons.\n"""
         self.arxivscraper = scrapers.Controller(scrapers.ArXivScraper, caching=False)
         self.oldurlopen = scrapers.urlopen
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
-                                          "/../testfiles/1306.3879.xml")
+                                          "/../fixtures/arxiv/1306.3879.xml")
 
     def tearDown(self):
         scrapers.urlopen = self.oldurlopen
