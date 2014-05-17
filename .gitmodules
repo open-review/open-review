@@ -4,6 +4,3 @@
 [submodule "static/open-review-static"]
 	path = static/open-review-static
 	url = https://github.com/open-review/open-review-static.git
-[submodule "static/raty"]
-	path = static/raty
-	url = git://github.com/wbotelhos/raty.git
