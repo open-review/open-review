@@ -1,6 +1,3 @@
-[submodule "static/mathjax"]
-	path = static/mathjax
-	url = git://github.com/mathjax/MathJax.git
 [submodule "static/open-review-static"]
 	path = static/open-review-static
 	url = https://github.com/open-review/open-review-static.git
