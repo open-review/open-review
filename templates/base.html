@@ -4,12 +4,12 @@
 <html>
     <head>
         {% compress css %}
-            <link href='{{ STATIC_URL }}open-review-static/css/fonts.css' rel='stylesheet' type='text/css'>
-            <link rel="stylesheet" href="{{ STATIC_URL }}components/normalize-css/normalize.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/general.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/spinner.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}components/normalize-css/normalize.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fonts.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/general.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/footer.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/spinner.css" />
             {% block css %}{% endblock %}
         {% endcompress %}
         <title>OpenReview</title>
