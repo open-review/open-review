@@ -24,8 +24,6 @@
 
         {% include 'includes/footer.html' %}
 
-        <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
         {% block meta %}{% endblock %}
 
         {% compress js %}
@@ -33,13 +31,6 @@
             {% block js %}{% endblock %}
         {% endcompress %}
 
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['$','$'],['\\(','\\)']],
-                processEscapes: true
-            }
-          });
-        </script>
+        {% include 'includes/scripts/mathjax.html' %}
     </body>
 </html>
