@@ -5,33 +5,33 @@
 {% endblock %}
 
 {% block content %}
-    <span>
-    <header>
-        <a name="login"></a>
-        <h1>Log in</h1>
-    </header>
-    <section class="login box">
-        <h3>Sign in using an existing account.</h3>
-        <form method="POST">
-            {% csrf_token %}
-            {{ login_form }}
-            <button id="login-button" name="login" type="submit">Log in now</button>
-        </form>
-    </section>
-    </span>
+    <div class="col">
+        <header>
+            <a name="login"></a>
+            <h1>Log in</h1>
+        </header>
+        <section class="login box">
+            <h3>Sign in using an existing account.</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ login_form }}
+                <button id="login-button" name="login" type="submit">Log in now</button>
+            </form>
+        </section>
+    </div>
 
-    <span>
-    <header>
-        <a name="register"></a>
-        <h1>Register</h1>
-    </header>
-    <section class="register box">
-        <h3>Register for a new account.</h3>
-        <form method="POST">
-            {% csrf_token %}
-            {{ register_form }}
-            <button id="register-button" name="new" type="submit">Register me</button>
-        </form>
-    </section>
-    </span>
+    <div class="col">
+        <header>
+            <a name="register"></a>
+            <h1>Register</h1>
+        </header>
+        <section class="register box">
+            <h3>Register for a new account.</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ register_form }}
+                <button id="register-button" name="new" type="submit">Register me</button>
+            </form>
+        </section>
+    </div>
 {% endblock %}

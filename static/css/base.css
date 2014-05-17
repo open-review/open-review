@@ -41,7 +41,7 @@ body > header > nav ul {
     padding: 0;
 }
 
-body > header > nav h1 + ul {
+body > header > nav ul {
     margin-left: 40px;
 }
 
@@ -283,9 +283,16 @@ body > main > section.compose-review > div.rating-input > span {
         width: 100%;
         padding: 0 15px;
     }
-    
-    body > footer .column-left,
-    body > footer .column-right {
-        clear: both;  
+}
+
+@media all and (max-width:630px) {
+    body > header > nav ul {
+        clear: left;
+        float: left;
     }
+
+    body > header > nav ul {
+        margin-left: 0;
+    }
+
 }

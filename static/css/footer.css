@@ -45,3 +45,9 @@ body > footer *[class*='column-'] ul li {
 body > footer *[class*='column-'] ul li + li {
   margin-top: 5px;
 }
+
+@media all and (max-width: 480px) {
+    body > footer .column-right {
+        float: left;
+    }   
+}

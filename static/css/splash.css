@@ -15,7 +15,7 @@ body > header h1.title {
     color: #000;
     font-weight: 700;
     padding: 60px 0 0;
-    line-height: 1.2em;
+    line-height: 1.4em;
 }
 
 body > header p.tagline {
@@ -185,30 +185,28 @@ body > main .submit-paper-for-review {
   max-width: 593px;
   width: 100%;
   margin: 0 auto 60px auto;
-  min-height: 42px;
-  overflow: hidden;
 }
 
-body > main .submit-paper-for-review p,
-body > main .submit-paper-for-review a.button {
-    float: left;
-}
 
 body > main .submit-paper-for-review p {
     font-size: 17px;
     line-height: 42px;
     margin: 0;
     font-weight: 600;
+    text-align: center;
 }
 
 body > main .submit-paper-for-review a.button {
-    margin-left: 20px;
+    width: 250px;
+    margin: 10px auto 0 auto;
+    display: block;
 }
 
 
 @media all and (max-width: 1000px) {
     body > main .box {
         width: 100%;
+        margin: 0 0 40px 0;
     }
     
     body > header section.search form {

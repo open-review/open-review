@@ -48,32 +48,32 @@
         </div>
     </section>
 
-    <span class='left'>
-    <section class="reviews box">
-        <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
+    <div class="left">
+        <section class="reviews box">
+            <h2>{{ reviews|length }} review{{ reviews|length|pluralize }}</h2>
 
-        {% for review in reviews %}
-            {% include "papers/review.html" with first=forloop.first paper=paper review=review level=-1 %}
-        {% empty %}
-            <em>No reviews available. Be the first to write one!</em>
-        {% endfor %}
-    </section>
+            {% for review in reviews %}
+                {% include "papers/review.html" with first=forloop.first paper=paper review=review level=-1 %}
+            {% empty %}
+                <em>No reviews available. Be the first to write one!</em>
+            {% endfor %}
+        </section>
 
-    <section data-preview-id="new-review-preview" class="compose-top-level compose compose-review box">
-        <header>
-            <h2>Share your opinion by writing a review</h2>
-            <div class="rating rating-input" data-id="rating-top-level"></div>
-        </header>
+        <section data-preview-id="new-review-preview" class="compose-top-level compose compose-review box">
+            <header>
+                <h2>Share your opinion by writing a review</h2>
+                <div class="rating rating-input" data-id="rating-top-level"></div>
+            </header>
 
-        <form action="#" method="POST">
-            <input type="hidden" name="rating" id="rating-top-level" value="-1" />
-            {% include "papers/comment.html" with name="Submit review" %}
-        </form>
+            <form action="#" method="POST">
+                <input type="hidden" name="rating" id="rating-top-level" value="-1" />
+                {% include "papers/comment.html" with name="Submit review" %}
+            </form>
 
-    </section>
+        </section>
 
-    <div id="new-review-preview"></div>
-    </span>
+        <div id="new-review-preview"></div>
+    </div>
     <aside>
   {% if related_a|length > 0 %}
   <div class="more-by-these-authors box">

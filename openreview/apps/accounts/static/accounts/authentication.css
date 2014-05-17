@@ -9,9 +9,12 @@ body > main section.box {
     margin-top: 20px;
 }
 
-body > main span {
+body > main div.col {
     float: left;
     margin: 0 10px;
+    max-width: 480px;
+    width: 100%;
+    
 }
 
 body > main section.login form > br,
@@ -20,8 +23,8 @@ body > main section.register form > br {
 }
 
 @media all and (max-width: 1000px){
-    body > main span {
-        width: 100%;
+    body > main div.col {
+        max-width: inherit;
     }
 
     body > main section.box {

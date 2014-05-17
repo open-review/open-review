@@ -1,4 +1,4 @@
-body > main > span.left {
+body > main > div.left {
     float: left;
 }
 
@@ -24,11 +24,11 @@ body > main section.paper div.abstract {
     max-height: 140px;
     float: left;
     margin-left: 20px;
-    margin-right: 20px;
 }
 
 body > main section.paper div.meta {
-    margin-right: 20px;
+    margin: 0 20px;
+    padding: 17px 0;
     width: 320px;
 }
 
@@ -119,7 +119,7 @@ main > .reviews > .review-container{
 }
 
 @media all and (max-width:1000px) {
-    body > main > span.left {
+    body > main > div.left {
         width: 100%;
     }
 
@@ -143,8 +143,6 @@ main > .reviews > .review-container{
     body > main section.paper div.meta {
         clear: left;
         width: 100%;
-        padding: 0 20px;
-        margin: 15px 0;
     }
     
     body > main section.reviews.box {
