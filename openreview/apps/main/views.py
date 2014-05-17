@@ -18,14 +18,11 @@ def landing_page(request):
 
 @login_required
 def dashboard(request):
-    # Display 3 papers in each column
-    paper_count = 3
+    paper_count = 7
 
     return render(request, "main/dashboard.html", {
         "user": request.user,
-        "latest_papers_list": Paper.latest()[:paper_count],
-        "trending_papers_list": Paper.trending(top=paper_count),
-        "controversial_papers_list": Paper.controversial()[:paper_count]
+        "new_papers": Paper.latest()[:paper_count],
+        "controversial_papers": Paper.controversial()[:paper_count],
+        "trending_papers": Paper.trending(top=paper_count)
     })
-
-
