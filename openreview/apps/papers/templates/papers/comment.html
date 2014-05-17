@@ -3,7 +3,7 @@
 <input type="hidden" name="paper" value="{{ paper.id }}" />
 
 <textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below.">{% if review %}{{ review.text }}{% endif %}</textarea>
-
+<p><a href="{% url 'help-editor' %}">Editor help</a></p>
 <p style="display:none;" class="preview-error permission-denied">
     You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
 </p>
@@ -27,6 +27,7 @@
             <strong>External:</strong> written by external author.<br />
         </span>
     </a>
+
 
     <select name="visibility">
         <option {% if review and not review.anonymous %}selected="selected"{% endif %} value="public">Public</option>
