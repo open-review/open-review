@@ -17,7 +17,13 @@
     <body class="tex2jax_ignore" data-anonymous="{{ user.is_anonymous|lower }}" data-csrf="{{ csrf_token }}">
         <header>
           <nav>
-            <h1 class="logo"><a href="/">OpenReview.org</a></h1>
+            <h1 class="logo">
+            {%  if user.is_anonymous %}
+                <a href="/">OpenReview.org</a>
+            {% else %}
+                <a href="{% url 'dashboard' %}">OpenReview.org</a>
+            {% endif %}
+            </h1>
             <form method="GET" action="{% url 'search-paper' %}">
                 <div class="query">
                     <input placeholder="Search for papers..." value="{{ query }}" name="q" tabindex="1" type="text" />
