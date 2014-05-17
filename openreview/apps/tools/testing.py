@@ -358,5 +358,3 @@ def list_queries(destination=None, log_output=True, ignore=("QUERY = 'BEGIN' - P
         if log_output:
             for query in queries:
                 log.debug(query)
-
-

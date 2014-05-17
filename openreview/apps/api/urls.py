@@ -51,5 +51,3 @@ api_root.__doc__ = """
 Filtering is not yet enabled. You can use nested properties to fetch all papers for a
 given keyword, etc.
 """
-
-

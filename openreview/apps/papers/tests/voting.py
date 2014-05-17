@@ -82,4 +82,3 @@ class TestVoteViewLive(SeleniumTestCase):
         downvote.click()
         self.assertEqual("0", counter.text)
         self.wait_for_model(Vote, review=self.review, voter=user, vote=0)
-

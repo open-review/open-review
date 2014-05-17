@@ -88,4 +88,3 @@ init = ->
   $(".review .voting .down").click((e) -> vote($(e.currentTarget), -1))
 
 init()
-

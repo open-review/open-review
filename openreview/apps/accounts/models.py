@@ -28,5 +28,3 @@ class User(AbstractUser):
             full_name += " ({self.title}, {self.university})"
 
         return full_name.format(self=self)
-
-

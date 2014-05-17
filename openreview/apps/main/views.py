@@ -27,5 +27,3 @@ def dashboard(request):
         "trending_papers_list": Paper.trending(top=paper_count),
         "controversial_papers_list": Paper.controversial()[:paper_count]
     })
-
-

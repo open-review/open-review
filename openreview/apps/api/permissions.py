@@ -26,4 +26,3 @@ class ObjectPermissions(BasePermission):
             return True
 
         return test_func(request.user)
-

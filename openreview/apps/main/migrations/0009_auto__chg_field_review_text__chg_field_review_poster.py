@@ -19,14 +19,14 @@ class Migration(SchemaMigration):
 
         # User chose to not deal with backwards NULL issues for 'Review.text'
         raise RuntimeError("Cannot reverse this migration. 'Review.text' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration
         # Changing field 'Review.text'
         db.alter_column('main_review', 'text', self.gf('django.db.models.fields.TextField')())
 
         # User chose to not deal with backwards NULL issues for 'Review.poster'
         raise RuntimeError("Cannot reverse this migration. 'Review.poster' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration
         # Changing field 'Review.poster'
         db.alter_column('main_review', 'poster_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.User']))

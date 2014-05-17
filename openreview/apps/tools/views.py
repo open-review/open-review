@@ -84,4 +84,3 @@ class ObjectManager(object):
         # Cache object for next call
         setattr(self, name, obj)
         return obj
-

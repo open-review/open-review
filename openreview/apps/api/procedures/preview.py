@@ -52,4 +52,3 @@ class PreviewProcedure(APIView):
             review.text = "*No text entered*"
 
         return render(request, "papers/review.html", {"review": review, "is_preview": True})
-

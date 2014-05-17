@@ -54,4 +54,3 @@ class VoteProcedureTest(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.content, b'{"details": "OK"}')
         self.assertTrue(Vote.objects.filter(review=review, vote=-1, voter=self.user))
-
