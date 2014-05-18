@@ -1,0 +1,136 @@
+body > main .box:first-child {
+    margin-bottom: 20px;
+}
+
+body > main .box.papers,
+body > main .box.contributions {
+    float: left;
+    width: 490px;
+    background: #fff;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+body > main .box.controversial-papers,
+body > main .box.my-contributions {
+    margin-left: 20px;
+}
+
+body > main .box h2 {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    border-bottom: 2px #E5E5E5 solid;
+}
+
+body > main .box h2 span,
+body > main .box h2 a {
+    display: block;
+    padding: 17px 20px 15px 20px;
+}
+
+body > main .box h2 a {
+    color: #5D5D5D;
+}
+
+body > main .box ol,
+body > main .box p {
+    padding: 10px 14px;
+    margin: 0;
+}
+
+body > main .box ol {
+    list-style: none;
+}
+
+body > main .box ol li {
+    display: block;
+    overflow: hidden;
+    padding: 0;
+}
+
+body > main .box ol li a {
+    display: block;
+    padding: 6px;
+}
+
+body > main .box.papers ol li a {
+    float: left;
+}
+
+body > main .box.papers ol li a + a {
+    padding-left: 0;
+}
+
+body > main .box.papers ol li a.title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 430px;
+}
+
+body > main .box.papers ol li:hover > a.title {
+    text-decoration: underline;
+    width: 390px;
+    margin-right: -6px;
+}
+
+body > main .box.papers ol li a.number-of-reviews {
+    float: right;
+    width: 28px;
+}
+
+body > main .box.papers ol li a.number-of-reviews:hover,
+body > main .box.papers ol li a.title:hover + a.number-of-reviews {
+    width: 76px;
+    right: 76px;
+}
+
+body > main .box.papers ol li a.number-of-reviews:hover > span,
+body > main .box.papers ol li a.title:hover + a.number-of-reviews > span {
+    background: #187676;
+    color: #fff;
+    width: auto;
+    padding: 0 5px;
+}
+
+body > main .box.papers ol li a.number-of-reviews:hover > span:after,
+body > main .box.papers ol li a.title:hover + a.number-of-reviews > span:after {
+    content: " reviews";
+}
+
+body > main .box.papers ol li span {
+    float: right;
+    width: 16px;
+    height: 16px;
+    line-height: 14px;
+    border: 1px #187676 solid;
+    border-radius: 2px;
+    text-align: center;
+    color: #187676;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+body > main > section.my-contributions ol li a {
+    font-weight: 600;
+}
+
+body > main > section.my-contributions ol li span.number-of-votes {
+    color: #4b4b4b;
+    font-weight: bold;
+    padding-right: 6px;
+}
+
+body > main > section.my-contributions ol li blockquote {
+    display: block;
+    color: #4b4b4b;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 1.6em;
+    border-left: 2px #B1B1B1 solid;
+    padding-left: 7px;
+    margin: 6px 0 0px 0;
+    text-align: justify;
+    font-style: italic;
+}

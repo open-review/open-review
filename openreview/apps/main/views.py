@@ -18,7 +18,7 @@ def landing_page(request):
 
 @login_required
 def dashboard(request):
-    paper_count = 7
+    paper_count = 5
 
     return render(request, "main/dashboard.html", {
         "user": request.user,
