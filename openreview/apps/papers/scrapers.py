@@ -6,6 +6,7 @@ from openreview.apps.main.models import Category
 
 import lxml.html
 import lxml.etree
+import hashlib
 
 
 class ScraperError(BaseException):
@@ -18,11 +19,22 @@ class Controller:
         self.scraper_name = scraper.__class__.__name__
         self.caching = caching
 
+    def get_cache_key(self, doc_id):
+        key_string = "{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id)
+        
+        # Hash the key_string, because special characters (i.e. non-alphanumeric characters)
+        # cannot be used in a MemcachedKey.
+        # Also, this ensures the key is well under the maximum length (250 characters).
+        key_hash   = hashlib.sha256(key_string.encode("utf-8")).hexdigest()
+        return key_hash
+
     def run(self, doc_id):
+        doc_id = doc_id.strip()
+        
         url = self.scraper.get_url(doc_id)
 
-        if self.caching and cache.get("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id)):
-            return cache.get("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id))
+        if self.caching and cache.get(self.get_cache_key(doc_id)):
+            return cache.get(self.get_cache_key(doc_id))
         else:
             try:
                 doc = self.scraper.get_doc(url)
@@ -37,7 +49,7 @@ class Controller:
             result.update({"doc_id": doc_id})
 
             if self.caching:
-                cache.set("{scraper}-res-{id}".format(scraper=self.scraper_name, id=doc_id), result)
+                cache.set(self.get_cache_key(doc_id), result)
             return result
 
 
