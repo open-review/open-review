@@ -157,6 +157,16 @@ body > main .box > ul li {
     font-size: 13px;
 }
 
+body > main .box > pre { 
+    margin: 10px 20px;
+    padding: 3px;
+    background-color: #EEE
+}
+
+body > main .box code {
+    background-color: #EEE
+}
+
 body > main > header {
     overflow: hidden;
 }
