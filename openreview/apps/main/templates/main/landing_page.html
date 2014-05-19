@@ -2,7 +2,7 @@
 
 {% block header %}
   <h1 class="title">OpenReview — Discover &amp; discuss research papers</h1>
-  <p class="tagline">An open platform for reviewing and discussing scientific papers. <a href="/about">Learn more.</a></p>
+  <p class="tagline">An open platform for reviewing and discussing scientific papers. <a href="{% url 'mission' %}">Learn more.</a></p>
 
   <section class="search">
     <form method="GET" action="{% url 'search-paper' %}">
