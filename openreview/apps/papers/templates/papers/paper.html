@@ -20,6 +20,8 @@
     </script>
 {% endblock %}
 
+{% block title %}{{paper.title|capfirst}}{% endblock%}
+
 {% block content %}
     <section data-paper-id="{{ paper.id }}" data-votes="{{ my_votes }}" data-reviews="{{ my_reviews }}" class="paper box">
         <header class="tex title">
