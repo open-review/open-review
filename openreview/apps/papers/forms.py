@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
-from openreview.apps.main.models import Paper, Author, Category
+from openreview.apps.main.models import Paper, Author
 from openreview.apps.papers import scrapers
 
 
@@ -13,6 +13,7 @@ class PaperForm(forms.ModelForm):
     publisher = forms.CharField(widget=forms.TextInput(attrs={'placeholder': "For example: Elsevier"}))
     publish_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     doc_id = forms.CharField(label="Document identifier")
+    urls = forms.CharField(label="URL", widget=forms.TextInput(attrs={'placeholder': "For example: http://www.sciencedirect.com/science/article/pii/S0004370201001667"}))
 
     # TODO: clean_{authors,keywords} use the same algorithm. Generalise?
     def clean_authors(self):
@@ -49,8 +50,7 @@ class PaperForm(forms.ModelForm):
         model = Paper
         fields = ['title', 'authors', 'abstract', 'publish_date', 'publisher', 'urls', 'doc_id']
         widgets = {
-            'abstract': forms.Textarea(attrs={'placeholder': "May contain $\LaTeX$ and *Markdown*"}),
-            'urls': forms.TextInput(attrs={'placeholder': "For example: http://www.sciencedirect.com/science/article/pii/S0004370201001667"})
+            'abstract': forms.Textarea(attrs={'placeholder': "May contain $\LaTeX$ and *Markdown*"})
         }
 
 

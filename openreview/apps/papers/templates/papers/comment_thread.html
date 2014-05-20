@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper.css" />
 {% endblock %}
 
+{% block title %}
+    {% if review.parent == null %}Review{% else %}Comment{% endif %} - {{paper.title}}
+{% endblock %}
+
 {% block js %}
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/voting.coffee"></script>
     <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>

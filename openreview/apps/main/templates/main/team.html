@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/team.css" />
+{% endblock %}
+
+{% block content %}
+          <section class="box">
+              <header>
+                  <h1>Team</h1>
+              </header>
+          </section>
+          
+          <br />
+          
+          <section class="team box">    
+            <div class="team-member">
+              <img src="https://avatars3.githubusercontent.com/u/2811984?s=200" alt="" />  
+              <div class="member-name">Bas van den Brink</div>
+            </div>
+
+            <div class="team-member">
+              <img src="https://avatars1.githubusercontent.com/u/5658854?s=200" alt="" />  
+              <div class="member-name">Martijn Bastiaan</div>
+            </div>
+            
+            <div class="team-member">
+              <img src="https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif" alt="" />  
+              <div class="member-name">Simon de Vries</div>
+            </div>
+
+             <div class="team-member">
+              <img src="https://avatars0.githubusercontent.com/u/232034?s=200" alt="" />  
+              <div class="member-name">Thomas Brus</div>
+            </div>
+
+             <div class="team-member">
+              <img src="https://avatars3.githubusercontent.com/u/2811785?s=200" alt="" />  
+              <div class="member-name">Wietze Beukema</div>
+            </div>
+
+             <div class="team-member">
+              <img src="https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif" alt="" />  
+              <div class="member-name">Willem Noort</div>
+            </div>
+
+             <div class="team-member">
+              <img src="http://q-able.com/images/djoerd.jpg" alt="" />  
+              <div class="member-name">Djoerd Hiemstra</div>
+            </div>
+
+          </section>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="box">
+        <header>
+            <h1>Editor help</h1>
+        </header>
+    </section>
+    </header>
+    
+    <br />
+    
+    <section class="box">   
+        <h2>Headings</h2>
+        <ul>
+          <li><code># Title</code> = First level heading</li>
+          <li><code>## Title</code> = Second level heading</li>
+          <li><code>### Title</code> = Third level heading</li>
+        </ul>
+        <p>Supported up to six levels.</p>
+
+        <h2>Emphasis and Importance</h2>
+        <ul>
+          <li>Emphasis: <code>*example*</code> or <code>_example_</code></li>
+          <li>Importance: <code>**example**</code> or <code>__example__</code></li>
+        </ul>
+        
+        <h2>Lists</h2>
+        <p>For numbered lists, type <code>1.</code> followed by a space. Any number (followed by a full stop and space) can be used - all list items will be automatically ordered from 1 on submission.</p>
+        <pre><code>1. Ordered list item
+2. Ordered list item
+3. Ordered list item</code></pre>
+
+        <p>For bulled lists, type <code>*</code>, <code>-</code> or <code>+</code> followed by a space.</p>
+        <pre><code>* Bulleted list item
+* Bulleted list item
+* Bulleted list item</code></pre>
+
+        <h2>Blockquotes</h2>
+        <p>Type <code>&gt;</code> followed by a space (just like email):</p>
+        <pre><code>&gt; A quoted paragraph
+&gt;&gt; A quoted paragraph inside a quotation</code></pre>
+        
+        <h2>Links</h2>
+        <p>Create a link by surrounding the link text in square brackets, followed immediately by the URL in parentheses:</p>
+        <pre><code>[text to link](http://example.com/)</code></pre>
+        
+        <h2></a>Images</h2>
+        <p>Create an image by using the following syntax:</p>
+        <pre><code>![alt text for image](http://example.com/image.jpg)</code> </pre>
+        <p>Currently only web-accessible image URLs are supported.</p>
+
+        <h2>Code</h2>
+        <p>You can mark up code in-line using backticks (<code>`code`</code>), or add a code block by adding at least four spaces to the start of a new line:</p>
+        <pre>This is rendered as normal text.
+        
+    <code>This is a code block</code> 
+    
+This is rendered as normal text again.</pre>
+        
+        <p>It’s also possible to start a code block with a tab, as long as the text doesn’t start with list, header or blockquote syntax characters (<code>1.</code>, <code>*</code>, <code>-</code>, <code>+</code>, <code>#</code>, <code>&gt;</code>).</p>
+        <p>Note that inline formatting characters (like <code>_underscores_</code>) are ignored in code.</p>
+
+        <h2>LaTeX</h2>
+        <p>You can use LaTeX formulas inline by wrapping them between <code>$</code>'s. Multi-line LaTeX statements can be shown by wrapping them between <code>$$</code>'s.</p> 
+       <p>For a complete overview of all possibilities with LaTeX, you can visit the <a href="http://latex-project.org/guides/">LaTeX documentation page</a>.</p>
+    </section>
+{% endblock %}        

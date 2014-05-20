@@ -1,0 +1,31 @@
+body > main > section.team {
+  display: table-cell;
+  text-align: center;
+  padding: 15px 15px 0 0;
+}
+
+body > main > section.box > div.team-member {
+  width: 200px; 
+  height: 200px; 
+  position: relative; 
+  margin-left: 15px;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+body > main > section.box > div.team-member > img {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+body > main > section.box > div.team-member > div.member-name {
+  position: absolute; 
+  bottom: 5px; 
+  right: 5px; 
+  left: 5px; 
+  padding: 5px; 
+  text-align: center; 
+  font-weight: bold; 
+  background-color: #FFF;
+  display: table-cell;
+}
