@@ -53,5 +53,3 @@ init_star_input = (field) ->
 
 # Initialise all rating inputs
 $.map($(".rating-input"), (e) -> init_star_input $(e))
-
-

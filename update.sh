@@ -9,4 +9,3 @@ bower install
 
 python3 manage.py syncdb
 python3 manage.py migrate
-

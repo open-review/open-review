@@ -4,12 +4,12 @@
 <html>
     <head>
         {% compress css %}
-            <link href='{{ STATIC_URL }}open-review-static/css/fonts.css' rel='stylesheet' type='text/css'>
-            <link rel="stylesheet" href="{{ STATIC_URL }}components/normalize-css/normalize.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/general.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/spinner.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}components/normalize-css/normalize.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fonts.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/general.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/footer.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/spinner.css" />
             {% block css %}{% endblock %}
         {% endcompress %}
         <title>{% block title %}{% endblock %} - OpenReview</title>
@@ -50,7 +50,6 @@
 
         {% include 'includes/footer.html' %}
 
-
         {% block meta %}{% endblock %}
 
         {% compress js %}
@@ -61,28 +60,6 @@
 
         <script type="text/javascript">window.staticUrl = "{{ STATIC_URL }}";</script>
 
-        <!-- MathJax, our favourite rendering tex tool! We've disabled autorendering all elements,
-        in favour of rendering only elements with a class 'tex' on startup. -->
-        <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({
-                tex2jax: {
-                    inlineMath: [['$','$'],['\\(','\\)']],
-                    processEscapes: true
-                },
-                messageStyle: "none",
-                skipStartupTypeset: true
-            });
-
-            MathJax.Hub.Register.StartupHook("End", function(){
-                $(document).ready(function(){
-                    $("body").removeClass("tex2jax_ignore");
-                    $(".tex").each(function(_, e){
-                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, e]);
-                    });
-                });
-            });
-        </script>
-
-        <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        {% include 'includes/scripts/mathjax.html' %}
     </body>
 </html>

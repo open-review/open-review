@@ -66,4 +66,3 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     model = User
     serializer_class = UserSerializer
-

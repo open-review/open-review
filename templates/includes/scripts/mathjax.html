@@ -1,0 +1,23 @@
+<script type="text/javascript" src="{{ STATIC_URL }}components/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- MathJax, our favourite rendering tex tool! We've disabled autorendering all elements,
+in favour of rendering only elements with a class 'tex' on startup. -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'],['\\(','\\)']],
+            processEscapes: true
+        },
+        messageStyle: "none",
+        skipStartupTypeset: true
+    });
+
+    MathJax.Hub.Register.StartupHook("End", function(){
+        $(document).ready(function(){
+            $("body").removeClass("tex2jax_ignore");
+            $(".tex").each(function(_, e){
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, e]);
+            });
+        });
+    });
+</script>

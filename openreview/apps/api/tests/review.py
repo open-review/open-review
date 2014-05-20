@@ -182,4 +182,3 @@ class TestReviewAPI(TestCase):
         review = Review.objects.filter(paper=paper, poster=u.id, rating=2, parent=review[0])
         self.assertTrue(review.exists())
         self.assertEqual(review[0].text, "comment")
-

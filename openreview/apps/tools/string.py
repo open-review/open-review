@@ -61,4 +61,3 @@ def get_bool(var, default=None, err_empty=False):
             print(e)
 
         raise
-

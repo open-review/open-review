@@ -316,4 +316,3 @@ class TestDeleteAccountFormLive(SeleniumTestCase):
 
         self.assertFalse(Review.objects.get(id=self.review.id).is_deleted)
         self.assertFalse(User.objects.filter(id=self.user.id).exists())
-

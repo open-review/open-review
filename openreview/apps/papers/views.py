@@ -116,7 +116,7 @@ class SearchView(TemplateView):
     template_name = "papers/search_results.html"
 
     def get_context_data(self, **kwargs):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('q') or ''
         search_results = ()
 
         if query:

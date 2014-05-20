@@ -103,7 +103,7 @@ class TestReviewViewLive(SeleniumTestCase):
         owned_review_container = owned_review.parent
         reply_section = owned_review_container.find_element_by_css_selector('#reply-to-%s' % self.review1.id)
         preview_section = owned_review_container.find_element_by_css_selector('#preview-of-reply-%s' % self.review1.id)
-
+#
         # Test whether buttons are displayed, and sections are hidden
         reply_button = owned_review.find_element_by_css_selector(".options .reply")
         self.assertTrue(reply_button.is_displayed(), "Edit button should be visible on owned review")
@@ -174,4 +174,3 @@ class TestReviewViewLive(SeleniumTestCase):
         textarea.send_keys("a")
         edit_section.find_element_by_css_selector('[type="submit"]').click()
         self.wait_for_model(Review, text="a")
-

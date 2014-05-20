@@ -8,9 +8,9 @@
   pk: 2
   fields:
     name: Mathematics
-    arxiv_code: MATH    
+    arxiv_code: MATH
     parent: null
-        
+
 - model: main.category
   pk: 3
   fields:
@@ -29,649 +29,647 @@
   fields:
     name: Statistics
     parent: null
-    
+
 - model: main.category
   pk: 6
   fields:
     name: Astrophysics
     arxiv_code: astro-ph
-    parent: 1 
+    parent: 1
 
 - model: main.category
   pk: 7
   fields:
     name: Artificial Intelligence
-    arxiv_code: cs.AI    
+    arxiv_code: cs.AI
     parent: 3
-    
+
 - model: main.category
   pk: 8
   fields:
     name: Computational Complexity
-    arxiv_code: cs.CC    
+    arxiv_code: cs.CC
     parent: 3
-    
+
 - model: main.category
   pk: 9
   fields:
     name: Computational Geometry
-    arxiv_code: cs.CG    
+    arxiv_code: cs.CG
     parent: 3
-    
+
 - model: main.category
   pk: 10
   fields:
     name: Computational Engineering, Finance, and Science
-    arxiv_code: cs.CE    
+    arxiv_code: cs.CE
     parent: 3
-    
+
 - model: main.category
   pk: 11
   fields:
     name: Computation and Language (Computational Linguistics and Natural Language and Speech Processing)
-    arxiv_code: cs.CL    
+    arxiv_code: cs.CL
     parent: 3
-    
+
 - model: main.category
   pk: 12
   fields:
     name: Computers and Society
-    arxiv_code: cs.CY    
+    arxiv_code: cs.CY
     parent: 3
-    
+
 - model: main.category
   pk: 13
   fields:
     name: Cryptography and Security
-    arxiv_code: cs.CR    
+    arxiv_code: cs.CR
     parent: 3
-    
+
 - model: main.category
   pk: 14
   fields:
     name: Databases
-    arxiv_code: cs.DB    
+    arxiv_code: cs.DB
     parent: 3
-    
+
 - model: main.category
   pk: 15
   fields:
     name: Data Structures and Algorithms
-    arxiv_code: cs.DS    
+    arxiv_code: cs.DS
     parent: 3
-    
+
 - model: main.category
   pk: 16
   fields:
     name: Digital Libraries
-    arxiv_code: cs.DL    
+    arxiv_code: cs.DL
     parent: 3
-    
+
 - model: main.category
   pk: 17
   fields:
     name: Discrete Mathematics
-    arxiv_code: cs.DM    
+    arxiv_code: cs.DM
     parent: 3
-    
+
 - model: main.category
   pk: 18
   fields:
     name: Emerging Technologies
-    arxiv_code: cs.ET    
+    arxiv_code: cs.ET
     parent: 3
-    
+
 - model: main.category
   pk: 19
   fields:
     name: Formal Languages and Automata Theory
-    arxiv_code: cs.FL    
+    arxiv_code: cs.FL
     parent: 3
-    
+
 - model: main.category
   pk: 20
   fields:
     name: General Literature
-    arxiv_code: cs.GL    
+    arxiv_code: cs.GL
     parent: 3
-    
+
 - model: main.category
   pk: 21
   fields:
     name: Graphics
-    arxiv_code: cs.GR    
+    arxiv_code: cs.GR
     parent: 3
-    
+
 - model: main.category
   pk: 22
   fields:
     name: Hardware Architecture
-    arxiv_code: cs.AR    
+    arxiv_code: cs.AR
     parent: 3
-    
+
 - model: main.category
   pk: 23
   fields:
     name: Information Retrieval
-    arxiv_code: cs.IR    
+    arxiv_code: cs.IR
     parent: 3
-    
+
 - model: main.category
   pk: 24
   fields:
     name: Information Theory
-    arxiv_code: cs.IT    
+    arxiv_code: cs.IT
     parent: 3
-    
+
 - model: main.category
   pk: 25
   fields:
     name: Machine Learning
-    arxiv_code: cs.LG    
+    arxiv_code: cs.LG
     parent: 3
-    
+
 - model: main.category
   pk: 26
   fields:
     name: Logic in Computer Science
-    arxiv_code: cs.LO    
+    arxiv_code: cs.LO
     parent: 3
-    
+
 - model: main.category
   pk: 27
   fields:
     name: Mathematical Software
-    arxiv_code: cs.MS    
+    arxiv_code: cs.MS
     parent: 3
-    
+
 - model: main.category
   pk: 28
   fields:
     name: Multiagent Systems
-    arxiv_code: cs.MA    
+    arxiv_code: cs.MA
     parent: 3
-    
+
 - model: main.category
   pk: 29
   fields:
     name: Multimedia
-    arxiv_code: cs.MM    
+    arxiv_code: cs.MM
     parent: 3
-    
+
 - model: main.category
   pk: 30
   fields:
     name: Numerical Analysis
-    arxiv_code: cs.NA    
+    arxiv_code: cs.NA
     parent: 3
-    
+
 - model: main.category
   pk: 31
   fields:
     name: Operating Systems
-    arxiv_code: cs.OS    
+    arxiv_code: cs.OS
     parent: 3
-    
+
 - model: main.category
   pk: 32
   fields:
     name: Other
-    arxiv_code: cs.OH    
+    arxiv_code: cs.OH
     parent: 3
-    
+
 - model: main.category
   pk: 33
   fields:
     name: Performance
-    arxiv_code: cs.PF    
+    arxiv_code: cs.PF
     parent: 3
-    
+
 - model: main.category
   pk: 34
   fields:
     name: Programming Languages
-    arxiv_code: cs.PL    
+    arxiv_code: cs.PL
     parent: 3
-    
+
 - model: main.category
   pk: 35
   fields:
     name: Robotics
-    arxiv_code: cs.RO    
+    arxiv_code: cs.RO
     parent: 3
-    
+
 - model: main.category
   pk: 36
   fields:
     name: Social and Information Networks
-    arxiv_code: cs.SI    
+    arxiv_code: cs.SI
     parent: 3
-    
+
 - model: main.category
   pk: 37
   fields:
     name: Software Engineering
-    arxiv_code: cs.SE    
+    arxiv_code: cs.SE
     parent: 3
-    
+
 - model: main.category
   pk: 38
   fields:
     name: Sound
-    arxiv_code: cs.SD    
+    arxiv_code: cs.SD
     parent: 3
-    
+
 - model: main.category
   pk: 39
   fields:
     name: Symbolic Computation
-    arxiv_code: cs.SC    
+    arxiv_code: cs.SC
     parent: 3
-    
+
 - model: main.category
   pk: 40
   fields:
     name: Systems and Control
-    arxiv_code: cs.SY    
+    arxiv_code: cs.SY
     parent: 3
-      
+
 - model: main.category
   pk: 41
   fields:
     name: Cosmology and Nongalactic Astrophysics
     arxiv_code: astro-ph.CO
-    parent: 1   
-    
+    parent: 1
+
 - model: main.category
   pk: 42
-  fields: 
+  fields:
     name: Applications
     arxiv_code: stat.AP
     parent: 5
-    
+
 - model: main.category
   pk: 43
-  fields: 
+  fields:
     name: Computation
     arxiv_code: stat.CO
     parent: 5
-    
+
 - model: main.category
   pk: 44
-  fields: 
+  fields:
     name: Machine Learning
     arxiv_code: stat.ML
     parent: 5
-    
+
 - model: main.category
   pk: 45
-  fields: 
+  fields:
     name: Methodology
     arxiv_code: stat.ME
-    parent: 5    
-    
+    parent: 5
+
 - model: main.category
   pk: 46
-  fields: 
+  fields:
     name: Other Statisics
     arxiv_code: stat.OT
-    parent: 5        
+    parent: 5
 
 - model: main.category
   pk: 47
-  fields: 
+  fields:
     name: Statistics Theory
     arxiv_code: stat.TH
-    parent: 5  
-    
+    parent: 5
+
 - model: main.category
   pk: 48
   fields:
-    name: Algebraic Geometry 
-    arxiv_code: math.AG    
+    name: Algebraic Geometry
+    arxiv_code: math.AG
     parent: 2
-    
+
 - model: main.category
   pk: 49
   fields:
-    name: Algebraic Topology 
-    arxiv_code: math.AT    
+    name: Algebraic Topology
+    arxiv_code: math.AT
     parent: 2
-    
+
 - model: main.category
   pk: 50
   fields:
-    name: Analysis of PDEs 
-    arxiv_code: math.AP    
+    name: Analysis of PDEs
+    arxiv_code: math.AP
     parent: 2
-    
+
 - model: main.category
   pk: 51
   fields:
-    name: Category Theory 
-    arxiv_code: math.CT    
+    name: Category Theory
+    arxiv_code: math.CT
     parent: 2
-    
+
 - model: main.category
   pk: 52
   fields:
-    name: Classical Analysis and ODEs 
-    arxiv_code: math.CA    
+    name: Classical Analysis and ODEs
+    arxiv_code: math.CA
     parent: 2
-    
+
 - model: main.category
   pk: 53
   fields:
-    name: Combinatorics 
-    arxiv_code: math.CO    
+    name: Combinatorics
+    arxiv_code: math.CO
     parent: 2
-    
+
 - model: main.category
   pk: 54
   fields:
-    name: Commutative Algebra 
-    arxiv_code: math.AC    
+    name: Commutative Algebra
+    arxiv_code: math.AC
     parent: 2
-    
+
 - model: main.category
   pk: 55
   fields:
-    name: Complex Variables 
-    arxiv_code: math.CV    
+    name: Complex Variables
+    arxiv_code: math.CV
     parent: 2
-    
+
 - model: main.category
   pk: 56
   fields:
-    name: Differential Geometry 
-    arxiv_code: math.DG    
+    name: Differential Geometry
+    arxiv_code: math.DG
     parent: 2
-    
+
 - model: main.category
   pk: 57
   fields:
-    name: Dynamical Systems 
-    arxiv_code: math.DS    
+    name: Dynamical Systems
+    arxiv_code: math.DS
     parent: 2
-    
+
 - model: main.category
   pk: 58
   fields:
-    name: Functional Analysis 
-    arxiv_code: math.FA    
+    name: Functional Analysis
+    arxiv_code: math.FA
     parent: 2
-    
+
 - model: main.category
   pk: 59
   fields:
-    name: General Mathematics 
-    arxiv_code: math.GM    
+    name: General Mathematics
+    arxiv_code: math.GM
     parent: 2
-    
+
 - model: main.category
   pk: 60
   fields:
-    name: General Topology 
-    arxiv_code: math.GN    
+    name: General Topology
+    arxiv_code: math.GN
     parent: 2
-    
+
 - model: main.category
   pk: 61
   fields:
-    name: Geometric Topology 
-    arxiv_code: math.GT    
+    name: Geometric Topology
+    arxiv_code: math.GT
     parent: 2
-    
+
 - model: main.category
   pk: 62
   fields:
-    name: Group Theory 
-    arxiv_code: math.GR    
+    name: Group Theory
+    arxiv_code: math.GR
     parent: 2
-    
+
 - model: main.category
   pk: 63
   fields:
-    name: History and Overview 
-    arxiv_code: math.HO    
+    name: History and Overview
+    arxiv_code: math.HO
     parent: 2
-    
+
 - model: main.category
   pk: 64
   fields:
-    name: Information Theory 
-    arxiv_code: math.IT    
+    name: Information Theory
+    arxiv_code: math.IT
     parent: 2
-    
+
 - model: main.category
   pk: 65
   fields:
-    name: K-Theory and Homology 
-    arxiv_code: math.KT    
+    name: K-Theory and Homology
+    arxiv_code: math.KT
     parent: 2
-    
+
 - model: main.category
   pk: 66
   fields:
-    name: Logic 
-    arxiv_code: math.LO    
+    name: Logic
+    arxiv_code: math.LO
     parent: 2
-    
+
 - model: main.category
   pk: 67
   fields:
-    name: Mathematical Physics 
-    arxiv_code: math.MP    
+    name: Mathematical Physics
+    arxiv_code: math.MP
     parent: 2
-    
+
 - model: main.category
   pk: 68
   fields:
-    name: Metric Geometry 
-    arxiv_code: math.MG    
+    name: Metric Geometry
+    arxiv_code: math.MG
     parent: 2
-    
+
 - model: main.category
   pk: 69
   fields:
-    name: Number Theory 
-    arxiv_code: math.NT    
+    name: Number Theory
+    arxiv_code: math.NT
     parent: 2
-    
+
 - model: main.category
   pk: 70
   fields:
-    name: Numerical Analysis 
-    arxiv_code: math.NA    
+    name: Numerical Analysis
+    arxiv_code: math.NA
     parent: 2
-    
+
 - model: main.category
   pk: 71
   fields:
-    name: Operator Algebras 
-    arxiv_code: math.OA    
+    name: Operator Algebras
+    arxiv_code: math.OA
     parent: 2
-    
+
 - model: main.category
   pk: 72
   fields:
-    name: Optimization and Control 
-    arxiv_code: math.OC    
+    name: Optimization and Control
+    arxiv_code: math.OC
     parent: 2
-    
+
 - model: main.category
   pk: 73
   fields:
-    name: Probability 
-    arxiv_code: math.PR    
+    name: Probability
+    arxiv_code: math.PR
     parent: 2
-    
+
 - model: main.category
   pk: 74
   fields:
-    name: Quantum Algebra 
-    arxiv_code: math.QA    
+    name: Quantum Algebra
+    arxiv_code: math.QA
     parent: 2
-    
+
 - model: main.category
   pk: 75
   fields:
-    name: Representation Theory 
-    arxiv_code: math.RT    
+    name: Representation Theory
+    arxiv_code: math.RT
     parent: 2
-    
+
 - model: main.category
   pk: 76
   fields:
-    name: Rings and Algebras 
-    arxiv_code: math.RA    
+    name: Rings and Algebras
+    arxiv_code: math.RA
     parent: 2
-    
+
 - model: main.category
   pk: 77
   fields:
-    name: Spectral Theory 
-    arxiv_code: math.SP    
+    name: Spectral Theory
+    arxiv_code: math.SP
     parent: 2
-    
+
 - model: main.category
   pk: 78
   fields:
-    name: Statistics Theory 
-    arxiv_code: math.ST    
+    name: Statistics Theory
+    arxiv_code: math.ST
     parent: 2
-    
+
 - model: main.category
   pk: 79
   fields:
-    name: Symplectic Geometry 
-    arxiv_code: math.SG    
-    parent: 2  
-            
+    name: Symplectic Geometry
+    arxiv_code: math.SG
+    parent: 2
+
 - model: main.category
   pk: 80
   fields:
-    name: Biomolecules 
-    arxiv_code: q-bio.BM    
+    name: Biomolecules
+    arxiv_code: q-bio.BM
     parent: 4
-    
+
 - model: main.category
   pk: 81
   fields:
-    name: Cell Behavior 
-    arxiv_code: q-bio.CB    
+    name: Cell Behavior
+    arxiv_code: q-bio.CB
     parent: 4
-    
+
 - model: main.category
   pk: 82
   fields:
-    name: Genomics 
-    arxiv_code: q-bio.GN    
+    name: Genomics
+    arxiv_code: q-bio.GN
     parent: 4
-    
+
 - model: main.category
   pk: 83
   fields:
-    name: Molecular Networks 
-    arxiv_code: q-bio.MN    
+    name: Molecular Networks
+    arxiv_code: q-bio.MN
     parent: 4
-    
+
 - model: main.category
   pk: 84
   fields:
-    name: Neurons and Cognition 
-    arxiv_code: q-bio.NC    
+    name: Neurons and Cognition
+    arxiv_code: q-bio.NC
     parent: 4
-    
+
 - model: main.category
   pk: 85
   fields:
-    name: Other Quantitative Biology 
-    arxiv_code: q-bio.OT    
+    name: Other Quantitative Biology
+    arxiv_code: q-bio.OT
     parent: 4
-    
+
 - model: main.category
   pk: 86
   fields:
-    name: Populations and Evolution 
-    arxiv_code: q-bio.PE    
+    name: Populations and Evolution
+    arxiv_code: q-bio.PE
     parent: 4
-    
+
 - model: main.category
   pk: 87
   fields:
-    name: Quantitative Methods 
-    arxiv_code: q-bio.QM    
+    name: Quantitative Methods
+    arxiv_code: q-bio.QM
     parent: 4
-    
+
 - model: main.category
   pk: 88
   fields:
-    name: Subcellular Processes 
-    arxiv_code: q-bio.SC    
+    name: Subcellular Processes
+    arxiv_code: q-bio.SC
     parent: 4
-    
+
 - model: main.category
   pk: 89
   fields:
-    name: Tissues and Organs 
-    arxiv_code: q-bio.TO    
+    name: Tissues and Organs
+    arxiv_code: q-bio.TO
     parent: 4
- 
+
 - model: main.category
   pk: 90
   fields:
     name:     Quantum Physics
-    arxiv_code: quant-ph    
-    parent: 1   
-    
+    arxiv_code: quant-ph
+    parent: 1
+
 - model: main.category
   pk: 91
   fields:
     name:     Condensed Matter
-    arxiv_code: cond-mat    
+    arxiv_code: cond-mat
     parent: 1
-    
+
 - model: main.category
   pk: 92
   fields:
     name:     General Relativity and Quantum Cosmology
-    arxiv_code: gr-qc    
+    arxiv_code: gr-qc
     parent: 1
-    
+
 - model: main.category
   pk: 93
   fields:
     name:     Mathematical Physics
-    arxiv_code: math-ph    
+    arxiv_code: math-ph
     parent: 1
-    
+
 - model: main.category
   pk: 94
   fields:
     name:     Nonlinear Sciences
-    arxiv_code: nlin    
+    arxiv_code: nlin
     parent: 1
-    
+
 - model: main.category
   pk: 95
   fields:
     name:     Nuclear Experiment
-    arxiv_code: nucl-ex    
+    arxiv_code: nucl-ex
     parent: 1
-    
+
 - model: main.category
   pk: 96
   fields:
     name:     Nuclear Theory
-    arxiv_code: nucl-th    
+    arxiv_code: nucl-th
     parent: 1
-    
+
 - model: main.category
   pk: 97
   fields:
     name:     Physics
-    arxiv_code: physics    
+    arxiv_code: physics
     parent: 1
-   
-    

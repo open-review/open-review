@@ -12,4 +12,3 @@ urlpatterns = patterns('',
     url(r'^api/v1/', include('openreview.apps.api.urls')),
     url(r'^api/$', RedirectView.as_view(url='./v1', permanent=False)),
 )
-

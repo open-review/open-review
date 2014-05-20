@@ -2,17 +2,16 @@
 {% load markdown %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}papers/paper.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}papers/reviews.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/css/paper.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}papers/css/reviews.css" />
 {% endblock %}
 
 {% block js %}
-    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/voting.coffee"></script>
-    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/writing.coffee"></script>
-    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/deleting.coffee"></script>
-    <script type="text/coffeescript" src="{{ STATIC_URL }}js/starratings.coffee"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}raty/lib/jquery.raty.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dotdotdot.min.js"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/js/voting.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/js/writing.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}papers/js/deleting.coffee"></script>
+    <script type="text/coffeescript" src="{{ STATIC_URL }}js/star-ratings.coffee"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}components/jquery.dotdotdot/src/js/jquery.dotdotdot.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
         $(".abstract").dotdotdot({ after: "a.readmore" });
@@ -67,7 +66,7 @@
           <ol>
             {% for related_paper in related_a %}
                  <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
-            {% endfor %}          
+            {% endfor %}
           </ol>
       </div>
       {% endif %}
@@ -78,7 +77,7 @@
           <ol>
             {% for related_paper in related_s %}
                  <li><a href="{% url 'paper' related_paper.id %}">{{ related_paper.title }}</a></li>
-            {% endfor %}          
+            {% endfor %}
           </ol>
       </div>
       {% endif %}

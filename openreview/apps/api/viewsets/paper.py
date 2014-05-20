@@ -63,4 +63,3 @@ class PaperViewSet(ModelSerializerMixin, viewsets.ModelViewSet):
     """
     model = Paper
     model_serializer_class = PaperSerializer
-

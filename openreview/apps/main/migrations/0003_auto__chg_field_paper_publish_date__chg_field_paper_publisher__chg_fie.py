@@ -22,21 +22,21 @@ class Migration(SchemaMigration):
 
         # User chose to not deal with backwards NULL issues for 'Paper.publish_date'
         raise RuntimeError("Cannot reverse this migration. 'Paper.publish_date' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration
         # Changing field 'Paper.publish_date'
         db.alter_column('main_paper', 'publish_date', self.gf('django.db.models.fields.DateField')())
 
         # User chose to not deal with backwards NULL issues for 'Paper.publisher'
         raise RuntimeError("Cannot reverse this migration. 'Paper.publisher' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration
         # Changing field 'Paper.publisher'
         db.alter_column('main_paper', 'publisher', self.gf('django.db.models.fields.TextField')())
 
         # User chose to not deal with backwards NULL issues for 'Paper.doc_id'
         raise RuntimeError("Cannot reverse this migration. 'Paper.doc_id' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration
         # Changing field 'Paper.doc_id'
         db.alter_column('main_paper', 'doc_id', self.gf('django.db.models.fields.TextField')())

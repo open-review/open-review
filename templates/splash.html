@@ -4,16 +4,16 @@
 <html>
     <head>
         {% compress css %}
-            <link href='{{ STATIC_URL }}open-review-static/css/fonts.css' rel='stylesheet' type='text/css'>
-            <link rel="stylesheet" href="{{ STATIC_URL }}components/normalize-css/normalize.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/general.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/splash.css" />
-            <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}components/normalize-css/normalize.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fonts.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/general.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/splash.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/footer.css" />
             {% block css %}{% endblock %}
         {% endcompress %}
         <title>{% block title %}{% endblock %} - OpenReview</title>
     </head>
-    <body csrf="{{ csrf_token }}">
+    <body data-csrf="{{ csrf_token }}">
         <header>
             {% block header %}{% endblock %}
         </header>
@@ -24,8 +24,6 @@
 
         {% include 'includes/footer.html' %}
 
-        <script type="text/javascript" src="{{ STATIC_URL }}mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
         {% block meta %}{% endblock %}
 
         {% compress js %}
@@ -33,13 +31,6 @@
             {% block js %}{% endblock %}
         {% endcompress %}
 
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['$','$'],['\\(','\\)']],
-                processEscapes: true
-            }
-          });
-        </script>
+        {% include 'includes/scripts/mathjax.html' %}
     </body>
 </html>

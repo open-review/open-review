@@ -60,4 +60,3 @@ class ProcedureViewSet(viewsets.ViewSet):
             get_procedure_name(viewcls): reverse(get_url_name(viewcls), request=request)
             for viewcls in PROCEDURES
         })
-

@@ -52,5 +52,3 @@ class ReviewViewSet(viewsets.ModelViewSet):
         page = super().paginate_queryset(queryset, page_size)
         set_n_votes_cache(page.object_list)
         return page
-
-

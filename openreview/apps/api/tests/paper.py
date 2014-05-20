@@ -88,4 +88,3 @@ class TestPaperAPI(TestCase):
         self.assertEqual(set(paper[0].authors.all()), {a1})
         self.assertEqual(set(paper[0].keywords.all()), {k1})
         self.assertEqual(set(paper[0].categories.all()), {c1})
-

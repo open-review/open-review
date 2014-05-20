@@ -411,4 +411,3 @@ class TestReview(BaseTestCase):
     def test_can_change(self):
         # Same as can_delete for now.
         pass
-
