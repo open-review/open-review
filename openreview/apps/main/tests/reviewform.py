@@ -113,7 +113,7 @@ class TestPaperForm(BaseTestCase):
 
 class TestAddPaperView(TestCase):
     def setUp(self):
-        call_command("loaddata", "categories", verbosity=0)
+        call_command("loaddata", "initial_data", verbosity=0)
 
     def test_form_filled_in_automatically(self):
         cache.clear()
