@@ -32,7 +32,7 @@ relativistic electrons.\n"""
     expected_categories = Category.objects.filter(arxiv_code='astro-ph.CO').values_list("id", flat=True)
 
     def setUp(self):
-        management.call_command("loaddata", "categories", verbosity=0)
+        management.call_command("loaddata", "initial_data", verbosity=0)
         self.arxivscraper = scrapers.Controller(scrapers.ArXivScraper, caching=False)
         self.oldurlopen = scrapers.urlopen
         scrapers.urlopen = lambda x: open(os.path.dirname(os.path.realpath(__file__)) +
@@ -59,3 +59,4 @@ relativistic electrons.\n"""
         self.assertEqual(result.get('doc_id'), self.expected_doc_id)
         self.assertEqual(result.get('urls'), self.expected_urls)
         self.assertEqual(result.get('categories'), list(self.expected_categories))
+

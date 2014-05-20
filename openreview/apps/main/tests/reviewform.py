@@ -20,7 +20,7 @@ __all__ = ["TestAddPaperView", "TestPaperForm"]
 
 class TestPaperForm(BaseTestCase):
     def setUp(self):
-        call_command("loaddata", "categories", verbosity=0)
+        call_command("loaddata", "initial_data", verbosity=0)
 
     def test_paper_form(self):
         test_data = {
@@ -83,7 +83,7 @@ class TestPaperForm(BaseTestCase):
             # [5] INSERT b
             # [6] SELECT keywords
             # [7] INSERT keywords
-            # [8] SELECT categories
+            # [8] SELECT categories         
             paper = form.save(commit=True)
         self.assertIsNotNone(jean.id)
         self.assertIsNotNone(piere.id)
@@ -143,3 +143,5 @@ core. The southeastern edge is coincident with the location of the radio relic
 as expected for shock (re)acceleration or adiabatic compression of fossil
 relativistic electrons.\n""")
         self.assertEqual([c.arxiv_code for c in p.categories.all()], ["astro-ph.CO"])
+
+
