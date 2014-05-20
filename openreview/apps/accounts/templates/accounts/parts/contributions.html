@@ -1,0 +1,22 @@
+<ol>
+<!-- TODO: Limit number of reviews (4?), sort by date -->
+{% for review in reviews %}
+    <li>
+        <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">
+            <span class="number-of-votes">
+                {{ review.n_votes }}
+            </span>
+            {{ review.paper.title }}
+        </a>
+        <blockquote>
+            {{ review.text|slice:":200" }}…
+        </blockquote>
+    </li>
+{% endfor %}
+</ol>
+
+<hr />
+
+<p>
+    <a href="#">View all of my contributions →</a>
+</p>

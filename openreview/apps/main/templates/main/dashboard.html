@@ -16,83 +16,22 @@
 
     <section class="recently-submitted-papers papers box">
         <h2><a href="/papers/new">Recently submitted papers</a></h2>
-        {% if new_papers %}
-            <ol>
-            {% for paper in new_papers %}
-                <li>
-                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
-                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
-                        <span>{{ paper.num_reviews }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-            </ol>
-        {% else %}
-          <p><em>No papers are available yet.</em></p>
-        {% endif %}
+        {% include "papers/includes/papers.html" with papers=new_papers name="new" %}
     </section>
 
     <section class="controversial-papers papers box">
         <h2><a href="/papers/new">Controversial papers</a></h2>
-        {% if controversial_papers %}
-            <ol>
-            {% for paper in controversial_papers %}
-                <li>
-                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
-                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
-                        <span>{{ paper.num_reviews }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-            </ol>
-        {% else %}
-          <p><em>No coontroversial papers yet.</em></p>
-        {% endif %}
+        {% include "papers/includes/papers.html" with papers=controversial_papers name="controversial" %}
     </section>
 
     <section class="trending-papers papers box">
         <h2><a href="/papers/trending">Trending papers</a></h2>
-        {% if trending_papers %}
-            <ol>
-            {% for paper in trending_papers %}
-                <li>
-                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
-                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
-                        <span>{{ paper.num_reviews }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-            </ol>
-        {% else %}
-          <p><em>No trending papers at the moment.</em></p>
-        {% endif %}
+        {% include "papers/includes/papers.html" with papers=trending_papers name="trending" %}
     </section>
 
     <section class="my-contributions contributions box">
         <h3>My contributions</h3>
-
-        <ol>
-        <!-- TODO: Limit number of reviews (4?), sort by date -->
-        {% for review in reviews %}
-            <li>
-                <a href="{% url 'review' review.paper.id review.id %}" title="{{ review.timestamp }}, {{ review.poster }}">
-                    <span class="number-of-votes">
-                        {{ review.n_votes }}
-                    </span>
-                    {{ review.paper.title }}
-                </a>
-                <blockquote>
-                    {{ review.text|slice:":200" }}…
-                </blockquote>
-            </li>
-        {% endfor %}
-        </ol>
-
-        <hr />
-
-        <p>
-            <a href="#">View all of my contributions →</a>
-        </p>
+        {% include "accounts/parts/contributions.html" with reviews=user.reviews.all %}
     </section>
 
 {% endblock %}

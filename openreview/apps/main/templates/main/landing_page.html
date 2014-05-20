@@ -28,37 +28,11 @@
 
     <section class="trending-papers papers box">
         <h2><a href="/papers/trending">Trending papers</a></h2>
-        {% if trending_papers %}
-            <ol>
-            {% for paper in trending_papers %}
-                <li>
-                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
-                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
-                        <span>{{ paper.num_reviews }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-            </ol>
-        {% else %}
-          <p><em>No trending papers at the moment.</em></p>
-        {% endif %}
+        {% include "papers/includes/papers.html" with papers=trending_papers name="trending" %}
     </section>
 
     <section class="recently-submitted-papers papers box">
         <h2><a href="/papers/new">Recently submitted papers</a></h2>
-        {% if new_papers %}
-            <ol>
-            {% for paper in new_papers %}
-                <li>
-                    <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
-                    <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
-                        <span>{{ paper.num_reviews }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-            </ol>
-        {% else %}
-          <p><em>No papers are available yet.</em></p>
-        {% endif %}
+        {% include "papers/includes/papers.html" with papers=new_papers name="new" %}
     </section>
 {% endblock %}

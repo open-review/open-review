@@ -1,0 +1,14 @@
+{% if papers %}
+    <ol>
+        {% for paper in papers %}
+            <li>
+                <a href="{% url 'paper' paper.id %}" class="title">{{ paper.title }}</a>
+                <a href="{% url 'paper' paper.id %}" class="number-of-reviews">
+                    <span>{{ paper.num_reviews }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <p><em>No {{ name }} papers yet.</em></p>
+{% endif %}
