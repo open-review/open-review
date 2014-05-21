@@ -71,7 +71,7 @@ body > main .box.papers ol li a.title {
 
 body > main .box.papers ol li:hover > a.title {
     text-decoration: underline;
-    width: 390px;
+    width: 380px;
     margin-right: -6px;
 }
 
