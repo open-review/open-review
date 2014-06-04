@@ -93,7 +93,7 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertTrue(self.wd.current_url.endswith(reverse("accounts-login")))
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("password")
-        self.wd.find_css('[name="login"]').click()
+        self.wd.find_css("#login-button").click()
         self.assertFalse(self.wd.current_url.endswith(reverse("accounts-login")))
         sessionid1 = self.wd.get_cookie("sessionid")["value"]
 
@@ -107,7 +107,7 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.assertTrue(self.wd.current_url.endswith(reverse("accounts-login")))
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("wrong")
-        self.wd.find_css('[name="login"]').click()
+        self.wd.find_css("#login-button").click()
         self.assertTrue(self.wd.current_url.endswith(reverse("accounts-login")))
         self.assertEqual(sessionid2, self.wd.get_cookie("sessionid")["value"])
 
@@ -119,7 +119,7 @@ class TestLoginViewSelenium(SeleniumTestCase):
         self.wd.find_css("#id_register_username").send_keys("abc")
         self.wd.find_css("#id_register_password1").send_keys("abcd")
         self.wd.find_css("#id_register_password2").send_keys("abcd")
-        self.wd.find_css('[name=new]').click()
+        self.wd.find_css('#register-button').click()
         self.wd.wait_for_css("body")
 
         self.assertEqual(User.objects.all().count(), 1)
@@ -189,7 +189,7 @@ class TestSettingsFormLive(SeleniumTestCase):
         self.wd.wait_for_css("body")
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("password")
-        self.wd.find_css('[name="login"]').click()
+        self.wd.find_css('#login-button').click()
         self.wd.wait_for_css("body")
 
         # Test changing password
@@ -207,7 +207,7 @@ class TestSettingsFormLive(SeleniumTestCase):
         self.wd.wait_for_css("body")
         self.wd.find_css("#id_login_username").send_keys("user")
         self.wd.find_css("#id_login_password").send_keys("test1234")
-        self.wd.find_css('[name="login"]').click()
+        self.wd.find_css('#login-button').click()
         self.wd.wait_for_css("body")
         self.assertTrue(self.wd.current_url.endswith(reverse("accounts-settings")))
 

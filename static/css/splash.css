@@ -7,6 +7,7 @@ body > header h1.title,
 body > header p.tagline {
     text-align: center;
     margin: 0;
+    padding: 10px 0;
 }
 
 body > header h1.title {
@@ -14,6 +15,7 @@ body > header h1.title {
     color: #000;
     font-weight: 700;
     padding: 60px 0 0;
+    line-height: 1.4em;
 }
 
 body > header p.tagline {
@@ -27,7 +29,8 @@ body > main {
 }
 
 body > header section.search {
-    width: 589px;
+    max-width: 589px;
+    width: 100%;
     margin: 0 auto;
     overflow: hidden;
     margin-bottom: 60px;
@@ -67,14 +70,10 @@ body > header section.search .query p strong {
 
 body > main .box {
     float: left;
-    width: 490px;
+    width: 480px;
     background: #fff;
     padding: 0;
-    margin-bottom: 40px;
-}
-
-body > main .box + .box {
-    margin-left: 20px;
+    margin: 0 10px 40px 10px;
 }
 
 body > main .box h2 {
@@ -126,12 +125,12 @@ body > main .box.papers ol li a.title {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    width: 430px;
+    width: calc(100% - 40px);
 }
 
 body > main .box.papers ol li:hover > a.title {
     text-decoration: underline;
-    width: 380px;
+    width: calc(100% - 80px);
     margin-right: -6px;
 }
 
@@ -183,23 +182,35 @@ body > main .box.top-reviews ol li a > span.author {
 }*/
 
 body > main .submit-paper-for-review {
-  width: 593px;
+  max-width: 593px;
+  width: 100%;
   margin: 0 auto 60px auto;
-  height: 42px;
 }
 
-body > main .submit-paper-for-review p,
-body > main .submit-paper-for-review a.button {
-    float: left;
-}
 
 body > main .submit-paper-for-review p {
     font-size: 17px;
     line-height: 42px;
     margin: 0;
     font-weight: 600;
+    text-align: center;
 }
 
 body > main .submit-paper-for-review a.button {
-    margin-left: 20px;
+    width: 250px;
+    margin: 10px auto 0 auto;
+    display: block;
 }
+
+
+@media all and (max-width: 1000px) {
+    body > main .box {
+        width: 100%;
+        margin: 0 0 40px 0;
+    }
+    
+    body > header section.search form {
+        padding: 0 10px;
+    }
+}
+

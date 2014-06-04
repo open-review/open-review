@@ -2,19 +2,32 @@ body > main {
     overflow: hidden;
 }
 
-body > main > section.box {
+body > main section.box {
     padding: 0;
     float: left;
-    width: 490px;
+    width: 480px;
     margin-top: 20px;
 }
 
-body > main > section.box + section.box {
-    margin-left: 20px;
+body > main div.col {
+    float: left;
+    margin: 0 10px;
+    max-width: 480px;
+    width: 100%;
+    
 }
 
-
-body > main > section.login form > br,
-body > main > section.register form > br {
+body > main section.login form > br,
+body > main section.register form > br {
     display: none;
+}
+
+@media all and (max-width: 1000px){
+    body > main div.col {
+        max-width: inherit;
+    }
+
+    body > main section.box {
+        width: 100%;
+    }
 }

@@ -1,34 +1,38 @@
-body > main > section {
+body > main > div.left {
+    float: left;
+}
+
+body > main section {
     margin-bottom: 20px;
 }
 
-body > main > section.paper.box {
+body > main section.paper.box {
     padding: 0;
     overflow: hidden;
     background-color: #FCFCFC;
 }
 
-body > main > section.paper div.abstract,
-body > main > section.paper div.meta {
+body > main section.paper div.abstract,
+body > main section.paper div.meta {
     float: left;
     margin-top: 17px;
     margin-bottom: 17px;
 }
 
-body > main > section.paper div.abstract {
+body > main section.paper div.abstract {
     width: 618px;
     max-height: 140px;
     float: left;
     margin-left: 20px;
-    margin-right: 20px;
 }
 
-body > main > section.paper div.meta {
-    margin-right: 20px;
-    width: 310px;
+body > main section.paper div.meta {
+    margin: 0 20px;
+    padding: 17px 0;
+    width: 320px;
 }
 
-main > section.paper div.abstract p {
+main section.paper div.abstract p {
     margin: 0;
     padding: 0;
     font-size: 13px;
@@ -36,23 +40,23 @@ main > section.paper div.abstract p {
     text-shadow: 0 1px 0 #fff;
 }
 
-main > section.paper div.abstract p + p {
+main section.paper div.abstract p + p {
     margin-top: 10px;
 }
 
-body > main > section.paper div.meta ul {
+body > main section.paper div.meta ul {
     display: block;
     margin: 0;
     padding: 0;
 }
 
-body > main > section.paper div.meta ul li {
+body > main section.paper div.meta ul li {
     display: block;
     padding: 0;
     text-align: justify;
 }
 
-body > main > section.paper div.meta ul li + li {
+body > main section.paper div.meta ul li + li {
     margin-top: 10px;
 }
 
@@ -112,4 +116,46 @@ main > .reviews > .review-container{
 
 #new-review-preview > .preview{
     margin-top:5px;
+}
+
+@media all and (max-width:1000px) {
+    body > main > div.left {
+        width: 100%;
+    }
+
+    body > main {
+        max-width: 1000px;
+        width: 100%;
+    }
+
+    body > main  section.paper.box {
+        max-width: 1000px;
+        width: 100%;
+    }
+    
+    body > main section.paper div.abstract {
+        width: 100%;
+        max-height: initial;        
+        padding: 0 20px;
+        margin: 15px 0;
+    }
+    
+    body > main section.paper div.meta {
+        clear: left;
+        width: 100%;
+    }
+    
+    body > main section.reviews.box {
+        width: 100%;
+    }
+    
+    body > main section.compose-review.box {
+        width: 100%;
+    }
+    
+    body > main > aside {
+        width: 100%;
+        float: left;
+        margin-bottom: 20px;
+    }
 }

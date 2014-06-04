@@ -15,7 +15,7 @@ body > main > section.listing ol li span.number-of-reviews {
 
 body > main > section.listing ol li a.title {
     padding: 6px 0;
-    max-width: 90%;
+    width: calc(100% - 80px);
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -52,3 +52,4 @@ body > main > section.listing ol li:hover a.number-of-reviews {
     border: none;
     text-decoration: none;
 }
+
