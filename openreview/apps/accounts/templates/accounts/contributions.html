@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}accounts/contributions.css" />
+{% endblock %}
+
+
+{% block content %}
+    <section class="query-bar box">
+        <header>
+            <h1>Contributions</h1>
+        </header>
+    </section>
+
+    {% if reviews %}
+        <section class="my-contributions box">
+            {% include "accounts/parts/contributions.html" with reviews=reviews do_not_show_all=True %}
+        </section>
+    {% else %}
+        <section class="banner no-results">
+            <h3>No contributions yet.</h3>
+        </section>
+    {% endif %}
+{% endblock %}
