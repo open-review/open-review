@@ -197,8 +197,26 @@ hr{
     clear:both;
 }
 
+ul.messages {
+    position: fixed;
+    width: 50%;
+    background-color: #1A3333;
+    color: #FFF;
+    align-content: center;
+    padding: 15px;
+    margin: 5px 25%;
+    border-radius: 5px;
+    list-style: none;
+}
+
 @media all and (max-width: 1000px){
     body > main .box {
         width: 100%;
     }
+
+    ul.messages {
+        width: 100%;
+        margin: 5px auto;
+    }
 }
+

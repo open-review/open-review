@@ -15,6 +15,15 @@
         <title>{% block title %}{% endblock %} - OpenReview</title>
     </head>
     <body data-csrf="{{ csrf_token }}">
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         <header>
             {% block header %}{% endblock %}
         </header>
@@ -29,6 +38,7 @@
 
         {% compress js %}
             <script type="text/javascript" src="{{ STATIC_URL }}components/jquery/jquery.js"></script>
+            <script type="text/coffeescript" src="{{ STATIC_URL }}js/messages.coffee"></script>
             {% block js %}{% endblock %}
         {% endcompress %}
 

@@ -176,3 +176,5 @@ REST_FRAMEWORK = {
     'PAGINATE_BY_PARAM': 'page_size',
     'MAX_PAGINATE_BY': 100
 }
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
