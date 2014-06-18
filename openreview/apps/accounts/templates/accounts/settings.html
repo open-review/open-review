@@ -26,4 +26,11 @@
         <h3>Recent contributions</h3>
         {% include "accounts/parts/contributions.html" with reviews=reviews %}
     </section>
+
+    <section class="box">
+        <h3>Account options</h3>
+        <ol>
+            <il><a href="{% url 'accounts-delete' %}">Delete account</a></il>
+        </ol>
+    </section>
 {% endblock %}
