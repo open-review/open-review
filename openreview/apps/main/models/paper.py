@@ -58,7 +58,7 @@ class Paper(models.Model):
 
     @classmethod
     def latest(cls):
-        return Paper.objects.order_by('-publish_date')
+        return Paper.objects.order_by('-id')
 
     @classmethod
     def controversial(cls, top=5, days=7):
