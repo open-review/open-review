@@ -1,0 +1,14 @@
+{
+  "name": "OpenReview",
+  "description": "Discover & discuss research papers. An open platform for reviewing and discussing scientific papers.",
+  "launch_path": "/",
+  "icons": {
+    "128": "/static/app-icons/icon-128.png"
+  },
+  "developer": {
+    "name": "OpenReview Development Team",
+    "url": "http://www.utwente.nl/"
+  },
+  "default_locale": "en"
+}
+
