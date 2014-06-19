@@ -15,6 +15,9 @@
     <script type="text/javascript">
       $(document).ready(function() {
         $(".abstract").dotdotdot({ after: "a.readmore" });
+        $(".abstract").trigger("isTruncated", function( isTruncated ) {
+          if ( !isTruncated ) { $("a.readmore").hide(); }
+        });
       });
     </script>
 {% endblock %}
@@ -24,7 +27,7 @@
 {% block content %}
     <section data-paper-id="{{ paper.id }}" data-votes="{{ my_votes }}" data-reviews="{{ my_reviews }}" class="paper box">
         <header class="tex title">
-            <h1><a href="#" title="arXiv link">{{ paper.title|capfirst }}</a></h1>
+            <h1>{{ paper.title|capfirst }}</h1>
         </header>
         <div class="tex abstract">
             {{ paper.abstract | markdown}}
@@ -44,6 +47,11 @@
                         <a href="{{ keyword.url }}">{{ keyword.text }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 {% endif %}
+
+                {% if paper.urls %}
+                <li><a href="{{ paper.urls }}" style="font-weight: bold;">View this paper
+                  <img src="{{ STATIC_URL }}icons/externallink.svg" alt="External link" class="icon-externallink" /></a></li>
+                {% endif %}                
                 </li>
             </ul>
         </div>
