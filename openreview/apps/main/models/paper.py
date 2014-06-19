@@ -77,7 +77,7 @@ class Paper(models.Model):
         return self.reviews.filter(parent__isnull=False)
 
     def num_reviews(self):
-        return self.get_reviews().count()
+        return self.get_reviews().filter(text__isnull=False).count()
 
     def get_votes(self, include_comments):
         """
