@@ -2,7 +2,10 @@
 <input type="hidden" name="poster" value="{{ user.id }}" />
 <input type="hidden" name="paper" value="{{ paper.id }}" />
 
+{% if not user.is_anonymous %}
 <textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below.">{% if review %}{{ review.text }}{% endif %}</textarea>
+
+
 <p><a href="{% url 'help-editor' %}">Editor help</a></p>
 <p style="display:none;" class="preview-error permission-denied">
     You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
@@ -29,7 +32,7 @@
     </a>
 
 
-    <select name="visibility">
+    <select name="visibility" disabled="disabled">     
         <option {% if review and not review.anonymous %}selected="selected"{% endif %} value="public">Public</option>
         <option {% if review and review.is_semi_anonymous %}selected="selected"{% endif %}value="semi_anonymous">Semi-anonymous</option>
         <option {% if review and review.anonymous and not review.is_semi_anonymous %}selected="selected"{% endif %}value="anonymous">Anonymous</option>
@@ -40,3 +43,7 @@
 
 {% include "includes/spinner.html" %}
 <button type="submit">{{ name }}</button>
+{% else %}
+<textarea name="text" placeholder="You need to be logged in to submit a review." disabled="disabled"></textarea>
+<p>Please <a href="{% url 'accounts-login' %}#login">login</a> or <a href="{% url 'accounts-login' %}#register">sign up</a> to share your opinion on this paper.</p>
+{% endif %}
