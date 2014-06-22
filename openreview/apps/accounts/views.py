@@ -10,6 +10,10 @@ from openreview.apps.main.models.review import set_n_votes_cache
 
 from openreview.apps.accounts.forms import RegisterForm, SettingsForm, AccountDeleteForm
 
+from django.utils.translation import ugettext_lazy as _
+
+from django.contrib import messages
+
 
 class AuthenticationView(TemplateView):
     template_name = "accounts/authentication.html"
@@ -30,22 +34,24 @@ class AuthenticationView(TemplateView):
         return dict(super().get_context_data(**kwargs), login_form=self.login_form, register_form=self.register_form)
 
     def post(self, request):
-        return self.register() if "new" in request.POST else self.login()
+        return self.register(request) if "new" in request.POST else self.login(request)
 
-    def register(self):
+    def register(self, request):
         with transaction.atomic():
             if self.register_form.is_valid():
                 username = self.register_form.cleaned_data["username"]
                 password = self.register_form.cleaned_data["password1"]
                 self.register_form.save()
                 login(self.request, authenticate(username=username, password=password))
+                messages.add_message(request, messages.INFO, _("Registration and login succesful."))
                 return self.redirect()
         return self.get(self.request)
 
-    def login(self):
+    def login(self, request):
         if not self.login_form.is_valid():
             return self.get(self.request)
         login(self.request, self.login_form.get_user())
+        messages.add_message(request, messages.INFO, _("Login succesful."))
         return self.redirect()
 
     def redirect(self):
@@ -59,6 +65,7 @@ class LogoutView(RedirectView):
 
     def get(self, request, *args, **kwargs):
         logout(request)
+        messages.add_message(request, messages.INFO, _("Logged out successfully."))
         return super().get(request, *args, **kwargs)
 
 
@@ -77,6 +84,7 @@ class SettingsView(TemplateView):
     def post(self, request):
         if self.settings_form.is_valid():
             self.settings_form.save()
+            messages.add_message(request, messages.INFO, _("Settings succesfully updated."))
         return redirect(reverse("accounts-settings"))
 
     def get(self, request, *args, **kwargs):

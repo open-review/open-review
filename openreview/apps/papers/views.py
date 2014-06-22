@@ -1,6 +1,6 @@
 import json
-from functools import partial
 
+from functools import partial
 from django.core.paginator import Paginator, EmptyPage
 from django.http import Http404
 from django.shortcuts import HttpResponse, redirect
@@ -8,11 +8,12 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.cache import cache_page
 from haystack.query import SearchQuerySet
 from django.views.generic import TemplateView
-
 from openreview.apps.main.models import set_n_votes_cache, Review, Vote, Paper
 from openreview.apps.tools.views import ModelViewMixin
 from openreview.apps.papers import scrapers
 from openreview.apps.papers.forms import PaperForm, ArXivForm
+from django.utils.translation import ugettext_lazy as _
+from django.contrib import messages
 
 
 class BaseReviewView(ModelViewMixin, TemplateView):
@@ -145,11 +146,13 @@ class AddPaperView(TemplateView):
             manual_form = PaperForm(data=self.request.POST)
             if manual_form.is_valid():
                 paper = manual_form.save(commit=True)
+                messages.add_message(request, messages.INFO, _("Paper succesfully added to OpenReview."))
                 return redirect(reverse("paper", args=[paper.id]))
         elif 'arxiv_form' in self.request.POST:
             arxiv_form = ArXivForm(data=self.request.POST)
             if arxiv_form.is_valid():
                 paper = arxiv_form.save(commit=True)
+                messages.add_message(request, messages.INFO, _("Paper succesfully added to OpenReview."))
                 return redirect(reverse("paper", args=[paper.id]))
         else:
             raise ValueError("Either `manual_form` or `arxiv_form` should be in POST parameters.")
