@@ -31,3 +31,7 @@ body > main section.register form > br {
         width: 100%;
     }
 }
+
+form{
+    padding:20px;
+}
