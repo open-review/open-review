@@ -60,6 +60,17 @@
             {% endfor %}
         </section>
 
+        {% if user.is_anonymous %}
+            <section class="login-message box">
+                <header>
+                    <h2>Share your opinion by writing a review</h2>
+                </header>
+                <p>
+                   <a href="{% url 'accounts-login' %}?next=/papers/{{ paper.id }}">Login</a>
+                    or
+                   <a href="{% url 'accounts-register' %}?next=/papers/{{ paper.id }}">register</a> to write a review.</p>
+            </section>
+        {% else %}
         <section data-preview-id="new-review-preview" class="compose-top-level compose compose-review box">
             <header>
                 <h2>Share your opinion by writing a review</h2>
@@ -74,6 +85,7 @@
         </section>
 
         <div id="new-review-preview"></div>
+        {% endif %}
     </div>
     <aside>
   {% if related_a|length > 0 %}
