@@ -4,8 +4,8 @@
 
 <textarea name="text" placeholder="You can use markdown and LaTeX. A preview will be rendered below.">{% if review %}{{ review.text }}{% endif %}</textarea>
 <p><a href="{% url 'help-editor' %}">Editor help</a></p>
-<p style="display:none;" class="preview-error permission-denied">
-    You need to be <a href="{% url 'accounts-login' %}">logged</a> in to submit a review!
+<p style="display:none;" class="form-error preview-error permission-denied">
+    You need to be <a href="{% url 'accounts-login' %}">logged in</a> to submit a review!
 </p>
 
 <p style="display:none;" class="form-error rating">

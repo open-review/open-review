@@ -323,3 +323,12 @@ body > main > section.compose-review > div.rating-input > span {
     }
 
 }
+
+.form-error{
+    color:red;
+}
+
+.form-error a{
+    color: #8d040a;
+    text-decoration: underline;
+}

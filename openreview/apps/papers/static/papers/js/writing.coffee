@@ -40,14 +40,18 @@ stopped_typing = (form) ->
   last_keypress = null
 
 error_received = (jqXHR, textStatus) ->
-  preview = this.closest(".compose")
+  if not this.hasClass("compose")
+    preview = this.closest(".compose")
   error_class = if jqXHR.status == 403 then "permission-denied" else "uknown"
   error = preview.find(".preview-error.#{error_class}")
   error.find(".status-code").text(jqXHR.status)
   error.find(".status-text").text(jqXHR.statusText)
   error.show()
 
-  preview.closest(".review-container").find("[type=submit]").show().siblings(".spinner").hide()
+  if not preview.hasClass("compose-top-level")
+    preview = preview.closest(".review-container")
+
+  preview.find("[type=submit]").show().siblings(".spinner").hide()
 
 review_received = (html) ->
   preview = $("#"+$(this).closest(".compose").data("preview-id"));
