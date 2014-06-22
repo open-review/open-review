@@ -183,7 +183,7 @@ body > main > header h1 + h1 {
 }
 
 body > main  section.box > form {
-    padding: 20px;
+    /*padding: 20px;*/
     overflow: hidden;
 }
 

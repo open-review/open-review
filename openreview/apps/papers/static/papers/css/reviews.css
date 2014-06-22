@@ -204,6 +204,7 @@ body > main .reviews > h2 {
     padding-right:20px;
     padding-bottom:20px;
     border-bottom: none;
+    background-color: white;
 }
 
 .compose-top-level > header > .rating{
@@ -224,11 +225,21 @@ body > main .reviews > h2 {
     /*margin-top:-21px;*/
 }
 
-.preview .review{
-    background: url('/static/papers/preview.png') repeat-y 50%;
+.preview .level-{
+    background-color: white;
 }
 
+.preview-container{
+    margin-top:-21px;
+}
 
+#new-review-preview .preview .review{
+    background: url('/static/papers/preview.png') repeat-y 50% #FCFCFC;
+}
+
+.preview .review{
+    background: url('/static/papers/preview.png') repeat-y 50% white;
+}
 
 .level-1, .level-2, .level-3,
 .level-4, .level-5, .level-6,

@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'openreview.apps.main',
     'openreview.apps.tools',
     'openreview.apps.api',
+    'django_extensions'
 )
 
 MIDDLEWARE_CLASSES = (
