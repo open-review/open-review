@@ -98,3 +98,7 @@ body > main > section.box > form .fetcher-results.loading:after {
 #manually-details p {
     clear: both;
 }
+
+#manually-details, #arxiv-details{
+    padding:20px;
+}
