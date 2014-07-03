@@ -152,7 +152,8 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-COMPRESS_ENABLED = get_bool("DJANGO_COMPRESS", not DEBUG)
+
+COMPRESS_ENABLED = get_bool("DJANGO_COMPRESS", get_bool("DJANGO_COMPRESS_ENABLED", not DEBUG))
 COMPRESS_PARSER = 'compressor.parser.LxmlParser'
 
 COMPRESS_PRECOMPILERS = (
